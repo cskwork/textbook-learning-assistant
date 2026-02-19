@@ -30,7 +30,13 @@
   3. 모든 페이지에서 로그아웃 버튼이 작동하고 즉시 로그인 화면으로 이동한다
   4. 강사 계정으로 로그인하면 강사용 UI가, 학생 계정으로 로그인하면 학생용 UI가 표시된다
   5. 앱이 태블릿·모바일·데스크톱 화면에서 레이아웃 깨짐 없이 표시된다
-**Plans**: TBD
+**Plans**: 5 plans
+Plans:
+- [ ] 01-01-PLAN.md — 모노레포 세팅 + DB 스키마(users, refresh_tokens) + Express 5 서버 기초
+- [ ] 01-02-PLAN.md — React + Vite + Tailwind v4 + shadcn/ui 프론트엔드 + 반응형 앱 셸
+- [ ] 01-03-PLAN.md — JWT 인증 API 6개 엔드포인트 (register, login, refresh, logout, onboarding, me)
+- [ ] 01-04-PLAN.md — 인증 UI (회원가입/로그인/온보딩) + AuthContext + 보호 라우트 + RBAC
+- [ ] 01-05-PLAN.md — Phase 1 전체 통합 검증 (사용자 체크포인트)
 
 ### Phase 2: 문제 뱅크 + 수식 렌더링
 **Goal**: 강사/관리자가 LaTeX 수식이 포함된 수학 문제를 등록·편집할 수 있고, 학생이 수식과 이미지가 정확히 렌더링된 문제를 볼 수 있다
@@ -104,7 +110,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. 기반 인프라 + 인증 | 0/TBD | Not started | - |
+| 1. 기반 인프라 + 인증 | 0/5 | Planned | - |
 | 2. 문제 뱅크 + 수식 렌더링 | 0/TBD | Not started | - |
 | 3. 퀴즈 엔진 + 오답노트 | 0/TBD | Not started | - |
 | 4. DIY 문제집 생성기 | 0/TBD | Not started | - |
