@@ -129,6 +129,7 @@ Requirements for initial release. Each maps to roadmap phases.
 | AUTH-03 | Phase 1 | Pending |
 | AUTH-04 | Phase 1 | Pending |
 | AUTH-05 | Phase 1 | Pending |
+| UIUX-01 | Phase 1 | Pending |
 | QBNK-01 | Phase 2 | Pending |
 | QBNK-02 | Phase 2 | Pending |
 | QBNK-03 | Phase 2 | Pending |
@@ -136,6 +137,7 @@ Requirements for initial release. Each maps to roadmap phases.
 | QBNK-05 | Phase 2 | Pending |
 | QBNK-06 | Phase 2 | Pending |
 | QBNK-07 | Phase 2 | Pending |
+| UIUX-02 | Phase 2 | Pending |
 | QUIZ-01 | Phase 3 | Pending |
 | QUIZ-02 | Phase 3 | Pending |
 | QUIZ-03 | Phase 3 | Pending |
@@ -147,6 +149,7 @@ Requirements for initial release. Each maps to roadmap phases.
 | ERRN-02 | Phase 3 | Pending |
 | ERRN-03 | Phase 3 | Pending |
 | ERRN-04 | Phase 3 | Pending |
+| PLAN-01 | Phase 3 | Pending |
 | WKST-01 | Phase 4 | Pending |
 | WKST-02 | Phase 4 | Pending |
 | WKST-03 | Phase 4 | Pending |
@@ -160,23 +163,26 @@ Requirements for initial release. Each maps to roadmap phases.
 | REPT-02 | Phase 5 | Pending |
 | REPT-03 | Phase 5 | Pending |
 | REPT-04 | Phase 5 | Pending |
-| PLAN-01 | Phase 6 | Pending |
-| PLAN-02 | Phase 6 | Pending |
-| PLAN-03 | Phase 6 | Pending |
+| PLAN-02 | Phase 5 | Pending |
+| PLAN-03 | Phase 5 | Pending |
+| UIUX-03 | Phase 6 | Pending |
 | INST-01 | Phase 7 | Pending |
 | INST-02 | Phase 7 | Pending |
 | INST-03 | Phase 7 | Pending |
 | INST-04 | Phase 7 | Pending |
 | INST-05 | Phase 7 | Pending |
-| UIUX-01 | Phase 1 | Pending |
-| UIUX-02 | Phase 2 | Pending |
-| UIUX-03 | Phase 6 | Pending |
 
 **Coverage:**
 - v1 requirements: 42 total
 - Mapped to phases: 42
 - Unmapped: 0 ✓
 
+**Phase assignment changes from initial traceability:**
+- PLAN-01 moved from Phase 6 → Phase 3 (타이머는 퀴즈 엔진의 일부)
+- PLAN-02, PLAN-03 moved from Phase 6 → Phase 5 (일일 목표·스트릭은 대시보드/AI 분석과 함께)
+- UIUX-01 moved to Phase 1 (반응형 레이아웃은 기반 인프라 단계에서 구축)
+- UIUX-02 assigned to Phase 2 (수식 렌더링은 문제 뱅크와 함께)
+
 ---
 *Requirements defined: 2026-02-19*
-*Last updated: 2026-02-19 after initial definition*
+*Last updated: 2026-02-19 after roadmap creation — traceability revised*
