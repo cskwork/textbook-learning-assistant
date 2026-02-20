@@ -13,9 +13,9 @@
 - [x] **Phase 1: 기반 인프라 + 인증** - 인증/인가 시스템, DB 스키마 확정, 반응형 레이아웃 기반 구축 (completed 2026-02-20)
 - [x] **Phase 2: 문제 뱅크 + 수식 렌더링** - 문제 CRUD, 태깅 시스템, KaTeX 렌더링, 강사 문제 입력 UI (completed 2026-02-21)
 - [ ] **Phase 3: 퀴즈 엔진 + 오답노트** - 문제 풀이 세션, 자동 채점, 오답노트 자동 수집, 타이머
-- [ ] **Phase 4: DIY 문제집 생성기** - 조건 기반 문제집 구성, 저장, 풀이 이력 반영
-- [ ] **Phase 5: AI 분석 + 학습 리포트** - BKT 취약유형 분석, 맞춤 추천, 대시보드, 학습 플래너
-- [ ] **Phase 6: PWA 오프라인 지원** - Service Worker, 오프라인 문제 풀기, PWA 설치
+- [x] **Phase 4: DIY 문제집 생성기** - 조건 기반 문제집 구성, 저장, 풀이 이력 반영 (completed 2026-02-21)
+- [x] **Phase 5: AI 분석 + 학습 리포트** - BKT 취약유형 분석, 맞춤 추천, 대시보드, 학습 플래너 (completed 2026-02-20)
+- [x] **Phase 6: PWA 오프라인 지원** - Service Worker, 오프라인 문제 풀기, PWA 설치 (completed 2026-02-20)
 - [x] **Phase 7: 강사 관리 포털** - 학생 그룹 관리, 과제 출제, 반별 학습 리포트 조회 (completed 2026-02-20)
 - [x] **Phase 8: 마이페이지 + 앱 설정** - 프로필 편집, 비밀번호 변경, 계정 삭제, 다크모드, 수식 글꼴 크기, 앱 정보 (completed 2026-02-20)
 
@@ -85,10 +85,10 @@ Plans:
   3. 문제집 풀이 결과가 학습 이력에 반영되어 AI 분석에 활용된다
 **Plans**: 4 plans
 Plans:
-- [ ] 04-01-PLAN.md — Dexie version(3) Workbook 스키마 + workbook.service.ts (6개 CRUD 함수)
-- [ ] 04-02-PLAN.md — WorkbookCreator(2단계 생성 UI) + WorkbookCard + WorkbookList 컴포넌트
-- [ ] 04-03-PLAN.md — 문제집 목록/생성/풀기 라우트 + nav 탭 + main.tsx 등록 + WorkbookPlayPage
-- [ ] 04-04-PLAN.md — Phase 4 통합 사용자 검증 체크포인트
+- [x] 04-01-PLAN.md — Dexie version(3) Workbook 스키마 + workbook.service.ts (6개 CRUD 함수)
+- [x] 04-02-PLAN.md — WorkbookCreator(2단계 생성 UI) + WorkbookCard + WorkbookList 컴포넌트
+- [x] 04-03-PLAN.md — 문제집 목록/생성/풀기 라우트 + nav 탭 + main.tsx 등록 + WorkbookPlayPage
+- [x] 04-04-PLAN.md — Phase 4 통합 사용자 검증 체크포인트
 
 ### Phase 5: AI 분석 + 학습 리포트
 **Goal**: 학생이 자신의 취약 유형을 시각적으로 파악하고, AI가 맞춤 문제를 추천하며, 학습 목표와 스트릭을 설정할 수 있다
@@ -146,9 +146,9 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 1. 기반 인프라 + 인증 | 5/5 | Complete   | 2026-02-20 |
 | 2. 문제 뱅크 + 수식 렌더링 | 5/5 | Complete   | 2026-02-21 |
 | 3. 퀴즈 엔진 + 오답노트 | 4/5 | In Progress|  |
-| 4. DIY 문제집 생성기 | 3/4 | In Progress|  |
-| 5. AI 분석 + 학습 리포트 | 4/5 | In Progress|  |
-| 6. PWA 오프라인 지원 | 2/3 | In Progress|  |
+| 4. DIY 문제집 생성기 | 4/4 | Complete   | 2026-02-21 |
+| 5. AI 분석 + 학습 리포트 | 5/5 | Complete   | 2026-02-20 |
+| 6. PWA 오프라인 지원 | 3/3 | Complete   | 2026-02-20 |
 | 7. 강사 관리 포털 | 4/4 | Complete   | 2026-02-20 |
 | 8. 마이페이지 + 앱 설정 | 4/4 | Complete   | 2026-02-20 |
 
@@ -173,7 +173,7 @@ Plans:
 
 **Goal:** [To be planned]
 **Depends on:** Phase 8
-**Plans:** 0 plans
+**Plans:** 3/3 plans complete
 
 Plans:
 - [ ] TBD (run /gsd:plan-phase 9 to break down)

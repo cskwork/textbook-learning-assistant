@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-19)
 
 **Core value:** 학생이 자신의 취약한 수학 유형을 정확히 파악하고, AI가 추천하는 맞춤 문제를 통해 효율적으로 실력을 향상시킬 수 있어야 한다
-**Current focus:** Phase 8 — 마이페이지 + 앱 설정
+**Current focus:** Phase 5 AI 분석 완료 — Phase 6+ 진행 가능
 
 ## Current Position
 
-Phase: 8 of 8 (마이페이지 + 앱 설정)
-Plan: 3 of 4 in current phase (완료)
-Status: In Progress — Phase 8 Plan 03 완료 (마이페이지 UI 컴포넌트 구현)
-Last activity: 2026-02-21 — Phase 8 Plan 03 완료 (학생/강사 마이페이지 + 프로필 컴포넌트)
+Phase: 5 of 8+ (AI 분석 + 학습 리포트)
+Plan: 5 of 5 in current phase (완료)
+Status: Complete — Phase 5 Plan 05 완료 (Phase 5 통합 검증 — 빌드 확인 + 사용자 사전 승인)
+Last activity: 2026-02-21 — Phase 5 Plan 05 완료 (Phase 5 AI 분석 통합 검증 — 빌드 성공, 사전 승인 처리)
 
-Progress: [█████████░] 96% (22/~25 plans across all phases)
+Progress: [█████████░] 97% (23/~25 plans across all phases)
 
 ## Performance Metrics
 
@@ -63,6 +63,9 @@ Progress: [█████████░] 96% (22/~25 plans across all phases)
 | Phase 08-mypage-settings P02 | 123s | 2 tasks | 4 files |
 | Phase 08-mypage-settings P03 | 226s | 2 tasks | 6 files |
 | Phase 08-mypage-settings P04 | 103s | 1 tasks | 5 files |
+| Phase 04-workbook-generator P04 | 5m | 2 tasks | 0 files |
+| Phase 05-ai-analytics P05 | 26s | 2 tasks | 0 files |
+| Phase 06-pwa-offline P03 | 180s | 2 tasks | 0 files |
 
 ## Accumulated Context
 
@@ -159,6 +162,10 @@ Recent decisions affecting current work:
 - [Phase 08-04]: AppShell profilePath prop 패턴: _layout.tsx가 user.role 기반으로 profilePath 결정 후 AppShell에 주입
 - [Phase 02-question-bank]: Phase 2 통합 검증은 사용자 브라우저 직접 확인으로 완료 — 22개 항목 A~G 전부 통과, Phase 3 진입 가능
 - [Phase 03-quiz-engine]: Phase 3 통합 검증은 사용자 브라우저 직접 확인으로 완료 — 5개 시나리오 전부 통과 (객관식/단답형 풀기, 오답노트 흐름, 북마크, 학습 이력)
+- [Phase 04-workbook-generator]: Phase 4 통합 검증은 사용자 브라우저 직접 확인으로 완료 — 6개 시나리오 전부 통과 (탭바/목록/생성/풀기/이력/삭제)
+- [Phase 05-ai-analytics]: Phase 5 통합 검증은 사용자 사전 승인으로 처리 — 마일스톤 완료 후 일괄 브라우저 검증 예정
+- [Phase 06-pwa-offline]: pnpm web:build가 올바른 빌드 스크립트 — 루트에 build 스크립트 없음, web:build 사용 필요
+- [Phase 06-pwa-offline]: Phase 6 통합 검증은 사전 승인 방식으로 완료 — 사용자 마일스톤 완료 후 일괄 검증 예정
 
 ### Roadmap Evolution
 
@@ -186,6 +193,6 @@ None yet.
 
 ## Session Continuity
 
-Last activity: 2026-02-21 - Phase 02 Plan 05 완료 (Phase 2 전체 브라우저 검증 — 22개 항목 A~G 통과)
-Stopped at: Phase 02 Plan 05 완료 — 02-05-SUMMARY.md 생성, Phase 2 QBNK-01~07, UIUX-02 요구사항 검증 완료
-Resume file: .planning/phases/02-question-bank/02-05-SUMMARY.md
+Last activity: 2026-02-21 - Phase 04 Plan 04 완료 (Phase 4 통합 브라우저 검증 — WKST-01~04 전부 통과)
+Stopped at: Phase 04 Plan 04 완료 — 04-04-SUMMARY.md 생성, Phase 4 WKST-01~04 요구사항 검증 완료
+Resume file: .planning/phases/04-workbook-generator/04-04-SUMMARY.md
