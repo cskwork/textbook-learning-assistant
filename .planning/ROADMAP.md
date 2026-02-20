@@ -99,7 +99,13 @@ Plans:
   3. 신규 사용자에게 온보딩 진단 퀴즈(5~10문제)가 제공되어 초기 BKT 상태를 초기화한다
   4. 유형별 정답률 차트, 일별/주별 학습 추이, 취약 유형 클러스터, 전체 학습 통계가 대시보드에 표시된다
   5. 일일 학습 목표를 설정할 수 있고 연속 학습 일수(스트릭)가 기록·표시된다
-**Plans**: TBD
+**Plans**: 5 plans
+Plans:
+- [ ] 05-01-PLAN.md — Dexie version(4) + BKT 순수 함수 + analytics.service.ts + streak.service.ts
+- [ ] 05-02-PLAN.md — recharts 2.15.x + shadcn chart + 4종 분석 차트 컴포넌트 (BarChart, LineChart, RadarChart, SummaryCards)
+- [ ] 05-03-PLAN.md — 온보딩 진단 퀴즈 페이지 (/student/onboarding-quiz) + isDiagnosisCompleted 리디렉트
+- [ ] 05-04-PLAN.md — 분석 대시보드 페이지 + AI 추천 + 일일 목표 + 스트릭 + 탭바 '분석' 탭 + 홈 실데이터 연결
+- [ ] 05-05-PLAN.md — Phase 5 통합 사용자 검증 체크포인트
 
 ### Phase 6: PWA 오프라인 지원
 **Goal**: 학생이 앱을 홈 화면에 설치하고 오프라인 상태에서도 기본 문제 풀이를 할 수 있다
@@ -131,6 +137,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 2. 문제 뱅크 + 수식 렌더링 | 4/5 | In Progress|  |
 | 3. 퀴즈 엔진 + 오답노트 | 4/5 | In Progress|  |
 | 4. DIY 문제집 생성기 | 3/4 | In Progress|  |
-| 5. AI 분석 + 학습 리포트 | 0/TBD | Not started | - |
+| 5. AI 분석 + 학습 리포트 | 0/5 | Not started | - |
 | 6. PWA 오프라인 지원 | 0/TBD | Not started | - |
 | 7. 강사 관리 포털 | 0/TBD | Not started | - |
