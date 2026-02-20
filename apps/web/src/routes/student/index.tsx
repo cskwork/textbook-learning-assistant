@@ -139,12 +139,14 @@ export default function StudentHomePage() {
         </div>
 
         {/* 환영 히어로 카드 */}
-        <div className="cta-gradient rounded-2xl p-6 md:p-8 text-white relative overflow-hidden animate-fade-up stagger-2">
-          {/* 데코 서클 */}
-          <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/10 blur-sm" />
-          <div className="absolute -bottom-8 -left-8 w-32 h-32 rounded-full bg-white/5" />
+        <div className="cta-gradient rounded-2xl text-white relative animate-fade-up stagger-2">
+          {/* 데코 서클 클리핑 래퍼 — 컨텐츠는 overflow-hidden 밖에 위치 */}
+          <div className="absolute inset-0 overflow-hidden rounded-2xl">
+            <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/10 blur-sm" />
+            <div className="absolute -bottom-8 -left-8 w-32 h-32 rounded-full bg-white/5" />
+          </div>
 
-          <div className="relative flex flex-col items-start gap-4">
+          <div className="relative p-6 md:p-8 flex flex-col items-start gap-4">
             {/* 아이콘 */}
             <div className="w-16 h-16 rounded-3xl bg-white/15 flex items-center justify-center">
               <BookOpenCheck className="w-8 h-8 text-white" />
@@ -374,12 +376,14 @@ export default function StudentHomePage() {
 
         {/* 문제 풀기 CTA — lg에서 3/5 */}
         <div className="lg:col-span-3 animate-fade-up stagger-5">
-          <div className="cta-gradient rounded-2xl p-5 md:p-6 text-white relative overflow-hidden h-full flex flex-col">
-            {/* 데코 서클 */}
-            <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full bg-white/10 blur-sm" />
-            <div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full bg-white/5" />
+          <div className="cta-gradient rounded-2xl text-white relative h-full flex flex-col">
+            {/* 데코 서클 클리핑 래퍼 — 컨텐츠는 overflow-hidden 밖에 위치 */}
+            <div className="absolute inset-0 overflow-hidden rounded-2xl">
+              <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full bg-white/10 blur-sm" />
+              <div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full bg-white/5" />
+            </div>
 
-            <div className="relative flex-1 flex flex-col">
+            <div className="relative p-5 md:p-6 flex-1 flex flex-col">
               <div className="flex items-center gap-2 mb-1">
                 <Zap className="w-4 h-4 text-white/80" />
                 <span className="text-xs font-semibold text-white/80 uppercase tracking-widest">학습 시작</span>
