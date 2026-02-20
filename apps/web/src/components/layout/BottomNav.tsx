@@ -45,7 +45,7 @@ export default function BottomNav({
           <NavLink
             key={item.path}
             to={item.path}
-            end={item.path === '/'}
+            end
             className={({ isActive }) =>
               cn(
                 'flex flex-col items-center justify-center flex-1 gap-1',
