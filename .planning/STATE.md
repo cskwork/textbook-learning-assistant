@@ -10,9 +10,9 @@ See: .planning/PROJECT.md (updated 2026-02-19)
 ## Current Position
 
 Phase: 4 of 7 (DIY 문제집 생성기)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: Executing
-Last activity: 2026-02-20 — Phase 4 Plan 01 완료 (Workbook 스키마 + workbook.service.ts 데이터 레이어)
+Last activity: 2026-02-20 — Phase 4 Plan 02 완료 (WorkbookCreator + WorkbookCard + WorkbookList UI 컴포넌트)
 
 Progress: [████████░░] 44% (11/~25 plans across all phases)
 
@@ -47,6 +47,7 @@ Progress: [████████░░] 44% (11/~25 plans across all phases)
 | Phase 03-quiz-engine P03 | 118s | 2 tasks | 3 files |
 | Phase 03-quiz-engine P04 | 116s | 2 tasks | 5 files |
 | Phase 04-workbook-generator P01 | 1m | 2 tasks | 2 files |
+| Phase 04-workbook-generator P02 | 132s | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -99,6 +100,9 @@ Recent decisions affecting current work:
 - [Phase 04-01]: listWorkbooks는 where().toArray() 후 인메모리 sort — Dexie reverse().sortBy() + where() 조합 오류 방지
 - [Phase 04-01]: getFilterOptions filter(Boolean) — unit/questionCategory 빈 문자열 제거
 - [Phase 04-01]: createWorkbook에서 questionIds 배열만 저장 — Question 객체 전체 저장 금지 (데이터 중복 방지)
+- [Phase 04-02]: WorkbookCard 삭제 버튼: ghost variant + text-destructive — WrongNoteCard outline 패턴 대신 ghost 사용 (덜 강조)
+- [Phase 04-02]: WorkbookCreator Select: __all__ 센티넬 값으로 전체/선택 전환 — WrongNoteFilter 패턴 재사용
+- [Phase 04-02]: previewQuestions 내 content 앞 30자만 표시 (LaTeX 미렌더링) — POC 미리보기는 텍스트만으로 충분
 
 ### Pending Todos
 
@@ -114,5 +118,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-20
-Stopped at: Completed 04-workbook-generator/04-01-PLAN.md
-Resume file: .planning/phases/04-workbook-generator/04-01-SUMMARY.md
+Stopped at: Completed 04-workbook-generator/04-02-PLAN.md
+Resume file: .planning/phases/04-workbook-generator/04-02-SUMMARY.md
