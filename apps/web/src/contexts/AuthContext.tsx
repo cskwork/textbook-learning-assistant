@@ -10,7 +10,7 @@
  * 앱 마운트 시 getMe()를 호출해 기존 세션을 복원한다 (AUTH-03).
  */
 
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
 import { useNavigate } from 'react-router'
 import { getMe, login as apiLogin, logout as apiLogout, setRole as apiSetRole } from '@/lib/auth'
 import type { User } from '@/lib/auth'
@@ -51,17 +51,29 @@ interface AuthProviderProps {
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [showSpinner, setShowSpinner] = useState(false)
   const navigate = useNavigate()
+  const spinnerTimer = useRef<ReturnType<typeof setTimeout>>(null)
 
   // 앱 마운트 시 세션 복원
   useEffect(() => {
+    // 200ms 이상 걸릴 때만 스피너 표시 (flicker 방지)
+    spinnerTimer.current = setTimeout(() => setShowSpinner(true), 200)
+
     getMe()
       .then((u) => setUser(u))
       .catch(() => {
         // 401 등 — 비로그인 상태. 에러 아님
         setUser(null)
       })
-      .finally(() => setIsLoading(false))
+      .finally(() => {
+        if (spinnerTimer.current) clearTimeout(spinnerTimer.current)
+        setIsLoading(false)
+      })
+
+    return () => {
+      if (spinnerTimer.current) clearTimeout(spinnerTimer.current)
+    }
   }, [])
 
   /**
@@ -99,8 +111,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return u
   }
 
-  // 초기 로딩 중 — 전체 화면 스피너
+  // 초기 로딩 중 — 200ms 미만이면 빈 화면, 이후 스피너 표시 (flicker 방지)
   if (isLoading) {
+    if (!showSpinner) return null
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-3">
