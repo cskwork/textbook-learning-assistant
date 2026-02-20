@@ -9,10 +9,10 @@
 
 ### 디자인 시스템
 
-- [ ] **DSGN-01**: 기출탭탭 스타일 색상 팔레트로 전면 교체 (교육 앱 파란/남색 계열, primary/secondary/accent 토큰)
-- [ ] **DSGN-02**: 타이포그래피 시스템 리뉴얼 (Pretendard 또는 유사 한글 폰트, 크기 체계, 줄간격, 가독성)
+- [x] **DSGN-01**: 기출탭탭 스타일 색상 팔레트로 전면 교체 (교육 앱 파란/남색 계열, primary/secondary/accent 토큰)
+- [x] **DSGN-02**: 타이포그래피 시스템 리뉴얼 (Pretendard 또는 유사 한글 폰트, 크기 체계, 줄간격, 가독성)
 - [ ] **DSGN-03**: 카드/버튼/입력 컴포넌트 디자인 전면 리뉴얼 (둥근 모서리, 그림자, hover 상태, 비활성 상태)
-- [ ] **DSGN-04**: 다크모드 디자인 토큰 동시 업데이트 (라이트/다크 양쪽 일관된 경험)
+- [x] **DSGN-04**: 다크모드 디자인 토큰 동시 업데이트 (라이트/다크 양쪽 일관된 경험)
 
 ### 학생 홈 대시보드
 
@@ -82,10 +82,10 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DSGN-01 | Phase 10 | Pending |
-| DSGN-02 | Phase 10 | Pending |
+| DSGN-01 | Phase 10 | Complete |
+| DSGN-02 | Phase 10 | Complete |
 | DSGN-03 | Phase 10 | Pending |
-| DSGN-04 | Phase 10 | Pending |
+| DSGN-04 | Phase 10 | Complete |
 | LYOT-01 | Phase 11 | Pending |
 | LYOT-02 | Phase 11 | Pending |
 | LYOT-03 | Phase 11 | Pending |

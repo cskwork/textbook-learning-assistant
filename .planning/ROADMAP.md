@@ -264,7 +264,7 @@ Phases execute in numeric order: 10 → 11 → 12 → 13 → 14
 | 7. 강사 관리 포털 | v1.0 | 4/4 | Complete | 2026-02-20 |
 | 8. 마이페이지 + 앱 설정 | v1.0 | 4/4 | Complete | 2026-02-20 |
 | 9. AI 문제 생성 보조 | v1.0 | 3/3 | Complete | 2026-02-21 |
-| 10. 디자인 시스템 | v2.0 | 0/3 | In Progress | - |
+| 10. 디자인 시스템 | 1/3 | In Progress|  | - |
 | 11. 공통 레이아웃 + 애니메이션 | v2.0 | 0/TBD | Not started | - |
 | 12. 학생 홈 + 문제 풀이 UX | v2.0 | 0/TBD | Not started | - |
 | 13. 분석 대시보드 + 학습 플래너 | v2.0 | 0/TBD | Not started | - |

@@ -10,9 +10,9 @@ See: .planning/PROJECT.md (updated 2026-02-21)
 ## Current Position
 
 Phase: 10 of 14 (디자인 시스템)
-Plan: 0 of TBD in current phase
-Status: Ready to plan
-Last activity: 2026-02-21 — v2.0 로드맵 생성 완료 (Phases 10-14)
+Plan: 1 of TBD in current phase
+Status: In progress
+Last activity: 2026-02-21 — 10-01 완료: 기출탭탭 색상 토큰 + Pretendard 타이포그래피 + 다크모드 토큰
 
 Progress: [██████████░░░░░░░░░░] 9/14 phases complete (v1.0 기준)
 
@@ -23,11 +23,11 @@ Progress: [██████████░░░░░░░░░░] 9/14 ph
 - Average duration: ~150s
 - Total execution time: ~85분 (v1.0 전체)
 
-**By Phase (v2.0 — 시작 전):**
+**By Phase (v2.0 — 진행 중):**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 10. 디자인 시스템 | TBD | - | - |
+| 10. 디자인 시스템 | 1 완료 | ~3min | ~3min |
 | 11. 공통 레이아웃 + 애니메이션 | TBD | - | - |
 | 12. 학생 홈 + 문제 풀이 UX | TBD | - | - |
 | 13. 분석 대시보드 + 학습 플래너 | TBD | - | - |
@@ -46,7 +46,10 @@ Progress: [██████████░░░░░░░░░░] 9/14 ph
 Decisions are logged in PROJECT.md Key Decisions table.
 Recent decisions affecting current work:
 
-- [v2.0 Scope]: Phase 10(디자인 시스템)이 모든 후속 Phase의 기반 — Tailwind v4 CSS 변수 토큰 전면 교체 예정
+- [v2.0 Scope]: Phase 10(디자인 시스템)이 모든 후속 Phase의 기반 — Tailwind v4 CSS 변수 토큰 전면 교체 완료 (10-01)
+- [10-01 Design]: primary = oklch(0.52 0.19 260) 인디고블루 — 기출탭탭 핵심 브랜드 컬러 확정
+- [10-01 Design]: Pretendard Variable CDN 방식 채택 (dynamic subset), body + @layer base 양쪽 적용
+- [10-01 Design]: success/warning/info 시맨틱 토큰 추가 — @theme inline 매핑으로 Tailwind 유틸리티 사용 가능
 - [v2.0 Scope]: Swiper 라이브러리 신규 도입 — HOME-02, QUIZ-02 요구사항
 - [v2.0 Scope]: Framer Motion 신규 도입 — FLOW-01, FLOW-02 요구사항
 - [Architecture]: Tailwind v4 CSS-first 방식 유지 — 디자인 토큰은 @layer base CSS 변수로 관리
@@ -64,6 +67,6 @@ None yet.
 
 ## Session Continuity
 
-Last activity: 2026-02-21 — v2.0 로드맵 생성 (Phases 10-14, 27개 요구사항 전체 매핑 완료)
-Stopped at: ROADMAP.md + STATE.md + REQUIREMENTS.md 트레이서빌리티 업데이트 완료
+Last activity: 2026-02-21 — 10-01 완료: Pretendard 폰트 + 기출탭탭 색상 토큰 + 다크모드 토큰
+Stopped at: 10-01-PLAN.md 완전 실행 (2 tasks, 2 commits)
 Resume file: None
