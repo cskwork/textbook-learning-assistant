@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-19)
 ## Current Position
 
 Phase: 5 of 7 (AI 분석 + 학습 리포트)
-Plan: 3 of 5 in current phase
+Plan: 4 of 5 in current phase
 Status: In Progress
-Last activity: 2026-02-20 — Phase 5 Plan 03 완료 (온보딩 진단 퀴즈 라우트 + isDiagnosisCompleted 리디렉트 가드)
+Last activity: 2026-02-20 — Phase 5 Plan 04 완료 (분석 대시보드 + 보조 컴포넌트 + 홈 실데이터 + 탭바 분석 탭)
 
-Progress: [████████░░] 52% (13/~25 plans across all phases)
+Progress: [████████░░] 56% (14/~25 plans across all phases)
 
 ## Performance Metrics
 
@@ -52,6 +52,7 @@ Progress: [████████░░] 52% (13/~25 plans across all phases)
 | Phase 05-ai-analytics P01 | 150s | 2 tasks | 4 files |
 | Phase 05-ai-analytics P03 | 127s | 1 tasks | 3 files |
 | Phase 05-ai-analytics P02 | 219s | 2 tasks | 5 files |
+| Phase 05-ai-analytics P04 | 226s | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -118,6 +119,9 @@ Recent decisions affecting current work:
 - [Phase 05-02]: recharts 버전 관리: shadcn add chart가 2.15.x 범위로 설치, 3.x 시 2.15.1 다운그레이드 필요
 - [Phase 05-02]: pnpm.overrides react-is: 모노레포 루트 direct dep 없어 $react-is 참조 불가 → ^19.0.0 버전 문자열 직접 명시
 - [Phase 05-02]: RadarChart 취약 유형 색상: recharts Radar 개별 포인트 fill 미지원 → 취약 유형 존재 시 전체 Radar를 destructive 색상으로 단순 처리
+- [Phase 05-04]: 차트 컴포넌트 import: named export이므로 {} 구문 사용 — default import 방식 빌드 오류 방지
+- [Phase 05-04]: 홈 실데이터 로딩: 오늘 풀이 useLiveQuery(실시간) + 정답률/스트릭/학습시간 useEffect(attemptCount 의존)
+- [Phase 05-04]: 탭바 마이페이지 → 분석 탭 교체: /student/profile 라우트는 main.tsx에 유지 (5개 탭 공간 확보)
 
 ### Pending Todos
 

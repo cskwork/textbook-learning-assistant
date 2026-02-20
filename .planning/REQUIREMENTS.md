@@ -53,7 +53,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **AIAN-01**: BKT 모델이 학생의 유형별 지식 상태를 추적한다
 - [x] **AIAN-02**: 학습 이력 기반으로 취약 유형이 자동 판별된다
-- [ ] **AIAN-03**: 취약 유형 기반 맞춤 문제가 추천된다
+- [x] **AIAN-03**: 취약 유형 기반 맞춤 문제가 추천된다
 - [x] **AIAN-04**: 초기 사용자(풀이 30회 미만)에게 단원별 정답률 기반 휴리스틱 분석이 제공된다
 - [x] **AIAN-05**: 신규 사용자에게 온보딩 진단 퀴즈가 제공된다
 
@@ -67,8 +67,8 @@ Requirements for initial release. Each maps to roadmap phases.
 ### 학습 플래너 (Study Planner)
 
 - [x] **PLAN-01**: 문제 풀이 시 타이머가 작동하고 소요 시간이 표시된다
-- [ ] **PLAN-02**: 일일 학습 목표(문제 수)를 설정할 수 있다
-- [ ] **PLAN-03**: 학습 스트릭(연속 학습 일수)이 기록·표시된다
+- [x] **PLAN-02**: 일일 학습 목표(문제 수)를 설정할 수 있다
+- [x] **PLAN-03**: 학습 스트릭(연속 학습 일수)이 기록·표시된다
 
 ### 강사 관리 (Instructor Admin)
 
@@ -156,15 +156,15 @@ Requirements for initial release. Each maps to roadmap phases.
 | WKST-04 | Phase 4 | Complete |
 | AIAN-01 | Phase 5 | Complete |
 | AIAN-02 | Phase 5 | Complete |
-| AIAN-03 | Phase 5 | Pending |
+| AIAN-03 | Phase 5 | Complete |
 | AIAN-04 | Phase 5 | Complete |
 | AIAN-05 | Phase 5 | Complete |
 | REPT-01 | Phase 5 | Complete |
 | REPT-02 | Phase 5 | Complete |
 | REPT-03 | Phase 5 | Complete |
 | REPT-04 | Phase 5 | Complete |
-| PLAN-02 | Phase 5 | Pending |
-| PLAN-03 | Phase 5 | Pending |
+| PLAN-02 | Phase 5 | Complete |
+| PLAN-03 | Phase 5 | Complete |
 | UIUX-03 | Phase 6 | Pending |
 | INST-01 | Phase 7 | Pending |
 | INST-02 | Phase 7 | Pending |
