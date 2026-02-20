@@ -3,6 +3,7 @@ import express, { Express } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { errorHandler } from './middleware/errorHandler.js';
+import { authRouter } from './routes/auth.js';
 
 const app: Express = express();
 const PORT = process.env.PORT ?? 3000;
@@ -25,6 +26,9 @@ app.get('/health', (_req, res) => {
     timestamp: new Date().toISOString(),
   });
 });
+
+// 인증 라우트
+app.use('/api/auth', authRouter);
 
 // 글로벌 에러 핸들러 (라우트 등록 후 마지막에 위치)
 app.use(errorHandler);
