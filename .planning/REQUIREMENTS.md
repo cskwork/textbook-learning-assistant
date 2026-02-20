@@ -80,17 +80,41 @@
 
 ## Traceability
 
-_Populated during roadmap creation_
-
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| — | — | — |
+| DSGN-01 | Phase 10 | Pending |
+| DSGN-02 | Phase 10 | Pending |
+| DSGN-03 | Phase 10 | Pending |
+| DSGN-04 | Phase 10 | Pending |
+| LYOT-01 | Phase 11 | Pending |
+| LYOT-02 | Phase 11 | Pending |
+| LYOT-03 | Phase 11 | Pending |
+| FLOW-01 | Phase 11 | Pending |
+| FLOW-02 | Phase 11 | Pending |
+| FLOW-03 | Phase 11 | Pending |
+| HOME-01 | Phase 12 | Pending |
+| HOME-02 | Phase 12 | Pending |
+| HOME-03 | Phase 12 | Pending |
+| QUIZ-01 | Phase 12 | Pending |
+| QUIZ-02 | Phase 12 | Pending |
+| QUIZ-03 | Phase 12 | Pending |
+| QUIZ-04 | Phase 12 | Pending |
+| ANLZ-01 | Phase 13 | Pending |
+| ANLZ-02 | Phase 13 | Pending |
+| ANLZ-03 | Phase 13 | Pending |
+| PLAN-01 | Phase 13 | Pending |
+| PLAN-02 | Phase 13 | Pending |
+| PLAN-03 | Phase 13 | Pending |
+| INST-01 | Phase 14 | Pending |
+| INST-02 | Phase 14 | Pending |
+| INST-03 | Phase 14 | Pending |
+| INST-04 | Phase 14 | Pending |
 
 **Coverage:**
 - v2.0 requirements: 27 total
-- Mapped to phases: 0
-- Unmapped: 27 ⚠️
+- Mapped to phases: 27
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-21*
-*Last updated: 2026-02-21 after milestone v2.0 definition*
+*Last updated: 2026-02-21 after milestone v2.0 roadmap creation*
