@@ -27,7 +27,7 @@ const studentNavItems: NavItem[] = [
 const instructorNavItems: NavItem[] = [
   { path: '/instructor', label: '홈', icon: Home },
   { path: '/instructor/problems', label: '문제관리', icon: BookOpen },
-  { path: '/instructor/students', label: '학생관리', icon: Users },
+  { path: '/instructor/groups', label: '반관리', icon: Users },
   { path: '/instructor/profile', label: '마이페이지', icon: User },
 ]
 

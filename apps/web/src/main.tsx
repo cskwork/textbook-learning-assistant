@@ -40,6 +40,10 @@ import AnalyticsPage from './routes/student/analytics/index'
 import RoleRedirect from './routes/role-redirect'
 import JoinGroupPage from './routes/student/join-group/index'
 import GroupReportPage from './routes/instructor/groups/report'
+import GroupListPage from './routes/instructor/groups/index'
+import GroupNewPage from './routes/instructor/groups/new'
+import GroupDetailPage from './routes/instructor/groups/detail'
+import AssignWorkbookPage from './routes/instructor/groups/assign'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -82,6 +86,11 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/instructor/problems/:id/edit" element={<EditQuestionPage />} />
             <Route path="/instructor/students" element={<ComingSoonPage />} />
             <Route path="/instructor/profile" element={<ComingSoonPage />} />
+            {/* 강사 그룹 관리 라우트 */}
+            <Route path="/instructor/groups" element={<GroupListPage />} />
+            <Route path="/instructor/groups/new" element={<GroupNewPage />} />
+            <Route path="/instructor/groups/:id/assign" element={<AssignWorkbookPage />} />
+            <Route path="/instructor/groups/:id" element={<GroupDetailPage />} />
             <Route path="/instructor/groups/:id/report" element={<GroupReportPage />} />
           </Route>
 
