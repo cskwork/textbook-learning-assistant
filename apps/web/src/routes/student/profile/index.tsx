@@ -84,7 +84,7 @@ export default function StudentProfilePage() {
   if (!user) return null
 
   return (
-    <div className="p-4 md:p-6 lg:p-8 max-w-3xl mx-auto space-y-5">
+    <div className="p-4 md:p-6 lg:p-8 max-w-5xl mx-auto space-y-5">
       <div>
         <h1 className="text-2xl font-bold text-foreground">마이페이지</h1>
         <p className="text-sm text-muted-foreground mt-1">프로필과 앱 설정을 관리하세요</p>
