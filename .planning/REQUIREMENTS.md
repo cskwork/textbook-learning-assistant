@@ -13,7 +13,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **AUTH-02**: 사용자가 이메일과 비밀번호로 로그인할 수 있다
 - [ ] **AUTH-03**: 사용자의 로그인 세션이 브라우저 새로고침/재방문 시에도 유지된다
 - [ ] **AUTH-04**: 사용자가 모든 페이지에서 로그아웃할 수 있다
-- [ ] **AUTH-05**: 사용자가 학생 또는 강사 역할로 가입할 수 있다 (RBAC)
+- [x] **AUTH-05**: 사용자가 학생 또는 강사 역할로 가입할 수 있다 (RBAC)
 
 ### 문제 DB (Question Bank)
 
@@ -128,7 +128,7 @@ Requirements for initial release. Each maps to roadmap phases.
 | AUTH-02 | Phase 1 | Pending |
 | AUTH-03 | Phase 1 | Pending |
 | AUTH-04 | Phase 1 | Pending |
-| AUTH-05 | Phase 1 | Pending |
+| AUTH-05 | Phase 1 | Complete |
 | UIUX-01 | Phase 1 | Pending |
 | QBNK-01 | Phase 2 | Pending |
 | QBNK-02 | Phase 2 | Pending |

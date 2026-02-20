@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-19)
 ## Current Position
 
 Phase: 1 of 7 (기반 인프라 + 인증)
-Plan: 0 of TBD in current phase
-Status: Ready to plan
-Last activity: 2026-02-19 — Phase 1 context gathered
+Plan: 1 of 5 in current phase
+Status: In progress
+Last activity: 2026-02-20 — 01-01 완료 (모노레포 + DB 스키마 + Express 5 서버)
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [█░░░░░░░░░] 4% (1/5 plans in Phase 1)
 
 ## Performance Metrics
 
@@ -34,6 +34,7 @@ Progress: [░░░░░░░░░░] 0%
 - Trend: -
 
 *Updated after each plan completion*
+| Phase 01-infra-auth P01 | 3m 31s | 2 tasks | 12 files |
 
 ## Accumulated Context
 
@@ -47,6 +48,8 @@ Recent decisions affecting current work:
 - [Init]: BKT 모델 Node.js 인라인 구현 (v1), Python FastAPI 마이크로서비스는 v2로 연기
 - [Init]: 문제 태깅 스키마는 Phase 1에서 확정 필수 (나중에 변경 시 전체 재작업)
 - [Init]: 서버사이드 채점 강제 (클라이언트 채점 절대 금지 — 정답 노출 방지)
+- [Phase 01-infra-auth]: apps/api ESM 설정 + Express 명시적 타입 어노테이션으로 pnpm 가상 저장소 타입 참조 오류 방지
+- [Phase 01-infra-auth]: SameSite 쿠키: 개발 환경 lax, 프로덕션 strict — 01-03 JWT 구현 시 적용
 
 ### Pending Todos
 
@@ -60,6 +63,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-19
-Stopped at: Phase 1 context gathered
-Resume file: .planning/phases/01-infra-auth/01-CONTEXT.md
+Last session: 2026-02-20
+Stopped at: Completed 01-infra-auth/01-01-PLAN.md (모노레포 + DB 스키마 + Express 5 서버)
+Resume file: .planning/phases/01-infra-auth/01-01-SUMMARY.md

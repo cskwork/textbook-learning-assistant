@@ -110,7 +110,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. 기반 인프라 + 인증 | 0/5 | Planned | - |
+| 1. 기반 인프라 + 인증 | 1/5 | In Progress|  |
 | 2. 문제 뱅크 + 수식 렌더링 | 0/TBD | Not started | - |
 | 3. 퀴즈 엔진 + 오답노트 | 0/TBD | Not started | - |
 | 4. DIY 문제집 생성기 | 0/TBD | Not started | - |
