@@ -38,6 +38,8 @@ import WorkbookPlayPage from './routes/student/workbooks/play'
 import OnboardingQuizPage from './routes/student/onboarding-quiz/index'
 import AnalyticsPage from './routes/student/analytics/index'
 import RoleRedirect from './routes/role-redirect'
+import JoinGroupPage from './routes/student/join-group/index'
+import GroupReportPage from './routes/instructor/groups/report'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -69,6 +71,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/student/workbooks/:id/play" element={<WorkbookPlayPage />} />
             <Route path="/student/onboarding-quiz" element={<OnboardingQuizPage />} />
             <Route path="/student/analytics" element={<AnalyticsPage />} />
+            <Route path="/student/join-group" element={<JoinGroupPage />} />
             <Route path="/student/profile" element={<ComingSoonPage />} />
 
             {/* 강사 전용 라우트 */}
@@ -79,6 +82,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/instructor/problems/:id/edit" element={<EditQuestionPage />} />
             <Route path="/instructor/students" element={<ComingSoonPage />} />
             <Route path="/instructor/profile" element={<ComingSoonPage />} />
+            <Route path="/instructor/groups/:id/report" element={<GroupReportPage />} />
           </Route>
 
           {/* 404 — 인덱스로 리디렉트 */}
