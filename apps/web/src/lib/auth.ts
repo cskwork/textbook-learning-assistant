@@ -1,13 +1,9 @@
-/**
- * 인증 API 호출 함수 모음
- *
- * api.ts의 fetch wrapper를 사용하며,
- * AuthContext에서 이 함수들을 통해 인증 상태를 관리한다.
- */
+// apps/web/src/lib/auth.ts
+// POC mock 인증 — localStorage 기반 (백엔드 없는 Vercel 배포용)
 
-import { api } from './api'
+const USERS_KEY = 'mock:users'
+const CURRENT_USER_KEY = 'mock:current_user'
 
-// 사용자 타입 (서버 응답 형식)
 export interface User {
   id: number
   email: string
@@ -15,59 +11,55 @@ export interface User {
   isOnboarded: boolean
 }
 
-interface AuthResponse {
-  user: User
+function getUsers(): User[] {
+  try {
+    return JSON.parse(localStorage.getItem(USERS_KEY) ?? '[]')
+  } catch {
+    return []
+  }
 }
 
-/**
- * 회원가입
- * POST /api/auth/register
- */
-export async function register(email: string, password: string): Promise<User> {
-  const res = await api.post<AuthResponse>('/api/auth/register', { email, password })
-  return res.user
+export async function register(email: string, _password: string): Promise<User> {
+  const users = getUsers()
+  if (users.find((u) => u.email === email)) {
+    throw { error: '이미 사용 중인 이메일입니다', statusCode: 409 }
+  }
+  const newUser: User = { id: Date.now(), email, role: null, isOnboarded: false }
+  localStorage.setItem(USERS_KEY, JSON.stringify([...users, newUser]))
+  localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(newUser))
+  return newUser
 }
 
-/**
- * 로그인
- * POST /api/auth/login
- */
-export async function login(email: string, password: string): Promise<User> {
-  const res = await api.post<AuthResponse>('/api/auth/login', { email, password })
-  return res.user
+export async function login(email: string, _password: string): Promise<User> {
+  const users = getUsers()
+  const user = users.find((u) => u.email === email)
+  if (!user) throw { error: '이메일 또는 비밀번호가 올바르지 않습니다', statusCode: 401 }
+  localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user))
+  return user
 }
 
-/**
- * 로그아웃
- * POST /api/auth/logout
- */
 export async function logout(): Promise<void> {
-  await api.post('/api/auth/logout')
+  localStorage.removeItem(CURRENT_USER_KEY)
 }
 
-/**
- * 현재 인증된 사용자 정보 조회 (세션 확인용)
- * GET /api/auth/me
- */
 export async function getMe(): Promise<User> {
-  const res = await api.get<AuthResponse>('/api/auth/me')
-  return res.user
+  const raw = localStorage.getItem(CURRENT_USER_KEY)
+  if (!raw) throw { error: '로그인이 필요합니다', statusCode: 401 }
+  return JSON.parse(raw) as User
 }
 
-/**
- * 역할 설정 (온보딩)
- * PATCH /api/auth/onboarding
- */
 export async function setRole(role: 'student' | 'instructor'): Promise<User> {
-  const res = await api.patch<AuthResponse>('/api/auth/onboarding', { role })
-  return res.user
+  const raw = localStorage.getItem(CURRENT_USER_KEY)
+  if (!raw) throw { error: '로그인이 필요합니다', statusCode: 401 }
+  const current: User = JSON.parse(raw)
+  const updated: User = { ...current, role, isOnboarded: true }
+  const users = getUsers().map((u) => (u.id === updated.id ? updated : u))
+  localStorage.setItem(USERS_KEY, JSON.stringify(users))
+  localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(updated))
+  return updated
 }
 
-/**
- * 토큰 갱신
- * POST /api/auth/refresh
- */
 export async function refreshToken(): Promise<User> {
-  const res = await api.post<AuthResponse>('/api/auth/refresh')
-  return res.user
+  // mock: refresh는 getMe()와 동일
+  return getMe()
 }

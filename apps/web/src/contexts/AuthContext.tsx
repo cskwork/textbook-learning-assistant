@@ -14,7 +14,6 @@ import { createContext, useContext, useEffect, useRef, useState, type ReactNode 
 import { useNavigate } from 'react-router'
 import { getMe, login as apiLogin, logout as apiLogout, setRole as apiSetRole } from '@/lib/auth'
 import type { User } from '@/lib/auth'
-import type { ApiError } from '@/lib/api'
 
 interface AuthContextValue {
   user: User | null
@@ -131,12 +130,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
   )
 }
 
-// ApiError 타입 가드 — 에러 메시지 추출에 사용
-export function isApiError(err: unknown): err is ApiError {
+// mock auth 에러 타입 가드 — 에러 메시지 추출에 사용
+export function isApiError(err: unknown): err is { error: string; statusCode: number } {
   return (
     typeof err === 'object' &&
     err !== null &&
     'error' in err &&
-    typeof (err as ApiError).error === 'string'
+    typeof (err as { error: string }).error === 'string'
   )
 }
