@@ -31,6 +31,9 @@ import ComingSoonPage from './routes/coming-soon'
 import StudentProblemsPage from './routes/student/problems/index'
 import QuizPage from './routes/student/quiz/index'
 import WrongNotesPage from './routes/student/wrong-notes/index'
+import WorkbooksPage from './routes/student/workbooks/index'
+import CreateWorkbookPage from './routes/student/workbooks/create'
+import WorkbookPlayPage from './routes/student/workbooks/play'
 import RoleRedirect from './routes/role-redirect'
 
 createRoot(document.getElementById('root')!).render(
@@ -57,6 +60,9 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/student/problems" element={<StudentProblemsPage />} />
             <Route path="/student/quiz/:id" element={<QuizPage />} />
             <Route path="/student/wrong-notes" element={<WrongNotesPage />} />
+            <Route path="/student/workbooks" element={<WorkbooksPage />} />
+            <Route path="/student/workbooks/create" element={<CreateWorkbookPage />} />
+            <Route path="/student/workbooks/:id/play" element={<WorkbookPlayPage />} />
             <Route path="/student/profile" element={<ComingSoonPage />} />
 
             {/* 강사 전용 라우트 */}

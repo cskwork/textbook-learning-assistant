@@ -9,7 +9,7 @@
  */
 
 import { Navigate, Outlet } from 'react-router'
-import { Home, BookOpen, BookOpenCheck, User, Users } from 'lucide-react'
+import { Home, BookOpen, BookOpenCheck, User, Users, BookMarked } from 'lucide-react'
 import AppShell from '@/components/layout/AppShell'
 import { useAuth } from '@/contexts/AuthContext'
 import type { NavItem } from '@/components/layout/BottomNav'
@@ -19,6 +19,7 @@ const studentNavItems: NavItem[] = [
   { path: '/student', label: '홈', icon: Home },
   { path: '/student/problems', label: '문제풀기', icon: BookOpenCheck },
   { path: '/student/wrong-notes', label: '오답노트', icon: BookOpen },
+  { path: '/student/workbooks', label: '문제집', icon: BookMarked },
   { path: '/student/profile', label: '마이페이지', icon: User },
 ]
 
