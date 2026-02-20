@@ -53,7 +53,7 @@ completed: 2026-02-21
 - **Duration:** 5 min
 - **Started:** 2026-02-21T00:00:00Z
 - **Completed:** 2026-02-21T00:05:00Z
-- **Tasks:** 1 (Task 2는 checkpoint:human-verify — 사용자 검증 대기)
+- **Tasks:** 2 (Task 1: 구현, Task 2: 사용자 검증 통과)
 - **Files modified:** 2
 
 ## Accomplishments
@@ -62,14 +62,16 @@ completed: 2026-02-21
 - 강사 홈: 최근 반 섹션 추가 (최대 3개, 빈 상태 안내 포함)
 - 학생 홈: '반 참여' 버튼 추가 — 문제 풀기 카드 내 배치, /student/join-group 링크
 - TypeScript 빌드 에러 없음 (✓ built in 4.84s)
+- Task 2 사용자 검증 통과 (INST-01~INST-05 5개 시나리오 모두 승인)
 
 ## Task Commits
 
 각 Task는 원자적으로 커밋됨:
 
 1. **Task 1: 강사 홈 실데이터 업데이트 + 학생 홈 '반 참여' 버튼** - `6f64356` (feat)
+2. **Task 2: Phase 7 통합 사용자 검증 (INST-01~INST-05)** - 사용자 "approved" 승인 완료
 
-**Plan metadata:** (docs 커밋 예정)
+**Plan metadata:** `faac561` (docs 커밋)
 
 ## Files Created/Modified
 
@@ -93,12 +95,29 @@ completed: 2026-02-21
 
 없음 — 외부 서비스 설정 불필요.
 
+## User Verification Results
+
+**Task 2: Phase 7 통합 사용자 검증** — 사용자 승인 완료 ("approved")
+
+검증된 시나리오 (INST-01~INST-05):
+- 시나리오 1: 강사 반 생성 + 초대 코드 확인 (INST-01, INST-02) — 통과
+- 시나리오 2: 모의 학생 데이터 시드 + 리포트 (INST-04, INST-05) — 통과
+- 시나리오 3: 과제 배정 (INST-03) — 통과
+- 시나리오 4: 학생 반 참여 (INST-02) — 통과
+- 시나리오 5: 강사 홈 실데이터 — 통과
+
 ## Next Phase Readiness
 
-- Phase 7 전체 기능 구현 완료 (Task 2 checkpoint:human-verify 사용자 확인 대기 중)
+- Phase 7 전체 기능 구현 + 사용자 검증 완료 (INST-01~INST-05 전부)
 - 강사 홈: 실데이터 연동 완료
 - 학생 홈: 반 참여 진입점 추가 완료
-- Phase 8 진입 가능
+- Phase 7 완전 종료 — 프로젝트 전체 완료
+
+## Self-Check: PASSED
+
+- FOUND: `.planning/phases/07-instructor-portal/07-04-SUMMARY.md`
+- FOUND: 커밋 `6f64356` (feat — Task 1)
+- FOUND: 커밋 `faac561` (docs — Plan 04 메타데이터)
 
 ---
 *Phase: 07-instructor-portal*

@@ -133,7 +133,7 @@ Plans:
 - [ ] 07-01-PLAN.md — Dexie version(5) groups/groupMembers/assignments 스키마 + group.service.ts
 - [ ] 07-02-PLAN.md — 강사 그룹 관리 UI (목록/생성/상세/과제배정) + nav/라우트 등록
 - [ ] 07-03-PLAN.md — 학생 그룹 참여 UI (JoinGroupPage) + 강사 그룹 리포트 페이지
-- [ ] 07-04-PLAN.md — 강사/학생 홈 업데이트 + Phase 7 통합 사용자 검증 체크포인트
+- [x] 07-04-PLAN.md — 강사/학생 홈 업데이트 + Phase 7 통합 사용자 검증 체크포인트 (completed 2026-02-20)
 
 ## Progress
 
