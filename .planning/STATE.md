@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-19)
 ## Current Position
 
 Phase: 4 of 7 (DIY 문제집 생성기)
-Plan: 2 of 3 in current phase
-Status: Executing
-Last activity: 2026-02-20 — Phase 4 Plan 02 완료 (WorkbookCreator + WorkbookCard + WorkbookList UI 컴포넌트)
+Plan: 3 of 3 in current phase (Phase 4 완료)
+Status: Phase 4 Complete
+Last activity: 2026-02-20 — Phase 4 Plan 03 완료 (라우트 통합 + WorkbookPlayer + WKST-01~04 완성)
 
-Progress: [████████░░] 44% (11/~25 plans across all phases)
+Progress: [████████░░] 48% (12/~25 plans across all phases)
 
 ## Performance Metrics
 
@@ -48,6 +48,7 @@ Progress: [████████░░] 44% (11/~25 plans across all phases)
 | Phase 03-quiz-engine P04 | 116s | 2 tasks | 5 files |
 | Phase 04-workbook-generator P01 | 1m | 2 tasks | 2 files |
 | Phase 04-workbook-generator P02 | 132s | 2 tasks | 3 files |
+| Phase 04-workbook-generator P03 | 131s | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -103,6 +104,8 @@ Recent decisions affecting current work:
 - [Phase 04-02]: WorkbookCard 삭제 버튼: ghost variant + text-destructive — WrongNoteCard outline 패턴 대신 ghost 사용 (덜 강조)
 - [Phase 04-02]: WorkbookCreator Select: __all__ 센티넬 값으로 전체/선택 전환 — WrongNoteFilter 패턴 재사용
 - [Phase 04-02]: previewQuestions 내 content 앞 30자만 표시 (LaTeX 미렌더링) — POC 미리보기는 텍스트만으로 충분
+- [Phase 04-03]: WorkbookPlayPage key={currentQuestion.id} — QuizPlayer 문제 변경 시 상태 완전 리셋
+- [Phase 04-03]: completedCount 제거 — currentIndex로 진행 문제 수 대체 (불필요 상태 단순화)
 
 ### Pending Todos
 
@@ -118,5 +121,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-20
-Stopped at: Completed 04-workbook-generator/04-02-PLAN.md
-Resume file: .planning/phases/04-workbook-generator/04-02-SUMMARY.md
+Stopped at: Completed 04-workbook-generator/04-03-PLAN.md (Phase 4 완료)
+Resume file: .planning/phases/04-workbook-generator/04-03-SUMMARY.md

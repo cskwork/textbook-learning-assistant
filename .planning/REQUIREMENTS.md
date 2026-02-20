@@ -47,7 +47,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **WKST-01**: 학생이 단원·유형·난이도를 조합하여 나만의 문제집을 생성할 수 있다
 - [x] **WKST-02**: 문제집 생성 시 문제 수를 지정할 수 있다
 - [x] **WKST-03**: 생성된 문제집을 저장하고 나중에 다시 풀 수 있다
-- [ ] **WKST-04**: 문제집 풀이 결과가 학습 이력에 반영된다
+- [x] **WKST-04**: 문제집 풀이 결과가 학습 이력에 반영된다
 
 ### AI 분석 및 추천 (AI Analytics)
 
@@ -153,7 +153,7 @@ Requirements for initial release. Each maps to roadmap phases.
 | WKST-01 | Phase 4 | Complete |
 | WKST-02 | Phase 4 | Complete |
 | WKST-03 | Phase 4 | Complete |
-| WKST-04 | Phase 4 | Pending |
+| WKST-04 | Phase 4 | Complete |
 | AIAN-01 | Phase 5 | Pending |
 | AIAN-02 | Phase 5 | Pending |
 | AIAN-03 | Phase 5 | Pending |
