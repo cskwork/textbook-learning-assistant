@@ -23,6 +23,10 @@ import RegisterPage from './routes/register'
 import OnboardingPage from './routes/onboarding'
 import StudentHomePage from './routes/student/index'
 import InstructorHomePage from './routes/instructor/index'
+import InstructorProblemsPage from './routes/instructor/problems/index'
+import NewQuestionPage from './routes/instructor/problems/new'
+import QuestionDetailPage from './routes/instructor/problems/detail'
+import EditQuestionPage from './routes/instructor/problems/edit'
 import ComingSoonPage from './routes/coming-soon'
 import RoleRedirect from './routes/role-redirect'
 
@@ -53,7 +57,10 @@ createRoot(document.getElementById('root')!).render(
 
             {/* 강사 전용 라우트 */}
             <Route path="/instructor" element={<InstructorHomePage />} />
-            <Route path="/instructor/problems" element={<ComingSoonPage />} />
+            <Route path="/instructor/problems" element={<InstructorProblemsPage />} />
+            <Route path="/instructor/problems/new" element={<NewQuestionPage />} />
+            <Route path="/instructor/problems/:id" element={<QuestionDetailPage />} />
+            <Route path="/instructor/problems/:id/edit" element={<EditQuestionPage />} />
             <Route path="/instructor/students" element={<ComingSoonPage />} />
             <Route path="/instructor/profile" element={<ComingSoonPage />} />
           </Route>

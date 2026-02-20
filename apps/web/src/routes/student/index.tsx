@@ -6,7 +6,9 @@
  */
 
 import { BookOpenCheck, TrendingUp, Target, Clock } from 'lucide-react'
+import { Link } from 'react-router'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 import { useAuth } from '@/contexts/AuthContext'
 
 export default function StudentHomePage() {
@@ -65,7 +67,25 @@ export default function StudentHomePage() {
         </Card>
       </div>
 
-      {/* 추천 문제 섹션 */}
+      {/* 문제 풀기 바로가기 */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">문제 풀기</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <p className="text-sm text-muted-foreground">
+            수학 문제를 풀고 실력을 향상시켜 보세요.
+          </p>
+          <Button asChild className="w-full">
+            <Link to="/student/problems">문제 목록 보기</Link>
+          </Button>
+          <p className="text-xs text-muted-foreground text-center">
+            Phase 3에서 AI 맞춤 추천 기능이 추가됩니다
+          </p>
+        </CardContent>
+      </Card>
+
+      {/* AI 추천 문제 섹션 (준비 중) */}
       <Card>
         <CardHeader>
           <CardTitle className="text-base">AI 추천 문제</CardTitle>
@@ -77,7 +97,7 @@ export default function StudentHomePage() {
             ))}
           </div>
           <p className="text-xs text-muted-foreground text-center mt-4">
-            Phase 2에서 실제 문제 추천 기능이 추가됩니다
+            Phase 3에서 실제 문제 추천 기능이 추가됩니다
           </p>
         </CardContent>
       </Card>

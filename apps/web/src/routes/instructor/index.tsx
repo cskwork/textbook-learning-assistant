@@ -6,6 +6,7 @@
  */
 
 import { Users, BookOpen, BarChart2, PlusCircle } from 'lucide-react'
+import { Link } from 'react-router'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/contexts/AuthContext'
@@ -23,9 +24,11 @@ export default function InstructorHomePage() {
             {user?.email} 님, 오늘도 좋은 하루 되세요.
           </p>
         </div>
-        <Button className="shrink-0" disabled>
-          <PlusCircle className="w-4 h-4 mr-2" />
-          문제 출제
+        <Button className="shrink-0" asChild>
+          <Link to="/instructor/problems/new">
+            <PlusCircle className="w-4 h-4 mr-2" />
+            문제 출제
+          </Link>
         </Button>
       </div>
 
