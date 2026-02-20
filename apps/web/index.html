@@ -12,6 +12,17 @@
     <title>수학 기출 학습 도우미</title>
   </head>
   <body>
+    <!-- 다크모드 + KaTeX 글꼴 크기 FOUC 방지 동기 스크립트
+         React 마운트 전에 동기적으로 실행되어 화면 깜빡임 방지 -->
+    <script>
+      if (localStorage.getItem('app:isDarkMode') === 'true') {
+        document.documentElement.classList.add('dark')
+      }
+      ;(function () {
+        var fs = localStorage.getItem('app:katexFontSize')
+        if (fs) document.documentElement.style.setProperty('--katex-font-size', fs + 'em')
+      })()
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

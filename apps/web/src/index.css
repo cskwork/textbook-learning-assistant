@@ -177,3 +177,116 @@ body {
     color: var(--foreground);
   }
 }
+
+/* ─── Dashboard 디자인 시스템 ─── */
+
+/* Staggered fade-in 애니메이션 */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 oklch(0.55 0.16 260 / 0.4); }
+  70% { box-shadow: 0 0 0 8px oklch(0.55 0.16 260 / 0); }
+  100% { box-shadow: 0 0 0 0 oklch(0.55 0.16 260 / 0); }
+}
+
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-count-up {
+  animation: count-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Stagger 딜레이 유틸리티 */
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.1s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.2s; }
+.stagger-5 { animation-delay: 0.3s; }
+.stagger-6 { animation-delay: 0.4s; }
+
+/* Stat 카드 컬러 악센트 */
+.stat-accent-blue {
+  --stat-color: oklch(0.55 0.16 260);
+  --stat-bg: oklch(0.55 0.16 260 / 0.08);
+  --stat-bg-strong: oklch(0.55 0.16 260 / 0.15);
+}
+
+.stat-accent-emerald {
+  --stat-color: oklch(0.6 0.17 160);
+  --stat-bg: oklch(0.6 0.17 160 / 0.08);
+  --stat-bg-strong: oklch(0.6 0.17 160 / 0.15);
+}
+
+.stat-accent-amber {
+  --stat-color: oklch(0.7 0.16 75);
+  --stat-bg: oklch(0.7 0.16 75 / 0.08);
+  --stat-bg-strong: oklch(0.7 0.16 75 / 0.15);
+}
+
+.stat-accent-rose {
+  --stat-color: oklch(0.6 0.2 15);
+  --stat-bg: oklch(0.6 0.2 15 / 0.08);
+  --stat-bg-strong: oklch(0.6 0.2 15 / 0.15);
+}
+
+.stat-accent-violet {
+  --stat-color: oklch(0.55 0.2 300);
+  --stat-bg: oklch(0.55 0.2 300 / 0.08);
+  --stat-bg-strong: oklch(0.55 0.2 300 / 0.15);
+}
+
+/* 그라데이션 CTA 카드 */
+.cta-gradient {
+  background: linear-gradient(135deg, oklch(0.5 0.18 260), oklch(0.55 0.2 280), oklch(0.45 0.18 300));
+  background-size: 200% 200%;
+  transition: background-position 0.5s ease;
+}
+
+.cta-gradient:hover {
+  background-position: 100% 100%;
+}
+
+/* 다크 모드 stat 악센트 보정 */
+.dark .stat-accent-blue { --stat-color: oklch(0.7 0.14 260); --stat-bg: oklch(0.7 0.14 260 / 0.12); --stat-bg-strong: oklch(0.7 0.14 260 / 0.2); }
+.dark .stat-accent-emerald { --stat-color: oklch(0.72 0.14 160); --stat-bg: oklch(0.72 0.14 160 / 0.12); --stat-bg-strong: oklch(0.72 0.14 160 / 0.2); }
+.dark .stat-accent-amber { --stat-color: oklch(0.78 0.14 75); --stat-bg: oklch(0.78 0.14 75 / 0.12); --stat-bg-strong: oklch(0.78 0.14 75 / 0.2); }
+.dark .stat-accent-rose { --stat-color: oklch(0.7 0.18 15); --stat-bg: oklch(0.7 0.18 15 / 0.12); --stat-bg-strong: oklch(0.7 0.18 15 / 0.2); }
+.dark .stat-accent-violet { --stat-color: oklch(0.7 0.18 300); --stat-bg: oklch(0.7 0.18 300 / 0.12); --stat-bg-strong: oklch(0.7 0.18 300 / 0.2); }
+
+.dark .cta-gradient {
+  background: linear-gradient(135deg, oklch(0.4 0.16 260), oklch(0.45 0.18 280), oklch(0.38 0.16 300));
+}
+
+/* KaTeX 수식 글꼴 크기 — CSS custom property로 앱 전역 제어
+   katex.min.css가 .katex에 font-size: 1.21em을 설정하므로 !important 필요 */
+.katex {
+  font-size: var(--katex-font-size, 1em) !important;
+}
