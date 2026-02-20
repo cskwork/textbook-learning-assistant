@@ -124,7 +124,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 |-------|----------------|--------|-----------|
 | 1. 기반 인프라 + 인증 | 5/5 | Complete   | 2026-02-20 |
 | 2. 문제 뱅크 + 수식 렌더링 | 4/5 | In Progress|  |
-| 3. 퀴즈 엔진 + 오답노트 | 0/5 | Not started | - |
+| 3. 퀴즈 엔진 + 오답노트 | 1/5 | In Progress|  |
 | 4. DIY 문제집 생성기 | 0/TBD | Not started | - |
 | 5. AI 분석 + 학습 리포트 | 0/TBD | Not started | - |
 | 6. PWA 오프라인 지원 | 0/TBD | Not started | - |

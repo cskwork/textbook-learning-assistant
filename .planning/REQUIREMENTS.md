@@ -29,18 +29,18 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [ ] **QUIZ-01**: 학생이 객관식(5지선다) 문제를 풀 수 있다
 - [ ] **QUIZ-02**: 학생이 단답형(숫자/수식) 문제를 풀 수 있다
-- [ ] **QUIZ-03**: 문제 제출 시 즉시 자동 채점되어 정오답이 표시된다
+- [x] **QUIZ-03**: 문제 제출 시 즉시 자동 채점되어 정오답이 표시된다
 - [ ] **QUIZ-04**: 채점 후 해당 문제의 상세 해설을 볼 수 있다
-- [ ] **QUIZ-05**: 문제 풀이 중 타이머가 작동하여 소요 시간이 기록된다
-- [ ] **QUIZ-06**: 학생이 문제를 북마크(스크랩)할 수 있다
-- [ ] **QUIZ-07**: 모든 풀이 결과(정오답, 소요시간, 선택답)가 학습 이력에 저장된다
+- [x] **QUIZ-05**: 문제 풀이 중 타이머가 작동하여 소요 시간이 기록된다
+- [x] **QUIZ-06**: 학생이 문제를 북마크(스크랩)할 수 있다
+- [x] **QUIZ-07**: 모든 풀이 결과(정오답, 소요시간, 선택답)가 학습 이력에 저장된다
 
 ### 오답노트 (Error Notebook)
 
-- [ ] **ERRN-01**: 틀린 문제가 자동으로 오답노트에 수집된다
-- [ ] **ERRN-02**: 학생이 오답노트의 문제를 다시 풀 수 있다 (N회독)
-- [ ] **ERRN-03**: 오답노트를 단원별/유형별로 필터링하여 볼 수 있다
-- [ ] **ERRN-04**: 학생이 오답노트에서 완전 학습한 문제를 제거할 수 있다
+- [x] **ERRN-01**: 틀린 문제가 자동으로 오답노트에 수집된다
+- [x] **ERRN-02**: 학생이 오답노트의 문제를 다시 풀 수 있다 (N회독)
+- [x] **ERRN-03**: 오답노트를 단원별/유형별로 필터링하여 볼 수 있다
+- [x] **ERRN-04**: 학생이 오답노트에서 완전 학습한 문제를 제거할 수 있다
 
 ### DIY 문제집 (Custom Worksheet)
 
@@ -66,7 +66,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### 학습 플래너 (Study Planner)
 
-- [ ] **PLAN-01**: 문제 풀이 시 타이머가 작동하고 소요 시간이 표시된다
+- [x] **PLAN-01**: 문제 풀이 시 타이머가 작동하고 소요 시간이 표시된다
 - [ ] **PLAN-02**: 일일 학습 목표(문제 수)를 설정할 수 있다
 - [ ] **PLAN-03**: 학습 스트릭(연속 학습 일수)이 기록·표시된다
 
@@ -140,16 +140,16 @@ Requirements for initial release. Each maps to roadmap phases.
 | UIUX-02 | Phase 2 | Complete |
 | QUIZ-01 | Phase 3 | Pending |
 | QUIZ-02 | Phase 3 | Pending |
-| QUIZ-03 | Phase 3 | Pending |
+| QUIZ-03 | Phase 3 | Complete |
 | QUIZ-04 | Phase 3 | Pending |
-| QUIZ-05 | Phase 3 | Pending |
-| QUIZ-06 | Phase 3 | Pending |
-| QUIZ-07 | Phase 3 | Pending |
-| ERRN-01 | Phase 3 | Pending |
-| ERRN-02 | Phase 3 | Pending |
-| ERRN-03 | Phase 3 | Pending |
-| ERRN-04 | Phase 3 | Pending |
-| PLAN-01 | Phase 3 | Pending |
+| QUIZ-05 | Phase 3 | Complete |
+| QUIZ-06 | Phase 3 | Complete |
+| QUIZ-07 | Phase 3 | Complete |
+| ERRN-01 | Phase 3 | Complete |
+| ERRN-02 | Phase 3 | Complete |
+| ERRN-03 | Phase 3 | Complete |
+| ERRN-04 | Phase 3 | Complete |
+| PLAN-01 | Phase 3 | Complete |
 | WKST-01 | Phase 4 | Pending |
 | WKST-02 | Phase 4 | Pending |
 | WKST-03 | Phase 4 | Pending |

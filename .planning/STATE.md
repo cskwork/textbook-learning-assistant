@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-19)
 
 **Core value:** 학생이 자신의 취약한 수학 유형을 정확히 파악하고, AI가 추천하는 맞춤 문제를 통해 효율적으로 실력을 향상시킬 수 있어야 한다
-**Current focus:** Phase 2 — 문제 뱅크 + 수식 렌더링
+**Current focus:** Phase 3 — 퀴즈 엔진 + 오답노트
 
 ## Current Position
 
-Phase: 2 of 7 (문제 뱅크 + 수식 렌더링)
-Plan: 5 of 5 in current phase
+Phase: 3 of 7 (퀴즈 엔진 + 오답노트)
+Plan: 1 of 4 in current phase
 Status: Executing
-Last activity: 2026-02-20 — Phase 2 Plan 04 완료 (문제 목록/상세 UI + 라우터 등록)
+Last activity: 2026-02-20 — Phase 3 Plan 01 완료 (Dexie v2 스키마 + 퀴즈/오답노트 서비스)
 
-Progress: [████████░░] 32% (8/~25 plans across all phases)
+Progress: [████████░░] 36% (9/~25 plans across all phases)
 
 ## Performance Metrics
 
@@ -42,6 +42,7 @@ Progress: [████████░░] 32% (8/~25 plans across all phases)
 | Phase 02-question-bank P01 | 161s | 2 tasks | 6 files |
 | Phase 02-question-bank P03 | 158s | 2 tasks | 7 files |
 | Phase 02-question-bank P04 | 155s | 2 tasks | 7 files |
+| Phase 03-quiz-engine P01 | 99s | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -82,6 +83,8 @@ Recent decisions affecting current work:
 - [Phase 02-03]: sourceYear/sourceNumber: Question 저장 시 data.sourceYear ? Number(data.sourceYear) : undefined 변환 적용
 - [Phase Phase 02-04]: /instructor/problems/new 라우트를 /:id 보다 앞에 선언 — react-router v7 선언 순서 기반 매칭
 - [Phase Phase 02-04]: 학생 홈에 /student/problems 링크 버튼 추가 — Phase 3 학생 문제 목록 구현 전 라우트 연결 준비
+- [Phase 03-quiz-engine]: isBookmarked 필드를 WrongNote에 통합 — 별도 bookmarks 테이블 없이 단일 테이블로 처리
+- [Phase 03-quiz-engine]: 정답 시 isMastered 자동 설정 — 오답노트 재풀이 완료를 자동 처리 (submitQuizAttempt)
 
 ### Pending Todos
 
@@ -97,5 +100,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-20
-Stopped at: Completed 02-question-bank/02-04-PLAN.md
-Resume file: .planning/phases/02-question-bank/02-04-SUMMARY.md
+Stopped at: Completed 03-quiz-engine/03-01-PLAN.md
+Resume file: .planning/phases/03-quiz-engine/03-01-SUMMARY.md
