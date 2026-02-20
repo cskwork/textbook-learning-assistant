@@ -142,5 +142,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 3. 퀴즈 엔진 + 오답노트 | 4/5 | In Progress|  |
 | 4. DIY 문제집 생성기 | 3/4 | In Progress|  |
 | 5. AI 분석 + 학습 리포트 | 4/5 | In Progress|  |
-| 6. PWA 오프라인 지원 | 1/3 | In Progress|  |
+| 6. PWA 오프라인 지원 | 2/3 | In Progress|  |
 | 7. 강사 관리 포털 | 0/TBD | Not started | - |

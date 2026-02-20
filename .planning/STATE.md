@@ -10,9 +10,9 @@ See: .planning/PROJECT.md (updated 2026-02-19)
 ## Current Position
 
 Phase: 6 of 7 (PWA 오프라인 지원)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: In Progress
-Last activity: 2026-02-20 — Phase 6 Plan 01 완료 (vite-plugin-pwa + manifest + sw.js + 아이콘 3종 + vercel.json)
+Last activity: 2026-02-20 — Phase 6 Plan 02 완료 (PWAInstallBanner 컴포넌트 + main.tsx 통합)
 
 Progress: [████████░░] 60% (15/~25 plans across all phases)
 
@@ -54,6 +54,7 @@ Progress: [████████░░] 60% (15/~25 plans across all phases)
 | Phase 05-ai-analytics P02 | 219s | 2 tasks | 5 files |
 | Phase 05-ai-analytics P04 | 226s | 2 tasks | 7 files |
 | Phase 06-pwa-offline P01 | 152s | 2 tasks | 7 files |
+| Phase 06-pwa-offline P02 | 187s | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -125,6 +126,9 @@ Recent decisions affecting current work:
 - [Phase 05-04]: 탭바 마이페이지 → 분석 탭 교체: /student/profile 라우트는 main.tsx에 유지 (5개 탭 공간 확보)
 - [Phase 06-pwa-offline]: vite-plugin-pwa generateSW + registerType autoUpdate — POC에서 커스텀 SW 불필요, 자동 precache + skipWaiting
 - [Phase 06-pwa-offline]: vercel.json을 apps/web/ 루트에 위치 — Vercel Root Directory apps/web 설정 전제, SPA rewrites + sw.js no-cache 헤더
+- [Phase 06-pwa-offline]: workbox-window 명시적 dependency 추가 — virtual:pwa-register/react 번들 시 Rollup resolve 필수
+- [Phase 06-pwa-offline]: tsconfig.app.json types에 vite-plugin-pwa/client 추가 — virtual:pwa-register/react TypeScript 인식
+- [Phase 06-pwa-offline]: PWAInstallBanner bottom-20 고정 배너 — 하단 탭바(h-16) 위에 배너 표시 패턴
 
 ### Pending Todos
 
@@ -140,5 +144,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-20
-Stopped at: Completed 06-pwa-offline/06-01-PLAN.md
-Resume file: .planning/phases/06-pwa-offline/06-01-SUMMARY.md
+Stopped at: Completed 06-pwa-offline/06-02-PLAN.md
+Resume file: .planning/phases/06-pwa-offline/06-02-SUMMARY.md
