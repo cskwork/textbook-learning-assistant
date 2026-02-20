@@ -11,7 +11,7 @@
 - Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
 
 - [x] **Phase 1: 기반 인프라 + 인증** - 인증/인가 시스템, DB 스키마 확정, 반응형 레이아웃 기반 구축 (completed 2026-02-20)
-- [ ] **Phase 2: 문제 뱅크 + 수식 렌더링** - 문제 CRUD, 태깅 시스템, KaTeX 렌더링, 강사 문제 입력 UI
+- [x] **Phase 2: 문제 뱅크 + 수식 렌더링** - 문제 CRUD, 태깅 시스템, KaTeX 렌더링, 강사 문제 입력 UI (completed 2026-02-21)
 - [ ] **Phase 3: 퀴즈 엔진 + 오답노트** - 문제 풀이 세션, 자동 채점, 오답노트 자동 수집, 타이머
 - [ ] **Phase 4: DIY 문제집 생성기** - 조건 기반 문제집 구성, 저장, 풀이 이력 반영
 - [ ] **Phase 5: AI 분석 + 학습 리포트** - BKT 취약유형 분석, 맞춤 추천, 대시보드, 학습 플래너
@@ -55,7 +55,7 @@ Plans:
 - [ ] 02-02-PLAN.md — KaTeX 렌더링 컴포넌트 (LatexPreview, LatexEditor, ImageUpload)
 - [ ] 02-03-PLAN.md — 문제 등록/수정 폼 UI (QuestionForm + new/edit 라우트)
 - [ ] 02-04-PLAN.md — 문제 목록/상세 페이지 + 라우터 통합 + 홈 업데이트
-- [ ] 02-05-PLAN.md — Phase 2 통합 사용자 검증 체크포인트
+- [x] 02-05-PLAN.md — Phase 2 통합 사용자 검증 체크포인트
 
 ### Phase 3: 퀴즈 엔진 + 오답노트
 **Goal**: 학생이 문제를 풀면 즉시 채점되고, 틀린 문제는 자동으로 오답노트에 수집되어 반복 학습할 수 있다
@@ -144,7 +144,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. 기반 인프라 + 인증 | 5/5 | Complete   | 2026-02-20 |
-| 2. 문제 뱅크 + 수식 렌더링 | 4/5 | In Progress|  |
+| 2. 문제 뱅크 + 수식 렌더링 | 5/5 | Complete   | 2026-02-21 |
 | 3. 퀴즈 엔진 + 오답노트 | 4/5 | In Progress|  |
 | 4. DIY 문제집 생성기 | 3/4 | In Progress|  |
 | 5. AI 분석 + 학습 리포트 | 4/5 | In Progress|  |
@@ -168,3 +168,12 @@ Plans:
 - [ ] 08-02-PLAN.md — auth.ts User 확장 + updateProfile/changePassword/deleteAccount + db.ts version(6)
 - [ ] 08-03-PLAN.md — 마이페이지 UI (프로필편집/비밀번호변경/다크모드/수식글꼴/계정삭제)
 - [ ] 08-04-PLAN.md — 라우트 연결 + AppShell 헤더 진입점 + 통합 사용자 검증
+
+### Phase 9: AI 문제 생성 보조
+
+**Goal:** [To be planned]
+**Depends on:** Phase 8
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 9 to break down)

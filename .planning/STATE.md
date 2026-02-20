@@ -157,10 +157,12 @@ Recent decisions affecting current work:
 - [Phase 08-03]: 함수 내부 null 가드: TypeScript 클로저에서 user null 추론 오류 — handleDeleteAccount 등 내부 함수에 별도 if (!user) return 추가
 - [Phase 08-03]: ProfileEditForm useEffect 동기화: user props 변경 시 setValue 재동기화 — updateProfile 후 폼 상태 불일치 방지
 - [Phase 08-04]: AppShell profilePath prop 패턴: _layout.tsx가 user.role 기반으로 profilePath 결정 후 AppShell에 주입
+- [Phase 02-question-bank]: Phase 2 통합 검증은 사용자 브라우저 직접 확인으로 완료 — 22개 항목 A~G 전부 통과, Phase 3 진입 가능
 
 ### Roadmap Evolution
 
 - Phase 8 추가: 마이페이지 + 앱 설정 (프로필 편집, 비밀번호 변경, 계정 삭제, 다크모드, 수식 글꼴 크기, 앱 정보)
+- Phase 9 추가: AI 문제 생성 보조 — Gemini 2.0 Flash API를 사용하여 수학 문제를 AI로 생성/보조하는 기능
 
 ### Pending Todos
 
@@ -183,6 +185,6 @@ None yet.
 
 ## Session Continuity
 
-Last activity: 2026-02-21 - Quick Task 3 완료 (마이페이지 래퍼 레이아웃 통일)
-Stopped at: Quick Task 3 완료 — 학생/강사 마이페이지 래퍼 className 통일
-Resume file: .planning/quick/3-fitting/3-SUMMARY.md
+Last activity: 2026-02-21 - Phase 02 Plan 05 완료 (Phase 2 전체 브라우저 검증 — 22개 항목 A~G 통과)
+Stopped at: Phase 02 Plan 05 완료 — 02-05-SUMMARY.md 생성, Phase 2 QBNK-01~07, UIUX-02 요구사항 검증 완료
+Resume file: .planning/phases/02-question-bank/02-05-SUMMARY.md
