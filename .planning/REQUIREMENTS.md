@@ -9,10 +9,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### 인증 (Authentication)
 
-- [ ] **AUTH-01**: 사용자가 이메일과 비밀번호로 회원가입할 수 있다
-- [ ] **AUTH-02**: 사용자가 이메일과 비밀번호로 로그인할 수 있다
-- [ ] **AUTH-03**: 사용자의 로그인 세션이 브라우저 새로고침/재방문 시에도 유지된다
-- [ ] **AUTH-04**: 사용자가 모든 페이지에서 로그아웃할 수 있다
+- [x] **AUTH-01**: 사용자가 이메일과 비밀번호로 회원가입할 수 있다
+- [x] **AUTH-02**: 사용자가 이메일과 비밀번호로 로그인할 수 있다
+- [x] **AUTH-03**: 사용자의 로그인 세션이 브라우저 새로고침/재방문 시에도 유지된다
+- [x] **AUTH-04**: 사용자가 모든 페이지에서 로그아웃할 수 있다
 - [x] **AUTH-05**: 사용자가 학생 또는 강사 역할로 가입할 수 있다 (RBAC)
 
 ### 문제 DB (Question Bank)
@@ -124,10 +124,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 | Phase 1 | Pending |
-| AUTH-02 | Phase 1 | Pending |
-| AUTH-03 | Phase 1 | Pending |
-| AUTH-04 | Phase 1 | Pending |
+| AUTH-01 | Phase 1 | Complete |
+| AUTH-02 | Phase 1 | Complete |
+| AUTH-03 | Phase 1 | Complete |
+| AUTH-04 | Phase 1 | Complete |
 | AUTH-05 | Phase 1 | Complete |
 | UIUX-01 | Phase 1 | Complete |
 | QBNK-01 | Phase 2 | Pending |

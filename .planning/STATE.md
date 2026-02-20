@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-19)
 ## Current Position
 
 Phase: 1 of 7 (기반 인프라 + 인증)
-Plan: 2 of 5 in current phase
+Plan: 3 of 5 in current phase
 Status: In progress
-Last activity: 2026-02-20 — 01-02 완료 (React + Vite + Tailwind v4 + shadcn/ui + 반응형 AppShell)
+Last activity: 2026-02-20 — 01-03 완료 (JWT 인증 API 6개 엔드포인트 + 미들웨어 + Rate Limiter)
 
-Progress: [██░░░░░░░░] 8% (2/5 plans in Phase 1)
+Progress: [███░░░░░░░] 11% (3/5 plans in Phase 1)
 
 ## Performance Metrics
 
@@ -35,6 +35,7 @@ Progress: [██░░░░░░░░] 8% (2/5 plans in Phase 1)
 
 *Updated after each plan completion*
 | Phase 01-infra-auth P01 | 3m 31s | 2 tasks | 12 files |
+| Phase 01-infra-auth P03 | 30m 14s | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -53,6 +54,9 @@ Recent decisions affecting current work:
 - [Phase 01-02]: Tailwind v4 CSS-first 방식 — tailwind.config.js 생성 안 함, @tailwindcss/vite 플러그인
 - [Phase 01-02]: AppShell navItems prop 구조 — Phase 01-04에서 user.role 기반 동적 메뉴 주입 포인트
 - [Phase 01-02]: lg 브레이크포인트(1024px) 기준 하단탭바/사이드바 전환 — 태블릿까지 하단탭바 유지
+- [Phase 01-03]: IRouter 명시적 타입 어노테이션으로 Router() TS2742 해결 — 모든 router 파일에 동일 패턴 적용
+- [Phase 01-03]: Refresh token 로테이션 적용 지점: /refresh와 /onboarding — /login은 여러 기기 로그인 허용
+- [Phase 01-03]: Onboarding 역할 변경 불가 (isOnboarded 후 400) — 관리자 변경은 v2
 
 ### Pending Todos
 
@@ -63,9 +67,10 @@ None yet.
 - [Research]: 문제 태깅 스키마를 첫 문제 입력 전에 확장 가능한 형태로 확정해야 함 — Phase 2 진입 전 처리
 - [Research]: BKT 콜드스타트 대응을 위한 온보딩 진단 퀴즈(5~10문제)를 Phase 5에서 함께 구현
 - [Research]: Phase 4(DIY 문제집) 시작 전 Puppeteer+KaTeX PDF 생성 조합 검증 필요
+- [Dev]: bcrypt 네이티브 바인딩은 pnpm approve-builds 또는 node-pre-gyp 수동 실행 필요 — 팀원 온보딩 시 문서화 필요
 
 ## Session Continuity
 
 Last session: 2026-02-20
-Stopped at: Completed 01-infra-auth/01-02-PLAN.md (React + Vite + Tailwind v4 + shadcn/ui + 반응형 AppShell)
-Resume file: .planning/phases/01-infra-auth/01-02-SUMMARY.md
+Stopped at: Completed 01-infra-auth/01-03-PLAN.md (JWT 인증 API 6개 엔드포인트 + JWT 미들웨어 + Rate Limiter)
+Resume file: .planning/phases/01-infra-auth/01-03-SUMMARY.md
