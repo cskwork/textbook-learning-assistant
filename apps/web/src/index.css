@@ -6,25 +6,15 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  /* 파란색 계열 — 기출탭탭 스타일 교육 앱 테마 */
-  --color-primary: oklch(55% 0.2 250);
-  --color-primary-light: oklch(70% 0.15 250);
-  --color-primary-dark: oklch(40% 0.2 250);
-  --color-primary-foreground: oklch(100% 0 0);
-
-  --color-background: oklch(98% 0.005 250);
-  --color-surface: oklch(100% 0 0);
-  --color-text: oklch(20% 0.02 250);
-  --color-text-muted: oklch(50% 0.02 250);
-
-  --color-border: oklch(90% 0.01 250);
-  --color-border-strong: oklch(80% 0.02 250);
-
   /* 반응형 브레이크포인트 */
   --breakpoint-sm: 480px;
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1280px;
+
+  /* 교육 앱 최적화 커스텀 spacing */
+  --spacing-page: 1.25rem;
+  --spacing-page-lg: 2rem;
 }
 
 /* 기본 스타일 */
@@ -35,7 +25,8 @@
 body {
   background-color: var(--color-background);
   color: var(--color-text);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
+  /* Pretendard 폰트 우선 적용 */
+  font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
   margin: 0;
   padding: 0;
 }
@@ -169,12 +160,39 @@ body {
 
 @layer base {
   *, ::before, ::after {
-    border-color: var(--border, oklch(0.93 0.01 240));
-    outline-color: color-mix(in oklab, var(--ring, oklch(0.55 0.16 260)) 50%, transparent);
+    border-color: var(--border, oklch(0.91 0.012 250));
+    outline-color: color-mix(in oklab, var(--ring, oklch(0.52 0.19 260)) 50%, transparent);
   }
   body {
     background-color: var(--background);
     color: var(--foreground);
+    /* Pretendard 폰트 적용 — 교육 앱 가독성 최적화 */
+    font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
+    line-height: 1.65;
+  }
+
+  /* 헤딩 타이포그래피 — 교육 앱 가독성 기준 */
+  h1, h2, h3, h4 {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+  }
+
+  h1 { font-size: 1.875rem; } /* text-3xl */
+  h2 { font-size: 1.5rem; }   /* text-2xl */
+  h3 { font-size: 1.25rem; }  /* text-xl */
+  h4 { font-size: 1.125rem; } /* text-lg */
+
+  /* 본문 단락 줄간격 */
+  p {
+    line-height: 1.65;
+  }
+
+  /* 보조 텍스트 */
+  small, .text-caption {
+    color: var(--muted-foreground);
+    font-size: 0.75rem; /* text-xs */
+    line-height: 1.5;
   }
 }
 
