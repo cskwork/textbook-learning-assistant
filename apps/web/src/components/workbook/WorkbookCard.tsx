@@ -31,49 +31,63 @@ export function WorkbookCard({ workbook, onPlay, onDelete }: WorkbookCardProps) 
     : null
 
   return (
-    <Card>
-      <CardHeader className="pb-2">
-        <CardTitle className="text-base font-semibold">{workbook.title}</CardTitle>
+    <Card className="rounded-2xl border-border/50 shadow-sm hover:shadow-md hover:border-border transition-all duration-300 bg-white/80 dark:bg-card/60 backdrop-blur-sm flex flex-col overflow-hidden">
+      <CardHeader className="p-5 pb-2">
+        <CardTitle className="text-lg font-bold tracking-tight text-foreground/90">{workbook.title}</CardTitle>
       </CardHeader>
-      <CardContent className="pb-3 space-y-2">
+      <CardContent className="px-5 pb-5 pt-2 flex-1 space-y-4">
         {/* 문제 수 + 필터 요약 */}
-        <div className="flex flex-wrap items-center gap-1.5">
-          <Badge variant="secondary">{workbook.questionIds.length}문제</Badge>
+        <div className="flex flex-wrap items-center gap-2">
+          <Badge variant="secondary" className="rounded-full px-2.5 bg-primary/10 text-primary hover:bg-primary/20 border-none">
+            {workbook.questionIds.length}문제
+          </Badge>
           {workbook.filters.subject && (
-            <Badge variant="outline" className="text-xs">
+            <Badge variant="outline" className="rounded-md border-border/60 text-muted-foreground font-medium">
               {workbook.filters.subject}
             </Badge>
           )}
           {workbook.filters.unit && (
-            <Badge variant="outline" className="text-xs">
+            <Badge variant="outline" className="rounded-md border-border/60 text-muted-foreground font-medium">
               {workbook.filters.unit}
             </Badge>
           )}
         </div>
+        
         {/* 날짜 정보 */}
-        <div className="text-xs text-muted-foreground space-y-0.5">
-          <p>생성일: {createdDate}</p>
-          {lastPlayedDate && <p>마지막 풀이: {lastPlayedDate}</p>}
+        <div className="flex flex-col gap-1 mt-auto">
+          <div className="flex items-center gap-2 text-[13px] text-muted-foreground/80">
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <span>생성일: {createdDate}</span>
+          </div>
+          {lastPlayedDate && (
+            <div className="flex items-center gap-2 text-[13px] text-muted-foreground/80">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>마지막 풀이: {lastPlayedDate}</span>
+            </div>
+          )}
         </div>
       </CardContent>
-      <CardFooter className="gap-2 pt-0">
+      <CardFooter className="p-4 pt-0 gap-3 border-t border-border/10 bg-muted/10 mt-auto">
         <Button
           size="sm"
           variant="default"
-          className="flex items-center gap-1.5"
+          className="flex-1 rounded-xl shadow-sm hover:-translate-y-0.5 transition-transform"
           onClick={() => onPlay(workbook.id)}
         >
-          <Play className="size-3.5" />
+          <Play className="w-4 h-4 mr-1.5 fill-current" />
           풀기
         </Button>
         <Button
-          size="sm"
+          size="icon"
           variant="ghost"
-          className="flex items-center gap-1.5 text-destructive hover:text-destructive"
+          className="rounded-xl text-destructive/80 hover:text-destructive hover:bg-destructive/10 shrink-0 h-9 w-9"
           onClick={handleDelete}
         >
-          <Trash2 className="size-3.5" />
-          삭제
+          <Trash2 className="w-4 h-4" />
         </Button>
       </CardFooter>
     </Card>

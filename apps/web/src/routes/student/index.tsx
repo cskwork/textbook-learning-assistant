@@ -144,56 +144,56 @@ export default function StudentHomePage() {
       </div>
 
       {/* 요약 통계 카드 그리드 — 실데이터 */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <BookOpenCheck className="w-4 h-4 text-primary" />
-              <span className="text-xs text-muted-foreground">오늘 푼 문제</span>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
+        <Card className="rounded-2xl border-none shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 bg-white/60 dark:bg-card/40 backdrop-blur-xl">
+          <CardContent className="p-5 flex flex-col items-center justify-center text-center h-full">
+            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mb-3">
+              <BookOpenCheck className="w-5 h-5 text-primary" />
             </div>
-            <div className="text-xl font-bold">{todayCount}문제</div>
+            <div className="text-2xl font-bold tracking-tight mb-1">{todayCount}</div>
+            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">오늘 푼 문제</span>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <Target className="w-4 h-4 text-primary" />
-              <span className="text-xs text-muted-foreground">정답률</span>
+        <Card className="rounded-2xl border-none shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 bg-white/60 dark:bg-card/40 backdrop-blur-xl">
+          <CardContent className="p-5 flex flex-col items-center justify-center text-center h-full">
+            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mb-3">
+              <Target className="w-5 h-5 text-primary" />
             </div>
             {accuracy === undefined ? (
-              <div className="h-6 bg-muted rounded animate-pulse" />
+              <div className="h-8 w-16 bg-muted rounded animate-pulse mb-1" />
             ) : (
-              <div className="text-xl font-bold">{accuracy}%</div>
+              <div className="text-2xl font-bold tracking-tight mb-1">{accuracy}%</div>
             )}
+            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">정답률</span>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <TrendingUp className="w-4 h-4 text-primary" />
-              <span className="text-xs text-muted-foreground">연속 학습</span>
+        <Card className="rounded-2xl border-none shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 bg-white/60 dark:bg-card/40 backdrop-blur-xl">
+          <CardContent className="p-5 flex flex-col items-center justify-center text-center h-full">
+            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mb-3">
+              <TrendingUp className="w-5 h-5 text-primary" />
             </div>
             {streakCurrent === undefined ? (
-              <div className="h-6 bg-muted rounded animate-pulse" />
+              <div className="h-8 w-16 bg-muted rounded animate-pulse mb-1" />
             ) : (
-              <div className="text-xl font-bold">{streakCurrent}일</div>
+              <div className="text-2xl font-bold tracking-tight mb-1">{streakCurrent}일</div>
             )}
+            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">연속 학습</span>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <Clock className="w-4 h-4 text-primary" />
-              <span className="text-xs text-muted-foreground">학습 시간</span>
+        <Card className="rounded-2xl border-none shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 bg-white/60 dark:bg-card/40 backdrop-blur-xl">
+          <CardContent className="p-5 flex flex-col items-center justify-center text-center h-full">
+            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mb-3">
+              <Clock className="w-5 h-5 text-primary" />
             </div>
             {totalMinutes === undefined ? (
-              <div className="h-6 bg-muted rounded animate-pulse" />
+              <div className="h-8 w-16 bg-muted rounded animate-pulse mb-1" />
             ) : (
-              <div className="text-xl font-bold">{totalMinutes}분</div>
+              <div className="text-2xl font-bold tracking-tight mb-1">{totalMinutes}분</div>
             )}
+            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">학습 시간</span>
           </CardContent>
         </Card>
       </div>

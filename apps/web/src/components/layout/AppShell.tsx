@@ -33,7 +33,7 @@ export default function AppShell({ children, navItems, onLogout }: AppShellProps
       {/* 모바일/태블릿: 상단 헤더 (lg:hidden) */}
       <header className={cn(
         'fixed top-0 inset-x-0 z-40',
-        'bg-background border-b border-border',
+        'bg-background/80 backdrop-blur-md border-b border-border',
         'flex items-center justify-between',
         'h-14 px-4',
         'lg:hidden',

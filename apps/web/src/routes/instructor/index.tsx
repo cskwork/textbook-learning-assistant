@@ -54,34 +54,34 @@ export default function InstructorHomePage() {
       </div>
 
       {/* 요약 통계 카드 */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <Users className="w-4 h-4 text-primary" />
-              <span className="text-xs text-muted-foreground">관리 중인 반</span>
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
+        <Card className="rounded-2xl border-none shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 bg-white/60 dark:bg-card/40 backdrop-blur-xl">
+          <CardContent className="p-5 flex flex-col items-center justify-center text-center h-full">
+            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mb-3">
+              <Users className="w-5 h-5 text-primary" />
             </div>
-            <p className="text-2xl font-bold">{groupCount ?? 0}</p>
+            <div className="text-3xl font-bold tracking-tight mb-1">{groupCount ?? 0}</div>
+            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">관리 중인 반</span>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <BookOpen className="w-4 h-4 text-primary" />
-              <span className="text-xs text-muted-foreground">출제한 문제</span>
+        <Card className="rounded-2xl border-none shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 bg-white/60 dark:bg-card/40 backdrop-blur-xl">
+          <CardContent className="p-5 flex flex-col items-center justify-center text-center h-full">
+            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mb-3">
+              <BookOpen className="w-5 h-5 text-primary" />
             </div>
-            <p className="text-2xl font-bold">{problemCount ?? 0}</p>
+            <div className="text-3xl font-bold tracking-tight mb-1">{problemCount ?? 0}</div>
+            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">출제한 문제</span>
           </CardContent>
         </Card>
 
-        <Card className="col-span-2 md:col-span-1">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <BarChart2 className="w-4 h-4 text-primary" />
-              <span className="text-xs text-muted-foreground">빠른 이동</span>
+        <Card className="col-span-2 md:col-span-1 rounded-2xl border-none shadow-sm hover:shadow-md transition-all duration-300 bg-white/60 dark:bg-card/40 backdrop-blur-xl flex flex-col justify-center">
+          <CardContent className="p-5">
+            <div className="flex items-center gap-2 mb-4 justify-center md:justify-start">
+              <BarChart2 className="w-5 h-5 text-primary" />
+              <span className="text-sm font-semibold text-foreground">빠른 이동</span>
             </div>
-            <Button size="sm" variant="outline" className="w-full" asChild>
+            <Button size="sm" variant="outline" className="w-full rounded-xl hover:bg-primary/5 hover:text-primary transition-colors" asChild>
               <Link to="/instructor/groups">반 관리</Link>
             </Button>
           </CardContent>

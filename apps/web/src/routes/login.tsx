@@ -60,32 +60,32 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4 py-8">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-background via-background to-secondary/30 px-4 py-8">
       {/* 앱 로고 */}
-      <div className="flex items-center gap-2 mb-8">
-        <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
-          <GraduationCap className="w-6 h-6 text-primary-foreground" />
+      <div className="flex flex-col items-center gap-3 mb-10">
+        <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center shadow-sm">
+          <GraduationCap className="w-8 h-8 text-primary-foreground" />
         </div>
-        <div>
-          <p className="text-lg font-bold text-foreground leading-tight">기출 학습 도우미</p>
-          <p className="text-xs text-muted-foreground">수학 기출문제 학습 플랫폼</p>
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-foreground tracking-tight">기출 학습 도우미</h1>
+          <p className="text-sm text-muted-foreground mt-1">수학 기출문제 학습 플랫폼</p>
         </div>
       </div>
 
       {/* 로그인 카드 */}
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center">로그인</CardTitle>
-          <CardDescription className="text-center">
-            이메일과 비밀번호로 로그인하세요
+      <Card className="w-full max-w-sm rounded-[24px] border-none shadow-xl shadow-black/5 bg-white/80 dark:bg-card/60 backdrop-blur-xl">
+        <CardHeader className="space-y-2 pb-6 pt-8 px-8">
+          <CardTitle className="text-2xl font-bold text-center tracking-tight">로그인</CardTitle>
+          <CardDescription className="text-center text-sm">
+            이메일과 비밀번호를 입력해주세요
           </CardDescription>
         </CardHeader>
 
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+        <CardContent className="px-8 pb-8">
+          <form className="space-y-5" onSubmit={handleSubmit} noValidate>
             {/* 이메일 입력 */}
-            <div className="space-y-1.5">
-              <Label htmlFor="email">이메일</Label>
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-sm font-semibold">이메일</Label>
               <Input
                 id="email"
                 type="email"
@@ -95,27 +95,29 @@ export default function LoginPage() {
                 autoComplete="email"
                 autoFocus
                 disabled={isSubmitting}
+                className="h-11 rounded-xl bg-muted/50 focus-visible:bg-transparent"
               />
             </div>
 
             {/* 비밀번호 입력 */}
-            <div className="space-y-1.5">
-              <Label htmlFor="password">비밀번호</Label>
+            <div className="space-y-2">
+              <Label htmlFor="password" className="text-sm font-semibold">비밀번호</Label>
               <Input
                 id="password"
                 type="password"
-                placeholder="비밀번호를 입력하세요"
+                placeholder="비밀번호"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 autoComplete="current-password"
                 disabled={isSubmitting}
+                className="h-11 rounded-xl bg-muted/50 focus-visible:bg-transparent"
               />
             </div>
 
-            {/* 에러 메시지 — 서버의 구체적 메시지 그대로 표시 */}
+            {/* 에러 메시지 */}
             {error && (
               <p
-                className="text-sm text-destructive font-medium"
+                className="text-sm text-destructive font-medium bg-destructive/10 px-3 py-2 rounded-lg"
                 role="alert"
               >
                 {error}
@@ -125,22 +127,24 @@ export default function LoginPage() {
             {/* 제출 버튼 */}
             <Button
               type="submit"
-              className="w-full"
+              className="w-full h-11 rounded-xl text-base font-semibold shadow-sm hover:-translate-y-0.5 transition-transform mt-2"
               disabled={isSubmitting}
             >
               {isSubmitting ? '로그인 중...' : '로그인'}
             </Button>
 
             {/* 회원가입 링크 */}
-            <p className="text-sm text-center text-muted-foreground">
-              계정이 없으신가요?{' '}
-              <Link
-                to="/register"
-                className="text-primary font-medium hover:underline"
-              >
-                회원가입
-              </Link>
-            </p>
+            <div className="text-center pt-2">
+              <p className="text-sm text-muted-foreground">
+                계정이 없으신가요?{' '}
+                <Link
+                  to="/register"
+                  className="text-primary font-semibold hover:underline decoration-2 underline-offset-4"
+                >
+                  회원가입
+                </Link>
+              </p>
+            </div>
           </form>
         </CardContent>
       </Card>

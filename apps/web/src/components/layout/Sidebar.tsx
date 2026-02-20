@@ -56,11 +56,11 @@ export default function Sidebar({
               end
               className={({ isActive }) =>
                 cn(
-                  'flex items-center gap-3 px-3 py-2.5 rounded-lg',
-                  'text-sm font-medium transition-colors',
+                  'group flex items-center gap-3 px-3 py-2.5 rounded-xl',
+                  'text-sm transition-all duration-200 ease-out',
                   isActive
-                    ? 'bg-accent text-primary'
-                    : 'text-sidebar-foreground hover:bg-accent hover:text-accent-foreground',
+                    ? 'bg-primary/10 text-primary font-semibold shadow-sm'
+                    : 'text-sidebar-foreground font-medium hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:pl-4',
                 )
               }
             >
@@ -68,8 +68,8 @@ export default function Sidebar({
                 <>
                   <Icon
                     className={cn(
-                      'w-5 h-5 shrink-0',
-                      isActive ? 'text-primary' : 'text-muted-foreground',
+                      'w-5 h-5 shrink-0 transition-transform duration-200',
+                      isActive ? 'text-primary scale-110 drop-shadow-sm' : 'text-muted-foreground group-hover:text-primary/70',
                     )}
                   />
                   <span>{item.label}</span>
