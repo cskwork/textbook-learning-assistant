@@ -4,6 +4,8 @@
  * 디자인: Editorial Learning —
  *   시간대별 인사, 개별 컬러 악센트 통계 카드,
  *   그라데이션 CTA, staggered 입장 애니메이션
+ *
+ * Empty State: 최초 진입(attemptCount === 0) 시 환영 메시지 + 학습 안내 표시
  */
 
 import {
@@ -120,6 +122,135 @@ export default function StudentHomePage() {
   }
 
   const userName = user?.email?.split('@')[0] ?? '학생'
+
+  // ── Empty State: 한 번도 문제를 풀지 않은 신규 학생 ──
+  if (attemptCount === 0) {
+    return (
+      <div className="p-4 md:p-6 lg:p-8 max-w-6xl mx-auto space-y-5">
+
+        {/* 인사 영역 */}
+        <div className="animate-fade-up stagger-1">
+          <p className="text-sm font-medium text-muted-foreground tracking-wide">
+            {greeting.emoji} {greeting.text}
+          </p>
+          <h1 className="text-[1.65rem] font-extrabold tracking-tight text-foreground mt-0.5 leading-tight">
+            {userName}님, 환영해요!
+          </h1>
+        </div>
+
+        {/* 환영 히어로 카드 */}
+        <div className="cta-gradient rounded-2xl p-6 md:p-8 text-white relative overflow-hidden animate-fade-up stagger-2">
+          {/* 데코 서클 */}
+          <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/10 blur-sm" />
+          <div className="absolute -bottom-8 -left-8 w-32 h-32 rounded-full bg-white/5" />
+
+          <div className="relative flex flex-col items-start gap-4">
+            {/* 아이콘 */}
+            <div className="w-16 h-16 rounded-3xl bg-white/15 flex items-center justify-center">
+              <BookOpenCheck className="w-8 h-8 text-white" />
+            </div>
+
+            {/* 텍스트 */}
+            <div>
+              <h2 className="text-xl font-bold leading-snug">
+                학습을 시작해 볼까요?
+              </h2>
+              <p className="text-sm text-white/75 mt-1.5 leading-relaxed">
+                문제를 풀면 AI가 취약점을 분석하고 맞춤 추천을 해드려요.
+              </p>
+            </div>
+
+            {/* 행동 유도 버튼 */}
+            <div className="flex flex-wrap gap-2 mt-1">
+              {questionCount > 0 ? (
+                <>
+                  <Button
+                    asChild
+                    size="sm"
+                    className="bg-white text-primary hover:bg-white/90 font-semibold rounded-xl shadow-md h-9 px-4"
+                  >
+                    <Link to="/student/problems">
+                      문제 풀러 가기
+                      <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                    </Link>
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="text-white/90 hover:bg-white/15 hover:text-white font-medium rounded-xl h-9 px-4"
+                    onClick={handleRandomQuiz}
+                  >
+                    <Shuffle className="w-3.5 h-3.5 mr-1" />
+                    랜덤 문제 풀기
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    asChild
+                    size="sm"
+                    className="bg-white text-primary hover:bg-white/90 font-semibold rounded-xl shadow-md h-9 px-4"
+                  >
+                    <Link to="/student/join-group">
+                      <Users className="w-3.5 h-3.5 mr-1" />
+                      반 참여하기
+                    </Link>
+                  </Button>
+                  <p className="w-full text-xs text-white/65 mt-1 leading-relaxed">
+                    강사님이 등록한 문제가 있어야 학습을 시작할 수 있어요.
+                  </p>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* 앱 사용법 안내 스텝 카드 3개 */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 animate-fade-up stagger-3">
+
+          {/* 스텝 1: 문제 풀기 */}
+          <Card className="rounded-2xl border-none shadow-sm bg-white dark:bg-card">
+            <CardContent className="p-4 md:p-5">
+              <div className="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-500/15 flex items-center justify-center mb-3">
+                <BookOpenCheck className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+              </div>
+              <p className="text-sm font-bold text-foreground">문제 풀기</p>
+              <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                다양한 수학 기출문제를 풀어보세요
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* 스텝 2: AI 분석 */}
+          <Card className="rounded-2xl border-none shadow-sm bg-white dark:bg-card">
+            <CardContent className="p-4 md:p-5">
+              <div className="w-10 h-10 rounded-2xl bg-violet-50 dark:bg-violet-500/15 flex items-center justify-center mb-3">
+                <Sparkles className="w-5 h-5 text-violet-600 dark:text-violet-400" />
+              </div>
+              <p className="text-sm font-bold text-foreground">AI 분석</p>
+              <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                AI가 취약 유형을 자동 분석해요
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* 스텝 3: 맞춤 추천 */}
+          <Card className="rounded-2xl border-none shadow-sm bg-white dark:bg-card">
+            <CardContent className="p-4 md:p-5">
+              <div className="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-500/15 flex items-center justify-center mb-3">
+                <Target className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+              </div>
+              <p className="text-sm font-bold text-foreground">맞춤 추천</p>
+              <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                약점 보완 문제를 추천받으세요
+              </p>
+            </CardContent>
+          </Card>
+
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="p-4 md:p-6 lg:p-8 max-w-6xl mx-auto space-y-5">
