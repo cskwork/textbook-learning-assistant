@@ -1,5 +1,5 @@
 // apps/web/src/lib/db.ts
-// Dexie IndexedDB 스키마 — 문제 영구 저장 + 퀴즈 엔진 (version 2) + DIY 문제집 (version 3) + AI 분석 설정 (version 4) + 강사 관리 포털 (version 5)
+// Dexie IndexedDB 스키마 — 문제 영구 저장 + 퀴즈 엔진 (version 2) + DIY 문제집 (version 3) + AI 분석 설정 (version 4) + 강사 관리 포털 (version 5) + 마이페이지 + 앱 설정 (version 6)
 import Dexie, { type EntityTable } from 'dexie'
 
 export interface QuestionSource {
@@ -90,6 +90,10 @@ export interface UserSetting {
   userId: string              // user email (유니크)
   dailyGoal: number           // 일일 목표 문제 수 (기본: 10)
   isDiagnosisCompleted: boolean  // 온보딩 진단 퀴즈 완료 여부
+  displayName?: string        // 사용자 표시 이름 (마이페이지 — MYPAGE-01)
+  avatarEmoji?: string        // 이모지 아바타 (마이페이지 — MYPAGE-01)
+  isDarkMode?: boolean        // 다크모드 설정 (앱 설정 — MYPAGE-02)
+  katexFontSize?: number      // 수식 글꼴 크기 0.8~1.5 (앱 설정 — MYPAGE-02)
 }
 
 export interface Group {
@@ -165,6 +169,20 @@ db.version(4).stores({
 // version(5): 강사 관리 포털 (groups, groupMembers, assignments)
 // ⚠️ 기존 version(1)~(4) 절대 수정하지 말 것
 db.version(5).stores({
+  questions: '++id, subject, unit, questionCategory, difficulty, createdAt, createdBy',
+  quizSessions: '++id, questionId, studentId, startedAt',
+  quizAttempts: '++id, questionId, studentId, sessionId, attemptedAt, isCorrect',
+  wrongNotes: '++id, questionId, studentId, [questionId+studentId], unit, questionCategory, lastWrongAt',
+  workbooks: '++id, studentId, createdAt',
+  userSettings: '++id, &userId',
+  groups: '++id, instructorId, &inviteCode',
+  groupMembers: '++id, groupId, studentId, [groupId+studentId]',
+  assignments: '++id, groupId, workbookId',
+})
+
+// version(6): 마이페이지 + 앱 설정 (UserSetting 확장 — 인덱스 변경 없음, optional 필드만 추가)
+// ⚠️ 기존 version(1)~(5) 절대 수정하지 말 것
+db.version(6).stores({
   questions: '++id, subject, unit, questionCategory, difficulty, createdAt, createdBy',
   quizSessions: '++id, questionId, studentId, startedAt',
   quizAttempts: '++id, questionId, studentId, sessionId, attemptedAt, isCorrect',
