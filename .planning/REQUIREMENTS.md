@@ -59,10 +59,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### 학습 리포트 (Learning Report)
 
-- [ ] **REPT-01**: 유형별 정답률 시각화 차트를 볼 수 있다
-- [ ] **REPT-02**: 회차별(일별/주별) 학습 추이 그래프를 볼 수 있다
-- [ ] **REPT-03**: 취약 유형 클러스터가 시각적으로 표시된다
-- [ ] **REPT-04**: 전체 학습 통계(총 풀이 수, 정답률, 학습 시간)를 볼 수 있다
+- [x] **REPT-01**: 유형별 정답률 시각화 차트를 볼 수 있다
+- [x] **REPT-02**: 회차별(일별/주별) 학습 추이 그래프를 볼 수 있다
+- [x] **REPT-03**: 취약 유형 클러스터가 시각적으로 표시된다
+- [x] **REPT-04**: 전체 학습 통계(총 풀이 수, 정답률, 학습 시간)를 볼 수 있다
 
 ### 학습 플래너 (Study Planner)
 
@@ -159,10 +159,10 @@ Requirements for initial release. Each maps to roadmap phases.
 | AIAN-03 | Phase 5 | Pending |
 | AIAN-04 | Phase 5 | Complete |
 | AIAN-05 | Phase 5 | Complete |
-| REPT-01 | Phase 5 | Pending |
-| REPT-02 | Phase 5 | Pending |
-| REPT-03 | Phase 5 | Pending |
-| REPT-04 | Phase 5 | Pending |
+| REPT-01 | Phase 5 | Complete |
+| REPT-02 | Phase 5 | Complete |
+| REPT-03 | Phase 5 | Complete |
+| REPT-04 | Phase 5 | Complete |
 | PLAN-02 | Phase 5 | Pending |
 | PLAN-03 | Phase 5 | Pending |
 | UIUX-03 | Phase 6 | Pending |

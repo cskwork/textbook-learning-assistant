@@ -51,6 +51,7 @@ Progress: [████████░░] 52% (13/~25 plans across all phases)
 | Phase 04-workbook-generator P03 | 131s | 2 tasks | 5 files |
 | Phase 05-ai-analytics P01 | 150s | 2 tasks | 4 files |
 | Phase 05-ai-analytics P03 | 127s | 1 tasks | 3 files |
+| Phase 05-ai-analytics P02 | 219s | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -114,6 +115,9 @@ Recent decisions affecting current work:
 - [Phase 05-01]: getRecommendedQuestions 반환값 number[] — questionId 배열만 반환, 호출자가 Question 전체 로드 결정
 - [Phase 05-03]: QuizPlayer 내부 submitQuizAttempt 재사용: 별도 일괄 제출 없이 onNext 콜백으로 인덱스 전진
 - [Phase 05-03]: 진단 퀴즈 건너뛰기 버튼 추가 — 강제 퀴즈 UX 부담 완화, isDiagnosisCompleted=true 동일하게 저장
+- [Phase 05-02]: recharts 버전 관리: shadcn add chart가 2.15.x 범위로 설치, 3.x 시 2.15.1 다운그레이드 필요
+- [Phase 05-02]: pnpm.overrides react-is: 모노레포 루트 direct dep 없어 $react-is 참조 불가 → ^19.0.0 버전 문자열 직접 명시
+- [Phase 05-02]: RadarChart 취약 유형 색상: recharts Radar 개별 포인트 fill 미지원 → 취약 유형 존재 시 전체 Radar를 destructive 색상으로 단순 처리
 
 ### Pending Todos
 
@@ -129,5 +133,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-20
-Stopped at: Completed 05-ai-analytics/05-03-PLAN.md
-Resume file: .planning/phases/05-ai-analytics/05-03-SUMMARY.md
+Stopped at: Completed 05-ai-analytics/05-02-PLAN.md
+Resume file: .planning/phases/05-ai-analytics/05-02-SUMMARY.md
