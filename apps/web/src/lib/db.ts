@@ -1,5 +1,5 @@
 // apps/web/src/lib/db.ts
-// Dexie IndexedDB 스키마 — 문제 영구 저장 + 퀴즈 엔진 (version 2)
+// Dexie IndexedDB 스키마 — 문제 영구 저장 + 퀴즈 엔진 (version 2) + DIY 문제집 (version 3)
 import Dexie, { type EntityTable } from 'dexie'
 
 export interface QuestionSource {
@@ -68,11 +68,29 @@ export interface WrongNote {
   isBookmarked: boolean      // 북마크 (QUIZ-06) — WrongNote와 북마크를 단일 테이블로 통합
 }
 
+export interface Workbook {
+  id: number
+  studentId: string           // user email
+  title: string               // 사용자 지정 문제집 이름
+  filters: {
+    subject?: string
+    unit?: string
+    questionCategory?: string
+    difficulty?: number       // 1~5
+    count: number             // 요청한 문제 수
+  }
+  questionIds: number[]       // 선택된 문제 ID 배열 (순서 포함)
+  createdAt: number           // Date.now()
+  lastPlayedAt?: number
+  completedAt?: number
+}
+
 const db = new Dexie('mathQuestionDB') as Dexie & {
   questions: EntityTable<Question, 'id'>
   quizSessions: EntityTable<QuizSession, 'id'>
   quizAttempts: EntityTable<QuizAttempt, 'id'>
   wrongNotes: EntityTable<WrongNote, 'id'>
+  workbooks: EntityTable<Workbook, 'id'>
 }
 
 // version(1): 절대 수정/삭제하지 말 것 — 기존 브라우저 IndexedDB 마이그레이션 경로
@@ -87,6 +105,15 @@ db.version(2).stores({
   quizSessions: '++id, questionId, studentId, startedAt',
   quizAttempts: '++id, questionId, studentId, sessionId, attemptedAt, isCorrect',
   wrongNotes: '++id, questionId, studentId, [questionId+studentId], unit, questionCategory, lastWrongAt',
+})
+
+// version(3): DIY 문제집 테이블 추가
+db.version(3).stores({
+  questions: '++id, subject, unit, questionCategory, difficulty, createdAt, createdBy',
+  quizSessions: '++id, questionId, studentId, startedAt',
+  quizAttempts: '++id, questionId, studentId, sessionId, attemptedAt, isCorrect',
+  wrongNotes: '++id, questionId, studentId, [questionId+studentId], unit, questionCategory, lastWrongAt',
+  workbooks: '++id, studentId, createdAt',
 })
 
 export { db }
