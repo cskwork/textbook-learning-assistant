@@ -55,8 +55,10 @@ export default function Layout() {
   // 역할에 따라 메뉴 항목 선택
   const navItems = user.role === 'student' ? studentNavItems : instructorNavItems
 
+  const profilePath = user.role === 'student' ? '/student/profile' : '/instructor/profile'
+
   return (
-    <AppShell navItems={navItems} onLogout={logout}>
+    <AppShell navItems={navItems} onLogout={logout} profilePath={profilePath}>
       <PageTransition />
     </AppShell>
   )
