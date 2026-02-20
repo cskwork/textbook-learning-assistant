@@ -82,7 +82,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **UIUX-01**: 태블릿·모바일·데스크톱에서 반응형으로 동작한다
 - [x] **UIUX-02**: 수학 문제/해설의 수식이 모든 화면 크기에서 정확히 렌더링된다
-- [ ] **UIUX-03**: PWA로 설치하여 앱처럼 사용할 수 있다 (홈 화면 추가)
+- [x] **UIUX-03**: PWA로 설치하여 앱처럼 사용할 수 있다 (홈 화면 추가)
 
 ## v2 Requirements
 
@@ -165,7 +165,7 @@ Requirements for initial release. Each maps to roadmap phases.
 | REPT-04 | Phase 5 | Complete |
 | PLAN-02 | Phase 5 | Complete |
 | PLAN-03 | Phase 5 | Complete |
-| UIUX-03 | Phase 6 | Pending |
+| UIUX-03 | Phase 6 | Complete |
 | INST-01 | Phase 7 | Pending |
 | INST-02 | Phase 7 | Pending |
 | INST-03 | Phase 7 | Pending |

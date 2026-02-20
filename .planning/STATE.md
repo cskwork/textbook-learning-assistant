@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-19)
 
 **Core value:** 학생이 자신의 취약한 수학 유형을 정확히 파악하고, AI가 추천하는 맞춤 문제를 통해 효율적으로 실력을 향상시킬 수 있어야 한다
-**Current focus:** Phase 5 — AI 분석 + 학습 리포트
+**Current focus:** Phase 6 — PWA 오프라인 지원
 
 ## Current Position
 
-Phase: 5 of 7 (AI 분석 + 학습 리포트)
-Plan: 4 of 5 in current phase
+Phase: 6 of 7 (PWA 오프라인 지원)
+Plan: 1 of 3 in current phase
 Status: In Progress
-Last activity: 2026-02-20 — Phase 5 Plan 04 완료 (분석 대시보드 + 보조 컴포넌트 + 홈 실데이터 + 탭바 분석 탭)
+Last activity: 2026-02-20 — Phase 6 Plan 01 완료 (vite-plugin-pwa + manifest + sw.js + 아이콘 3종 + vercel.json)
 
-Progress: [████████░░] 56% (14/~25 plans across all phases)
+Progress: [████████░░] 60% (15/~25 plans across all phases)
 
 ## Performance Metrics
 
@@ -53,6 +53,7 @@ Progress: [████████░░] 56% (14/~25 plans across all phases)
 | Phase 05-ai-analytics P03 | 127s | 1 tasks | 3 files |
 | Phase 05-ai-analytics P02 | 219s | 2 tasks | 5 files |
 | Phase 05-ai-analytics P04 | 226s | 2 tasks | 7 files |
+| Phase 06-pwa-offline P01 | 152s | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -122,6 +123,8 @@ Recent decisions affecting current work:
 - [Phase 05-04]: 차트 컴포넌트 import: named export이므로 {} 구문 사용 — default import 방식 빌드 오류 방지
 - [Phase 05-04]: 홈 실데이터 로딩: 오늘 풀이 useLiveQuery(실시간) + 정답률/스트릭/학습시간 useEffect(attemptCount 의존)
 - [Phase 05-04]: 탭바 마이페이지 → 분석 탭 교체: /student/profile 라우트는 main.tsx에 유지 (5개 탭 공간 확보)
+- [Phase 06-pwa-offline]: vite-plugin-pwa generateSW + registerType autoUpdate — POC에서 커스텀 SW 불필요, 자동 precache + skipWaiting
+- [Phase 06-pwa-offline]: vercel.json을 apps/web/ 루트에 위치 — Vercel Root Directory apps/web 설정 전제, SPA rewrites + sw.js no-cache 헤더
 
 ### Pending Todos
 
@@ -137,5 +140,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-20
-Stopped at: Completed 05-ai-analytics/05-02-PLAN.md
-Resume file: .planning/phases/05-ai-analytics/05-02-SUMMARY.md
+Stopped at: Completed 06-pwa-offline/06-01-PLAN.md
+Resume file: .planning/phases/06-pwa-offline/06-01-SUMMARY.md
