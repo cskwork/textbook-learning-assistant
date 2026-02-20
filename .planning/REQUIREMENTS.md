@@ -17,11 +17,11 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### 문제 DB (Question Bank)
 
-- [ ] **QBNK-01**: 관리자/강사가 LaTeX 에디터로 수학 문제를 등록할 수 있다
-- [ ] **QBNK-02**: 각 문제에 과목·단원·유형·난이도 메타데이터가 태깅된다
-- [ ] **QBNK-03**: 관리자/강사가 등록된 문제를 수정·삭제할 수 있다
-- [ ] **QBNK-04**: 각 문제에 텍스트+이미지 혼합 상세 해설이 포함된다
-- [ ] **QBNK-05**: 문제에 출처 정보(수능/모의고사/교육청, 연도, 번호)가 기록된다
+- [x] **QBNK-01**: 관리자/강사가 LaTeX 에디터로 수학 문제를 등록할 수 있다
+- [x] **QBNK-02**: 각 문제에 과목·단원·유형·난이도 메타데이터가 태깅된다
+- [x] **QBNK-03**: 관리자/강사가 등록된 문제를 수정·삭제할 수 있다
+- [x] **QBNK-04**: 각 문제에 텍스트+이미지 혼합 상세 해설이 포함된다
+- [x] **QBNK-05**: 문제에 출처 정보(수능/모의고사/교육청, 연도, 번호)가 기록된다
 - [x] **QBNK-06**: 수식이 LaTeX로 저장되고 KaTeX로 정확하게 렌더링된다
 - [x] **QBNK-07**: 그래프/도형은 이미지 파일로 업로드되어 문제에 표시된다
 
@@ -130,11 +130,11 @@ Requirements for initial release. Each maps to roadmap phases.
 | AUTH-04 | Phase 1 | Complete |
 | AUTH-05 | Phase 1 | Complete |
 | UIUX-01 | Phase 1 | Complete |
-| QBNK-01 | Phase 2 | Pending |
-| QBNK-02 | Phase 2 | Pending |
-| QBNK-03 | Phase 2 | Pending |
-| QBNK-04 | Phase 2 | Pending |
-| QBNK-05 | Phase 2 | Pending |
+| QBNK-01 | Phase 2 | Complete |
+| QBNK-02 | Phase 2 | Complete |
+| QBNK-03 | Phase 2 | Complete |
+| QBNK-04 | Phase 2 | Complete |
+| QBNK-05 | Phase 2 | Complete |
 | QBNK-06 | Phase 2 | Complete |
 | QBNK-07 | Phase 2 | Complete |
 | UIUX-02 | Phase 2 | Complete |

@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-19)
 
 **Core value:** 학생이 자신의 취약한 수학 유형을 정확히 파악하고, AI가 추천하는 맞춤 문제를 통해 효율적으로 실력을 향상시킬 수 있어야 한다
-**Current focus:** Phase 1 — 기반 인프라 + 인증
+**Current focus:** Phase 2 — 문제 뱅크 + 수식 렌더링
 
 ## Current Position
 
 Phase: 2 of 7 (문제 뱅크 + 수식 렌더링)
-Plan: 0 of TBD in current phase
-Status: Planning
-Last activity: 2026-02-20 — Phase 1 완료, Phase 2 계획 시작
+Plan: 1 of 5 in current phase
+Status: Executing
+Last activity: 2026-02-20 — Phase 2 Plan 01 완료 (mock auth + Dexie CRUD)
 
-Progress: [█████░░░░░] 17% (5/5 plans in Phase 1 — 체크포인트 대기)
+Progress: [██████░░░░] 24% (6/~25 plans across all phases)
 
 ## Performance Metrics
 
@@ -39,6 +39,7 @@ Progress: [█████░░░░░] 17% (5/5 plans in Phase 1 — 체크�
 | Phase 01-infra-auth P04 | 6m | 2 tasks | 17 files |
 | Phase 01-infra-auth P05 | 1m | 0 tasks | 0 files |
 | Phase 02-question-bank P02 | 2m | 2 tasks | 6 files |
+| Phase 02-question-bank P01 | 161s | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -72,6 +73,9 @@ Recent decisions affecting current work:
 - [Phase 02-question-bank]: $...$ → $...$ 파싱 순서 고정 — regex 처리 시 블록 수식 먼저, 인라인 나중
 - [Phase 02-question-bank]: throwOnError: false — 에디터 미완성 입력 중 앱 크래시 방지
 - [Phase 02-question-bank]: KaTeX CSS는 index.css에서 전역 import (컴포넌트 내 중복 import 방지)
+- [Phase 02-question-bank]: lib/auth.ts 자체 교체 방식 — mock-auth.ts 별도 파일 생성 없이 auth.ts를 직접 교체하여 AuthContext 변경 최소화
+- [Phase 02-question-bank]: Dexie 4.x EntityTable 패턴 채택 — TypeScript 타입 안전 IndexedDB 스키마
+- [Phase 02-question-bank]: unit/questionCategory 자유 텍스트(string) — POC에서 hardcode 목록 불필요, 향후 Phase에서 구조화
 
 ### Pending Todos
 
@@ -87,5 +91,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-20
-Stopped at: Completed 02-question-bank/02-02-PLAN.md
-Resume file: .planning/phases/02-question-bank/02-02-SUMMARY.md
+Stopped at: Completed 02-question-bank/02-01-PLAN.md
+Resume file: .planning/phases/02-question-bank/02-01-SUMMARY.md
