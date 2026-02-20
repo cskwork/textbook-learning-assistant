@@ -12,7 +12,7 @@
 
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
 import { useNavigate } from 'react-router'
-import { getMe, login as apiLogin, logout as apiLogout, setRole as apiSetRole } from '@/lib/auth'
+import { getMe, login as apiLogin, logout as apiLogout, setRole as apiSetRole, updateProfile as apiUpdateProfile } from '@/lib/auth'
 import type { User } from '@/lib/auth'
 
 interface AuthContextValue {
@@ -21,6 +21,7 @@ interface AuthContextValue {
   login: (email: string, password: string) => Promise<User>
   logout: () => Promise<void>
   setRole: (role: 'student' | 'instructor') => Promise<User>
+  updateProfile: (updates: Pick<User, 'name' | 'avatarEmoji'>) => Promise<User>
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null)
@@ -110,6 +111,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return u
   }
 
+  /**
+   * 프로필 업데이트 (마이페이지)
+   * name, avatarEmoji 변경 후 setUser(updated)로 앱 전체 즉시 반영
+   */
+  async function updateProfile(updates: Pick<User, 'name' | 'avatarEmoji'>): Promise<User> {
+    const u = await apiUpdateProfile(updates)
+    setUser(u) // React 상태 즉시 업데이트 — 앱 전체 반영
+    return u
+  }
+
   // 초기 로딩 중 — 200ms 미만이면 빈 화면, 이후 스피너 표시 (flicker 방지)
   if (isLoading) {
     if (!showSpinner) return null
@@ -124,7 +135,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, logout, setRole }}>
+    <AuthContext.Provider value={{ user, isLoading, login, logout, setRole, updateProfile }}>
       {children}
     </AuthContext.Provider>
   )
