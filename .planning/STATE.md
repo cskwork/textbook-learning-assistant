@@ -66,6 +66,8 @@ Progress: [█████████░] 97% (23/~25 plans across all phases)
 | Phase 04-workbook-generator P04 | 5m | 2 tasks | 0 files |
 | Phase 05-ai-analytics P05 | 26s | 2 tasks | 0 files |
 | Phase 06-pwa-offline P03 | 180s | 2 tasks | 0 files |
+| Phase 09-ai P01 | 125s | 2 tasks | 5 files |
+| Phase 09-ai P03 | 151s | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -166,6 +168,12 @@ Recent decisions affecting current work:
 - [Phase 05-ai-analytics]: Phase 5 통합 검증은 사용자 사전 승인으로 처리 — 마일스톤 완료 후 일괄 브라우저 검증 예정
 - [Phase 06-pwa-offline]: pnpm web:build가 올바른 빌드 스크립트 — 루트에 build 스크립트 없음, web:build 사용 필요
 - [Phase 06-pwa-offline]: Phase 6 통합 검증은 사전 승인 방식으로 완료 — 사용자 마일스톤 완료 후 일괄 검증 예정
+- [Phase 09-ai]: gemini-2.5-flash 모델 사용 (gemini-3-flash-preview fallback) — @google/genai SDK 호환 모델
+- [Phase 09-ai]: geminiApiKey: Dexie 인덱스 없는 선택 필드로 DB 버전 업 없이 UserSetting 확장
+- [Phase 09-ai]: responseSchema 파라미터 사용 (@google/genai SDK 실제 파라미터명, responseJsonSchema 아님)
+- [Phase 09-03]: report.tsx tr/div onClick + navigate 패턴으로 상세 페이지 이동 — Link 래핑 대신 행 전체 클릭 처리
+- [Phase 09-03]: SummaryStatsCards streak 필수 prop 대신 인라인 stat 카드 4종으로 직접 렌더링 (streak 데이터 불필요)
+- [Phase 09-03]: 학생 상세 오답노트: wrongNotes where('studentId') limit(5) — content 비동기 로드 생략, questionId만 표시
 
 ### Roadmap Evolution
 
@@ -193,6 +201,6 @@ None yet.
 
 ## Session Continuity
 
-Last activity: 2026-02-21 - Phase 05 Plan 05 완료 (Phase 5 AI 분석 통합 검증 — 빌드 성공, 사용자 사전 승인)
-Stopped at: Phase 05 Plan 05 완료 — 05-05-SUMMARY.md 생성, Phase 5 AIAN-01~05, REPT-01~04, PLAN-02~03 요구사항 완료
-Resume file: .planning/phases/05-ai-analytics/05-05-SUMMARY.md
+Last activity: 2026-02-21 - Phase 09 Plan 01 완료 (Gemini API 서비스 레이어 + Dexie API 키 저장 인프라 구축)
+Stopped at: Completed 09-ai-01-PLAN.md — 09-01-SUMMARY.md 생성, Phase 9 AIGEN-01, AIGEN-03, AIGEN-04 요구사항 완료
+Resume file: .planning/phases/09-ai/09-01-SUMMARY.md

@@ -80,8 +80,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### AI 문제 생성 보조 (AI Generation)
 
-- [ ] **INSTRV-01**: 강사가 그룹 리포트에서 학생을 클릭하면 학생별 상세 분석 페이지(정답률 차트, 취약 유형 레이더, 오답노트, 전체 통계)를 볼 수 있다
-- [ ] **STUDHM-01**: 학생 홈 대시보드에서 문제가 없을 때(questionCount === 0) 명시적 빈 상태 안내와 강사에게 문제 요청 메시지가 표시된다
+- [x] **INSTRV-01**: 강사가 그룹 리포트에서 학생을 클릭하면 학생별 상세 분석 페이지(정답률 차트, 취약 유형 레이더, 오답노트, 전체 통계)를 볼 수 있다
+- [x] **STUDHM-01**: 학생 홈 대시보드에서 문제가 없을 때(questionCount === 0) 명시적 빈 상태 안내와 강사에게 문제 요청 메시지가 표시된다
 
 ### 마이페이지 + 앱 설정 (MyPage & Settings)
 
