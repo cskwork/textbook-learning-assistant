@@ -1,5 +1,5 @@
 // apps/web/src/lib/db.ts
-// Dexie IndexedDB 스키마 — 문제 영구 저장 + 퀴즈 엔진 (version 2) + DIY 문제집 (version 3)
+// Dexie IndexedDB 스키마 — 문제 영구 저장 + 퀴즈 엔진 (version 2) + DIY 문제집 (version 3) + AI 분석 설정 (version 4)
 import Dexie, { type EntityTable } from 'dexie'
 
 export interface QuestionSource {
@@ -85,12 +85,20 @@ export interface Workbook {
   completedAt?: number
 }
 
+export interface UserSetting {
+  id: number
+  userId: string              // user email (유니크)
+  dailyGoal: number           // 일일 목표 문제 수 (기본: 10)
+  isDiagnosisCompleted: boolean  // 온보딩 진단 퀴즈 완료 여부
+}
+
 const db = new Dexie('mathQuestionDB') as Dexie & {
   questions: EntityTable<Question, 'id'>
   quizSessions: EntityTable<QuizSession, 'id'>
   quizAttempts: EntityTable<QuizAttempt, 'id'>
   wrongNotes: EntityTable<WrongNote, 'id'>
   workbooks: EntityTable<Workbook, 'id'>
+  userSettings: EntityTable<UserSetting, 'id'>
 }
 
 // version(1): 절대 수정/삭제하지 말 것 — 기존 브라우저 IndexedDB 마이그레이션 경로
@@ -114,6 +122,17 @@ db.version(3).stores({
   quizAttempts: '++id, questionId, studentId, sessionId, attemptedAt, isCorrect',
   wrongNotes: '++id, questionId, studentId, [questionId+studentId], unit, questionCategory, lastWrongAt',
   workbooks: '++id, studentId, createdAt',
+})
+
+// version(4): AI 분석 + 일일 목표 + 온보딩 진단 설정 테이블 추가
+// ⚠️ 기존 version(1)~(3) 절대 수정하지 말 것
+db.version(4).stores({
+  questions: '++id, subject, unit, questionCategory, difficulty, createdAt, createdBy',
+  quizSessions: '++id, questionId, studentId, startedAt',
+  quizAttempts: '++id, questionId, studentId, sessionId, attemptedAt, isCorrect',
+  wrongNotes: '++id, questionId, studentId, [questionId+studentId], unit, questionCategory, lastWrongAt',
+  workbooks: '++id, studentId, createdAt',
+  userSettings: '++id, &userId',
 })
 
 export { db }
