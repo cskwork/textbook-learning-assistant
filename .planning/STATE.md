@@ -150,8 +150,14 @@ None yet.
 - [Research]: Phase 4(DIY 문제집) 시작 전 Puppeteer+KaTeX PDF 생성 조합 검증 필요
 - [Dev]: bcrypt 네이티브 바인딩은 pnpm approve-builds 또는 node-pre-gyp 수동 실행 필요 — 팀원 온보딩 시 문서화 필요
 
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 001 | 예제 수학 기출문제 시드 데이터 추가 + 사용성 개선 | 2026-02-20 | 3e9119b | [001-seed-data-ux-improvements](./quick/001-seed-data-ux-improvements/) |
+
 ## Session Continuity
 
-Last session: 2026-02-20
-Stopped at: Completed quick/001-seed-data-ux-improvements/001-PLAN.md
+Last activity: 2026-02-20 - Completed quick task 001: 예제 수학 기출문제 시드 데이터 추가 + 사용성 개선
+Stopped at: Quick task 001 완료
 Resume file: .planning/quick/001-seed-data-ux-improvements/001-SUMMARY.md
