@@ -11,7 +11,7 @@
  *   - 첫 진입(풀이 0건) 시 AI 추천 영역에 안내 메시지
  */
 
-import { BookOpenCheck, TrendingUp, Target, Clock } from 'lucide-react'
+import { BookOpenCheck, TrendingUp, Target, Clock, Users } from 'lucide-react'
 import { Link, Navigate, useNavigate } from 'react-router'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -220,6 +220,13 @@ export default function StudentHomePage() {
             disabled={questionCount === 0}
           >
             랜덤 문제 풀기
+          </Button>
+          {/* 반 참여 버튼 */}
+          <Button variant="outline" size="sm" className="w-full" asChild>
+            <Link to="/student/join-group">
+              <Users className="h-4 w-4 mr-1" />
+              반 참여
+            </Link>
           </Button>
         </CardContent>
       </Card>

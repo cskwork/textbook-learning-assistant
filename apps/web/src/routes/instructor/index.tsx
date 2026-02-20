@@ -1,18 +1,39 @@
 /**
- * 강사 홈 페이지
- *
- * Phase 1 플레이스홀더 — 관리 패널 스켈레톤
- * Phase 2 이상에서 실제 데이터로 채워질 예정
+ * 강사 홈 페이지 — Phase 7 업데이트
+ * 실제 그룹/문제 데이터를 표시하고 반 관리로 진입한다
  */
 
-import { Users, BookOpen, BarChart2, PlusCircle } from 'lucide-react'
+import { useLiveQuery } from 'dexie-react-hooks'
+import { Users, BookOpen, BarChart2, PlusCircle, ClipboardList } from 'lucide-react'
 import { Link } from 'react-router'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/contexts/AuthContext'
+import { db } from '@/lib/db'
 
 export default function InstructorHomePage() {
   const { user } = useAuth()
+
+  // 그룹 수 실시간 쿼리
+  const groupCount = useLiveQuery(
+    () => user ? db.groups.where('instructorId').equals(user.email).count() : 0,
+    [user?.email],
+  )
+
+  // 출제한 문제 수
+  const problemCount = useLiveQuery(
+    () => user ? db.questions.where('createdBy').equals(user.email).count() : 0,
+    [user?.email],
+  )
+
+  // 최근 그룹 목록 (최대 3개)
+  const recentGroups = useLiveQuery(
+    () => user
+      ? db.groups.where('instructorId').equals(user.email).toArray()
+          .then(arr => arr.sort((a, b) => b.createdAt - a.createdAt).slice(0, 3))
+      : [],
+    [user?.email],
+  )
 
   return (
     <div className="p-4 md:p-6 max-w-4xl mx-auto space-y-6">
@@ -32,15 +53,15 @@ export default function InstructorHomePage() {
         </Button>
       </div>
 
-      {/* 요약 통계 카드 그리드 */}
+      {/* 요약 통계 카드 */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-2 mb-2">
               <Users className="w-4 h-4 text-primary" />
-              <span className="text-xs text-muted-foreground">등록 학생 수</span>
+              <span className="text-xs text-muted-foreground">관리 중인 반</span>
             </div>
-            <div className="h-6 bg-muted rounded animate-pulse" />
+            <p className="text-2xl font-bold">{groupCount ?? 0}</p>
           </CardContent>
         </Card>
 
@@ -50,7 +71,7 @@ export default function InstructorHomePage() {
               <BookOpen className="w-4 h-4 text-primary" />
               <span className="text-xs text-muted-foreground">출제한 문제</span>
             </div>
-            <div className="h-6 bg-muted rounded animate-pulse" />
+            <p className="text-2xl font-bold">{problemCount ?? 0}</p>
           </CardContent>
         </Card>
 
@@ -58,27 +79,51 @@ export default function InstructorHomePage() {
           <CardContent className="p-4">
             <div className="flex items-center gap-2 mb-2">
               <BarChart2 className="w-4 h-4 text-primary" />
-              <span className="text-xs text-muted-foreground">평균 정답률</span>
+              <span className="text-xs text-muted-foreground">빠른 이동</span>
             </div>
-            <div className="h-6 bg-muted rounded animate-pulse" />
+            <Button size="sm" variant="outline" className="w-full" asChild>
+              <Link to="/instructor/groups">반 관리</Link>
+            </Button>
           </CardContent>
         </Card>
       </div>
 
-      {/* 최근 활동 섹션 */}
+      {/* 최근 반 섹션 */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">최근 학생 활동</CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-base flex items-center gap-2">
+              <ClipboardList className="w-4 h-4" />
+              최근 반
+            </CardTitle>
+            <Button size="sm" variant="ghost" asChild>
+              <Link to="/instructor/groups">전체 보기</Link>
+            </Button>
+          </div>
         </CardHeader>
         <CardContent>
-          <div className="space-y-3">
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="h-10 bg-muted rounded-lg animate-pulse" />
-            ))}
-          </div>
-          <p className="text-xs text-muted-foreground text-center mt-4">
-            Phase 2에서 실제 학생 관리 기능이 추가됩니다
-          </p>
+          {!recentGroups || recentGroups.length === 0 ? (
+            <div className="text-center py-6 text-muted-foreground">
+              <p className="text-sm">아직 만든 반이 없습니다.</p>
+              <Button size="sm" variant="outline" className="mt-3" asChild>
+                <Link to="/instructor/groups/new">첫 번째 반 만들기</Link>
+              </Button>
+            </div>
+          ) : (
+            <ul className="space-y-2">
+              {recentGroups.map((g) => (
+                <li key={g.id}>
+                  <Link
+                    to={`/instructor/groups/${g.id}`}
+                    className="flex items-center justify-between p-3 rounded-lg hover:bg-muted transition-colors"
+                  >
+                    <span className="font-medium text-sm">{g.name}</span>
+                    <span className="text-xs text-muted-foreground font-mono">{g.inviteCode}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
         </CardContent>
       </Card>
     </div>
