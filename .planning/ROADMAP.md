@@ -173,6 +173,7 @@ Plans:
 
 **Goal:** 강사가 Gemini API를 통해 수학 문제를 자동 생성하여 QuestionForm 필드에 채울 수 있고, 강사가 학생별 상세 분석(차트, 오답노트)을 확인하며, 학생 홈 빈 상태가 개선된다
 **Depends on:** Phase 8
+**Requirements**: AIGEN-01, AIGEN-02, AIGEN-03, AIGEN-04, INSTRV-01, STUDHM-01
 **Plans:** 3 plans
 
 Plans:

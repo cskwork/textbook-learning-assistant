@@ -78,6 +78,11 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **INST-04**: 강사가 그룹 학생들의 학습 리포트를 조회할 수 있다
 - [x] **INST-05**: 강사가 학생별 취약 유형 분석 결과를 볼 수 있다
 
+### AI 문제 생성 보조 (AI Generation)
+
+- [ ] **INSTRV-01**: 강사가 그룹 리포트에서 학생을 클릭하면 학생별 상세 분석 페이지(정답률 차트, 취약 유형 레이더, 오답노트, 전체 통계)를 볼 수 있다
+- [ ] **STUDHM-01**: 학생 홈 대시보드에서 문제가 없을 때(questionCount === 0) 명시적 빈 상태 안내와 강사에게 문제 요청 메시지가 표시된다
+
 ### 마이페이지 + 앱 설정 (MyPage & Settings)
 
 - [x] **MYPAGE-01**: 사용자가 이름과 프로필 아바타를 편집하면 즉시 앱 전체에 반영된다
@@ -184,10 +189,12 @@ Requirements for initial release. Each maps to roadmap phases.
 | MYPAGE-03 | Phase 8 | Planned |
 | MYPAGE-04 | Phase 8 | Planned |
 | MYPAGE-05 | Phase 8 | Planned |
+| INSTRV-01 | Phase 9 | Planned |
+| STUDHM-01 | Phase 9 | Planned |
 
 **Coverage:**
-- v1 requirements: 47 total
-- Mapped to phases: 47
+- v1 requirements: 49 total
+- Mapped to phases: 49
 - Unmapped: 0 ✓
 
 **Phase assignment changes from initial traceability:**
