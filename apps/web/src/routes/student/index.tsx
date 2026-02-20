@@ -1,8 +1,10 @@
 /**
  * 학생 홈 페이지
  *
- * Phase 1 플레이스홀더 — 학습 현황 대시보드 스켈레톤
- * Phase 2 이상에서 실제 데이터로 채워질 예정
+ * Phase 5 — 실데이터 연결 완료
+ *   - 요약 통계 카드 4종: 오늘 풀이, 정답률, 연속 학습, 학습 시간
+ *   - AI 추천 문제 (최대 3개) + "자세한 분석 보기" 링크
+ *   - 로딩 중(undefined): animate-pulse placeholder 유지
  */
 
 import { BookOpenCheck, TrendingUp, Target, Clock } from 'lucide-react'
@@ -12,6 +14,11 @@ import { Button } from '@/components/ui/button'
 import { useAuth } from '@/contexts/AuthContext'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '@/lib/db'
+import { useEffect, useState } from 'react'
+import { getOverallStats, getRecommendedQuestions } from '@/services/analytics.service'
+import { getStreak } from '@/services/streak.service'
+import AIRecommendations from '@/components/analytics/AIRecommendations'
+import type { Question } from '@/lib/db'
 
 export default function StudentHomePage() {
   const { user } = useAuth()
@@ -24,6 +31,71 @@ export default function StudentHomePage() {
     () => user ? db.userSettings.where('userId').equals(user.email).first() : undefined,
     [user?.email],
   )
+
+  /** quizAttempts 총 건수 — useEffect 재실행 트리거 */
+  const attemptCount = useLiveQuery(
+    () => user ? db.quizAttempts.where('studentId').equals(user.email).count() : 0,
+    [user?.email],
+  )
+
+  /** 오늘 풀이 수 (로컬 타임존 자정 기준) */
+  const todayStart = (() => {
+    const d = new Date()
+    d.setHours(0, 0, 0, 0)
+    return d.getTime()
+  })()
+
+  const todayCount =
+    useLiveQuery(
+      () =>
+        user
+          ? db.quizAttempts
+              .where('studentId')
+              .equals(user.email)
+              .filter((a) => a.attemptedAt >= todayStart)
+              .count()
+          : 0,
+      [user?.email, todayStart],
+    ) ?? 0
+
+  // ---------------------------------------------------------------------------
+  // 비동기 통계 상태
+  // ---------------------------------------------------------------------------
+
+  const [accuracy, setAccuracy] = useState<number | undefined>(undefined)
+  const [streakCurrent, setStreakCurrent] = useState<number | undefined>(undefined)
+  const [totalMinutes, setTotalMinutes] = useState<number | undefined>(undefined)
+  const [recommendedQuestions, setRecommendedQuestions] = useState<Question[] | undefined>(undefined)
+  const [isHeuristic, setIsHeuristic] = useState(true)
+
+  useEffect(() => {
+    if (!user) return
+    const studentId = user.email
+
+    async function loadStats() {
+      const [overall, streakData, recommendedIds] = await Promise.all([
+        getOverallStats(studentId),
+        getStreak(studentId),
+        getRecommendedQuestions(studentId, 3),
+      ])
+
+      setAccuracy(overall.accuracy)
+      setStreakCurrent(streakData.current)
+      setTotalMinutes(Math.floor(overall.totalTimeSeconds / 60))
+
+      if (recommendedIds.length > 0) {
+        const questions = await db.questions.where('id').anyOf(recommendedIds).toArray()
+        setRecommendedQuestions(questions)
+      } else {
+        setRecommendedQuestions([])
+      }
+
+      const count = await db.quizAttempts.where('studentId').equals(studentId).count()
+      setIsHeuristic(count < 30)
+    }
+
+    loadStats()
+  }, [user, attemptCount])
 
   // 로딩 중 — undefined인 경우 스피너 표시
   if (userSetting === undefined) {
@@ -52,7 +124,7 @@ export default function StudentHomePage() {
         </p>
       </div>
 
-      {/* 요약 통계 카드 그리드 */}
+      {/* 요약 통계 카드 그리드 — 실데이터 */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <Card>
           <CardContent className="p-4">
@@ -60,7 +132,7 @@ export default function StudentHomePage() {
               <BookOpenCheck className="w-4 h-4 text-primary" />
               <span className="text-xs text-muted-foreground">오늘 푼 문제</span>
             </div>
-            <div className="h-6 bg-muted rounded animate-pulse" />
+            <div className="text-xl font-bold">{todayCount}문제</div>
           </CardContent>
         </Card>
 
@@ -70,7 +142,11 @@ export default function StudentHomePage() {
               <Target className="w-4 h-4 text-primary" />
               <span className="text-xs text-muted-foreground">정답률</span>
             </div>
-            <div className="h-6 bg-muted rounded animate-pulse" />
+            {accuracy === undefined ? (
+              <div className="h-6 bg-muted rounded animate-pulse" />
+            ) : (
+              <div className="text-xl font-bold">{accuracy}%</div>
+            )}
           </CardContent>
         </Card>
 
@@ -80,7 +156,11 @@ export default function StudentHomePage() {
               <TrendingUp className="w-4 h-4 text-primary" />
               <span className="text-xs text-muted-foreground">연속 학습</span>
             </div>
-            <div className="h-6 bg-muted rounded animate-pulse" />
+            {streakCurrent === undefined ? (
+              <div className="h-6 bg-muted rounded animate-pulse" />
+            ) : (
+              <div className="text-xl font-bold">{streakCurrent}일</div>
+            )}
           </CardContent>
         </Card>
 
@@ -90,7 +170,11 @@ export default function StudentHomePage() {
               <Clock className="w-4 h-4 text-primary" />
               <span className="text-xs text-muted-foreground">학습 시간</span>
             </div>
-            <div className="h-6 bg-muted rounded animate-pulse" />
+            {totalMinutes === undefined ? (
+              <div className="h-6 bg-muted rounded animate-pulse" />
+            ) : (
+              <div className="text-xl font-bold">{totalMinutes}분</div>
+            )}
           </CardContent>
         </Card>
       </div>
@@ -107,26 +191,31 @@ export default function StudentHomePage() {
           <Button asChild className="w-full">
             <Link to="/student/problems">문제 목록 보기</Link>
           </Button>
-          <p className="text-xs text-muted-foreground text-center">
-            Phase 3에서 AI 맞춤 추천 기능이 추가됩니다
-          </p>
         </CardContent>
       </Card>
 
-      {/* AI 추천 문제 섹션 (준비 중) */}
+      {/* AI 추천 문제 섹션 */}
       <Card>
-        <CardHeader>
+        <CardHeader className="pb-2">
           <CardTitle className="text-base">AI 추천 문제</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="h-12 bg-muted rounded-lg animate-pulse" />
-            ))}
-          </div>
-          <p className="text-xs text-muted-foreground text-center mt-4">
-            Phase 3에서 실제 문제 추천 기능이 추가됩니다
-          </p>
+        <CardContent className="space-y-3">
+          {recommendedQuestions === undefined ? (
+            <div className="space-y-2">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="h-12 bg-muted rounded-lg animate-pulse" />
+              ))}
+            </div>
+          ) : (
+            <AIRecommendations
+              questions={recommendedQuestions}
+              isHeuristic={isHeuristic}
+            />
+          )}
+          {/* 분석 페이지 링크 */}
+          <Button asChild variant="outline" className="w-full mt-2">
+            <Link to="/student/analytics">자세한 분석 보기</Link>
+          </Button>
         </CardContent>
       </Card>
     </div>
