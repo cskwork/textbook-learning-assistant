@@ -80,7 +80,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### UI/UX
 
-- [ ] **UIUX-01**: 태블릿·모바일·데스크톱에서 반응형으로 동작한다
+- [x] **UIUX-01**: 태블릿·모바일·데스크톱에서 반응형으로 동작한다
 - [ ] **UIUX-02**: 수학 문제/해설의 수식이 모든 화면 크기에서 정확히 렌더링된다
 - [ ] **UIUX-03**: PWA로 설치하여 앱처럼 사용할 수 있다 (홈 화면 추가)
 
@@ -129,7 +129,7 @@ Requirements for initial release. Each maps to roadmap phases.
 | AUTH-03 | Phase 1 | Pending |
 | AUTH-04 | Phase 1 | Pending |
 | AUTH-05 | Phase 1 | Complete |
-| UIUX-01 | Phase 1 | Pending |
+| UIUX-01 | Phase 1 | Complete |
 | QBNK-01 | Phase 2 | Pending |
 | QBNK-02 | Phase 2 | Pending |
 | QBNK-03 | Phase 2 | Pending |

@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-19)
 ## Current Position
 
 Phase: 1 of 7 (기반 인프라 + 인증)
-Plan: 1 of 5 in current phase
+Plan: 2 of 5 in current phase
 Status: In progress
-Last activity: 2026-02-20 — 01-01 완료 (모노레포 + DB 스키마 + Express 5 서버)
+Last activity: 2026-02-20 — 01-02 완료 (React + Vite + Tailwind v4 + shadcn/ui + 반응형 AppShell)
 
-Progress: [█░░░░░░░░░] 4% (1/5 plans in Phase 1)
+Progress: [██░░░░░░░░] 8% (2/5 plans in Phase 1)
 
 ## Performance Metrics
 
@@ -50,6 +50,9 @@ Recent decisions affecting current work:
 - [Init]: 서버사이드 채점 강제 (클라이언트 채점 절대 금지 — 정답 노출 방지)
 - [Phase 01-infra-auth]: apps/api ESM 설정 + Express 명시적 타입 어노테이션으로 pnpm 가상 저장소 타입 참조 오류 방지
 - [Phase 01-infra-auth]: SameSite 쿠키: 개발 환경 lax, 프로덕션 strict — 01-03 JWT 구현 시 적용
+- [Phase 01-02]: Tailwind v4 CSS-first 방식 — tailwind.config.js 생성 안 함, @tailwindcss/vite 플러그인
+- [Phase 01-02]: AppShell navItems prop 구조 — Phase 01-04에서 user.role 기반 동적 메뉴 주입 포인트
+- [Phase 01-02]: lg 브레이크포인트(1024px) 기준 하단탭바/사이드바 전환 — 태블릿까지 하단탭바 유지
 
 ### Pending Todos
 
@@ -64,5 +67,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-20
-Stopped at: Completed 01-infra-auth/01-01-PLAN.md (모노레포 + DB 스키마 + Express 5 서버)
-Resume file: .planning/phases/01-infra-auth/01-01-SUMMARY.md
+Stopped at: Completed 01-infra-auth/01-02-PLAN.md (React + Vite + Tailwind v4 + shadcn/ui + 반응형 AppShell)
+Resume file: .planning/phases/01-infra-auth/01-02-SUMMARY.md
