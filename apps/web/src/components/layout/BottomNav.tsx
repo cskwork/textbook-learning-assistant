@@ -28,8 +28,10 @@ export default function BottomNav({
     <nav
       className={cn(
         'fixed bottom-0 inset-x-0 z-50',
-        'bg-white/85 dark:bg-card/80 backdrop-blur-xl',
-        'border-t border-border/40',
+        // 블러 강화 — BottomNav 기출탭탭 스타일
+        'bg-white/90 dark:bg-card/85 backdrop-blur-2xl',
+        // 더 미묘한 상단 구분선
+        'border-t border-border/30',
         'flex items-stretch',
         'h-16',
         'lg:hidden mb-safe',
@@ -47,33 +49,36 @@ export default function BottomNav({
             className={({ isActive }) =>
               cn(
                 'relative flex flex-col items-center justify-center flex-1 gap-0.5',
-                'text-[10px] font-semibold transition-all duration-300 ease-out',
+                // 최소 터치 타겟 48px (LYOT-02)
+                'min-h-[48px]',
+                'text-[10px] transition-all duration-300 ease-out',
                 'min-w-0 px-1',
                 isActive
-                  ? 'text-primary'
-                  : 'text-muted-foreground/70 hover:text-muted-foreground',
+                  ? 'text-primary font-bold'
+                  : 'text-muted-foreground/50 font-semibold hover:text-muted-foreground/70',
               )
             }
           >
             {({ isActive }) => (
               <>
-                {/* 상단 인디케이터 */}
+                {/* 상단 인디케이터 바 — 더 넓고 둥글게 */}
                 <span
                   className={cn(
                     'absolute top-0 left-1/2 -translate-x-1/2 h-[3px] rounded-b-full transition-all duration-300',
-                    isActive ? 'w-8 bg-primary' : 'w-0 bg-transparent',
+                    isActive ? 'w-10 bg-primary' : 'w-0 bg-transparent',
                   )}
                 />
 
-                {/* 아이콘 컨테이너 */}
+                {/* 아이콘 컨테이너 — rounded-xl + primary/12 배경 */}
                 <div className={cn(
-                  'w-9 h-7 rounded-lg flex items-center justify-center transition-all duration-300',
-                  isActive && 'bg-primary/10',
+                  'w-9 h-7 rounded-xl flex items-center justify-center transition-all duration-300',
+                  isActive && 'bg-primary/12',
                 )}>
                   <Icon
                     className={cn(
-                      'w-[19px] h-[19px] shrink-0 transition-all duration-300',
-                      isActive ? 'text-primary' : 'text-muted-foreground/60',
+                      'shrink-0 transition-all duration-300',
+                      // 활성 시 w-5 h-5, 비활성 시 w-[19px] h-[19px]
+                      isActive ? 'w-5 h-5 text-primary' : 'w-[19px] h-[19px] text-muted-foreground/60',
                     )}
                   />
                 </div>

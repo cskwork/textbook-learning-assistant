@@ -32,20 +32,24 @@ export default function Sidebar({
         'hidden lg:flex',
         'fixed left-0 inset-y-0 z-50',
         'w-64 flex-col',
-        'bg-white/80 dark:bg-card/60 backdrop-blur-xl',
+        // 블러 강화 — 기출탭탭 스타일
+        'bg-white/90 dark:bg-card/70 backdrop-blur-2xl',
         'border-r border-border/50',
         className,
       )}
       aria-label="사이드바 네비게이션"
     >
       {/* ── 앱 로고 ── */}
-      <div className="flex items-center gap-3 px-5 py-5 border-b border-border/40">
-        <div className="w-9 h-9 rounded-xl cta-gradient flex items-center justify-center shadow-md shadow-primary/15 shrink-0">
+      <div className="flex items-center gap-3 px-5 py-5 border-b border-border/30">
+        {/* 로고 아이콘 w-10 h-10 rounded-xl (기존 w-9 h-9) */}
+        <div className="w-10 h-10 rounded-xl cta-gradient flex items-center justify-center shadow-md shadow-primary/15 shrink-0">
           <GraduationCap className="w-5 h-5 text-white" />
         </div>
         <div className="min-w-0">
-          <p className="text-sm font-extrabold text-foreground truncate tracking-tight">기출 학습 도우미</p>
-          <p className="text-[11px] text-muted-foreground/70 truncate">수학 기출문제 학습</p>
+          {/* 앱 이름 text-base font-extrabold (기존 text-sm) */}
+          <p className="text-base font-extrabold text-foreground truncate tracking-tight">기출 학습 도우미</p>
+          {/* 서브 텍스트 더 연하게 */}
+          <p className="text-xs text-muted-foreground/60 truncate">수학 기출문제 학습</p>
         </div>
       </div>
 
@@ -60,18 +64,19 @@ export default function Sidebar({
               end
               className={({ isActive }) =>
                 cn(
-                  'group flex items-center gap-3 px-3 py-2.5 rounded-xl',
+                  'group flex items-center gap-3 px-3 py-3 rounded-xl',
                   'text-sm transition-all duration-200 ease-out',
                   isActive
                     ? 'bg-primary/10 text-primary font-bold shadow-sm'
-                    : 'text-muted-foreground font-medium hover:bg-muted/60 hover:text-foreground',
+                    : 'text-muted-foreground font-medium hover:bg-muted/50 hover:text-foreground',
                 )
               }
             >
               {({ isActive }) => (
                 <>
+                  {/* 아이콘 배경 rounded-xl (기존 rounded-lg) */}
                   <div className={cn(
-                    'w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-all duration-200',
+                    'w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-all duration-200',
                     isActive
                       ? 'bg-primary/15'
                       : 'bg-transparent group-hover:bg-muted',
@@ -84,8 +89,9 @@ export default function Sidebar({
                     />
                   </div>
                   <span className="truncate">{item.label}</span>
+                  {/* 활성 도트 인디케이터 w-2 h-2 (기존 w-1.5 h-1.5) */}
                   {isActive && (
-                    <div className="ml-auto w-1.5 h-1.5 rounded-full bg-primary" />
+                    <div className="ml-auto w-2 h-2 rounded-full bg-primary" />
                   )}
                 </>
               )}
@@ -106,7 +112,7 @@ export default function Sidebar({
             )}
             type="button"
           >
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 group-hover:bg-primary/10 transition-colors">
+            <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-primary/10 transition-colors">
               <Monitor className="w-[18px] h-[18px]" />
             </div>
             <span>데스크톱 앱 설치</span>
@@ -125,7 +131,7 @@ export default function Sidebar({
           )}
           type="button"
         >
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 group-hover:bg-destructive/10 transition-colors">
+          <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-destructive/10 transition-colors">
             <LogOut className="w-[18px] h-[18px]" />
           </div>
           <span>로그아웃</span>
