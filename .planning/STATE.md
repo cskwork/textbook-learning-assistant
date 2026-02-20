@@ -2,19 +2,19 @@
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-02-19)
+See: .planning/PROJECT.md (updated 2026-02-21)
 
 **Core value:** 학생이 자신의 취약한 수학 유형을 정확히 파악하고, AI가 추천하는 맞춤 문제를 통해 효율적으로 실력을 향상시킬 수 있어야 한다
-**Current focus:** Phase 5 AI 분석 완료 — Phase 6+ 진행 가능
+**Current focus:** v2.0 기출탭탭 스타일 디자인 리뉴얼
 
 ## Current Position
 
-Phase: 5 of 8+ (AI 분석 + 학습 리포트)
-Plan: 5 of 5 in current phase (완료)
-Status: Complete — Phase 5 Plan 05 완료 (Phase 5 통합 검증 — 빌드 확인 + 사용자 사전 승인)
-Last activity: 2026-02-21 — Phase 5 Plan 05 완료 (Phase 5 AI 분석 통합 검증 — 빌드 성공, 사전 승인 처리)
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements for Milestone v2.0
+Last activity: 2026-02-21 — Milestone v2.0 시작 (기출탭탭 스타일 디자인 리뉴얼)
 
-Progress: [█████████░] 97% (23/~25 plans across all phases)
+Progress: [░░░░░░░░░░] 0%
 
 ## Performance Metrics
 
