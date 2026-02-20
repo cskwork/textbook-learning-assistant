@@ -128,7 +128,12 @@ Plans:
   1. 강사가 학생 그룹(반)을 생성하고 초대 코드로 학생을 초대할 수 있다
   2. 강사가 DIY 문제집을 과제로 그룹에 배정할 수 있다
   3. 강사가 그룹 학생들의 학습 리포트와 학생별 취약 유형 분석 결과를 조회할 수 있다
-**Plans**: TBD
+**Plans**: 4 plans
+Plans:
+- [ ] 07-01-PLAN.md — Dexie version(5) groups/groupMembers/assignments 스키마 + group.service.ts
+- [ ] 07-02-PLAN.md — 강사 그룹 관리 UI (목록/생성/상세/과제배정) + nav/라우트 등록
+- [ ] 07-03-PLAN.md — 학생 그룹 참여 UI (JoinGroupPage) + 강사 그룹 리포트 페이지
+- [ ] 07-04-PLAN.md — 강사/학생 홈 업데이트 + Phase 7 통합 사용자 검증 체크포인트
 
 ## Progress
 
