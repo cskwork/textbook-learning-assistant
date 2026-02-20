@@ -10,9 +10,9 @@ See: .planning/PROJECT.md (updated 2026-02-19)
 ## Current Position
 
 Phase: 5 of 7 (AI 분석 + 학습 리포트)
-Plan: 1 of 5 in current phase
+Plan: 3 of 5 in current phase
 Status: In Progress
-Last activity: 2026-02-20 — Phase 5 Plan 01 완료 (BKT 모델 + 집계 서비스 레이어 + Dexie version(4))
+Last activity: 2026-02-20 — Phase 5 Plan 03 완료 (온보딩 진단 퀴즈 라우트 + isDiagnosisCompleted 리디렉트 가드)
 
 Progress: [████████░░] 52% (13/~25 plans across all phases)
 
@@ -50,6 +50,7 @@ Progress: [████████░░] 52% (13/~25 plans across all phases)
 | Phase 04-workbook-generator P02 | 132s | 2 tasks | 3 files |
 | Phase 04-workbook-generator P03 | 131s | 2 tasks | 5 files |
 | Phase 05-ai-analytics P01 | 150s | 2 tasks | 4 files |
+| Phase 05-ai-analytics P03 | 127s | 1 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -111,6 +112,8 @@ Recent decisions affecting current work:
 - [Phase 05-01]: 날짜 분리 로컬 타임존 — toISOString() UTC 대신 getFullYear/Month/Date (KST UTC+9 Pitfall 대응)
 - [Phase 05-01]: getWeakCategories 휴리스틱 모드 pL 대용값 — accuracy/100으로 인터페이스 { category, pL } 일관성 유지
 - [Phase 05-01]: getRecommendedQuestions 반환값 number[] — questionId 배열만 반환, 호출자가 Question 전체 로드 결정
+- [Phase 05-03]: QuizPlayer 내부 submitQuizAttempt 재사용: 별도 일괄 제출 없이 onNext 콜백으로 인덱스 전진
+- [Phase 05-03]: 진단 퀴즈 건너뛰기 버튼 추가 — 강제 퀴즈 UX 부담 완화, isDiagnosisCompleted=true 동일하게 저장
 
 ### Pending Todos
 
@@ -126,5 +129,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-20
-Stopped at: Completed 05-ai-analytics/05-01-PLAN.md
-Resume file: .planning/phases/05-ai-analytics/05-01-SUMMARY.md
+Stopped at: Completed 05-ai-analytics/05-03-PLAN.md
+Resume file: .planning/phases/05-ai-analytics/05-03-SUMMARY.md

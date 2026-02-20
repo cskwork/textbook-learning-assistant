@@ -55,7 +55,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **AIAN-02**: 학습 이력 기반으로 취약 유형이 자동 판별된다
 - [ ] **AIAN-03**: 취약 유형 기반 맞춤 문제가 추천된다
 - [x] **AIAN-04**: 초기 사용자(풀이 30회 미만)에게 단원별 정답률 기반 휴리스틱 분석이 제공된다
-- [ ] **AIAN-05**: 신규 사용자에게 온보딩 진단 퀴즈가 제공된다
+- [x] **AIAN-05**: 신규 사용자에게 온보딩 진단 퀴즈가 제공된다
 
 ### 학습 리포트 (Learning Report)
 
@@ -158,7 +158,7 @@ Requirements for initial release. Each maps to roadmap phases.
 | AIAN-02 | Phase 5 | Complete |
 | AIAN-03 | Phase 5 | Pending |
 | AIAN-04 | Phase 5 | Complete |
-| AIAN-05 | Phase 5 | Pending |
+| AIAN-05 | Phase 5 | Complete |
 | REPT-01 | Phase 5 | Pending |
 | REPT-02 | Phase 5 | Pending |
 | REPT-03 | Phase 5 | Pending |
