@@ -295,6 +295,15 @@ export default function StudentHomePage() {
                   </Link>
                 </Button>
               </div>
+
+              {questionCount === 0 && (
+                <div className="mt-3 pt-3 border-t border-white/20">
+                  <p className="text-xs text-white/70 leading-relaxed">
+                    강사님께 문제 등록을 요청하거나,
+                    반 참여 코드로 과제를 받아 학습을 시작해 보세요.
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -326,7 +335,9 @@ export default function StudentHomePage() {
                     <div>
                       <p className="text-sm font-bold text-foreground">아직 분석 데이터가 없어요!</p>
                       <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                        문제를 몇 번 풀면<br />AI가 맞춤 추천해 드려요.
+                        {questionCount === 0
+                          ? <>먼저 문제가 등록되어야<br />AI 추천이 시작됩니다.</>
+                          : <>문제를 몇 번 풀면<br />AI가 맞춤 추천해 드려요.</>}
                       </p>
                     </div>
                   </div>
