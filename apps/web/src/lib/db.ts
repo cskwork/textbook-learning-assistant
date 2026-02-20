@@ -176,4 +176,9 @@ db.version(5).stores({
   assignments: '++id, groupId, workbookId',
 })
 
+// 앱 시작 시 DB가 비어있으면 시드 데이터 자동 삽입
+// 순환 참조 안전: 런타임에는 모든 모듈 로드 완료 후 ready 이벤트 발생
+import { seedIfEmpty } from './seed-data'
+db.on('ready', () => seedIfEmpty())
+
 export { db }
