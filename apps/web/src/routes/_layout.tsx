@@ -8,7 +8,7 @@
  * - 인증 + 온보딩 완료 → AppShell 렌더링 (역할별 메뉴)
  */
 
-import { Navigate, Outlet } from 'react-router'
+import { Navigate } from 'react-router'
 import { Home, BookOpen, BookOpenCheck, Users, BookMarked, BarChart2, User } from 'lucide-react'
 import AppShell from '@/components/layout/AppShell'
 import { useAuth } from '@/contexts/AuthContext'
@@ -30,6 +30,8 @@ const instructorNavItems: NavItem[] = [
   { path: '/instructor/groups', label: '반관리', icon: Users },
   { path: '/instructor/profile', label: '마이페이지', icon: User },
 ]
+
+import { PageTransition } from '@/components/layout/PageTransition'
 
 export default function Layout() {
   const { user, isLoading, logout } = useAuth()
@@ -55,7 +57,7 @@ export default function Layout() {
 
   return (
     <AppShell navItems={navItems} onLogout={logout}>
-      <Outlet />
+      <PageTransition />
     </AppShell>
   )
 }
