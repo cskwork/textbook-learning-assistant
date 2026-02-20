@@ -39,7 +39,11 @@ export default function StudentHomePage() {
   const greeting = getGreeting()
 
   const userSetting = useLiveQuery(
-    () => user ? db.userSettings.where('userId').equals(user.email).first() : undefined,
+    async () => {
+      if (!user) return undefined
+      const result = await db.userSettings.where('userId').equals(user.email).first()
+      return result ?? null
+    },
     [user?.email],
   )
 

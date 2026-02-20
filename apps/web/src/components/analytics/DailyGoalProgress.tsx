@@ -35,7 +35,7 @@ export default function DailyGoalProgress({ userId, todayCount }: DailyGoalProgr
 
   // db.userSettings에서 dailyGoal 읽기 (실시간 구독)
   const userSetting = useLiveQuery(
-    () => db.userSettings.where('userId').equals(userId).first(),
+    () => db.userSettings.where('userId').equals(userId).first().then(r => r ?? null),
     [userId],
   )
 
