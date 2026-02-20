@@ -22,8 +22,8 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **QBNK-03**: 관리자/강사가 등록된 문제를 수정·삭제할 수 있다
 - [ ] **QBNK-04**: 각 문제에 텍스트+이미지 혼합 상세 해설이 포함된다
 - [ ] **QBNK-05**: 문제에 출처 정보(수능/모의고사/교육청, 연도, 번호)가 기록된다
-- [ ] **QBNK-06**: 수식이 LaTeX로 저장되고 KaTeX로 정확하게 렌더링된다
-- [ ] **QBNK-07**: 그래프/도형은 이미지 파일로 업로드되어 문제에 표시된다
+- [x] **QBNK-06**: 수식이 LaTeX로 저장되고 KaTeX로 정확하게 렌더링된다
+- [x] **QBNK-07**: 그래프/도형은 이미지 파일로 업로드되어 문제에 표시된다
 
 ### 문제 풀이 엔진 (Quiz Engine)
 
@@ -81,7 +81,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### UI/UX
 
 - [x] **UIUX-01**: 태블릿·모바일·데스크톱에서 반응형으로 동작한다
-- [ ] **UIUX-02**: 수학 문제/해설의 수식이 모든 화면 크기에서 정확히 렌더링된다
+- [x] **UIUX-02**: 수학 문제/해설의 수식이 모든 화면 크기에서 정확히 렌더링된다
 - [ ] **UIUX-03**: PWA로 설치하여 앱처럼 사용할 수 있다 (홈 화면 추가)
 
 ## v2 Requirements
@@ -135,9 +135,9 @@ Requirements for initial release. Each maps to roadmap phases.
 | QBNK-03 | Phase 2 | Pending |
 | QBNK-04 | Phase 2 | Pending |
 | QBNK-05 | Phase 2 | Pending |
-| QBNK-06 | Phase 2 | Pending |
-| QBNK-07 | Phase 2 | Pending |
-| UIUX-02 | Phase 2 | Pending |
+| QBNK-06 | Phase 2 | Complete |
+| QBNK-07 | Phase 2 | Complete |
+| UIUX-02 | Phase 2 | Complete |
 | QUIZ-01 | Phase 3 | Pending |
 | QUIZ-02 | Phase 3 | Pending |
 | QUIZ-03 | Phase 3 | Pending |

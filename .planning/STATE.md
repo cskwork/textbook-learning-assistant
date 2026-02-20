@@ -9,10 +9,10 @@ See: .planning/PROJECT.md (updated 2026-02-19)
 
 ## Current Position
 
-Phase: 1 of 7 (기반 인프라 + 인증)
-Plan: 5 of 5 in current phase
-Status: Checkpoint — 사용자 검증 대기 중
-Last activity: 2026-02-20 — 01-05 체크포인트 도달 (Phase 1 통합 사용자 검증 대기)
+Phase: 2 of 7 (문제 뱅크 + 수식 렌더링)
+Plan: 0 of TBD in current phase
+Status: Planning
+Last activity: 2026-02-20 — Phase 1 완료, Phase 2 계획 시작
 
 Progress: [█████░░░░░] 17% (5/5 plans in Phase 1 — 체크포인트 대기)
 
@@ -38,6 +38,7 @@ Progress: [█████░░░░░] 17% (5/5 plans in Phase 1 — 체크�
 | Phase 01-infra-auth P03 | 30m 14s | 2 tasks | 5 files |
 | Phase 01-infra-auth P04 | 6m | 2 tasks | 17 files |
 | Phase 01-infra-auth P05 | 1m | 0 tasks | 0 files |
+| Phase 02-question-bank P02 | 2m | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -64,6 +65,13 @@ Recent decisions affecting current work:
 - [Phase 01-04]: BottomNav/Sidebar NavLink end prop 항상 true — 중첩 라우트 활성 상태 정확도
 - [Phase 01-04]: AppShell 모바일 상단 헤더에 로그아웃 버튼 — BottomNav에는 로그아웃 없음
 - [Phase 01-infra-auth]: Phase 1 통합 검증은 사용자 브라우저 직접 확인으로 완료 — 21개 테스트 항목
+- [Architecture Pivot]: POC 목적으로 PostgreSQL/Express 백엔드 대신 localStorage + mock data 사용. 실제 백엔드는 나중에 구현. Vercel 프론트엔드 전용 배포 대상.
+- [Architecture Pivot]: 기존 apps/api 코드는 유지하되 프론트엔드는 mock API 레이어(localStorage) 사용으로 전환
+- [Architecture Pivot]: 서버사이드 채점 결정은 유지하되 POC에서는 클라이언트 mock으로 대체
+- [Phase 02-question-bank]: katex 직접 사용 — react-katex wrapper 대신 (React 19 호환성 불확실)
+- [Phase 02-question-bank]: $...$ → $...$ 파싱 순서 고정 — regex 처리 시 블록 수식 먼저, 인라인 나중
+- [Phase 02-question-bank]: throwOnError: false — 에디터 미완성 입력 중 앱 크래시 방지
+- [Phase 02-question-bank]: KaTeX CSS는 index.css에서 전역 import (컴포넌트 내 중복 import 방지)
 
 ### Pending Todos
 
@@ -79,5 +87,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-20
-Stopped at: Checkpoint 01-infra-auth/01-05-PLAN.md (Phase 1 통합 사용자 검증 — 브라우저 확인 대기 중)
-Resume file: .planning/phases/01-infra-auth/01-05-SUMMARY.md
+Stopped at: Completed 02-question-bank/02-02-PLAN.md
+Resume file: .planning/phases/02-question-bank/02-02-SUMMARY.md
