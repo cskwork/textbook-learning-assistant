@@ -6,13 +6,41 @@
  */
 
 import { BookOpenCheck, TrendingUp, Target, Clock } from 'lucide-react'
-import { Link } from 'react-router'
+import { Link, Navigate } from 'react-router'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/contexts/AuthContext'
+import { useLiveQuery } from 'dexie-react-hooks'
+import { db } from '@/lib/db'
 
 export default function StudentHomePage() {
   const { user } = useAuth()
+
+  // useLiveQuery 반환값:
+  //   undefined  → 쿼리 로딩 중
+  //   null       → 쿼리 완료 + 레코드 없음 (신규 사용자)
+  //   UserSetting → 쿼리 완료 + 레코드 있음
+  const userSetting = useLiveQuery(
+    () => user ? db.userSettings.where('userId').equals(user.email).first() : undefined,
+    [user?.email],
+  )
+
+  // 로딩 중 — undefined인 경우 스피너 표시
+  if (userSetting === undefined) {
+    return (
+      <div className="p-4 md:p-6 max-w-4xl mx-auto">
+        <div className="animate-pulse space-y-4">
+          <div className="h-8 bg-muted rounded w-1/3" />
+          <div className="h-4 bg-muted rounded w-1/2" />
+        </div>
+      </div>
+    )
+  }
+
+  // 신규 사용자(레코드 없음) 또는 진단 미완료 → 온보딩 퀴즈로 리디렉트
+  if (userSetting === null || !userSetting.isDiagnosisCompleted) {
+    return <Navigate to="/student/onboarding-quiz" replace />
+  }
 
   return (
     <div className="p-4 md:p-6 max-w-4xl mx-auto space-y-6">
