@@ -78,6 +78,14 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **INST-04**: 강사가 그룹 학생들의 학습 리포트를 조회할 수 있다
 - [x] **INST-05**: 강사가 학생별 취약 유형 분석 결과를 볼 수 있다
 
+### 마이페이지 + 앱 설정 (MyPage & Settings)
+
+- [ ] **MYPAGE-01**: 사용자가 이름과 프로필 아바타를 편집하면 즉시 앱 전체에 반영된다
+- [ ] **MYPAGE-02**: 비밀번호를 변경하면 기존 비밀번호 확인 후 새 비밀번호로 로그인할 수 있다
+- [ ] **MYPAGE-03**: 다크모드 전환 시 모든 페이지가 일관된 다크 테마로 표시되고 새로고침 후에도 유지된다
+- [ ] **MYPAGE-04**: 수식 글꼴 크기를 조절하면 KaTeX 렌더링에 즉시 반영되고 설정이 저장된다
+- [ ] **MYPAGE-05**: 계정 삭제 시 확인 절차를 거치며 삭제 후 모든 사용자 데이터가 제거되고 로그인 화면으로 이동한다
+
 ### UI/UX
 
 - [x] **UIUX-01**: 태블릿·모바일·데스크톱에서 반응형으로 동작한다
@@ -171,10 +179,15 @@ Requirements for initial release. Each maps to roadmap phases.
 | INST-03 | Phase 7 | Complete |
 | INST-04 | Phase 7 | Complete |
 | INST-05 | Phase 7 | Complete |
+| MYPAGE-01 | Phase 8 | Planned |
+| MYPAGE-02 | Phase 8 | Planned |
+| MYPAGE-03 | Phase 8 | Planned |
+| MYPAGE-04 | Phase 8 | Planned |
+| MYPAGE-05 | Phase 8 | Planned |
 
 **Coverage:**
-- v1 requirements: 42 total
-- Mapped to phases: 42
+- v1 requirements: 47 total
+- Mapped to phases: 47
 - Unmapped: 0 ✓
 
 **Phase assignment changes from initial traceability:**

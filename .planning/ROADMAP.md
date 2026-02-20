@@ -150,7 +150,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 5. AI 분석 + 학습 리포트 | 4/5 | In Progress|  |
 | 6. PWA 오프라인 지원 | 2/3 | In Progress|  |
 | 7. 강사 관리 포털 | 4/4 | Complete   | 2026-02-20 |
-| 8. 마이페이지 + 앱 설정 | 0/0 | Not Planned|  |
+| 8. 마이페이지 + 앱 설정 | 0/4 | Planned    |  |
 
 ### Phase 8: 마이페이지 + 앱 설정
 **Goal**: 학생과 강사가 자신의 프로필을 관리하고, 앱 테마·수식 글꼴 크기 등 개인 설정을 조절하며, 계정을 안전하게 관리(비밀번호 변경·삭제)할 수 있다
@@ -162,6 +162,9 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
   3. 다크모드 전환 시 모든 페이지가 일관된 다크 테마로 표시되고 새로고침 후에도 유지된다
   4. 수식 글꼴 크기를 조절하면 KaTeX 렌더링 문제에 즉시 반영되고 설정이 저장된다
   5. 계정 삭제 시 확인 절차를 거치며, 삭제 후 모든 사용자 데이터가 제거되고 로그인 화면으로 이동한다
-**Plans**: 0 plans
+**Plans**: 4 plans
 Plans:
-- [ ] TBD (run /gsd:plan-phase 8 to break down)
+- [ ] 08-01-PLAN.md — SettingsContext + 다크모드 인프라 + KaTeX 글꼴 크기 CSS + shadcn 컴포넌트 설치
+- [ ] 08-02-PLAN.md — auth.ts User 확장 + updateProfile/changePassword/deleteAccount + db.ts version(6)
+- [ ] 08-03-PLAN.md — 마이페이지 UI (프로필편집/비밀번호변경/다크모드/수식글꼴/계정삭제)
+- [ ] 08-04-PLAN.md — 라우트 연결 + AppShell 헤더 진입점 + 통합 사용자 검증
