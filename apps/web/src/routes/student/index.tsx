@@ -5,10 +5,14 @@
  *   - 요약 통계 카드 4종: 오늘 풀이, 정답률, 연속 학습, 학습 시간
  *   - AI 추천 문제 (최대 3개) + "자세한 분석 보기" 링크
  *   - 로딩 중(undefined): animate-pulse placeholder 유지
+ *
+ * Quick-001 UX 개선:
+ *   - 문제 수 실시간 표시 + 랜덤 문제 풀기 버튼
+ *   - 첫 진입(풀이 0건) 시 AI 추천 영역에 안내 메시지
  */
 
 import { BookOpenCheck, TrendingUp, Target, Clock } from 'lucide-react'
-import { Link, Navigate } from 'react-router'
+import { Link, Navigate, useNavigate } from 'react-router'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/contexts/AuthContext'
@@ -22,6 +26,7 @@ import type { Question } from '@/lib/db'
 
 export default function StudentHomePage() {
   const { user } = useAuth()
+  const navigate = useNavigate()
 
   // useLiveQuery 반환값:
   //   undefined  → 쿼리 로딩 중
@@ -37,6 +42,12 @@ export default function StudentHomePage() {
     () => user ? db.quizAttempts.where('studentId').equals(user.email).count() : 0,
     [user?.email],
   )
+
+  /** 등록된 전체 문제 수 — 시드 데이터 포함 */
+  const questionCount = useLiveQuery(
+    () => db.questions.count(),
+    [],
+  ) ?? 0
 
   /** 오늘 풀이 수 (로컬 타임존 자정 기준) */
   const todayStart = (() => {
@@ -96,6 +107,14 @@ export default function StudentHomePage() {
 
     loadStats()
   }, [user, attemptCount])
+
+  /** 랜덤 문제 풀기 — 전체 문제 중 무작위 1개 선택 후 퀴즈 페이지로 이동 */
+  async function handleRandomQuiz() {
+    const all = await db.questions.toArray()
+    if (all.length === 0) return
+    const random = all[Math.floor(Math.random() * all.length)]
+    navigate(`/student/quiz/${random.id}`)
+  }
 
   // 로딩 중 — undefined인 경우 스피너 표시
   if (userSetting === undefined) {
@@ -186,10 +205,21 @@ export default function StudentHomePage() {
         </CardHeader>
         <CardContent className="space-y-3">
           <p className="text-sm text-muted-foreground">
-            수학 문제를 풀고 실력을 향상시켜 보세요.
+            {questionCount > 0
+              ? `등록된 ${questionCount}개의 문제를 풀고 실력을 향상시켜 보세요.`
+              : '아직 등록된 문제가 없습니다.'}
           </p>
           <Button asChild className="w-full">
             <Link to="/student/problems">문제 목록 보기</Link>
+          </Button>
+          {/* 랜덤 문제 풀기 버튼 */}
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={handleRandomQuiz}
+            disabled={questionCount === 0}
+          >
+            랜덤 문제 풀기
           </Button>
         </CardContent>
       </Card>
@@ -206,6 +236,11 @@ export default function StudentHomePage() {
                 <div key={i} className="h-12 bg-muted rounded-lg animate-pulse" />
               ))}
             </div>
+          ) : recommendedQuestions.length === 0 && attemptCount === 0 ? (
+            /* 첫 진입 — 풀이 기록 없을 때 안내 메시지 */
+            <p className="text-sm text-muted-foreground py-2">
+              아직 풀이 기록이 없습니다. 문제를 풀면 AI가 맞춤 문제를 추천해 드려요!
+            </p>
           ) : (
             <AIRecommendations
               questions={recommendedQuestions}
