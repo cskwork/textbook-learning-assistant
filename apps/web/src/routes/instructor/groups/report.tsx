@@ -4,7 +4,7 @@
  */
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router'
-import { ArrowLeft, Users, Target, BookOpenCheck } from 'lucide-react'
+import { ArrowLeft, Users, Target, BookOpenCheck, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -198,14 +198,18 @@ export default function GroupReportPage() {
                     </thead>
                     <tbody className="divide-y divide-border/40">
                       {reports.map((r) => (
-                        <tr key={r.studentId} className="hover:bg-muted/30 transition-colors">
+                        <tr
+                          key={r.studentId}
+                          className="hover:bg-muted/30 transition-colors cursor-pointer"
+                          onClick={() => navigate(`/instructor/groups/${groupId}/student/${r.studentId}`)}
+                        >
                           <td className="py-3.5 pr-4">
                             <div className="flex items-center gap-3">
                               <div className="w-8 h-8 rounded-lg bg-primary/8 flex items-center justify-center shrink-0 text-xs font-bold text-primary">
                                 {r.name.charAt(0)}
                               </div>
                               <div>
-                                <div className="font-semibold text-foreground">{r.name}</div>
+                                <div className="font-semibold text-foreground hover:text-primary transition-colors">{r.name}</div>
                                 <div className="text-[11px] text-muted-foreground/60 font-mono">{r.studentId}</div>
                               </div>
                             </div>
@@ -243,7 +247,11 @@ export default function GroupReportPage() {
                 {/* 모바일: 카드 리스트 */}
                 <div className="md:hidden space-y-2">
                   {reports.map((r) => (
-                    <div key={r.studentId} className="p-3 rounded-xl bg-muted/20 space-y-2">
+                    <div
+                      key={r.studentId}
+                      className="p-3 rounded-xl bg-muted/20 space-y-2 cursor-pointer hover:bg-muted/30 transition-colors"
+                      onClick={() => navigate(`/instructor/groups/${groupId}/student/${r.studentId}`)}
+                    >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2.5">
                           <div className="w-8 h-8 rounded-lg bg-primary/8 flex items-center justify-center shrink-0 text-xs font-bold text-primary">
@@ -254,13 +262,16 @@ export default function GroupReportPage() {
                             <div className="text-[10px] text-muted-foreground/60 font-mono">{r.studentId}</div>
                           </div>
                         </div>
-                        <span className={
-                          r.accuracy >= 70 ? 'text-emerald-600 font-black text-lg'
-                          : r.accuracy >= 50 ? 'text-amber-600 font-black text-lg'
-                          : 'text-rose-600 font-black text-lg'
-                        }>
-                          {r.accuracy}%
-                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className={
+                            r.accuracy >= 70 ? 'text-emerald-600 font-black text-lg'
+                            : r.accuracy >= 50 ? 'text-amber-600 font-black text-lg'
+                            : 'text-rose-600 font-black text-lg'
+                          }>
+                            {r.accuracy}%
+                          </span>
+                          <ChevronRight className="w-4 h-4 text-muted-foreground/40" />
+                        </div>
                       </div>
                       <div className="flex items-center gap-4 text-xs text-muted-foreground">
                         <span>{r.total}문제</span>
