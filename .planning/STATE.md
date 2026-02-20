@@ -179,6 +179,9 @@ Recent decisions affecting current work:
 - [Phase 09-ai]: 강사 마이페이지 AI 설정 카드: 앱 설정 아래, 보안 위에 배치 — API 키 input type=password 마스킹
 - [quick-005]: LatexPreview 적용 시 p → div 변경 필수 (LatexPreview 내부 div 렌더링으로 p > div 중첩 방지)
 - [quick-005]: overflow-hidden 배너 잘림 패턴: 데코 서클만 감싸는 래퍼에 한정, 컨텐츠 div는 overflow-hidden 없이 relative만 유지
+- [quick-006]: DESKTOP_DOWNLOAD_BASE_URL 상수로 GitHub Releases URL 베이스 분리 — 향후 실제 레포 주소로 교체 용이
+- [quick-006]: isDesktopApp() User-Agent 기반 감지 — electrobun.config.ts의 userAgent 설정과 연동
+- [quick-006]: apps/desktop tsconfig moduleResolution bundler + bun-types — Electrobun Bun 런타임 기반
 
 ### Roadmap Evolution
 
@@ -205,9 +208,10 @@ None yet.
 | 003 | 마이페이지 래퍼 레이아웃 통일 — 반응형 패딩 + max-w-3xl + space-y-5 | 2026-02-21 | 6ab5482 | [3-fitting](./quick/3-fitting/) |
 | 004 | 학생 홈 empty state UI — 신규 학생 환영 메시지 + 학습 시작 안내 | 2026-02-21 | ec6f264 | [4-ui](./quick/4-ui/) |
 | 005 | LaTeX 미리보기 렌더링(AI 추천+문제집 미리보기) + 홈 배너 잘림 수정 | 2026-02-21 | 379da1b | [5-latex](./quick/5-latex/) |
+| 006 | Electrobun 데스크톱 앱 다운로드 버튼 + 앱 래퍼 설정 | 2026-02-21 | ff9b080 | [6-electrobun](./quick/6-electrobun/) |
 
 ## Session Continuity
 
-Last activity: 2026-02-21 - Quick Task 005 완료 (LaTeX 미리보기 렌더링 + 홈 배너 잘림 수정)
-Stopped at: Completed quick/5-latex/5-PLAN.md — 5-SUMMARY.md 생성, AI 추천·문제집 미리보기 LatexPreview 적용 + 홈 배너 overflow-hidden 스코프 분리
-Resume file: .planning/quick/5-latex/5-SUMMARY.md
+Last activity: 2026-02-21 - Quick Task 006 완료 (Electrobun 데스크톱 앱 다운로드 버튼 + 앱 래퍼 설정)
+Stopped at: Completed quick/6-electrobun/6-PLAN.md — 6-SUMMARY.md 생성, 사이드바 "데스크톱 앱 설치" 버튼 + DesktopDownloadDialog + apps/desktop/ Electrobun 스켈레톤
+Resume file: .planning/quick/6-electrobun/6-SUMMARY.md
