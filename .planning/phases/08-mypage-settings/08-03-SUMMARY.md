@@ -126,3 +126,15 @@ completed: "2026-02-21"
 ---
 *Phase: 08-mypage-settings*
 *Completed: 2026-02-21*
+
+## Self-Check: PASSED
+
+- [x] `apps/web/src/components/profile/AvatarDisplay.tsx` — 존재
+- [x] `apps/web/src/components/profile/ProfileEditForm.tsx` — 존재
+- [x] `apps/web/src/components/profile/PasswordChangeForm.tsx` — 존재
+- [x] `apps/web/src/routes/student/profile/index.tsx` — 존재
+- [x] `apps/web/src/routes/instructor/profile/index.tsx` — 존재
+- [x] `.planning/phases/08-mypage-settings/08-03-SUMMARY.md` — 존재
+- [x] 커밋 82c34fb — 존재 (Task 1: 프로필 컴포넌트)
+- [x] 커밋 e1d08da — 존재 (Task 2: 마이페이지 통합 페이지)
+- [x] 커밋 efbd86a — 존재 (docs: 메타데이터)
