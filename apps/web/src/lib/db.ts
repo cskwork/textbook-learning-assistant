@@ -1,5 +1,5 @@
 // apps/web/src/lib/db.ts
-// Dexie IndexedDB 스키마 — 문제 영구 저장 (localStorage 5MB 한계 극복)
+// Dexie IndexedDB 스키마 — 문제 영구 저장 + 퀴즈 엔진 (version 2)
 import Dexie, { type EntityTable } from 'dexie'
 
 export interface QuestionSource {
@@ -31,12 +31,62 @@ export interface Question {
   createdBy: string         // user email
 }
 
-const db = new Dexie('mathQuestionDB') as Dexie & {
-  questions: EntityTable<Question, 'id'>
+export interface QuizSession {
+  id: number
+  studentId: string          // user email
+  questionId: number         // db.questions.id
+  startedAt: number          // Date.now()
+  completedAt?: number
+  timeSpent?: number         // 소요 시간 (초)
 }
 
+export interface QuizAttempt {
+  id: number
+  sessionId?: number         // QuizSession.id (선택적 — 단일 문제 풀기 시 없을 수 있음)
+  questionId: number
+  studentId: string
+  userAnswer: string         // 객관식: '1'~'5', 단답형: 숫자 문자열
+  isCorrect: boolean
+  timeSpent: number          // 초 단위
+  attemptedAt: number        // Date.now()
+  attemptCount: number       // 같은 문제 몇 번째 시도 (오답노트 재풀이 추적)
+}
+
+export interface WrongNote {
+  id: number
+  questionId: number
+  studentId: string
+  // 필터용 비정규화 필드 (Question에서 복사 — 조인 없이 직접 쿼리 가능)
+  subject: string
+  unit: string
+  questionCategory: string
+  // 통계
+  wrongCount: number
+  lastWrongAt: number
+  addedAt: number
+  isMastered: boolean        // 완전 학습 여부
+  isBookmarked: boolean      // 북마크 (QUIZ-06) — WrongNote와 북마크를 단일 테이블로 통합
+}
+
+const db = new Dexie('mathQuestionDB') as Dexie & {
+  questions: EntityTable<Question, 'id'>
+  quizSessions: EntityTable<QuizSession, 'id'>
+  quizAttempts: EntityTable<QuizAttempt, 'id'>
+  wrongNotes: EntityTable<WrongNote, 'id'>
+}
+
+// version(1): 절대 수정/삭제하지 말 것 — 기존 브라우저 IndexedDB 마이그레이션 경로
 db.version(1).stores({
   questions: '++id, subject, unit, questionCategory, difficulty, createdAt, createdBy',
+})
+
+// version(2): 퀴즈 엔진 테이블 3개 추가
+// wrongNotes에 [questionId+studentId] 복합 인덱스 필수 — upsert 조회에 사용
+db.version(2).stores({
+  questions: '++id, subject, unit, questionCategory, difficulty, createdAt, createdBy',
+  quizSessions: '++id, questionId, studentId, startedAt',
+  quizAttempts: '++id, questionId, studentId, sessionId, attemptedAt, isCorrect',
+  wrongNotes: '++id, questionId, studentId, [questionId+studentId], unit, questionCategory, lastWrongAt',
 })
 
 export { db }
