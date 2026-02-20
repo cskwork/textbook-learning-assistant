@@ -44,8 +44,10 @@ function renderMixedContent(text: string): string {
   // 3단계: 마크다운 Bold (**텍스트**)
   result = result.replace(/\*\*([^\*]+)\*\*/g, '<strong>$1</strong>')
 
-  // 줄바꿈 처리 (수식 아닌 일반 텍스트)
-  result = result.replace(/\n/g, '<br />')
+  // 줄바꿈 처리 — HTML 태그 내부(\n in SVG path 등)는 건드리지 않음
+  result = result.split(/(<[^>]*>)/).map(part =>
+    part.startsWith('<') ? part : part.replace(/\n/g, '<br />')
+  ).join('')
 
   return result
 }
