@@ -114,7 +114,11 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. 앱을 홈 화면에 추가(PWA 설치)할 수 있고 설치 후 앱처럼 실행된다
   2. 오프라인 상태에서 이미 로드한 문제를 풀고 제출할 수 있으며, 온라인 복귀 시 학습 이력이 동기화된다
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+- [ ] 06-01-PLAN.md — vite-plugin-pwa 설치 + manifest + 아이콘 + index.html 메타 태그 + vercel.json
+- [ ] 06-02-PLAN.md — PWAInstallBanner 컴포넌트 + main.tsx 통합
+- [ ] 06-03-PLAN.md — Phase 6 통합 사용자 검증 체크포인트
 
 ### Phase 7: 강사 관리 포털
 **Goal**: 강사가 학생 그룹(반)을 만들고, 과제를 출제하며, 학생별 학습 리포트를 조회할 수 있다
@@ -138,5 +142,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 3. 퀴즈 엔진 + 오답노트 | 4/5 | In Progress|  |
 | 4. DIY 문제집 생성기 | 3/4 | In Progress|  |
 | 5. AI 분석 + 학습 리포트 | 4/5 | In Progress|  |
-| 6. PWA 오프라인 지원 | 0/TBD | Not started | - |
+| 6. PWA 오프라인 지원 | 0/3 | Not started | - |
 | 7. 강사 관리 포털 | 0/TBD | Not started | - |
