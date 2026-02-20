@@ -28,6 +28,8 @@ import NewQuestionPage from './routes/instructor/problems/new'
 import QuestionDetailPage from './routes/instructor/problems/detail'
 import EditQuestionPage from './routes/instructor/problems/edit'
 import ComingSoonPage from './routes/coming-soon'
+import StudentProblemsPage from './routes/student/problems/index'
+import QuizPage from './routes/student/quiz/index'
 import RoleRedirect from './routes/role-redirect'
 
 createRoot(document.getElementById('root')!).render(
@@ -51,7 +53,8 @@ createRoot(document.getElementById('root')!).render(
 
             {/* 학생 전용 라우트 */}
             <Route path="/student" element={<StudentHomePage />} />
-            <Route path="/student/problems" element={<ComingSoonPage />} />
+            <Route path="/student/problems" element={<StudentProblemsPage />} />
+            <Route path="/student/quiz/:id" element={<QuizPage />} />
             <Route path="/student/wrong-notes" element={<ComingSoonPage />} />
             <Route path="/student/profile" element={<ComingSoonPage />} />
 
