@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-19)
 ## Current Position
 
 Phase: 3 of 7 (퀴즈 엔진 + 오답노트)
-Plan: 1 of 4 in current phase
+Plan: 2 of 4 in current phase
 Status: Executing
-Last activity: 2026-02-20 — Phase 3 Plan 01 완료 (Dexie v2 스키마 + 퀴즈/오답노트 서비스)
+Last activity: 2026-02-20 — Phase 3 Plan 02 완료 (퀴즈 UI 컴포넌트 레이어 — useTimer + QuizPlayer)
 
-Progress: [████████░░] 36% (9/~25 plans across all phases)
+Progress: [████████░░] 40% (10/~25 plans across all phases)
 
 ## Performance Metrics
 
@@ -43,6 +43,7 @@ Progress: [████████░░] 36% (9/~25 plans across all phases)
 | Phase 02-question-bank P03 | 158s | 2 tasks | 7 files |
 | Phase 02-question-bank P04 | 155s | 2 tasks | 7 files |
 | Phase 03-quiz-engine P01 | 99s | 2 tasks | 3 files |
+| Phase 03-quiz-engine P02 | 3m | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -85,6 +86,9 @@ Recent decisions affecting current work:
 - [Phase Phase 02-04]: 학생 홈에 /student/problems 링크 버튼 추가 — Phase 3 학생 문제 목록 구현 전 라우트 연결 준비
 - [Phase 03-quiz-engine]: isBookmarked 필드를 WrongNote에 통합 — 별도 bookmarks 테이블 없이 단일 테이블로 처리
 - [Phase 03-quiz-engine]: 정답 시 isMastered 자동 설정 — 오답노트 재풀이 완료를 자동 처리 (submitQuizAttempt)
+- [Phase 03-02]: timer.seconds 직접 참조로 timeSpent 캡처 — stop() 비동기 상태 업데이트 우회
+- [Phase 03-02]: RETRY 시 timer.reset() + timer.start() 순서 — QuizResult onRetry 콜백에서 처리
+- [Phase 03-02]: ShortAnswerInput type=text 고정 — type=number 빈 값 NaN 오류 방지 (Phase 2 패턴 재적용)
 
 ### Pending Todos
 
@@ -100,5 +104,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-20
-Stopped at: Completed 03-quiz-engine/03-01-PLAN.md
-Resume file: .planning/phases/03-quiz-engine/03-01-SUMMARY.md
+Stopped at: Completed 03-quiz-engine/03-02-PLAN.md
+Resume file: .planning/phases/03-quiz-engine/03-02-SUMMARY.md

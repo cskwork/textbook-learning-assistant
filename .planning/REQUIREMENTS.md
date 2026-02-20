@@ -27,10 +27,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### 문제 풀이 엔진 (Quiz Engine)
 
-- [ ] **QUIZ-01**: 학생이 객관식(5지선다) 문제를 풀 수 있다
-- [ ] **QUIZ-02**: 학생이 단답형(숫자/수식) 문제를 풀 수 있다
+- [x] **QUIZ-01**: 학생이 객관식(5지선다) 문제를 풀 수 있다
+- [x] **QUIZ-02**: 학생이 단답형(숫자/수식) 문제를 풀 수 있다
 - [x] **QUIZ-03**: 문제 제출 시 즉시 자동 채점되어 정오답이 표시된다
-- [ ] **QUIZ-04**: 채점 후 해당 문제의 상세 해설을 볼 수 있다
+- [x] **QUIZ-04**: 채점 후 해당 문제의 상세 해설을 볼 수 있다
 - [x] **QUIZ-05**: 문제 풀이 중 타이머가 작동하여 소요 시간이 기록된다
 - [x] **QUIZ-06**: 학생이 문제를 북마크(스크랩)할 수 있다
 - [x] **QUIZ-07**: 모든 풀이 결과(정오답, 소요시간, 선택답)가 학습 이력에 저장된다
@@ -138,10 +138,10 @@ Requirements for initial release. Each maps to roadmap phases.
 | QBNK-06 | Phase 2 | Complete |
 | QBNK-07 | Phase 2 | Complete |
 | UIUX-02 | Phase 2 | Complete |
-| QUIZ-01 | Phase 3 | Pending |
-| QUIZ-02 | Phase 3 | Pending |
+| QUIZ-01 | Phase 3 | Complete |
+| QUIZ-02 | Phase 3 | Complete |
 | QUIZ-03 | Phase 3 | Complete |
-| QUIZ-04 | Phase 3 | Pending |
+| QUIZ-04 | Phase 3 | Complete |
 | QUIZ-05 | Phase 3 | Complete |
 | QUIZ-06 | Phase 3 | Complete |
 | QUIZ-07 | Phase 3 | Complete |
