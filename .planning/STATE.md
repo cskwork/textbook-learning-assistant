@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-19)
 
 **Core value:** 학생이 자신의 취약한 수학 유형을 정확히 파악하고, AI가 추천하는 맞춤 문제를 통해 효율적으로 실력을 향상시킬 수 있어야 한다
-**Current focus:** Phase 7 — 강사 관리 포털
+**Current focus:** Phase 8 — 마이페이지 + 앱 설정
 
 ## Current Position
 
-Phase: 7 of 7 (강사 관리 포털)
-Plan: 4 of 4 in current phase (완료)
-Status: Complete — Phase 7 전체 완료 (INST-01~INST-05 사용자 검증 통과)
-Last activity: 2026-02-21 — Phase 7 Plan 04 Task 2 사용자 검증 승인 ("approved"), 프로젝트 완료
+Phase: 8 of 8 (마이페이지 + 앱 설정)
+Plan: 1 of 4 in current phase (완료)
+Status: In Progress — Phase 8 Plan 01 완료 (SettingsContext 인프라 구축)
+Last activity: 2026-02-20 — Phase 8 Plan 01 완료 (다크모드 + KaTeX 설정 인프라)
 
-Progress: [█████████░] 90% (19/~25 plans across all phases)
+Progress: [█████████░] 92% (20/~25 plans across all phases)
 
 ## Performance Metrics
 
@@ -59,6 +59,8 @@ Progress: [█████████░] 90% (19/~25 plans across all phases)
 | Phase 07-instructor-portal P03 | 136 | 2 tasks | 3 files |
 | Phase 07-instructor-portal P02 | 186s | 2 tasks | 6 files |
 | Phase 07-instructor-portal P04 | 300 | 1 tasks | 2 files |
+| Phase 08-mypage-settings P01 | 109s | 2 tasks | 7 files |
+| Phase 08-mypage-settings P02 | 123s | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -144,6 +146,12 @@ Recent decisions affecting current work:
 - [Quick-002]: math-virtual-keyboard-policy=manual — MathLive 모바일 가상 키보드 자동 팝업 방지
 - [Phase 07-04]: 강사 홈 groupCount/problemCount: useLiveQuery 직접 사용 — group.service.ts 비동기 함수 우회
 - [Phase 07-04]: 학생 홈 반 참여 버튼: 문제 풀기 카드 내 배치 — 최소 변경 원칙
+- [Phase 08-mypage-settings]: SettingsProvider를 AuthProvider 외부에 배치 — 다크모드가 로그인 페이지 포함 전체 앱에 적용
+- [Phase 08-mypage-settings]: .katex font-size에 !important — katex.min.css 기본값(1.21em) 오버라이드 필수
+- [Phase 08-mypage-settings]: FOUC 방지: index.html body 최상단에 동기 스크립트 배치 (React 마운트 전 실행)
+- [Phase 08-02]: StoredUser 내부 타입 분리 — password를 User 공개 타입에서 숨김
+- [Phase 08-02]: deleteAccount dynamic import db — auth.ts ↔ db.ts 순환 참조 방지
+- [Phase 08-02]: login() 비밀번호 하위 호환 — stored.password 없으면 기존 유저 통과
 
 ### Roadmap Evolution
 
@@ -169,6 +177,6 @@ None yet.
 
 ## Session Continuity
 
-Last activity: 2026-02-20 - Completed quick task 002: MathLive WYSIWYG 수식 에디터 통합
-Stopped at: Quick task 002 완료
-Resume file: .planning/quick/2-mathlive-wysiwyg/2-SUMMARY.md
+Last activity: 2026-02-20 - Phase 08 Plan 01 완료 (SettingsContext 인프라 구축)
+Stopped at: Phase 08 Plan 01 완료 — SettingsContext 인프라 구축
+Resume file: .planning/phases/08-mypage-settings/08-01-SUMMARY.md
