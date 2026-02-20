@@ -30,6 +30,7 @@ import EditQuestionPage from './routes/instructor/problems/edit'
 import ComingSoonPage from './routes/coming-soon'
 import StudentProblemsPage from './routes/student/problems/index'
 import QuizPage from './routes/student/quiz/index'
+import WrongNotesPage from './routes/student/wrong-notes/index'
 import RoleRedirect from './routes/role-redirect'
 
 createRoot(document.getElementById('root')!).render(
@@ -55,7 +56,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/student" element={<StudentHomePage />} />
             <Route path="/student/problems" element={<StudentProblemsPage />} />
             <Route path="/student/quiz/:id" element={<QuizPage />} />
-            <Route path="/student/wrong-notes" element={<ComingSoonPage />} />
+            <Route path="/student/wrong-notes" element={<WrongNotesPage />} />
             <Route path="/student/profile" element={<ComingSoonPage />} />
 
             {/* 강사 전용 라우트 */}
