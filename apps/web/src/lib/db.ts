@@ -1,5 +1,5 @@
 // apps/web/src/lib/db.ts
-// Dexie IndexedDB 스키마 — 문제 영구 저장 + 퀴즈 엔진 (version 2) + DIY 문제집 (version 3) + AI 분석 설정 (version 4)
+// Dexie IndexedDB 스키마 — 문제 영구 저장 + 퀴즈 엔진 (version 2) + DIY 문제집 (version 3) + AI 분석 설정 (version 4) + 강사 관리 포털 (version 5)
 import Dexie, { type EntityTable } from 'dexie'
 
 export interface QuestionSource {
@@ -92,6 +92,30 @@ export interface UserSetting {
   isDiagnosisCompleted: boolean  // 온보딩 진단 퀴즈 완료 여부
 }
 
+export interface Group {
+  id: number
+  instructorId: string   // 강사 email
+  name: string           // 반 이름 (예: "2025 수능반 A")
+  inviteCode: string     // 6자리 대문자 영숫자 (예: "AB1C2D")
+  createdAt: number      // Date.now()
+}
+
+export interface GroupMember {
+  id: number
+  groupId: number        // Group.id
+  studentId: string      // 학생 email
+  joinedAt: number       // Date.now()
+}
+
+export interface Assignment {
+  id: number
+  groupId: number        // Group.id
+  workbookId: number     // Workbook.id
+  title: string          // 과제 제목
+  assignedAt: number     // Date.now()
+  dueDate?: number       // 마감일 (ms, 선택)
+}
+
 const db = new Dexie('mathQuestionDB') as Dexie & {
   questions: EntityTable<Question, 'id'>
   quizSessions: EntityTable<QuizSession, 'id'>
@@ -99,6 +123,9 @@ const db = new Dexie('mathQuestionDB') as Dexie & {
   wrongNotes: EntityTable<WrongNote, 'id'>
   workbooks: EntityTable<Workbook, 'id'>
   userSettings: EntityTable<UserSetting, 'id'>
+  groups: EntityTable<Group, 'id'>
+  groupMembers: EntityTable<GroupMember, 'id'>
+  assignments: EntityTable<Assignment, 'id'>
 }
 
 // version(1): 절대 수정/삭제하지 말 것 — 기존 브라우저 IndexedDB 마이그레이션 경로
@@ -133,6 +160,20 @@ db.version(4).stores({
   wrongNotes: '++id, questionId, studentId, [questionId+studentId], unit, questionCategory, lastWrongAt',
   workbooks: '++id, studentId, createdAt',
   userSettings: '++id, &userId',
+})
+
+// version(5): 강사 관리 포털 (groups, groupMembers, assignments)
+// ⚠️ 기존 version(1)~(4) 절대 수정하지 말 것
+db.version(5).stores({
+  questions: '++id, subject, unit, questionCategory, difficulty, createdAt, createdBy',
+  quizSessions: '++id, questionId, studentId, startedAt',
+  quizAttempts: '++id, questionId, studentId, sessionId, attemptedAt, isCorrect',
+  wrongNotes: '++id, questionId, studentId, [questionId+studentId], unit, questionCategory, lastWrongAt',
+  workbooks: '++id, studentId, createdAt',
+  userSettings: '++id, &userId',
+  groups: '++id, instructorId, &inviteCode',
+  groupMembers: '++id, groupId, studentId, [groupId+studentId]',
+  assignments: '++id, groupId, workbookId',
 })
 
 export { db }
