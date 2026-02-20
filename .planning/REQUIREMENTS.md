@@ -75,8 +75,8 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **INST-01**: 강사가 학생 그룹(반)을 생성·관리할 수 있다
 - [x] **INST-02**: 강사가 학생을 그룹에 초대(초대 코드)할 수 있다
 - [x] **INST-03**: 강사가 DIY 문제집으로 과제를 출제하여 그룹에 배정할 수 있다
-- [ ] **INST-04**: 강사가 그룹 학생들의 학습 리포트를 조회할 수 있다
-- [ ] **INST-05**: 강사가 학생별 취약 유형 분석 결과를 볼 수 있다
+- [x] **INST-04**: 강사가 그룹 학생들의 학습 리포트를 조회할 수 있다
+- [x] **INST-05**: 강사가 학생별 취약 유형 분석 결과를 볼 수 있다
 
 ### UI/UX
 
@@ -169,8 +169,8 @@ Requirements for initial release. Each maps to roadmap phases.
 | INST-01 | Phase 7 | Complete |
 | INST-02 | Phase 7 | Complete |
 | INST-03 | Phase 7 | Complete |
-| INST-04 | Phase 7 | Pending |
-| INST-05 | Phase 7 | Pending |
+| INST-04 | Phase 7 | Complete |
+| INST-05 | Phase 7 | Complete |
 
 **Coverage:**
 - v1 requirements: 42 total
