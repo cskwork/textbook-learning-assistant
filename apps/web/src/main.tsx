@@ -16,6 +16,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router'
 import './index.css'
 
 import { AuthProvider } from './contexts/AuthContext'
+import { SettingsProvider } from './contexts/SettingsContext'
 import { PWAInstallBanner } from './components/pwa/PWAInstallBanner'
 import PublicRoute from './routes/public-route'
 import Layout from './routes/_layout'
@@ -48,9 +49,10 @@ import AssignWorkbookPage from './routes/instructor/groups/assign'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <AuthProvider>
-        <PWAInstallBanner />
-        <Routes>
+      <SettingsProvider>
+        <AuthProvider>
+          <PWAInstallBanner />
+          <Routes>
           {/* 공개 라우트: 비인증 사용자만 접근 */}
           <Route element={<PublicRoute />}>
             <Route path="/login" element={<LoginPage />} />
@@ -96,8 +98,9 @@ createRoot(document.getElementById('root')!).render(
 
           {/* 404 — 인덱스로 리디렉트 */}
           <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </AuthProvider>
+          </Routes>
+        </AuthProvider>
+      </SettingsProvider>
     </BrowserRouter>
   </StrictMode>,
 )
