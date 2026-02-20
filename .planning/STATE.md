@@ -62,6 +62,7 @@ Progress: [█████████░] 96% (22/~25 plans across all phases)
 | Phase 08-mypage-settings P01 | 109s | 2 tasks | 7 files |
 | Phase 08-mypage-settings P02 | 123s | 2 tasks | 4 files |
 | Phase 08-mypage-settings P03 | 226s | 2 tasks | 6 files |
+| Phase 08-mypage-settings P04 | 103s | 1 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -155,6 +156,7 @@ Recent decisions affecting current work:
 - [Phase 08-02]: login() 비밀번호 하위 호환 — stored.password 없으면 기존 유저 통과
 - [Phase 08-03]: 함수 내부 null 가드: TypeScript 클로저에서 user null 추론 오류 — handleDeleteAccount 등 내부 함수에 별도 if (!user) return 추가
 - [Phase 08-03]: ProfileEditForm useEffect 동기화: user props 변경 시 setValue 재동기화 — updateProfile 후 폼 상태 불일치 방지
+- [Phase 08-04]: AppShell profilePath prop 패턴: _layout.tsx가 user.role 기반으로 profilePath 결정 후 AppShell에 주입
 
 ### Roadmap Evolution
 
