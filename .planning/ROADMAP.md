@@ -82,7 +82,12 @@ Plans:
   1. 학생이 단원·유형·난이도 조합과 문제 수를 지정하여 맞춤 문제집을 생성할 수 있다
   2. 생성된 문제집이 저장되어 나중에 다시 접근하고 풀 수 있다
   3. 문제집 풀이 결과가 학습 이력에 반영되어 AI 분석에 활용된다
-**Plans**: TBD
+**Plans**: 4 plans
+Plans:
+- [ ] 04-01-PLAN.md — Dexie version(3) Workbook 스키마 + workbook.service.ts (6개 CRUD 함수)
+- [ ] 04-02-PLAN.md — WorkbookCreator(2단계 생성 UI) + WorkbookCard + WorkbookList 컴포넌트
+- [ ] 04-03-PLAN.md — 문제집 목록/생성/풀기 라우트 + nav 탭 + main.tsx 등록 + WorkbookPlayPage
+- [ ] 04-04-PLAN.md — Phase 4 통합 사용자 검증 체크포인트
 
 ### Phase 5: AI 분석 + 학습 리포트
 **Goal**: 학생이 자신의 취약 유형을 시각적으로 파악하고, AI가 맞춤 문제를 추천하며, 학습 목표와 스트릭을 설정할 수 있다
