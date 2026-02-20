@@ -12,7 +12,7 @@ See: .planning/PROJECT.md (updated 2026-02-19)
 Phase: 7 of 7 (강사 관리 포털)
 Plan: 3 of 4 in current phase
 Status: In Progress
-Last activity: 2026-02-20 — Phase 7 Plan 03 완료 (JoinGroupPage + GroupReportPage)
+Last activity: 2026-02-20 — Phase 7 Plan 02 완료 (강사 그룹 관리 UI — GroupListPage/GroupNewPage/GroupDetailPage/AssignWorkbookPage)
 
 Progress: [████████░░] 60% (15/~25 plans across all phases)
 
@@ -57,6 +57,7 @@ Progress: [████████░░] 60% (15/~25 plans across all phases)
 | Phase 06-pwa-offline P02 | 187s | 2 tasks | 4 files |
 | Phase 07-instructor-portal PP01 | 121s | 2 tasks | 2 files |
 | Phase 07-instructor-portal P03 | 136 | 2 tasks | 3 files |
+| Phase 07-instructor-portal P02 | 186s | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -133,6 +134,7 @@ Recent decisions affecting current work:
 - [Phase 06-pwa-offline]: PWAInstallBanner bottom-20 고정 배너 — 하단 탭바(h-16) 위에 배너 표시 패턴
 - [Phase 07-instructor-portal]: Dexie version(5) groups/groupMembers/assignments 3개 테이블 + group.service.ts 11개 함수로 강사 포털 데이터 레이어 구축
 - [Phase 07-instructor-portal]: analytics.service.ts 수정 없이 studentId 파라미터로 재사용 — getOverallStats/getWeakCategories 함수 시그니처 그대로 활용
+- [Phase 07-instructor-portal]: routes 선언 순서: /instructor/groups/new → /instructor/groups/:id/assign → /instructor/groups/:id — 정적 경로 우선 배치로 react-router 매칭 보장
 
 ### Pending Todos
 
@@ -148,5 +150,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-20
-Stopped at: Completed 07-instructor-portal/07-03-PLAN.md
-Resume file: .planning/phases/07-instructor-portal/07-03-SUMMARY.md
+Stopped at: Completed 07-instructor-portal/07-02-PLAN.md
+Resume file: .planning/phases/07-instructor-portal/07-02-SUMMARY.md
