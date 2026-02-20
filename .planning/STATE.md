@@ -10,9 +10,9 @@ See: .planning/PROJECT.md (updated 2026-02-19)
 ## Current Position
 
 Phase: 2 of 7 (문제 뱅크 + 수식 렌더링)
-Plan: 4 of 5 in current phase
+Plan: 5 of 5 in current phase
 Status: Executing
-Last activity: 2026-02-20 — Phase 2 Plan 03 완료 (문제 등록/수정 폼 UI)
+Last activity: 2026-02-20 — Phase 2 Plan 04 완료 (문제 목록/상세 UI + 라우터 등록)
 
 Progress: [████████░░] 32% (8/~25 plans across all phases)
 
@@ -41,6 +41,7 @@ Progress: [████████░░] 32% (8/~25 plans across all phases)
 | Phase 02-question-bank P02 | 2m | 2 tasks | 6 files |
 | Phase 02-question-bank P01 | 161s | 2 tasks | 6 files |
 | Phase 02-question-bank P03 | 158s | 2 tasks | 7 files |
+| Phase 02-question-bank P04 | 155s | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -79,6 +80,8 @@ Recent decisions affecting current work:
 - [Phase 02-question-bank]: unit/questionCategory 자유 텍스트(string) — POC에서 hardcode 목록 불필요, 향후 Phase에서 구조화
 - [Phase 02-03]: z.coerce.number().optional().or(z.literal('')) — HTML input[type=number] 빈 값 '' 처리
 - [Phase 02-03]: sourceYear/sourceNumber: Question 저장 시 data.sourceYear ? Number(data.sourceYear) : undefined 변환 적용
+- [Phase Phase 02-04]: /instructor/problems/new 라우트를 /:id 보다 앞에 선언 — react-router v7 선언 순서 기반 매칭
+- [Phase Phase 02-04]: 학생 홈에 /student/problems 링크 버튼 추가 — Phase 3 학생 문제 목록 구현 전 라우트 연결 준비
 
 ### Pending Todos
 
@@ -94,5 +97,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-20
-Stopped at: Completed 02-question-bank/02-03-PLAN.md
-Resume file: .planning/phases/02-question-bank/02-03-SUMMARY.md
+Stopped at: Completed 02-question-bank/02-04-PLAN.md
+Resume file: .planning/phases/02-question-bank/02-04-SUMMARY.md
