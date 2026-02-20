@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-19)
 
 **Core value:** 학생이 자신의 취약한 수학 유형을 정확히 파악하고, AI가 추천하는 맞춤 문제를 통해 효율적으로 실력을 향상시킬 수 있어야 한다
-**Current focus:** Phase 4 — DIY 문제집 생성기
+**Current focus:** Phase 5 — AI 분석 + 학습 리포트
 
 ## Current Position
 
-Phase: 4 of 7 (DIY 문제집 생성기)
-Plan: 3 of 3 in current phase (Phase 4 완료)
-Status: Phase 4 Complete
-Last activity: 2026-02-20 — Phase 4 Plan 03 완료 (라우트 통합 + WorkbookPlayer + WKST-01~04 완성)
+Phase: 5 of 7 (AI 분석 + 학습 리포트)
+Plan: 1 of 5 in current phase
+Status: In Progress
+Last activity: 2026-02-20 — Phase 5 Plan 01 완료 (BKT 모델 + 집계 서비스 레이어 + Dexie version(4))
 
-Progress: [████████░░] 48% (12/~25 plans across all phases)
+Progress: [████████░░] 52% (13/~25 plans across all phases)
 
 ## Performance Metrics
 
@@ -49,6 +49,7 @@ Progress: [████████░░] 48% (12/~25 plans across all phases)
 | Phase 04-workbook-generator P01 | 1m | 2 tasks | 2 files |
 | Phase 04-workbook-generator P02 | 132s | 2 tasks | 3 files |
 | Phase 04-workbook-generator P03 | 131s | 2 tasks | 5 files |
+| Phase 05-ai-analytics P01 | 150s | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -106,6 +107,10 @@ Recent decisions affecting current work:
 - [Phase 04-02]: previewQuestions 내 content 앞 30자만 표시 (LaTeX 미렌더링) — POC 미리보기는 텍스트만으로 충분
 - [Phase 04-03]: WorkbookPlayPage key={currentQuestion.id} — QuizPlayer 문제 변경 시 상태 완전 리셋
 - [Phase 04-03]: completedCount 제거 — currentIndex로 진행 문제 수 대체 (불필요 상태 단순화)
+- [Phase 05-01]: BKT 콜드스타트 분기 — quizAttempts < 30이면 정답률 휴리스틱(AIAN-04), 30 이상이면 computeBKT
+- [Phase 05-01]: 날짜 분리 로컬 타임존 — toISOString() UTC 대신 getFullYear/Month/Date (KST UTC+9 Pitfall 대응)
+- [Phase 05-01]: getWeakCategories 휴리스틱 모드 pL 대용값 — accuracy/100으로 인터페이스 { category, pL } 일관성 유지
+- [Phase 05-01]: getRecommendedQuestions 반환값 number[] — questionId 배열만 반환, 호출자가 Question 전체 로드 결정
 
 ### Pending Todos
 
@@ -121,5 +126,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-20
-Stopped at: Completed 04-workbook-generator/04-03-PLAN.md (Phase 4 완료)
-Resume file: .planning/phases/04-workbook-generator/04-03-SUMMARY.md
+Stopped at: Completed 05-ai-analytics/05-01-PLAN.md
+Resume file: .planning/phases/05-ai-analytics/05-01-SUMMARY.md
