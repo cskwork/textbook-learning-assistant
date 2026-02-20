@@ -177,6 +177,8 @@ Recent decisions affecting current work:
 - [Phase 09-03]: 학생 상세 오답노트: wrongNotes where('studentId') limit(5) — content 비동기 로드 생략, questionId만 표시
 - [Phase 09-ai]: AIGeneratePanel을 QuestionForm 최상단에 배치, hr 구분선으로 필수 입력과 시각적 분리
 - [Phase 09-ai]: 강사 마이페이지 AI 설정 카드: 앱 설정 아래, 보안 위에 배치 — API 키 input type=password 마스킹
+- [quick-005]: LatexPreview 적용 시 p → div 변경 필수 (LatexPreview 내부 div 렌더링으로 p > div 중첩 방지)
+- [quick-005]: overflow-hidden 배너 잘림 패턴: 데코 서클만 감싸는 래퍼에 한정, 컨텐츠 div는 overflow-hidden 없이 relative만 유지
 
 ### Roadmap Evolution
 
@@ -202,9 +204,10 @@ None yet.
 | 002 | MathLive WYSIWYG 수식 에디터 통합 — 강사 문제 등록/수정 폼 | 2026-02-20 | ec05fa4 | [2-mathlive-wysiwyg](./quick/2-mathlive-wysiwyg/) |
 | 003 | 마이페이지 래퍼 레이아웃 통일 — 반응형 패딩 + max-w-3xl + space-y-5 | 2026-02-21 | 6ab5482 | [3-fitting](./quick/3-fitting/) |
 | 004 | 학생 홈 empty state UI — 신규 학생 환영 메시지 + 학습 시작 안내 | 2026-02-21 | ec6f264 | [4-ui](./quick/4-ui/) |
+| 005 | LaTeX 미리보기 렌더링(AI 추천+문제집 미리보기) + 홈 배너 잘림 수정 | 2026-02-21 | 379da1b | [5-latex](./quick/5-latex/) |
 
 ## Session Continuity
 
-Last activity: 2026-02-21 - Quick Task 004 완료 (학생 홈 empty state UI — 신규 학생 환영 메시지 + 학습 안내)
-Stopped at: Completed quick/4-ui/4-PLAN.md — 4-SUMMARY.md 생성, 학생 홈 empty state UI 구현
-Resume file: .planning/quick/4-ui/4-SUMMARY.md
+Last activity: 2026-02-21 - Quick Task 005 완료 (LaTeX 미리보기 렌더링 + 홈 배너 잘림 수정)
+Stopped at: Completed quick/5-latex/5-PLAN.md — 5-SUMMARY.md 생성, AI 추천·문제집 미리보기 LatexPreview 적용 + 홈 배너 overflow-hidden 스코프 분리
+Resume file: .planning/quick/5-latex/5-SUMMARY.md
