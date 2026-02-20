@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-19)
 ## Current Position
 
 Phase: 1 of 7 (기반 인프라 + 인증)
-Plan: 3 of 5 in current phase
+Plan: 4 of 5 in current phase
 Status: In progress
-Last activity: 2026-02-20 — 01-03 완료 (JWT 인증 API 6개 엔드포인트 + 미들웨어 + Rate Limiter)
+Last activity: 2026-02-20 — 01-04 완료 (인증 UI + AuthContext + 보호 라우트 + RBAC)
 
-Progress: [███░░░░░░░] 11% (3/5 plans in Phase 1)
+Progress: [████░░░░░░] 14% (4/5 plans in Phase 1)
 
 ## Performance Metrics
 
@@ -36,6 +36,7 @@ Progress: [███░░░░░░░] 11% (3/5 plans in Phase 1)
 *Updated after each plan completion*
 | Phase 01-infra-auth P01 | 3m 31s | 2 tasks | 12 files |
 | Phase 01-infra-auth P03 | 30m 14s | 2 tasks | 5 files |
+| Phase 01-infra-auth P04 | 6m | 2 tasks | 17 files |
 
 ## Accumulated Context
 
@@ -57,6 +58,10 @@ Recent decisions affecting current work:
 - [Phase 01-03]: IRouter 명시적 타입 어노테이션으로 Router() TS2742 해결 — 모든 router 파일에 동일 패턴 적용
 - [Phase 01-03]: Refresh token 로테이션 적용 지점: /refresh와 /onboarding — /login은 여러 기기 로그인 허용
 - [Phase 01-03]: Onboarding 역할 변경 불가 (isOnboarded 후 400) — 관리자 변경은 v2
+- [Phase 01-04]: AuthContext login/setRole이 User를 반환 — 호출자가 isOnboarded 기반 라우팅 직접 결정
+- [Phase 01-04]: register 후 login 재호출로 AuthContext user 상태 동기화 (명시적 방법)
+- [Phase 01-04]: BottomNav/Sidebar NavLink end prop 항상 true — 중첩 라우트 활성 상태 정확도
+- [Phase 01-04]: AppShell 모바일 상단 헤더에 로그아웃 버튼 — BottomNav에는 로그아웃 없음
 
 ### Pending Todos
 
@@ -72,5 +77,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-20
-Stopped at: Completed 01-infra-auth/01-03-PLAN.md (JWT 인증 API 6개 엔드포인트 + JWT 미들웨어 + Rate Limiter)
-Resume file: .planning/phases/01-infra-auth/01-03-SUMMARY.md
+Stopped at: Completed 01-infra-auth/01-04-PLAN.md (인증 UI + AuthContext + 보호 라우트 + RBAC)
+Resume file: .planning/phases/01-infra-auth/01-04-SUMMARY.md
