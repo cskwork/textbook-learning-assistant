@@ -1,0 +1,18 @@
+{
+  "name": "textbook-learning-assistant",
+  "private": true,
+  "version": "0.0.1",
+  "description": "수학 기출 학습 도우미 모노레포",
+  "scripts": {
+    "api:dev": "pnpm --filter api dev",
+    "api:build": "pnpm --filter api build",
+    "api:db:generate": "pnpm --filter api db:generate",
+    "api:db:migrate": "pnpm --filter api db:migrate",
+    "web:dev": "pnpm --filter web dev",
+    "web:build": "pnpm --filter web build"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  }
+}

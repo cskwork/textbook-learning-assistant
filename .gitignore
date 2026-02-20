@@ -1,0 +1,35 @@
+# 의존성
+node_modules/
+.pnp
+.pnp.js
+
+# 빌드 산출물
+dist/
+build/
+.turbo/
+
+# Drizzle 마이그레이션 출력 (선택적 — 팀 상황에 따라 제거 가능)
+# apps/api/drizzle/
+
+# 환경 변수
+.env
+.env.local
+.env.*.local
+
+# 로그
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# 에디터
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# TypeScript 빌드 정보
+*.tsbuildinfo
+
+# 테스트 커버리지
+coverage/
