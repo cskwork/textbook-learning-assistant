@@ -17,6 +17,7 @@
 - [ ] **Phase 5: AI 분석 + 학습 리포트** - BKT 취약유형 분석, 맞춤 추천, 대시보드, 학습 플래너
 - [ ] **Phase 6: PWA 오프라인 지원** - Service Worker, 오프라인 문제 풀기, PWA 설치
 - [x] **Phase 7: 강사 관리 포털** - 학생 그룹 관리, 과제 출제, 반별 학습 리포트 조회 (completed 2026-02-20)
+- [ ] **Phase 8: 마이페이지 + 앱 설정** - 프로필 편집, 비밀번호 변경, 계정 삭제, 다크모드, 수식 글꼴 크기, 앱 정보
 
 ## Phase Details
 
@@ -138,7 +139,7 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
+Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -149,3 +150,18 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 5. AI 분석 + 학습 리포트 | 4/5 | In Progress|  |
 | 6. PWA 오프라인 지원 | 2/3 | In Progress|  |
 | 7. 강사 관리 포털 | 4/4 | Complete   | 2026-02-20 |
+| 8. 마이페이지 + 앱 설정 | 0/0 | Not Planned|  |
+
+### Phase 8: 마이페이지 + 앱 설정
+**Goal**: 학생과 강사가 자신의 프로필을 관리하고, 앱 테마·수식 글꼴 크기 등 개인 설정을 조절하며, 계정을 안전하게 관리(비밀번호 변경·삭제)할 수 있다
+**Depends on**: Phase 1 (인증 시스템)
+**Requirements**: MYPAGE-01, MYPAGE-02, MYPAGE-03, MYPAGE-04, MYPAGE-05
+**Success Criteria** (what must be TRUE):
+  1. 사용자가 이름과 프로필 아바타를 편집하면 즉시 앱 전체(탭바, 헤더 등)에 반영된다
+  2. 비밀번호를 변경하면 기존 비밀번호 확인 후 새 비밀번호로 로그인할 수 있다
+  3. 다크모드 전환 시 모든 페이지가 일관된 다크 테마로 표시되고 새로고침 후에도 유지된다
+  4. 수식 글꼴 크기를 조절하면 KaTeX 렌더링 문제에 즉시 반영되고 설정이 저장된다
+  5. 계정 삭제 시 확인 절차를 거치며, 삭제 후 모든 사용자 데이터가 제거되고 로그인 화면으로 이동한다
+**Plans**: 0 plans
+Plans:
+- [ ] TBD (run /gsd:plan-phase 8 to break down)

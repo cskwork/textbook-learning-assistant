@@ -145,6 +145,10 @@ Recent decisions affecting current work:
 - [Phase 07-04]: 강사 홈 groupCount/problemCount: useLiveQuery 직접 사용 — group.service.ts 비동기 함수 우회
 - [Phase 07-04]: 학생 홈 반 참여 버튼: 문제 풀기 카드 내 배치 — 최소 변경 원칙
 
+### Roadmap Evolution
+
+- Phase 8 추가: 마이페이지 + 앱 설정 (프로필 편집, 비밀번호 변경, 계정 삭제, 다크모드, 수식 글꼴 크기, 앱 정보)
+
 ### Pending Todos
 
 None yet.

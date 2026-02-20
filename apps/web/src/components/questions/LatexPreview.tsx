@@ -41,6 +41,9 @@ function renderMixedContent(text: string): string {
     }
   })
 
+  // 3단계: 마크다운 Bold (**텍스트**)
+  result = result.replace(/\*\*([^\*]+)\*\*/g, '<strong>$1</strong>')
+
   // 줄바꿈 처리 (수식 아닌 일반 텍스트)
   result = result.replace(/\n/g, '<br />')
 
