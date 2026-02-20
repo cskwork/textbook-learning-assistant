@@ -48,7 +48,13 @@ Plans:
   3. 등록된 문제를 수정·삭제할 수 있으며 변경사항이 즉시 반영된다
   4. 그래프/도형 이미지를 업로드하면 문제에 표시되고 모든 화면 크기에서 왜곡 없이 보인다
   5. 문제별 텍스트+이미지 혼합 상세 해설이 저장되고 조회된다
-**Plans**: TBD
+**Plans**: 5 plans
+Plans:
+- [ ] 02-01-PLAN.md — Mock Auth 전환(localStorage) + Dexie IndexedDB 스키마 + 문제 CRUD 서비스
+- [ ] 02-02-PLAN.md — KaTeX 렌더링 컴포넌트 (LatexPreview, LatexEditor, ImageUpload)
+- [ ] 02-03-PLAN.md — 문제 등록/수정 폼 UI (QuestionForm + new/edit 라우트)
+- [ ] 02-04-PLAN.md — 문제 목록/상세 페이지 + 라우터 통합 + 홈 업데이트
+- [ ] 02-05-PLAN.md — Phase 2 통합 사용자 검증 체크포인트
 
 ### Phase 3: 퀴즈 엔진 + 오답노트
 **Goal**: 학생이 문제를 풀면 즉시 채점되고, 틀린 문제는 자동으로 오답노트에 수집되어 반복 학습할 수 있다
@@ -111,7 +117,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. 기반 인프라 + 인증 | 5/5 | Complete   | 2026-02-20 |
-| 2. 문제 뱅크 + 수식 렌더링 | 0/TBD | Not started | - |
+| 2. 문제 뱅크 + 수식 렌더링 | 0/5 | Not started | - |
 | 3. 퀴즈 엔진 + 오답노트 | 0/TBD | Not started | - |
 | 4. DIY 문제집 생성기 | 0/TBD | Not started | - |
 | 5. AI 분석 + 학습 리포트 | 0/TBD | Not started | - |
