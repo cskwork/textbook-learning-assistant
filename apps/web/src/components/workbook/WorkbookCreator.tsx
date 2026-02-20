@@ -25,6 +25,7 @@ import {
   createWorkbook,
   getFilterOptions,
 } from '@/services/workbook.service'
+import { LatexPreview } from '@/components/questions/LatexPreview'
 import type { Question } from '@/lib/db'
 
 // ──────────────────────────────────────────────
@@ -308,10 +309,13 @@ export function WorkbookCreator({ studentId, onCreated }: WorkbookCreatorProps) 
               <p className="text-muted-foreground text-xs">
                 {q.subject} · {q.unit} · 난이도 {q.difficulty}
               </p>
-              <p className="line-clamp-1">
-                {index + 1}. {q.content.slice(0, 30)}
-                {q.content.length > 30 ? '...' : ''}
-              </p>
+              <div className="line-clamp-1 flex items-baseline gap-1">
+                <span className="shrink-0">{index + 1}.</span>
+                <LatexPreview
+                  content={q.content.length > 50 ? q.content.slice(0, 50) + '...' : q.content}
+                  className="inline text-sm"
+                />
+              </div>
             </div>
           ))}
         </div>

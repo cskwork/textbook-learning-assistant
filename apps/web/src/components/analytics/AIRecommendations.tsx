@@ -16,6 +16,7 @@ import { Star, Brain } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import { LatexPreview } from '@/components/questions/LatexPreview'
 import type { Question } from '@/lib/db'
 
 interface AIRecommendationsProps {
@@ -68,10 +69,9 @@ export default function AIRecommendations({ questions, isHeuristic }: AIRecommen
                 <div className="flex items-start justify-between gap-3">
                   {/* 문제 정보 */}
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-foreground line-clamp-1 mb-1.5">
-                      {question.content.slice(0, 40)}
-                      {question.content.length > 40 ? '...' : ''}
-                    </p>
+                    <div className="text-sm text-foreground line-clamp-1 mb-1.5">
+                      <LatexPreview content={question.content.length > 60 ? question.content.slice(0, 60) + '...' : question.content} />
+                    </div>
                     <div className="flex items-center gap-2 flex-wrap">
                       <Badge variant="outline" className="text-xs h-5 px-1.5">
                         {question.questionCategory}
