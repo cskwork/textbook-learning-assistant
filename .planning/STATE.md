@@ -138,6 +138,9 @@ Recent decisions affecting current work:
 - [Quick-001]: db.on('ready') 핸들러에서 seedIfEmpty 호출 — 앱 시작 시 DB open 완료 후 자동 시딩, 순환 참조 없음
 - [Quick-001]: CSS hidden 전환으로 QuestionForm 선택 입력 접기 — DOM 유지로 form state 보존 (shadcn Collapsible 미사용)
 - [Quick-001]: questionCount useLiveQuery — 학생 홈에서 시드 포함 전체 문제 수 실시간 반영
+- [Quick-002]: declare module 'react' { namespace JSX.IntrinsicElements } — React 19 react-jsx 모드에서 커스텀 웹 컴포넌트 타입 선언 방법 (global namespace 대신 module augmentation)
+- [Quick-002]: workbox maximumFileSizeToCacheInBytes 3MB 상향 — mathlive 번들 크기로 인한 PWA 빌드 실패 방지
+- [Quick-002]: math-virtual-keyboard-policy=manual — MathLive 모바일 가상 키보드 자동 팝업 방지
 
 ### Pending Todos
 
@@ -155,9 +158,10 @@ None yet.
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
 | 001 | 예제 수학 기출문제 시드 데이터 추가 + 사용성 개선 | 2026-02-20 | 3e9119b | [001-seed-data-ux-improvements](./quick/001-seed-data-ux-improvements/) |
+| 002 | MathLive WYSIWYG 수식 에디터 통합 — 강사 문제 등록/수정 폼 | 2026-02-20 | ec05fa4 | [2-mathlive-wysiwyg](./quick/2-mathlive-wysiwyg/) |
 
 ## Session Continuity
 
-Last activity: 2026-02-20 - Completed quick task 001: 예제 수학 기출문제 시드 데이터 추가 + 사용성 개선
-Stopped at: Quick task 001 완료
-Resume file: .planning/quick/001-seed-data-ux-improvements/001-SUMMARY.md
+Last activity: 2026-02-20 - Completed quick task 002: MathLive WYSIWYG 수식 에디터 통합
+Stopped at: Quick task 002 완료
+Resume file: .planning/quick/2-mathlive-wysiwyg/2-SUMMARY.md
