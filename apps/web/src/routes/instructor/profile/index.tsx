@@ -12,13 +12,13 @@
  * 4. 위험 영역 — 계정 삭제 Dialog (이메일 입력 확인 후 삭제)
  */
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
-import { Trash2 } from 'lucide-react'
+import { Trash2, Sparkles } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useSettings } from '@/contexts/SettingsContext'
 import { deleteAccount } from '@/lib/auth'
-import { saveUserSettings } from '@/services/settings.service'
+import { saveUserSettings, getGeminiApiKey, saveGeminiApiKey } from '@/services/settings.service'
 import { AvatarDisplay } from '@/components/profile/AvatarDisplay'
 import { ProfileEditForm } from '@/components/profile/ProfileEditForm'
 import { PasswordChangeForm } from '@/components/profile/PasswordChangeForm'
@@ -50,6 +50,18 @@ export default function InstructorProfilePage() {
   const [deleteEmailInput, setDeleteEmailInput] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
   const [deleteError, setDeleteError] = useState<string | null>(null)
+
+  // Gemini API 키 관리 상태
+  const [geminiKey, setGeminiKey] = useState('')
+  const [geminiKeySaved, setGeminiKeySaved] = useState(false)
+  const [geminiKeyLoading, setGeminiKeyLoading] = useState(false)
+
+  useEffect(() => {
+    if (!user) return
+    getGeminiApiKey(user.email).then(key => {
+      if (key) setGeminiKey(key)
+    })
+  }, [user?.email])
 
   /**
    * 프로필 저장 — AuthContext.updateProfile + Dexie 백업
@@ -83,6 +95,15 @@ export default function InstructorProfilePage() {
       setDeleteError('계정 삭제 중 오류가 발생했습니다. 다시 시도해주세요.')
       setIsDeleting(false)
     }
+  }
+
+  async function handleSaveGeminiKey() {
+    if (!user) return
+    setGeminiKeyLoading(true)
+    await saveGeminiApiKey(user.email, geminiKey.trim())
+    setGeminiKeyLoading(false)
+    setGeminiKeySaved(true)
+    setTimeout(() => setGeminiKeySaved(false), 2000)
   }
 
   if (!user) return null
@@ -162,6 +183,51 @@ export default function InstructorProfilePage() {
               <LatexPreview content="$x^2 + 2x + 1 = 0$" />
             </div>
           </div>
+        </CardContent>
+      </Card>
+
+      {/* AI 설정 카드 */}
+      <Card className="rounded-2xl border-none shadow-sm bg-white dark:bg-card">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base font-bold flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-primary" />
+            AI 문제 생성 설정
+          </CardTitle>
+          <CardDescription>
+            Google AI Studio에서 발급한 Gemini API 키를 입력하세요.
+            키는 이 기기에만 저장됩니다.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <div className="flex gap-2">
+            <Input
+              type="password"
+              placeholder="AIza..."
+              value={geminiKey}
+              onChange={(e) => setGeminiKey(e.target.value)}
+              className="font-mono text-sm"
+            />
+            <Button
+              onClick={handleSaveGeminiKey}
+              disabled={geminiKeyLoading || !geminiKey.trim()}
+              size="sm"
+              className="shrink-0"
+            >
+              {geminiKeySaved ? '저장됨' : '저장'}
+            </Button>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            API 키가 없으면{' '}
+            <a
+              href="https://aistudio.google.com/app/apikey"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline text-primary"
+            >
+              Google AI Studio
+            </a>
+            에서 무료로 발급받으세요.
+          </p>
         </CardContent>
       </Card>
 

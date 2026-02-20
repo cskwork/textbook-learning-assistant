@@ -1,8 +1,8 @@
 // apps/web/src/components/questions/QuestionForm.tsx
 // 문제 등록/수정 공유 폼 컴포넌트
-// react-hook-form + zod + shadcn Form + LatexEditor + ImageUpload
+// react-hook-form + zod + shadcn Form + LatexEditor + ImageUpload + AIGeneratePanel
 // UX 개선: 필수 입력(항상 노출) + 선택 입력(이미지/출처 접기/펼치기)
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -17,6 +17,10 @@ import {
 } from '@/components/ui/select'
 import { LatexEditor } from './LatexEditor'
 import { ImageUpload } from './ImageUpload'
+import { AIGeneratePanel } from './AIGeneratePanel'
+import { useAuth } from '@/contexts/AuthContext'
+import { getGeminiApiKey } from '@/services/settings.service'
+import type { GeneratedQuestion } from '@/services/gemini.service'
 import type { Question } from '@/lib/db'
 
 // zod 스키마 — QBNK-01, 02, 04, 05 필드 포함
@@ -62,6 +66,24 @@ export function QuestionForm({
 }: QuestionFormProps) {
   // 선택 입력(이미지/출처) 접기/펼치기 상태 — 기본값: 닫힘
   const [isOptionalOpen, setIsOptionalOpen] = useState(false)
+  // AI 문제 생성 — Gemini API 키 로드
+  const { user } = useAuth()
+  const [geminiApiKey, setGeminiApiKey] = useState<string | undefined>(undefined)
+
+  useEffect(() => {
+    if (!user) return
+    getGeminiApiKey(user.email).then(setGeminiApiKey)
+  }, [user?.email])
+
+  // AI 생성 결과를 폼 필드에 자동으로 채운다
+  function handleAIGenerated(result: GeneratedQuestion) {
+    form.setValue('content', result.content)
+    form.setValue('answer', result.answer)
+    form.setValue('explanation', result.explanation)
+    form.setValue('questionType', result.questionType)
+    form.setValue('difficulty', result.difficulty)
+    form.trigger(['content', 'answer', 'explanation'])
+  }
 
   const form = useForm<QuestionFormData>({
     resolver: zodResolver(questionSchema),
@@ -89,6 +111,11 @@ export function QuestionForm({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+
+        {/* AI 문제 생성 도우미 패널 — 폼 최상단 배치 */}
+        <AIGeneratePanel apiKey={geminiApiKey} onGenerated={handleAIGenerated} />
+
+        <hr className="border-border/40" />
 
         {/* ================================================================
             필수 입력 영역 — 항상 노출
