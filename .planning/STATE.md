@@ -10,9 +10,9 @@ See: .planning/PROJECT.md (updated 2026-02-19)
 ## Current Position
 
 Phase: 3 of 7 (퀴즈 엔진 + 오답노트)
-Plan: 2 of 4 in current phase
+Plan: 4 of 5 in current phase
 Status: Executing
-Last activity: 2026-02-20 — Phase 3 Plan 02 완료 (퀴즈 UI 컴포넌트 레이어 — useTimer + QuizPlayer)
+Last activity: 2026-02-20 — Phase 3 Plan 04 완료 (오답노트 UI 컴포넌트 + WrongNotesPage 라우트 등록)
 
 Progress: [████████░░] 40% (10/~25 plans across all phases)
 
@@ -44,6 +44,8 @@ Progress: [████████░░] 40% (10/~25 plans across all phases)
 | Phase 02-question-bank P04 | 155s | 2 tasks | 7 files |
 | Phase 03-quiz-engine P01 | 99s | 2 tasks | 3 files |
 | Phase 03-quiz-engine P02 | 3m | 2 tasks | 6 files |
+| Phase 03-quiz-engine P03 | 118s | 2 tasks | 3 files |
+| Phase 03-quiz-engine P04 | 116s | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -89,6 +91,10 @@ Recent decisions affecting current work:
 - [Phase 03-02]: timer.seconds 직접 참조로 timeSpent 캡처 — stop() 비동기 상태 업데이트 우회
 - [Phase 03-02]: RETRY 시 timer.reset() + timer.start() 순서 — QuizResult onRetry 콜백에서 처리
 - [Phase 03-02]: ShortAnswerInput type=text 고정 — type=number 빈 값 NaN 오류 방지 (Phase 2 패턴 재적용)
+- [Phase 03-03]: question 상태 undefined/null/Question 3단계 구분 — 로딩중/없음/정상 UI 분기 명확화
+- [Phase 03-03]: 북마크 useEffect를 문제 로드 useEffect와 분리 — question 로드 완료 후 user.email 의존성 명시
+- [Phase 03-04]: WrongNoteFilter useEffect에서 getWrongNoteUnits/Categories 비동기 로드 — 필터 옵션은 현재 studentId 기준 스냅샷으로 충분
+- [Phase 03-04]: lastWrongAt > 0 조건으로 순수 북마크(wrongCount=0) 날짜 표시 생략 — 1970-01-01 잘못된 날짜 노출 방지
 
 ### Pending Todos
 
@@ -104,5 +110,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-20
-Stopped at: Completed 03-quiz-engine/03-02-PLAN.md
-Resume file: .planning/phases/03-quiz-engine/03-02-SUMMARY.md
+Stopped at: Completed 03-quiz-engine/03-04-PLAN.md
+Resume file: .planning/phases/03-quiz-engine/03-04-SUMMARY.md
