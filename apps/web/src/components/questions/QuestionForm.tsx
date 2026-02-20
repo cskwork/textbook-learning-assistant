@@ -1,9 +1,12 @@
 // apps/web/src/components/questions/QuestionForm.tsx
 // 문제 등록/수정 공유 폼 컴포넌트
 // react-hook-form + zod + shadcn Form + LatexEditor + ImageUpload
+// UX 개선: 필수 입력(항상 노출) + 선택 입력(이미지/출처 접기/펼치기)
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
+import { ChevronDown, ChevronUp } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -57,6 +60,9 @@ export function QuestionForm({
   submitLabel = '문제 저장',
   isLoading = false,
 }: QuestionFormProps) {
+  // 선택 입력(이미지/출처) 접기/펼치기 상태 — 기본값: 닫힘
+  const [isOptionalOpen, setIsOptionalOpen] = useState(false)
+
   const form = useForm<QuestionFormData>({
     resolver: zodResolver(questionSchema),
     defaultValues: {
@@ -83,6 +89,11 @@ export function QuestionForm({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+
+        {/* ================================================================
+            필수 입력 영역 — 항상 노출
+            ================================================================ */}
+        <p className="text-sm font-medium text-muted-foreground">필수 입력</p>
 
         {/* 문제 유형 */}
         <FormField
@@ -120,25 +131,6 @@ export function QuestionForm({
                   onChange={field.onChange}
                   placeholder="수식 예시: $a^2 + b^2 = c^2$ 또는 $$\int_0^1 x\,dx = \frac{1}{2}$$"
                   minHeight="min-h-40"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* 문제 이미지 (선택) */}
-        <FormField
-          control={form.control}
-          name="imageDataUrl"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>문제 이미지 (선택)</FormLabel>
-              <FormControl>
-                <ImageUpload
-                  value={field.value}
-                  onChange={field.onChange}
-                  label="그래프/도형 이미지 업로드"
                 />
               </FormControl>
               <FormMessage />
@@ -187,26 +179,7 @@ export function QuestionForm({
           )}
         />
 
-        {/* 해설 이미지 (선택) */}
-        <FormField
-          control={form.control}
-          name="explanationImageDataUrl"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>해설 이미지 (선택)</FormLabel>
-              <FormControl>
-                <ImageUpload
-                  value={field.value}
-                  onChange={field.onChange}
-                  label="해설 이미지 업로드"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* 메타데이터 그리드 */}
+        {/* 메타데이터 그리드 — 과목/난이도/단원/유형 */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* 과목 */}
           <FormField
@@ -290,76 +263,135 @@ export function QuestionForm({
           />
         </div>
 
-        {/* 출처 — QBNK-05 */}
-        <div className="space-y-3 border rounded-lg p-4">
-          <p className="text-sm font-medium">출처 정보</p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        {/* ================================================================
+            선택 입력 영역 — 접기/펼치기 (이미지 + 출처)
+            접힌 상태에서도 form state는 유지됨 (hidden, unmount 아님)
+            ================================================================ */}
+        <div className="border-t border-dashed pt-4 mt-4">
+          <button
+            type="button"
+            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors w-full"
+            onClick={() => setIsOptionalOpen(!isOptionalOpen)}
+          >
+            {isOptionalOpen ? (
+              <ChevronUp className="w-4 h-4" />
+            ) : (
+              <ChevronDown className="w-4 h-4" />
+            )}
+            선택 입력 (이미지, 출처)
+          </button>
+
+          <div className={isOptionalOpen ? 'mt-4 space-y-6' : 'hidden'}>
+            {/* 문제 이미지 (선택) */}
             <FormField
               control={form.control}
-              name="sourceType"
+              name="imageDataUrl"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>시험 종류</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {(['수능', '모의고사', '교육청', '기타'] as const).map((t) => (
-                        <SelectItem key={t} value={t}>{t}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <FormLabel>문제 이미지 (선택)</FormLabel>
+                  <FormControl>
+                    <ImageUpload
+                      value={field.value}
+                      onChange={field.onChange}
+                      label="그래프/도형 이미지 업로드"
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            {sourceType !== '기타' && (
-              <FormField
-                control={form.control}
-                name="sourceYear"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>연도</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="number"
-                        placeholder="예: 2024"
-                        min={2000}
-                        max={2035}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
+            {/* 해설 이미지 (선택) */}
+            <FormField
+              control={form.control}
+              name="explanationImageDataUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>해설 이미지 (선택)</FormLabel>
+                  <FormControl>
+                    <ImageUpload
+                      value={field.value}
+                      onChange={field.onChange}
+                      label="해설 이미지 업로드"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-            {sourceType !== '기타' && (
-              <FormField
-                control={form.control}
-                name="sourceNumber"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>번호</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="number"
-                        placeholder="예: 30"
-                        min={1}
-                        max={50}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+            {/* 출처 — QBNK-05 */}
+            <div className="space-y-3 border rounded-lg p-4">
+              <p className="text-sm font-medium">출처 정보</p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <FormField
+                  control={form.control}
+                  name="sourceType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>시험 종류</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {(['수능', '모의고사', '교육청', '기타'] as const).map((t) => (
+                            <SelectItem key={t} value={t}>{t}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {sourceType !== '기타' && (
+                  <FormField
+                    control={form.control}
+                    name="sourceYear"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>연도</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            type="number"
+                            placeholder="예: 2024"
+                            min={2000}
+                            max={2035}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 )}
-              />
-            )}
+
+                {sourceType !== '기타' && (
+                  <FormField
+                    control={form.control}
+                    name="sourceNumber"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>번호</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            type="number"
+                            placeholder="예: 30"
+                            min={1}
+                            max={50}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
+              </div>
+            </div>
           </div>
         </div>
 
