@@ -135,6 +135,9 @@ Recent decisions affecting current work:
 - [Phase 07-instructor-portal]: Dexie version(5) groups/groupMembers/assignments 3개 테이블 + group.service.ts 11개 함수로 강사 포털 데이터 레이어 구축
 - [Phase 07-instructor-portal]: analytics.service.ts 수정 없이 studentId 파라미터로 재사용 — getOverallStats/getWeakCategories 함수 시그니처 그대로 활용
 - [Phase 07-instructor-portal]: routes 선언 순서: /instructor/groups/new → /instructor/groups/:id/assign → /instructor/groups/:id — 정적 경로 우선 배치로 react-router 매칭 보장
+- [Quick-001]: db.on('ready') 핸들러에서 seedIfEmpty 호출 — 앱 시작 시 DB open 완료 후 자동 시딩, 순환 참조 없음
+- [Quick-001]: CSS hidden 전환으로 QuestionForm 선택 입력 접기 — DOM 유지로 form state 보존 (shadcn Collapsible 미사용)
+- [Quick-001]: questionCount useLiveQuery — 학생 홈에서 시드 포함 전체 문제 수 실시간 반영
 
 ### Pending Todos
 
@@ -150,5 +153,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-20
-Stopped at: Completed 07-instructor-portal/07-02-PLAN.md
-Resume file: .planning/phases/07-instructor-portal/07-02-SUMMARY.md
+Stopped at: Completed quick/001-seed-data-ux-improvements/001-PLAN.md
+Resume file: .planning/quick/001-seed-data-ux-improvements/001-SUMMARY.md
