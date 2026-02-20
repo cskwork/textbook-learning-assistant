@@ -66,7 +66,13 @@ Plans:
   3. 문제 풀이 중 타이머가 작동하며 소요 시간이 학습 이력에 기록된다
   4. 틀린 문제가 오답노트에 자동 수집되고, 단원별/유형별 필터로 조회하고 다시 풀 수 있다
   5. 완전히 학습한 오답 문제를 노트에서 제거하고, 모든 풀이 결과가 학습 이력에 저장된다
-**Plans**: TBD
+**Plans**: 5 plans
+Plans:
+- [ ] 03-01-PLAN.md — Dexie version(2) 스키마 확장 + quiz.service.ts + wrongNote.service.ts
+- [ ] 03-02-PLAN.md — useTimer 훅 + 퀴즈 UI 컴포넌트 (QuizPlayer, 입력, 결과, 타이머)
+- [ ] 03-03-PLAN.md — 학생 문제 목록 페이지 + 퀴즈 라우트 + main.tsx 등록
+- [ ] 03-04-PLAN.md — 오답노트 UI (WrongNoteFilter, WrongNoteCard, WrongNoteList) + 라우트 등록
+- [ ] 03-05-PLAN.md — Phase 3 통합 사용자 검증 체크포인트
 
 ### Phase 4: DIY 문제집 생성기
 **Goal**: 학생이 원하는 단원·유형·난이도 조건으로 나만의 문제집을 만들고 저장하여 반복 활용할 수 있다
@@ -118,7 +124,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 |-------|----------------|--------|-----------|
 | 1. 기반 인프라 + 인증 | 5/5 | Complete   | 2026-02-20 |
 | 2. 문제 뱅크 + 수식 렌더링 | 4/5 | In Progress|  |
-| 3. 퀴즈 엔진 + 오답노트 | 0/TBD | Not started | - |
+| 3. 퀴즈 엔진 + 오답노트 | 0/5 | Not started | - |
 | 4. DIY 문제집 생성기 | 0/TBD | Not started | - |
 | 5. AI 분석 + 학습 리포트 | 0/TBD | Not started | - |
 | 6. PWA 오프라인 지원 | 0/TBD | Not started | - |
