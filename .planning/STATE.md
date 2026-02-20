@@ -5,14 +5,14 @@
 See: .planning/PROJECT.md (updated 2026-02-19)
 
 **Core value:** 학생이 자신의 취약한 수학 유형을 정확히 파악하고, AI가 추천하는 맞춤 문제를 통해 효율적으로 실력을 향상시킬 수 있어야 한다
-**Current focus:** Phase 6 — PWA 오프라인 지원
+**Current focus:** Phase 7 — 강사 관리 포털
 
 ## Current Position
 
-Phase: 6 of 7 (PWA 오프라인 지원)
-Plan: 2 of 3 in current phase
+Phase: 7 of 7 (강사 관리 포털)
+Plan: 1 of 4 in current phase
 Status: In Progress
-Last activity: 2026-02-20 — Phase 6 Plan 02 완료 (PWAInstallBanner 컴포넌트 + main.tsx 통합)
+Last activity: 2026-02-20 — Phase 7 Plan 01 완료 (Dexie version(5) + group.service.ts)
 
 Progress: [████████░░] 60% (15/~25 plans across all phases)
 
@@ -55,6 +55,7 @@ Progress: [████████░░] 60% (15/~25 plans across all phases)
 | Phase 05-ai-analytics P04 | 226s | 2 tasks | 7 files |
 | Phase 06-pwa-offline P01 | 152s | 2 tasks | 7 files |
 | Phase 06-pwa-offline P02 | 187s | 2 tasks | 4 files |
+| Phase 07-instructor-portal PP01 | 121s | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -129,6 +130,7 @@ Recent decisions affecting current work:
 - [Phase 06-pwa-offline]: workbox-window 명시적 dependency 추가 — virtual:pwa-register/react 번들 시 Rollup resolve 필수
 - [Phase 06-pwa-offline]: tsconfig.app.json types에 vite-plugin-pwa/client 추가 — virtual:pwa-register/react TypeScript 인식
 - [Phase 06-pwa-offline]: PWAInstallBanner bottom-20 고정 배너 — 하단 탭바(h-16) 위에 배너 표시 패턴
+- [Phase 07-instructor-portal]: Dexie version(5) groups/groupMembers/assignments 3개 테이블 + group.service.ts 11개 함수로 강사 포털 데이터 레이어 구축
 
 ### Pending Todos
 
@@ -144,5 +146,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-20
-Stopped at: Completed 06-pwa-offline/06-02-PLAN.md
-Resume file: .planning/phases/06-pwa-offline/06-02-SUMMARY.md
+Stopped at: Completed 07-instructor-portal/07-01-PLAN.md
+Resume file: .planning/phases/07-instructor-portal/07-01-SUMMARY.md
