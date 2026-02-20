@@ -158,6 +158,7 @@ Recent decisions affecting current work:
 - [Phase 08-03]: ProfileEditForm useEffect 동기화: user props 변경 시 setValue 재동기화 — updateProfile 후 폼 상태 불일치 방지
 - [Phase 08-04]: AppShell profilePath prop 패턴: _layout.tsx가 user.role 기반으로 profilePath 결정 후 AppShell에 주입
 - [Phase 02-question-bank]: Phase 2 통합 검증은 사용자 브라우저 직접 확인으로 완료 — 22개 항목 A~G 전부 통과, Phase 3 진입 가능
+- [Phase 03-quiz-engine]: Phase 3 통합 검증은 사용자 브라우저 직접 확인으로 완료 — 5개 시나리오 전부 통과 (객관식/단답형 풀기, 오답노트 흐름, 북마크, 학습 이력)
 
 ### Roadmap Evolution
 
