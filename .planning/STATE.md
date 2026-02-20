@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-19)
 ## Current Position
 
 Phase: 1 of 7 (기반 인프라 + 인증)
-Plan: 4 of 5 in current phase
-Status: In progress
-Last activity: 2026-02-20 — 01-04 완료 (인증 UI + AuthContext + 보호 라우트 + RBAC)
+Plan: 5 of 5 in current phase
+Status: Checkpoint — 사용자 검증 대기 중
+Last activity: 2026-02-20 — 01-05 체크포인트 도달 (Phase 1 통합 사용자 검증 대기)
 
-Progress: [████░░░░░░] 14% (4/5 plans in Phase 1)
+Progress: [█████░░░░░] 17% (5/5 plans in Phase 1 — 체크포인트 대기)
 
 ## Performance Metrics
 
@@ -37,6 +37,7 @@ Progress: [████░░░░░░] 14% (4/5 plans in Phase 1)
 | Phase 01-infra-auth P01 | 3m 31s | 2 tasks | 12 files |
 | Phase 01-infra-auth P03 | 30m 14s | 2 tasks | 5 files |
 | Phase 01-infra-auth P04 | 6m | 2 tasks | 17 files |
+| Phase 01-infra-auth P05 | 1m | 0 tasks | 0 files |
 
 ## Accumulated Context
 
@@ -62,6 +63,7 @@ Recent decisions affecting current work:
 - [Phase 01-04]: register 후 login 재호출로 AuthContext user 상태 동기화 (명시적 방법)
 - [Phase 01-04]: BottomNav/Sidebar NavLink end prop 항상 true — 중첩 라우트 활성 상태 정확도
 - [Phase 01-04]: AppShell 모바일 상단 헤더에 로그아웃 버튼 — BottomNav에는 로그아웃 없음
+- [Phase 01-infra-auth]: Phase 1 통합 검증은 사용자 브라우저 직접 확인으로 완료 — 21개 테스트 항목
 
 ### Pending Todos
 
@@ -77,5 +79,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-20
-Stopped at: Completed 01-infra-auth/01-04-PLAN.md (인증 UI + AuthContext + 보호 라우트 + RBAC)
-Resume file: .planning/phases/01-infra-auth/01-04-SUMMARY.md
+Stopped at: Checkpoint 01-infra-auth/01-05-PLAN.md (Phase 1 통합 사용자 검증 — 브라우저 확인 대기 중)
+Resume file: .planning/phases/01-infra-auth/01-05-SUMMARY.md

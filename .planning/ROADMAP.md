@@ -10,7 +10,7 @@
 - Integer phases (1, 2, 3): Planned milestone work
 - Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
 
-- [ ] **Phase 1: 기반 인프라 + 인증** - 인증/인가 시스템, DB 스키마 확정, 반응형 레이아웃 기반 구축
+- [x] **Phase 1: 기반 인프라 + 인증** - 인증/인가 시스템, DB 스키마 확정, 반응형 레이아웃 기반 구축 (completed 2026-02-20)
 - [ ] **Phase 2: 문제 뱅크 + 수식 렌더링** - 문제 CRUD, 태깅 시스템, KaTeX 렌더링, 강사 문제 입력 UI
 - [ ] **Phase 3: 퀴즈 엔진 + 오답노트** - 문제 풀이 세션, 자동 채점, 오답노트 자동 수집, 타이머
 - [ ] **Phase 4: DIY 문제집 생성기** - 조건 기반 문제집 구성, 저장, 풀이 이력 반영
@@ -110,7 +110,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. 기반 인프라 + 인증 | 4/5 | In Progress|  |
+| 1. 기반 인프라 + 인증 | 5/5 | Complete   | 2026-02-20 |
 | 2. 문제 뱅크 + 수식 렌더링 | 0/TBD | Not started | - |
 | 3. 퀴즈 엔진 + 오답노트 | 0/TBD | Not started | - |
 | 4. DIY 문제집 생성기 | 0/TBD | Not started | - |
