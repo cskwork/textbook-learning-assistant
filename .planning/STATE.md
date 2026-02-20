@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-19)
 ## Current Position
 
 Phase: 7 of 7 (강사 관리 포털)
-Plan: 3 of 4 in current phase
-Status: In Progress
-Last activity: 2026-02-20 — Phase 7 Plan 02 완료 (강사 그룹 관리 UI — GroupListPage/GroupNewPage/GroupDetailPage/AssignWorkbookPage)
+Plan: 4 of 4 in current phase (checkpoint:human-verify 대기 중)
+Status: In Progress — Phase 7 Task 2 사용자 검증 대기
+Last activity: 2026-02-21 — Phase 7 Plan 04 Task 1 완료 (강사 홈 실데이터 + 학생 홈 반 참여 버튼)
 
-Progress: [████████░░] 60% (15/~25 plans across all phases)
+Progress: [█████████░] 90% (19/~25 plans across all phases)
 
 ## Performance Metrics
 
@@ -58,6 +58,7 @@ Progress: [████████░░] 60% (15/~25 plans across all phases)
 | Phase 07-instructor-portal PP01 | 121s | 2 tasks | 2 files |
 | Phase 07-instructor-portal P03 | 136 | 2 tasks | 3 files |
 | Phase 07-instructor-portal P02 | 186s | 2 tasks | 6 files |
+| Phase 07-instructor-portal P04 | 300 | 1 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -141,6 +142,8 @@ Recent decisions affecting current work:
 - [Quick-002]: declare module 'react' { namespace JSX.IntrinsicElements } — React 19 react-jsx 모드에서 커스텀 웹 컴포넌트 타입 선언 방법 (global namespace 대신 module augmentation)
 - [Quick-002]: workbox maximumFileSizeToCacheInBytes 3MB 상향 — mathlive 번들 크기로 인한 PWA 빌드 실패 방지
 - [Quick-002]: math-virtual-keyboard-policy=manual — MathLive 모바일 가상 키보드 자동 팝업 방지
+- [Phase 07-04]: 강사 홈 groupCount/problemCount: useLiveQuery 직접 사용 — group.service.ts 비동기 함수 우회
+- [Phase 07-04]: 학생 홈 반 참여 버튼: 문제 풀기 카드 내 배치 — 최소 변경 원칙
 
 ### Pending Todos
 
