@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-19)
 ## Current Position
 
 Phase: 8 of 8 (마이페이지 + 앱 설정)
-Plan: 1 of 4 in current phase (완료)
-Status: In Progress — Phase 8 Plan 01 완료 (SettingsContext 인프라 구축)
-Last activity: 2026-02-20 — Phase 8 Plan 01 완료 (다크모드 + KaTeX 설정 인프라)
+Plan: 3 of 4 in current phase (완료)
+Status: In Progress — Phase 8 Plan 03 완료 (마이페이지 UI 컴포넌트 구현)
+Last activity: 2026-02-21 — Phase 8 Plan 03 완료 (학생/강사 마이페이지 + 프로필 컴포넌트)
 
-Progress: [█████████░] 92% (20/~25 plans across all phases)
+Progress: [█████████░] 96% (22/~25 plans across all phases)
 
 ## Performance Metrics
 
@@ -61,6 +61,7 @@ Progress: [█████████░] 92% (20/~25 plans across all phases)
 | Phase 07-instructor-portal P04 | 300 | 1 tasks | 2 files |
 | Phase 08-mypage-settings P01 | 109s | 2 tasks | 7 files |
 | Phase 08-mypage-settings P02 | 123s | 2 tasks | 4 files |
+| Phase 08-mypage-settings P03 | 226s | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -152,6 +153,8 @@ Recent decisions affecting current work:
 - [Phase 08-02]: StoredUser 내부 타입 분리 — password를 User 공개 타입에서 숨김
 - [Phase 08-02]: deleteAccount dynamic import db — auth.ts ↔ db.ts 순환 참조 방지
 - [Phase 08-02]: login() 비밀번호 하위 호환 — stored.password 없으면 기존 유저 통과
+- [Phase 08-03]: 함수 내부 null 가드: TypeScript 클로저에서 user null 추론 오류 — handleDeleteAccount 등 내부 함수에 별도 if (!user) return 추가
+- [Phase 08-03]: ProfileEditForm useEffect 동기화: user props 변경 시 setValue 재동기화 — updateProfile 후 폼 상태 불일치 방지
 
 ### Roadmap Evolution
 
@@ -177,6 +180,6 @@ None yet.
 
 ## Session Continuity
 
-Last activity: 2026-02-20 - Phase 08 Plan 01 완료 (SettingsContext 인프라 구축)
-Stopped at: Phase 08 Plan 01 완료 — SettingsContext 인프라 구축
-Resume file: .planning/phases/08-mypage-settings/08-01-SUMMARY.md
+Last activity: 2026-02-21 - Phase 08 Plan 03 완료 (마이페이지 UI 컴포넌트 구현)
+Stopped at: Phase 08 Plan 03 완료 — 학생/강사 마이페이지 통합 페이지 구현
+Resume file: .planning/phases/08-mypage-settings/08-03-SUMMARY.md
