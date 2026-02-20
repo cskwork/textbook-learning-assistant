@@ -1,12 +1,12 @@
 /**
  * 과제 배정 페이지 (/instructor/groups/:id/assign)
- * 강사 자신의 문제집 목록에서 선택 → 그룹에 배정
  */
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router'
+import { ClipboardList } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import {
   Select,
   SelectContent,
@@ -39,7 +39,6 @@ export default function AssignWorkbookPage() {
         return
       }
       setGroup(g)
-      // 강사 자신이 만든 문제집만 조회 (user.email = 문제집의 studentId)
       setWorkbooks(await listWorkbooks(user.email))
     })()
   }, [groupId, user])
@@ -62,58 +61,70 @@ export default function AssignWorkbookPage() {
     }
   }
 
-  if (!group) return <div className="p-6 text-center text-muted-foreground">로딩 중...</div>
+  if (!group) {
+    return (
+      <div className="p-4 md:p-6 lg:p-8 max-w-lg mx-auto flex flex-col justify-center min-h-[60vh]">
+        <div className="h-8 w-40 bg-muted rounded-xl animate-pulse mb-4" />
+        <div className="h-32 bg-muted/40 rounded-2xl animate-pulse" />
+      </div>
+    )
+  }
 
   return (
-    <div className="p-4 md:p-6 max-w-md mx-auto">
-      <h1 className="text-xl font-bold mb-1">과제 배정</h1>
-      <p className="text-sm text-muted-foreground mb-4">{group.name}</p>
+    <div className="p-4 md:p-6 lg:p-8 max-w-lg mx-auto flex flex-col justify-center min-h-[60vh]">
+      <div className="animate-fade-up stagger-1">
+        <h1 className="text-[1.65rem] font-extrabold tracking-tight text-foreground mb-1">과제 배정</h1>
+        <p className="text-sm text-muted-foreground mb-6">{group.name}</p>
 
-      {workbooks.length === 0 ? (
-        <Card>
-          <CardContent className="p-6 text-center text-muted-foreground">
-            <CardHeader>
-              <CardTitle className="text-sm">문제집이 없습니다</CardTitle>
-            </CardHeader>
-            <p className="text-xs">
-              과제를 배정하려면 먼저 문제집을 만들어야 합니다.
-              학생용 문제집 생성 페이지를 이용하거나,
-              강사 계정으로 문제집을 직접 만드세요.
-            </p>
-            <Button variant="outline" size="sm" className="mt-3"
-              onClick={() => navigate('/student/workbooks/create')}>
-              문제집 만들기
-            </Button>
-          </CardContent>
-        </Card>
-      ) : (
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-1">
-            <Label>문제집 선택</Label>
-            <Select value={selectedWorkbookId} onValueChange={setSelectedWorkbookId}>
-              <SelectTrigger>
-                <SelectValue placeholder="과제로 배정할 문제집을 선택하세요" />
-              </SelectTrigger>
-              <SelectContent>
-                {workbooks.map((wb) => (
-                  <SelectItem key={wb.id} value={String(wb.id)}>
-                    {wb.title} ({wb.questionIds.length}문제)
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="flex gap-2">
-            <Button type="submit" disabled={isSubmitting || !selectedWorkbookId}>
-              {isSubmitting ? '배정 중...' : '과제 배정'}
-            </Button>
-            <Button type="button" variant="outline"
-              onClick={() => navigate(`/instructor/groups/${groupId}`)}>
-              취소
-            </Button>
-          </div>
-        </form>
-      )}
+        {workbooks.length === 0 ? (
+          <Card className="rounded-2xl border-none shadow-sm bg-white dark:bg-card">
+            <CardContent className="p-8 text-center">
+              <div className="w-14 h-14 rounded-2xl bg-muted/60 flex items-center justify-center mx-auto mb-4">
+                <ClipboardList className="w-7 h-7 text-muted-foreground/40" />
+              </div>
+              <p className="text-sm font-bold text-foreground mb-1">문제집이 없습니다</p>
+              <p className="text-xs text-muted-foreground mb-4">
+                과제를 배정하려면 먼저 문제집을 만들어야 합니다.
+              </p>
+              <Button variant="outline" className="rounded-xl font-semibold"
+                onClick={() => navigate('/student/workbooks/create')}>
+                문제집 만들기
+              </Button>
+            </CardContent>
+          </Card>
+        ) : (
+          <Card className="rounded-2xl border-none shadow-sm bg-white dark:bg-card">
+            <CardContent className="p-6">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="space-y-1.5">
+                  <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">문제집 선택</Label>
+                  <Select value={selectedWorkbookId} onValueChange={setSelectedWorkbookId}>
+                    <SelectTrigger className="h-11 rounded-xl bg-muted/40 border-transparent focus:border-primary/30">
+                      <SelectValue placeholder="과제로 배정할 문제집을 선택하세요" />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-xl">
+                      {workbooks.map((wb) => (
+                        <SelectItem key={wb.id} value={String(wb.id)} className="rounded-lg">
+                          {wb.title} ({wb.questionIds.length}문제)
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="flex gap-2 pt-1">
+                  <Button type="submit" className="rounded-xl font-semibold flex-1" disabled={isSubmitting || !selectedWorkbookId}>
+                    {isSubmitting ? '배정 중...' : '과제 배정'}
+                  </Button>
+                  <Button type="button" variant="outline" className="rounded-xl"
+                    onClick={() => navigate(`/instructor/groups/${groupId}`)}>
+                    취소
+                  </Button>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+        )}
+      </div>
     </div>
   )
 }

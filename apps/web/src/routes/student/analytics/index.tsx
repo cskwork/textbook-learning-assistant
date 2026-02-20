@@ -137,11 +137,11 @@ export default function AnalyticsPage() {
   if (!user) return null
 
   return (
-    <div className="p-4 md:p-6 max-w-4xl mx-auto space-y-6">
+    <div className="p-4 md:p-6 lg:p-8 max-w-6xl mx-auto space-y-5">
       {/* 헤더: 제목 + 스트릭 뱃지 */}
-      <div className="flex items-start justify-between gap-3">
+      <div className="flex items-start justify-between gap-3 animate-fade-up stagger-1">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">학습 분석</h1>
+          <h1 className="text-[1.65rem] font-extrabold text-foreground tracking-tight">학습 분석</h1>
           <p className="text-sm text-muted-foreground mt-0.5">
             나의 학습 현황을 한눈에 확인하세요
           </p>
@@ -150,19 +150,23 @@ export default function AnalyticsPage() {
       </div>
 
       {/* 일일 목표 진행률 */}
-      <DailyGoalProgress userId={user.email} todayCount={todayCount} />
+      <div className="animate-fade-up stagger-2">
+        <DailyGoalProgress userId={user.email} todayCount={todayCount} />
+      </div>
 
       {/* 요약 통계 카드 4종 */}
-      <SummaryStatsCards
-        stats={overallStats}
-        todayCount={todayCount}
-        streak={streak}
-      />
+      <div className="animate-fade-up stagger-3">
+        <SummaryStatsCards
+          stats={overallStats}
+          todayCount={todayCount}
+          streak={streak}
+        />
+      </div>
 
       {/* AI 추천 문제 섹션 */}
-      <Card>
+      <Card className="rounded-2xl border-none shadow-sm bg-white dark:bg-card animate-fade-up stagger-4">
         <CardHeader className="pb-2">
-          <CardTitle className="text-base">AI 추천 문제</CardTitle>
+          <CardTitle className="text-sm font-bold">AI 추천 문제</CardTitle>
         </CardHeader>
         <CardContent>
           <AIRecommendations
@@ -172,33 +176,36 @@ export default function AnalyticsPage() {
         </CardContent>
       </Card>
 
-      {/* 유형별 정답률 차트 */}
-      <Card>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-base">유형별 정답률</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <AccuracyBarChart data={categoryAccuracy} />
-        </CardContent>
-      </Card>
+      {/* 차트 2컬럼 그리드: 데스크톱에서 나란히 배치 */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-5">
+        {/* 유형별 정답률 차트 */}
+        <Card className="rounded-2xl border-none shadow-sm bg-white dark:bg-card animate-fade-up stagger-5">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-bold">유형별 정답률</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <AccuracyBarChart data={categoryAccuracy} />
+          </CardContent>
+        </Card>
 
-      {/* 학습 추이 (14일) */}
-      <Card>
+        {/* 취약 유형 분포 */}
+        <Card className="rounded-2xl border-none shadow-sm bg-white dark:bg-card animate-fade-up stagger-5">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-bold">취약 유형 분포</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <WeakTypeRadarChart data={weakCategories} />
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* 학습 추이 (14일) — 전체 폭 */}
+      <Card className="rounded-2xl border-none shadow-sm bg-white dark:bg-card animate-fade-up stagger-6">
         <CardHeader className="pb-2">
-          <CardTitle className="text-base">학습 추이 (14일)</CardTitle>
+          <CardTitle className="text-sm font-bold">학습 추이 (14일)</CardTitle>
         </CardHeader>
         <CardContent>
           <DailyTrendLineChart data={dailyStats} />
-        </CardContent>
-      </Card>
-
-      {/* 취약 유형 분포 */}
-      <Card>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-base">취약 유형 분포</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <WeakTypeRadarChart data={weakCategories} />
         </CardContent>
       </Card>
     </div>

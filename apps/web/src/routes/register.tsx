@@ -1,20 +1,16 @@
 /**
  * 회원가입 페이지
  *
- * - 이메일 + 비밀번호 폼
- * - 비밀번호 8자 이상 클라이언트 검증
- * - 서버 에러(이미 가입된 이메일 등) 폼 하단에 빨간색으로 표시
- * - 성공 시 /onboarding으로 이동
- * - 반응형: 모바일 전체 너비, 태블릿/데스크톱 중앙 카드 (max-w-md mx-auto)
+ * 디자인: 로그인과 동일한 비주얼 언어 — 데코 서클, 글래스 카드
  */
 
 import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router'
-import { GraduationCap } from 'lucide-react'
+import { GraduationCap, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { useAuth, isApiError } from '@/contexts/AuthContext'
 import { register as apiRegister } from '@/lib/auth'
 
@@ -27,7 +23,6 @@ export default function RegisterPage() {
   const [error, setError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  // 클라이언트 유효성 검사
   function validate(): string {
     if (!email.trim()) return '이메일을 입력해주세요'
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return '올바른 이메일 형식이 아닙니다'
@@ -38,60 +33,52 @@ export default function RegisterPage() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     setError('')
-
     const validationError = validate()
-    if (validationError) {
-      setError(validationError)
-      return
-    }
+    if (validationError) { setError(validationError); return }
 
     setIsSubmitting(true)
     try {
-      // 가입 후 즉시 로그인 (쿠키가 이미 설정되어 있으나 AuthContext user 상태 업데이트를 위해)
       await apiRegister(email, password)
-      // 가입 직후 AuthContext.login으로 user 상태 동기화
-      // (register API가 이미 쿠키를 설정했으므로 login API 호출 없이 getMe()로 해도 되지만,
-      //  명확한 상태 업데이트를 위해 login을 호출)
       await login(email, password)
       navigate('/onboarding')
     } catch (err) {
-      if (isApiError(err)) {
-        setError(err.error)
-      } else {
-        setError('회원가입 중 오류가 발생했습니다. 다시 시도해주세요.')
-      }
+      setError(isApiError(err) ? err.error : '회원가입 중 오류가 발생했습니다. 다시 시도해주세요.')
     } finally {
       setIsSubmitting(false)
     }
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-background via-background to-secondary/30 px-4 py-8">
-      {/* 앱 로고 */}
-      <div className="flex flex-col items-center gap-3 mb-10">
-        <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center shadow-sm">
-          <GraduationCap className="w-8 h-8 text-primary-foreground" />
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8 relative overflow-hidden bg-background">
+      {/* ── 데코 서클 ── */}
+      <div className="pointer-events-none absolute -top-32 -left-32 w-80 h-80 rounded-full bg-violet-500/6 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-24 -right-24 w-64 h-64 rounded-full bg-primary/5 blur-3xl" />
+      <div className="pointer-events-none absolute top-1/2 right-1/4 w-40 h-40 rounded-full bg-amber-500/4 blur-2xl" />
+
+      {/* ── 브랜드 영역 ── */}
+      <div className="flex flex-col items-center gap-3 mb-10 animate-fade-up stagger-1 relative">
+        <div className="w-14 h-14 rounded-2xl cta-gradient flex items-center justify-center shadow-lg shadow-primary/20">
+          <GraduationCap className="w-7 h-7 text-white" />
         </div>
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-foreground tracking-tight">기출 학습 도우미</h1>
-          <p className="text-sm text-muted-foreground mt-1">수학 기출문제 학습 플랫폼</p>
+          <h1 className="text-[1.6rem] font-extrabold text-foreground tracking-tight">기출 학습 도우미</h1>
+          <p className="text-sm text-muted-foreground mt-0.5">수학 기출문제 학습 플랫폼</p>
         </div>
       </div>
 
-      {/* 회원가입 카드 */}
-      <Card className="w-full max-w-sm rounded-[24px] border-none shadow-xl shadow-black/5 bg-white/80 dark:bg-card/60 backdrop-blur-xl">
-        <CardHeader className="space-y-2 pb-6 pt-8 px-8">
-          <CardTitle className="text-2xl font-bold text-center tracking-tight">회원가입</CardTitle>
-          <CardDescription className="text-center text-sm">
+      {/* ── 회원가입 카드 ── */}
+      <Card className="w-full max-w-sm rounded-[22px] border-none shadow-xl shadow-black/[0.04] bg-white/85 dark:bg-card/70 backdrop-blur-2xl animate-scale-in stagger-2 relative">
+        <CardHeader className="pb-1 pt-7 px-7">
+          <h2 className="text-xl font-bold tracking-tight text-center">회원가입</h2>
+          <p className="text-sm text-muted-foreground text-center mt-1">
             계정을 만들어 학습을 시작하세요
-          </CardDescription>
+          </p>
         </CardHeader>
 
-        <CardContent className="px-8 pb-8">
-          <form className="space-y-5" onSubmit={handleSubmit} noValidate>
-            {/* 이메일 입력 */}
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm font-semibold">이메일</Label>
+        <CardContent className="px-7 pb-7 pt-4">
+          <form className="space-y-4" onSubmit={handleSubmit} noValidate>
+            <div className="space-y-1.5">
+              <Label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">이메일</Label>
               <Input
                 id="email"
                 type="email"
@@ -102,13 +89,12 @@ export default function RegisterPage() {
                 autoFocus
                 disabled={isSubmitting}
                 aria-describedby={error ? 'form-error' : undefined}
-                className="h-11 rounded-xl bg-muted/50 focus-visible:bg-transparent"
+                className="h-11 rounded-xl bg-muted/40 border-transparent focus-visible:bg-white dark:focus-visible:bg-card focus-visible:border-primary/30 focus-visible:shadow-sm transition-all"
               />
             </div>
 
-            {/* 비밀번호 입력 */}
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-sm font-semibold">비밀번호</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="password" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">비밀번호</Label>
               <Input
                 id="password"
                 type="password"
@@ -118,37 +104,45 @@ export default function RegisterPage() {
                 autoComplete="new-password"
                 disabled={isSubmitting}
                 aria-describedby={error ? 'form-error' : undefined}
-                className="h-11 rounded-xl bg-muted/50 focus-visible:bg-transparent"
+                className="h-11 rounded-xl bg-muted/40 border-transparent focus-visible:bg-white dark:focus-visible:bg-card focus-visible:border-primary/30 focus-visible:shadow-sm transition-all"
               />
+              <p className="text-[11px] text-muted-foreground/70 mt-1">8자 이상 영문, 숫자 조합</p>
             </div>
 
-            {/* 에러 메시지 */}
             {error && (
               <p
                 id="form-error"
-                className="text-sm text-destructive font-medium bg-destructive/10 px-3 py-2 rounded-lg"
+                className="text-sm text-destructive font-medium bg-destructive/8 px-3 py-2.5 rounded-xl animate-fade-up"
                 role="alert"
               >
                 {error}
               </p>
             )}
 
-            {/* 제출 버튼 */}
             <Button
               type="submit"
-              className="w-full h-11 rounded-xl text-base font-semibold shadow-sm hover:-translate-y-0.5 transition-transform mt-2"
+              className="w-full h-11 rounded-xl text-sm font-bold shadow-md shadow-primary/15 hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-0.5 active:translate-y-0 transition-all mt-1"
               disabled={isSubmitting}
             >
-              {isSubmitting ? '가입 중...' : '회원가입'}
+              {isSubmitting ? (
+                <span className="flex items-center gap-2">
+                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  가입 중...
+                </span>
+              ) : (
+                <span className="flex items-center gap-1.5">
+                  회원가입
+                  <ArrowRight className="w-4 h-4" />
+                </span>
+              )}
             </Button>
 
-            {/* 로그인 링크 */}
-            <div className="text-center pt-2">
+            <div className="text-center pt-3">
               <p className="text-sm text-muted-foreground">
                 이미 계정이 있으신가요?{' '}
                 <Link
                   to="/login"
-                  className="text-primary font-semibold hover:underline decoration-2 underline-offset-4"
+                  className="text-primary font-bold hover:underline decoration-2 underline-offset-4 transition-colors"
                 >
                   로그인
                 </Link>

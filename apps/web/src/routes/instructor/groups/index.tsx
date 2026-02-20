@@ -1,12 +1,11 @@
 /**
  * 강사 반 목록 페이지 (/instructor/groups)
- * useLiveQuery로 그룹 목록 실시간 반응
  */
 import { useNavigate } from 'react-router'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { Plus, Users, ClipboardList } from 'lucide-react'
+import { Plus, Users, ChevronRight, CalendarDays } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { useAuth } from '@/contexts/AuthContext'
 import { db } from '@/lib/db'
@@ -22,48 +21,61 @@ export default function GroupListPage() {
   )
 
   return (
-    <div className="p-4 md:p-6 max-w-2xl mx-auto space-y-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold">반 관리</h1>
-        <Button size="sm" onClick={() => navigate('/instructor/groups/new')}>
-          <Plus className="h-4 w-4 mr-1" />
+    <div className="p-4 md:p-6 lg:p-8 max-w-6xl mx-auto space-y-5">
+      {/* 헤더 */}
+      <div className="flex items-center justify-between animate-fade-up stagger-1">
+        <div>
+          <h1 className="text-[1.65rem] font-extrabold tracking-tight text-foreground">반 관리</h1>
+          <p className="text-sm text-muted-foreground mt-0.5">
+            {groups ? `${groups.length}개의 반을 관리하고 있어요` : '로딩 중...'}
+          </p>
+        </div>
+        <Button className="rounded-xl shadow-sm font-semibold h-9 px-4" onClick={() => navigate('/instructor/groups/new')}>
+          <Plus className="h-4 w-4" />
           새 반 만들기
         </Button>
       </div>
 
       {!groups || groups.length === 0 ? (
-        <Card>
-          <CardContent className="p-8 text-center text-muted-foreground">
-            <Users className="h-12 w-12 mx-auto mb-3 opacity-30" />
-            <p className="text-sm">아직 만든 반이 없습니다.</p>
-            <Button variant="outline" size="sm" className="mt-3"
-              onClick={() => navigate('/instructor/groups/new')}>
-              첫 번째 반 만들기
-            </Button>
-          </CardContent>
-        </Card>
+        <div className="animate-fade-up stagger-2">
+          <Card className="rounded-2xl border-none shadow-sm bg-white dark:bg-card">
+            <CardContent className="p-12 text-center">
+              <div className="w-16 h-16 rounded-2xl bg-muted/60 flex items-center justify-center mx-auto mb-4">
+                <Users className="h-8 w-8 text-muted-foreground/40" />
+              </div>
+              <p className="text-sm font-bold text-foreground mb-1">아직 만든 반이 없습니다</p>
+              <p className="text-xs text-muted-foreground mb-4">첫 번째 반을 만들어 학생들을 초대해 보세요.</p>
+              <Button className="rounded-xl font-semibold" onClick={() => navigate('/instructor/groups/new')}>
+                <Plus className="h-4 w-4" />
+                첫 번째 반 만들기
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
       ) : (
-        <div className="space-y-3">
-          {groups.map((group) => (
-            <Card key={group.id} className="cursor-pointer hover:shadow-md transition-shadow"
-              onClick={() => navigate(`/instructor/groups/${group.id}`)}>
-              <CardHeader className="pb-2">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-base">{group.name}</CardTitle>
-                  <Badge variant="secondary" className="font-mono text-xs">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 animate-fade-up stagger-2">
+          {groups.map((group, idx) => (
+            <Card
+              key={group.id}
+              className="rounded-2xl border-none shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 cursor-pointer bg-white dark:bg-card overflow-hidden group"
+              style={{ animationDelay: `${0.05 * idx}s` }}
+              onClick={() => navigate(`/instructor/groups/${group.id}`)}
+            >
+              <CardContent className="p-5">
+                <div className="flex items-start justify-between mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                    <Users className="w-5 h-5 text-primary" />
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-muted-foreground/30 group-hover:text-primary transition-colors" />
+                </div>
+                <h3 className="text-base font-bold text-foreground mb-2 truncate">{group.name}</h3>
+                <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                  <Badge variant="secondary" className="font-mono text-[11px] rounded-md px-2 py-0.5">
                     {group.inviteCode}
                   </Badge>
-                </div>
-              </CardHeader>
-              <CardContent className="pb-3">
-                <div className="flex items-center gap-4 text-xs text-muted-foreground">
                   <span className="flex items-center gap-1">
-                    <Users className="h-3 w-3" />
-                    초대 코드: {group.inviteCode}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <ClipboardList className="h-3 w-3" />
-                    {new Date(group.createdAt).toLocaleDateString('ko-KR')} 생성
+                    <CalendarDays className="h-3 w-3" />
+                    {new Date(group.createdAt).toLocaleDateString('ko-KR')}
                   </span>
                 </div>
               </CardContent>

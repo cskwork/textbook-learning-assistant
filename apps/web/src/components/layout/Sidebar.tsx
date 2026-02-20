@@ -3,7 +3,6 @@ import { Home, BookOpen, BarChart2, User, LogOut, GraduationCap } from 'lucide-r
 import { cn } from '@/lib/utils'
 import type { NavItem } from './BottomNav'
 
-// 기본 네비게이션 항목 (BottomNav와 동일한 항목)
 const defaultNavItems: NavItem[] = [
   { path: '/', label: '홈', icon: Home },
   { path: '/problems', label: '문제', icon: BookOpen },
@@ -17,7 +16,6 @@ interface SidebarProps {
   onLogout?: () => void
 }
 
-// 데스크톱 전용 사이드바 — hidden lg:flex, 모바일/태블릿에서 숨김
 export default function Sidebar({
   items = defaultNavItems,
   className,
@@ -29,24 +27,25 @@ export default function Sidebar({
         'hidden lg:flex',
         'fixed left-0 inset-y-0 z-50',
         'w-64 flex-col',
-        'bg-sidebar border-r border-sidebar-border',
+        'bg-white/80 dark:bg-card/60 backdrop-blur-xl',
+        'border-r border-border/50',
         className,
       )}
       aria-label="사이드바 네비게이션"
     >
-      {/* 앱 로고 / 이름 영역 */}
-      <div className="flex items-center gap-3 px-6 py-5 border-b border-sidebar-border">
-        <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shrink-0">
-          <GraduationCap className="w-5 h-5 text-primary-foreground" />
+      {/* ── 앱 로고 ── */}
+      <div className="flex items-center gap-3 px-5 py-5 border-b border-border/40">
+        <div className="w-9 h-9 rounded-xl cta-gradient flex items-center justify-center shadow-md shadow-primary/15 shrink-0">
+          <GraduationCap className="w-5 h-5 text-white" />
         </div>
         <div className="min-w-0">
-          <p className="text-sm font-bold text-sidebar-foreground truncate">기출 학습 도우미</p>
-          <p className="text-xs text-muted-foreground truncate">수학 기출문제 학습</p>
+          <p className="text-sm font-extrabold text-foreground truncate tracking-tight">기출 학습 도우미</p>
+          <p className="text-[11px] text-muted-foreground/70 truncate">수학 기출문제 학습</p>
         </div>
       </div>
 
-      {/* 네비게이션 항목 */}
-      <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+      {/* ── 네비게이션 ── */}
+      <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
         {items.map((item) => {
           const Icon = item.icon
           return (
@@ -59,20 +58,30 @@ export default function Sidebar({
                   'group flex items-center gap-3 px-3 py-2.5 rounded-xl',
                   'text-sm transition-all duration-200 ease-out',
                   isActive
-                    ? 'bg-primary/10 text-primary font-semibold shadow-sm'
-                    : 'text-sidebar-foreground font-medium hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:pl-4',
+                    ? 'bg-primary/10 text-primary font-bold shadow-sm'
+                    : 'text-muted-foreground font-medium hover:bg-muted/60 hover:text-foreground',
                 )
               }
             >
               {({ isActive }) => (
                 <>
-                  <Icon
-                    className={cn(
-                      'w-5 h-5 shrink-0 transition-transform duration-200',
-                      isActive ? 'text-primary scale-110 drop-shadow-sm' : 'text-muted-foreground group-hover:text-primary/70',
-                    )}
-                  />
-                  <span>{item.label}</span>
+                  <div className={cn(
+                    'w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-all duration-200',
+                    isActive
+                      ? 'bg-primary/15'
+                      : 'bg-transparent group-hover:bg-muted',
+                  )}>
+                    <Icon
+                      className={cn(
+                        'w-[18px] h-[18px] transition-all duration-200',
+                        isActive ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground',
+                      )}
+                    />
+                  </div>
+                  <span className="truncate">{item.label}</span>
+                  {isActive && (
+                    <div className="ml-auto w-1.5 h-1.5 rounded-full bg-primary" />
+                  )}
                 </>
               )}
             </NavLink>
@@ -80,18 +89,20 @@ export default function Sidebar({
         })}
       </nav>
 
-      {/* 하단 로그아웃 버튼 자리 (Phase 01-03~04에서 연결) */}
-      <div className="px-3 py-4 border-t border-sidebar-border">
+      {/* ── 로그아웃 ── */}
+      <div className="px-3 py-4 border-t border-border/40">
         <button
           onClick={onLogout}
           className={cn(
-            'flex items-center gap-3 px-3 py-2.5 rounded-lg w-full',
-            'text-sm font-medium transition-colors',
-            'text-muted-foreground hover:bg-accent hover:text-destructive',
+            'group flex items-center gap-3 px-3 py-2.5 rounded-xl w-full',
+            'text-sm font-medium transition-all duration-200',
+            'text-muted-foreground hover:bg-destructive/8 hover:text-destructive',
           )}
           type="button"
         >
-          <LogOut className="w-5 h-5 shrink-0" />
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 group-hover:bg-destructive/10 transition-colors">
+            <LogOut className="w-[18px] h-[18px]" />
+          </div>
           <span>로그아웃</span>
         </button>
       </div>

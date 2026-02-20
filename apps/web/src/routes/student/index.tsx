@@ -1,17 +1,15 @@
 /**
- * 학생 홈 페이지
+ * 학생 홈 대시보드
  *
- * Phase 5 — 실데이터 연결 완료
- *   - 요약 통계 카드 4종: 오늘 풀이, 정답률, 연속 학습, 학습 시간
- *   - AI 추천 문제 (최대 3개) + "자세한 분석 보기" 링크
- *   - 로딩 중(undefined): animate-pulse placeholder 유지
- *
- * Quick-001 UX 개선:
- *   - 문제 수 실시간 표시 + 랜덤 문제 풀기 버튼
- *   - 첫 진입(풀이 0건) 시 AI 추천 영역에 안내 메시지
+ * 디자인: Editorial Learning —
+ *   시간대별 인사, 개별 컬러 악센트 통계 카드,
+ *   그라데이션 CTA, staggered 입장 애니메이션
  */
 
-import { BookOpenCheck, TrendingUp, Target, Clock, Users } from 'lucide-react'
+import {
+  BookOpenCheck, TrendingUp, Target, Clock, Users,
+  Sparkles, ArrowRight, Shuffle, Zap,
+} from 'lucide-react'
 import { Link, Navigate, useNavigate } from 'react-router'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -24,54 +22,43 @@ import { getStreak } from '@/services/streak.service'
 import AIRecommendations from '@/components/analytics/AIRecommendations'
 import type { Question } from '@/lib/db'
 
+/** 시간대별 인사말 */
+function getGreeting(): { text: string; emoji: string } {
+  const h = new Date().getHours()
+  if (h < 6) return { text: '늦은 밤까지 열공', emoji: '🌙' }
+  if (h < 12) return { text: '좋은 아침이에요', emoji: '☀️' }
+  if (h < 18) return { text: '좋은 오후예요', emoji: '📚' }
+  return { text: '좋은 저녁이에요', emoji: '🌆' }
+}
+
 export default function StudentHomePage() {
   const { user } = useAuth()
   const navigate = useNavigate()
+  const greeting = getGreeting()
 
-  // useLiveQuery 반환값:
-  //   undefined  → 쿼리 로딩 중
-  //   null       → 쿼리 완료 + 레코드 없음 (신규 사용자)
-  //   UserSetting → 쿼리 완료 + 레코드 있음
   const userSetting = useLiveQuery(
     () => user ? db.userSettings.where('userId').equals(user.email).first() : undefined,
     [user?.email],
   )
 
-  /** quizAttempts 총 건수 — useEffect 재실행 트리거 */
   const attemptCount = useLiveQuery(
     () => user ? db.quizAttempts.where('studentId').equals(user.email).count() : 0,
     [user?.email],
   )
 
-  /** 등록된 전체 문제 수 — 시드 데이터 포함 */
-  const questionCount = useLiveQuery(
-    () => db.questions.count(),
-    [],
-  ) ?? 0
+  const questionCount = useLiveQuery(() => db.questions.count(), []) ?? 0
 
-  /** 오늘 풀이 수 (로컬 타임존 자정 기준) */
   const todayStart = (() => {
-    const d = new Date()
-    d.setHours(0, 0, 0, 0)
-    return d.getTime()
+    const d = new Date(); d.setHours(0, 0, 0, 0); return d.getTime()
   })()
 
-  const todayCount =
-    useLiveQuery(
-      () =>
-        user
-          ? db.quizAttempts
-              .where('studentId')
-              .equals(user.email)
-              .filter((a) => a.attemptedAt >= todayStart)
-              .count()
-          : 0,
-      [user?.email, todayStart],
-    ) ?? 0
-
-  // ---------------------------------------------------------------------------
-  // 비동기 통계 상태
-  // ---------------------------------------------------------------------------
+  const todayCount = useLiveQuery(
+    () => user
+      ? db.quizAttempts.where('studentId').equals(user.email)
+          .filter((a) => a.attemptedAt >= todayStart).count()
+      : 0,
+    [user?.email, todayStart],
+  ) ?? 0
 
   const [accuracy, setAccuracy] = useState<number | undefined>(undefined)
   const [streakCurrent, setStreakCurrent] = useState<number | undefined>(undefined)
@@ -82,33 +69,27 @@ export default function StudentHomePage() {
   useEffect(() => {
     if (!user) return
     const studentId = user.email
-
     async function loadStats() {
       const [overall, streakData, recommendedIds] = await Promise.all([
         getOverallStats(studentId),
         getStreak(studentId),
         getRecommendedQuestions(studentId, 3),
       ])
-
       setAccuracy(overall.accuracy)
       setStreakCurrent(streakData.current)
       setTotalMinutes(Math.floor(overall.totalTimeSeconds / 60))
-
       if (recommendedIds.length > 0) {
         const questions = await db.questions.where('id').anyOf(recommendedIds).toArray()
         setRecommendedQuestions(questions)
       } else {
         setRecommendedQuestions([])
       }
-
       const count = await db.quizAttempts.where('studentId').equals(studentId).count()
       setIsHeuristic(count < 30)
     }
-
     loadStats()
   }, [user, attemptCount])
 
-  /** 랜덤 문제 풀기 — 전체 문제 중 무작위 1개 선택 후 퀴즈 페이지로 이동 */
   async function handleRandomQuiz() {
     const all = await db.questions.toArray()
     if (all.length === 0) return
@@ -116,174 +97,260 @@ export default function StudentHomePage() {
     navigate(`/student/quiz/${random.id}`)
   }
 
-  // 로딩 중 — undefined인 경우 스피너 표시
+  // ── 로딩 스켈레톤 ──
   if (userSetting === undefined) {
     return (
-      <div className="p-4 md:p-6 max-w-4xl mx-auto space-y-6">
-        <div className="animate-pulse space-y-2">
-          <div className="h-8 bg-muted rounded-xl w-48" />
-          <div className="h-4 bg-muted/60 rounded-lg w-64" />
+      <div className="p-4 md:p-6 lg:p-8 max-w-6xl mx-auto space-y-6">
+        <div className="space-y-2">
+          <div className="h-8 bg-muted rounded-xl w-52 animate-pulse" />
+          <div className="h-4 bg-muted/60 rounded-lg w-36 animate-pulse" />
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[1, 2, 3, 4].map(i => (
-            <Card key={i} className="rounded-2xl border-none shadow-sm bg-white/60 dark:bg-card/40 h-32">
-              <CardContent className="p-5 flex flex-col items-center justify-center h-full space-y-3">
-                <div className="w-10 h-10 rounded-full bg-muted animate-pulse" />
-                <div className="h-6 w-16 bg-muted animate-pulse rounded" />
-                <div className="h-3 w-12 bg-muted/60 animate-pulse rounded" />
-              </CardContent>
-            </Card>
+            <div key={i} className="h-[120px] bg-muted/40 rounded-2xl animate-pulse" />
           ))}
         </div>
+        <div className="h-40 bg-muted/40 rounded-2xl animate-pulse" />
       </div>
     )
   }
 
-  // 신규 사용자(레코드 없음) 또는 진단 미완료 → 온보딩 퀴즈로 리디렉트
   if (userSetting === null || !userSetting.isDiagnosisCompleted) {
     return <Navigate to="/student/onboarding-quiz" replace />
   }
 
+  const userName = user?.email?.split('@')[0] ?? '학생'
+
   return (
-    <div className="p-4 md:p-6 max-w-4xl mx-auto space-y-6">
-      {/* 환영 메시지 */}
-      <div>
-        <h1 className="text-2xl font-bold text-foreground">안녕하세요!</h1>
-        <p className="text-muted-foreground mt-1">
-          {user?.email} 님의 학습 현황입니다.
+    <div className="p-4 md:p-6 lg:p-8 max-w-6xl mx-auto space-y-5">
+
+      {/* ────────── 인사 영역 ────────── */}
+      <div className="animate-fade-up stagger-1">
+        <p className="text-sm font-medium text-muted-foreground tracking-wide">
+          {greeting.emoji} {greeting.text}
         </p>
+        <h1 className="text-[1.65rem] font-extrabold tracking-tight text-foreground mt-0.5 leading-tight">
+          {userName}님의 학습 현황
+        </h1>
       </div>
 
-      {/* 요약 통계 카드 그리드 — 실데이터 */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
-        <Card className="rounded-2xl border-none shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 bg-white/60 dark:bg-card/40 backdrop-blur-xl">
-          <CardContent className="p-5 flex flex-col items-center justify-center text-center h-full">
-            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mb-3">
-              <BookOpenCheck className="w-5 h-5 text-primary" />
-            </div>
-            <div className="text-2xl font-bold tracking-tight mb-1">{todayCount}</div>
-            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">오늘 푼 문제</span>
-          </CardContent>
-        </Card>
+      {/* ────────── 통계 카드 그리드 ────────── */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
 
-        <Card className="rounded-2xl border-none shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 bg-white/60 dark:bg-card/40 backdrop-blur-xl">
-          <CardContent className="p-5 flex flex-col items-center justify-center text-center h-full">
-            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mb-3">
-              <Target className="w-5 h-5 text-primary" />
-            </div>
-            {accuracy === undefined ? (
-              <div className="h-8 w-16 bg-muted rounded animate-pulse mb-1" />
-            ) : (
-              <div className="text-2xl font-bold tracking-tight mb-1">{accuracy}%</div>
-            )}
-            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">정답률</span>
-          </CardContent>
-        </Card>
+        {/* 오늘 풀이 */}
+        <div className="stat-accent-blue animate-scale-in stagger-1">
+          <Card className="rounded-2xl border-none shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 overflow-hidden relative group bg-white dark:bg-card">
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[var(--stat-bg)]" />
+            <CardContent className="p-4 md:p-5 relative">
+              <div
+                className="w-9 h-9 rounded-xl flex items-center justify-center mb-3"
+                style={{ background: 'var(--stat-bg-strong)' }}
+              >
+                <BookOpenCheck className="w-[18px] h-[18px]" style={{ color: 'var(--stat-color)' }} />
+              </div>
+              <div className="animate-count-up">
+                <span className="text-[1.75rem] font-black tracking-tight leading-none" style={{ color: 'var(--stat-color)' }}>
+                  {todayCount}
+                </span>
+                <span className="text-xs font-semibold text-muted-foreground ml-0.5">문제</span>
+              </div>
+              <p className="text-[11px] font-medium text-muted-foreground mt-1.5 tracking-wide">오늘 풀이</p>
+            </CardContent>
+          </Card>
+        </div>
 
-        <Card className="rounded-2xl border-none shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 bg-white/60 dark:bg-card/40 backdrop-blur-xl">
-          <CardContent className="p-5 flex flex-col items-center justify-center text-center h-full">
-            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mb-3">
-              <TrendingUp className="w-5 h-5 text-primary" />
-            </div>
-            {streakCurrent === undefined ? (
-              <div className="h-8 w-16 bg-muted rounded animate-pulse mb-1" />
-            ) : (
-              <div className="text-2xl font-bold tracking-tight mb-1">{streakCurrent}일</div>
-            )}
-            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">연속 학습</span>
-          </CardContent>
-        </Card>
+        {/* 정답률 */}
+        <div className="stat-accent-emerald animate-scale-in stagger-2">
+          <Card className="rounded-2xl border-none shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 overflow-hidden relative group bg-white dark:bg-card">
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[var(--stat-bg)]" />
+            <CardContent className="p-4 md:p-5 relative">
+              <div
+                className="w-9 h-9 rounded-xl flex items-center justify-center mb-3"
+                style={{ background: 'var(--stat-bg-strong)' }}
+              >
+                <Target className="w-[18px] h-[18px]" style={{ color: 'var(--stat-color)' }} />
+              </div>
+              {accuracy === undefined ? (
+                <div className="h-8 w-14 bg-muted rounded-lg animate-pulse" />
+              ) : (
+                <div className="animate-count-up">
+                  <span className="text-[1.75rem] font-black tracking-tight leading-none" style={{ color: 'var(--stat-color)' }}>
+                    {accuracy}
+                  </span>
+                  <span className="text-xs font-semibold text-muted-foreground ml-0.5">%</span>
+                </div>
+              )}
+              <p className="text-[11px] font-medium text-muted-foreground mt-1.5 tracking-wide">정답률</p>
+            </CardContent>
+          </Card>
+        </div>
 
-        <Card className="rounded-2xl border-none shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 bg-white/60 dark:bg-card/40 backdrop-blur-xl">
-          <CardContent className="p-5 flex flex-col items-center justify-center text-center h-full">
-            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mb-3">
-              <Clock className="w-5 h-5 text-primary" />
-            </div>
-            {totalMinutes === undefined ? (
-              <div className="h-8 w-16 bg-muted rounded animate-pulse mb-1" />
-            ) : (
-              <div className="text-2xl font-bold tracking-tight mb-1">{totalMinutes}분</div>
-            )}
-            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">학습 시간</span>
-          </CardContent>
-        </Card>
+        {/* 연속 학습 */}
+        <div className="stat-accent-amber animate-scale-in stagger-3">
+          <Card className="rounded-2xl border-none shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 overflow-hidden relative group bg-white dark:bg-card">
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[var(--stat-bg)]" />
+            <CardContent className="p-4 md:p-5 relative">
+              <div
+                className="w-9 h-9 rounded-xl flex items-center justify-center mb-3"
+                style={{ background: 'var(--stat-bg-strong)' }}
+              >
+                <TrendingUp className="w-[18px] h-[18px]" style={{ color: 'var(--stat-color)' }} />
+              </div>
+              {streakCurrent === undefined ? (
+                <div className="h-8 w-14 bg-muted rounded-lg animate-pulse" />
+              ) : (
+                <div className="animate-count-up">
+                  <span className="text-[1.75rem] font-black tracking-tight leading-none" style={{ color: 'var(--stat-color)' }}>
+                    {streakCurrent}
+                  </span>
+                  <span className="text-xs font-semibold text-muted-foreground ml-0.5">일</span>
+                </div>
+              )}
+              <p className="text-[11px] font-medium text-muted-foreground mt-1.5 tracking-wide">연속 학습</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* 학습 시간 */}
+        <div className="stat-accent-rose animate-scale-in stagger-4">
+          <Card className="rounded-2xl border-none shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 overflow-hidden relative group bg-white dark:bg-card">
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[var(--stat-bg)]" />
+            <CardContent className="p-4 md:p-5 relative">
+              <div
+                className="w-9 h-9 rounded-xl flex items-center justify-center mb-3"
+                style={{ background: 'var(--stat-bg-strong)' }}
+              >
+                <Clock className="w-[18px] h-[18px]" style={{ color: 'var(--stat-color)' }} />
+              </div>
+              {totalMinutes === undefined ? (
+                <div className="h-8 w-14 bg-muted rounded-lg animate-pulse" />
+              ) : (
+                <div className="animate-count-up">
+                  <span className="text-[1.75rem] font-black tracking-tight leading-none" style={{ color: 'var(--stat-color)' }}>
+                    {totalMinutes}
+                  </span>
+                  <span className="text-xs font-semibold text-muted-foreground ml-0.5">분</span>
+                </div>
+              )}
+              <p className="text-[11px] font-medium text-muted-foreground mt-1.5 tracking-wide">학습 시간</p>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
-      {/* 문제 풀기 바로가기 */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">문제 풀기</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <p className="text-sm text-muted-foreground">
-            {questionCount > 0
-              ? `등록된 ${questionCount}개의 문제를 풀고 실력을 향상시켜 보세요.`
-              : '아직 등록된 문제가 없습니다.'}
-          </p>
-          <Button asChild className="w-full">
-            <Link to="/student/problems">문제 목록 보기</Link>
-          </Button>
-          {/* 랜덤 문제 풀기 버튼 */}
-          <Button
-            variant="outline"
-            className="w-full"
-            onClick={handleRandomQuiz}
-            disabled={questionCount === 0}
-          >
-            랜덤 문제 풀기
-          </Button>
-          {/* 반 참여 버튼 */}
-          <Button variant="outline" size="sm" className="w-full" asChild>
-            <Link to="/student/join-group">
-              <Users className="h-4 w-4 mr-1" />
-              반 참여
-            </Link>
-          </Button>
-        </CardContent>
-      </Card>
+      {/* ────────── CTA + AI 추천: 데스크톱 2컬럼 ────────── */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 lg:gap-5">
 
-      {/* AI 추천 문제 섹션 */}
-      <Card className="rounded-2xl border-none shadow-sm bg-white/60 dark:bg-card/40 backdrop-blur-xl">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-base flex items-center gap-2">
-            <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-            AI 추천 문제
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {recommendedQuestions === undefined ? (
-            <div className="space-y-3">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="h-20 bg-muted/50 rounded-xl animate-pulse" />
-              ))}
-            </div>
-          ) : recommendedQuestions.length === 0 && attemptCount === 0 ? (
-            /* 첫 진입 — 풀이 기록 없을 때 안내 메시지 (빈 상태 개선) */
-            <div className="flex flex-col items-center justify-center py-6 text-center space-y-3">
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                </svg>
+        {/* 문제 풀기 CTA — lg에서 3/5 */}
+        <div className="lg:col-span-3 animate-fade-up stagger-5">
+          <div className="cta-gradient rounded-2xl p-5 md:p-6 text-white relative overflow-hidden h-full flex flex-col">
+            {/* 데코 서클 */}
+            <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full bg-white/10 blur-sm" />
+            <div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full bg-white/5" />
+
+            <div className="relative flex-1 flex flex-col">
+              <div className="flex items-center gap-2 mb-1">
+                <Zap className="w-4 h-4 text-white/80" />
+                <span className="text-xs font-semibold text-white/80 uppercase tracking-widest">학습 시작</span>
               </div>
-              <div>
-                <p className="text-sm font-semibold text-foreground">아직 분석 데이터가 없어요!</p>
-                <p className="text-xs text-muted-foreground mt-1">문제를 몇 번 풀면 AI가 취약점 맞춤 문제를 추천해 드려요.</p>
+              <h2 className="text-lg font-bold mb-1.5 leading-snug">
+                {questionCount > 0
+                  ? `${questionCount}개의 문제가 준비되어 있어요`
+                  : '아직 등록된 문제가 없습니다'}
+              </h2>
+              <p className="text-sm text-white/70 mb-4">
+                매일 꾸준히 풀면 실력이 확실히 올라요.
+              </p>
+
+              <div className="flex flex-wrap gap-2 mt-auto">
+                <Button
+                  asChild
+                  size="sm"
+                  className="bg-white text-primary hover:bg-white/90 font-semibold rounded-xl shadow-md h-9 px-4"
+                >
+                  <Link to="/student/problems">
+                    문제 목록 보기
+                    <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                  </Link>
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="text-white/90 hover:bg-white/15 hover:text-white font-medium rounded-xl h-9 px-4"
+                  onClick={handleRandomQuiz}
+                  disabled={questionCount === 0}
+                >
+                  <Shuffle className="w-3.5 h-3.5 mr-1" />
+                  랜덤 풀기
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="text-white/90 hover:bg-white/15 hover:text-white font-medium rounded-xl h-9 px-4"
+                  asChild
+                >
+                  <Link to="/student/join-group">
+                    <Users className="w-3.5 h-3.5 mr-1" />
+                    반 참여
+                  </Link>
+                </Button>
               </div>
             </div>
-          ) : (
-            <AIRecommendations
-              questions={recommendedQuestions}
-              isHeuristic={isHeuristic}
-            />
-          )}
-          {/* 분석 페이지 링크 */}
-          <Button asChild variant="secondary" className="w-full mt-2 rounded-xl text-primary font-medium hover:bg-primary/10 bg-primary/5">
-            <Link to="/student/analytics">자세한 분석 보기</Link>
-          </Button>
-        </CardContent>
-      </Card>
+          </div>
+        </div>
+
+        {/* AI 추천 문제 — lg에서 2/5 */}
+        <div className="lg:col-span-2 animate-fade-up stagger-6">
+          <Card className="rounded-2xl border-none shadow-sm bg-white dark:bg-card overflow-hidden h-full flex flex-col">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-bold flex items-center gap-2">
+                <div className="w-6 h-6 rounded-lg bg-violet-100 dark:bg-violet-500/20 flex items-center justify-center">
+                  <Sparkles className="w-3.5 h-3.5 text-violet-600 dark:text-violet-400" />
+                </div>
+                AI 추천 문제
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 flex-1 flex flex-col">
+              <div className="flex-1">
+                {recommendedQuestions === undefined ? (
+                  <div className="space-y-3">
+                    {[1, 2, 3].map((i) => (
+                      <div key={i} className="h-16 bg-muted/40 rounded-xl animate-pulse" />
+                    ))}
+                  </div>
+                ) : recommendedQuestions.length === 0 && attemptCount === 0 ? (
+                  <div className="flex flex-col items-center justify-center py-6 text-center space-y-3">
+                    <div className="w-12 h-12 rounded-2xl bg-violet-50 dark:bg-violet-500/10 flex items-center justify-center">
+                      <Sparkles className="w-6 h-6 text-violet-400" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-foreground">아직 분석 데이터가 없어요!</p>
+                      <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                        문제를 몇 번 풀면<br />AI가 맞춤 추천해 드려요.
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <AIRecommendations
+                    questions={recommendedQuestions}
+                    isHeuristic={isHeuristic}
+                  />
+                )}
+              </div>
+              <Button
+                asChild
+                variant="ghost"
+                className="w-full rounded-xl text-sm font-semibold text-violet-600 dark:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-500/10 h-10 mt-auto"
+              >
+                <Link to="/student/analytics">
+                  자세한 분석 보기
+                  <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   )
 }
