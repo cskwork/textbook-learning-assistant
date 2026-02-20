@@ -18,6 +18,13 @@ const badgeVariants = cva(
           "border-border text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
         ghost: "[a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
         link: "text-primary underline-offset-4 [a&]:hover:underline",
+        /* 교육 앱 시맨틱 variant */
+        success:
+          "bg-success/15 text-success border-success/25",
+        warning:
+          "bg-warning/15 text-warning border-warning/25",
+        info:
+          "bg-info/15 text-info border-info/25",
       },
     },
     defaultVariants: {

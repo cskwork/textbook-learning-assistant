@@ -331,3 +331,13 @@ body {
 .katex {
   font-size: var(--katex-font-size, 1em) !important;
 }
+
+/* ─── 컴포넌트 보조 유틸리티 (10-02) ─── */
+
+/* 버튼 누름 효과 */
+.btn-press {
+  transition: transform 0.1s ease;
+}
+.btn-press:active {
+  transform: scale(0.97);
+}
