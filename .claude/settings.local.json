@@ -2,7 +2,12 @@
   "permissions": {
     "allow": [
       "Skill(gsd:new-project)",
-      "Skill(gsd:plan-phase)"
+      "Skill(gsd:plan-phase)",
+      "Skill(gsd:quick)",
+      "Skill(gsd:execute-phase)",
+      "Bash(node:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ]
   }
 }
