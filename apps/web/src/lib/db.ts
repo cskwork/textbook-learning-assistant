@@ -1,5 +1,5 @@
 // apps/web/src/lib/db.ts
-// Dexie IndexedDB 스키마 — 문제 영구 저장 + 퀴즈 엔진 (version 2) + DIY 문제집 (version 3) + AI 분석 설정 (version 4) + 강사 관리 포털 (version 5) + 마이페이지 + 앱 설정 (version 6)
+// Dexie IndexedDB 스키마 — 문제 영구 저장 + 퀴즈 엔진 (version 2) + DIY 문제집 (version 3) + AI 분석 설정 (version 4) + 강사 관리 포털 (version 5) + 마이페이지 + 앱 설정 (version 6) + AI 문제 생성 (version 7 — 인덱스 없음)
 import Dexie, { type EntityTable } from 'dexie'
 
 export interface QuestionSource {
@@ -94,6 +94,8 @@ export interface UserSetting {
   avatarEmoji?: string        // 이모지 아바타 (마이페이지 — MYPAGE-01)
   isDarkMode?: boolean        // 다크모드 설정 (앱 설정 — MYPAGE-02)
   katexFontSize?: number      // 수식 글꼴 크기 0.8~1.5 (앱 설정 — MYPAGE-02)
+  // Phase 9: geminiApiKey 필드 추가 (인덱스 없는 선택 필드, db.version 변경 불필요)
+  geminiApiKey?: string       // Gemini API 키 (Phase 9 — 인덱스 없음, 버전 업 불필요)
 }
 
 export interface Group {
