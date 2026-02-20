@@ -10,9 +10,9 @@ See: .planning/PROJECT.md (updated 2026-02-21)
 ## Current Position
 
 Phase: 10 of 14 (디자인 시스템)
-Plan: 1 of TBD in current phase
+Plan: 2 of TBD in current phase
 Status: In progress
-Last activity: 2026-02-21 — 10-01 완료: 기출탭탭 색상 토큰 + Pretendard 타이포그래피 + 다크모드 토큰
+Last activity: 2026-02-21 — 10-02 완료: Button/Card/Input/Badge 기출탭탭 스타일 리뉴얼
 
 Progress: [██████████░░░░░░░░░░] 9/14 phases complete (v1.0 기준)
 
@@ -27,7 +27,7 @@ Progress: [██████████░░░░░░░░░░] 9/14 ph
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 10. 디자인 시스템 | 1 완료 | ~3min | ~3min |
+| 10. 디자인 시스템 | 2 완료 | ~5min | ~2.5min |
 | 11. 공통 레이아웃 + 애니메이션 | TBD | - | - |
 | 12. 학생 홈 + 문제 풀이 UX | TBD | - | - |
 | 13. 분석 대시보드 + 학습 플래너 | TBD | - | - |
@@ -38,6 +38,7 @@ Progress: [██████████░░░░░░░░░░] 9/14 ph
 - Trend: Stable
 
 *Updated after each plan completion*
+| Phase 10-design-system P02 | 120 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -54,6 +55,9 @@ Recent decisions affecting current work:
 - [v2.0 Scope]: Framer Motion 신규 도입 — FLOW-01, FLOW-02 요구사항
 - [Architecture]: Tailwind v4 CSS-first 방식 유지 — 디자인 토큰은 @layer base CSS 변수로 관리
 - [Architecture]: POC 아키텍처(localStorage + mock) 유지 — 백엔드 연동은 v3 이후
+- [Phase 10-design-system]: Button hover lift(hover:-translate-y-0.5)는 default/destructive/outline에만 적용 — ghost/secondary/link는 플랫 유지
+- [Phase 10-design-system]: Card rounded-2xl > Button rounded-xl — 컨테이너 계층 시각화
+- [Phase 10-design-system]: Input primary 포커스 ring으로 기출탭탭 브랜드 일관성 강화 (기존 ring 색상 대신 primary 명시)
 
 ### Pending Todos
 
@@ -67,6 +71,6 @@ None yet.
 
 ## Session Continuity
 
-Last activity: 2026-02-21 — 10-01 완료: Pretendard 폰트 + 기출탭탭 색상 토큰 + 다크모드 토큰
-Stopped at: 10-01-PLAN.md 완전 실행 (2 tasks, 2 commits)
+Last activity: 2026-02-21 — 10-02 완료: Button/Card/Input/Badge 기출탭탭 스타일 리뉴얼 (2 tasks, 2 commits)
+Stopped at: 10-02-PLAN.md 완전 실행 (2 tasks, 2 commits)
 Resume file: None
