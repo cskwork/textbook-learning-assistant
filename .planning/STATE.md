@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-19)
 
 **Core value:** 학생이 자신의 취약한 수학 유형을 정확히 파악하고, AI가 추천하는 맞춤 문제를 통해 효율적으로 실력을 향상시킬 수 있어야 한다
-**Current focus:** Phase 3 — 퀴즈 엔진 + 오답노트
+**Current focus:** Phase 4 — DIY 문제집 생성기
 
 ## Current Position
 
-Phase: 3 of 7 (퀴즈 엔진 + 오답노트)
-Plan: 4 of 5 in current phase
+Phase: 4 of 7 (DIY 문제집 생성기)
+Plan: 1 of 3 in current phase
 Status: Executing
-Last activity: 2026-02-20 — Phase 3 Plan 04 완료 (오답노트 UI 컴포넌트 + WrongNotesPage 라우트 등록)
+Last activity: 2026-02-20 — Phase 4 Plan 01 완료 (Workbook 스키마 + workbook.service.ts 데이터 레이어)
 
-Progress: [████████░░] 40% (10/~25 plans across all phases)
+Progress: [████████░░] 44% (11/~25 plans across all phases)
 
 ## Performance Metrics
 
@@ -46,6 +46,7 @@ Progress: [████████░░] 40% (10/~25 plans across all phases)
 | Phase 03-quiz-engine P02 | 3m | 2 tasks | 6 files |
 | Phase 03-quiz-engine P03 | 118s | 2 tasks | 3 files |
 | Phase 03-quiz-engine P04 | 116s | 2 tasks | 5 files |
+| Phase 04-workbook-generator P01 | 1m | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -95,6 +96,9 @@ Recent decisions affecting current work:
 - [Phase 03-03]: 북마크 useEffect를 문제 로드 useEffect와 분리 — question 로드 완료 후 user.email 의존성 명시
 - [Phase 03-04]: WrongNoteFilter useEffect에서 getWrongNoteUnits/Categories 비동기 로드 — 필터 옵션은 현재 studentId 기준 스냅샷으로 충분
 - [Phase 03-04]: lastWrongAt > 0 조건으로 순수 북마크(wrongCount=0) 날짜 표시 생략 — 1970-01-01 잘못된 날짜 노출 방지
+- [Phase 04-01]: listWorkbooks는 where().toArray() 후 인메모리 sort — Dexie reverse().sortBy() + where() 조합 오류 방지
+- [Phase 04-01]: getFilterOptions filter(Boolean) — unit/questionCategory 빈 문자열 제거
+- [Phase 04-01]: createWorkbook에서 questionIds 배열만 저장 — Question 객체 전체 저장 금지 (데이터 중복 방지)
 
 ### Pending Todos
 
@@ -110,5 +114,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-20
-Stopped at: Completed 03-quiz-engine/03-04-PLAN.md
-Resume file: .planning/phases/03-quiz-engine/03-04-SUMMARY.md
+Stopped at: Completed 04-workbook-generator/04-01-PLAN.md
+Resume file: .planning/phases/04-workbook-generator/04-01-SUMMARY.md
