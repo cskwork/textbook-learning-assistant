@@ -1,6 +1,9 @@
+import { useState } from 'react'
 import { NavLink } from 'react-router'
-import { Home, BookOpen, BarChart2, User, LogOut, GraduationCap } from 'lucide-react'
+import { Home, BookOpen, BarChart2, User, LogOut, GraduationCap, Monitor } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { isDesktopApp } from '@/lib/platform'
+import { DesktopDownloadDialog } from '@/components/desktop/DesktopDownloadDialog'
 import type { NavItem } from './BottomNav'
 
 const defaultNavItems: NavItem[] = [
@@ -21,6 +24,8 @@ export default function Sidebar({
   className,
   onLogout,
 }: SidebarProps) {
+  const [downloadDialogOpen, setDownloadDialogOpen] = useState(false)
+
   return (
     <aside
       className={cn(
@@ -89,6 +94,26 @@ export default function Sidebar({
         })}
       </nav>
 
+      {/* ── 데스크톱 앱 다운로드 (Electrobun 앱 내부에서는 숨김) ── */}
+      {!isDesktopApp() && (
+        <div className="px-3 py-2 border-t border-border/40">
+          <button
+            onClick={() => setDownloadDialogOpen(true)}
+            className={cn(
+              'group flex items-center gap-3 px-3 py-2.5 rounded-xl w-full',
+              'text-sm font-medium transition-all duration-200',
+              'text-muted-foreground hover:bg-primary/8 hover:text-primary',
+            )}
+            type="button"
+          >
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 group-hover:bg-primary/10 transition-colors">
+              <Monitor className="w-[18px] h-[18px]" />
+            </div>
+            <span>데스크톱 앱 설치</span>
+          </button>
+        </div>
+      )}
+
       {/* ── 로그아웃 ── */}
       <div className="px-3 py-4 border-t border-border/40">
         <button
@@ -106,6 +131,12 @@ export default function Sidebar({
           <span>로그아웃</span>
         </button>
       </div>
+
+      {/* ── 데스크톱 다운로드 다이얼로그 ── */}
+      <DesktopDownloadDialog
+        open={downloadDialogOpen}
+        onOpenChange={setDownloadDialogOpen}
+      />
     </aside>
   )
 }
