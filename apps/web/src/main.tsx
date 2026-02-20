@@ -45,6 +45,8 @@ import GroupListPage from './routes/instructor/groups/index'
 import GroupNewPage from './routes/instructor/groups/new'
 import GroupDetailPage from './routes/instructor/groups/detail'
 import AssignWorkbookPage from './routes/instructor/groups/assign'
+import StudentProfilePage from './routes/student/profile/index'
+import InstructorProfilePage from './routes/instructor/profile/index'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -78,7 +80,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/student/onboarding-quiz" element={<OnboardingQuizPage />} />
             <Route path="/student/analytics" element={<AnalyticsPage />} />
             <Route path="/student/join-group" element={<JoinGroupPage />} />
-            <Route path="/student/profile" element={<ComingSoonPage />} />
+            <Route path="/student/profile" element={<StudentProfilePage />} />
 
             {/* 강사 전용 라우트 */}
             <Route path="/instructor" element={<InstructorHomePage />} />
@@ -87,7 +89,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/instructor/problems/:id" element={<QuestionDetailPage />} />
             <Route path="/instructor/problems/:id/edit" element={<EditQuestionPage />} />
             <Route path="/instructor/students" element={<ComingSoonPage />} />
-            <Route path="/instructor/profile" element={<ComingSoonPage />} />
+            <Route path="/instructor/profile" element={<InstructorProfilePage />} />
             {/* 강사 그룹 관리 라우트 */}
             <Route path="/instructor/groups" element={<GroupListPage />} />
             <Route path="/instructor/groups/new" element={<GroupNewPage />} />
