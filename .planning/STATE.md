@@ -68,6 +68,7 @@ Progress: [█████████░] 97% (23/~25 plans across all phases)
 | Phase 06-pwa-offline P03 | 180s | 2 tasks | 0 files |
 | Phase 09-ai P01 | 125s | 2 tasks | 5 files |
 | Phase 09-ai P03 | 151s | 2 tasks | 4 files |
+| Phase 09-ai P02 | 114s | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -174,6 +175,8 @@ Recent decisions affecting current work:
 - [Phase 09-03]: report.tsx tr/div onClick + navigate 패턴으로 상세 페이지 이동 — Link 래핑 대신 행 전체 클릭 처리
 - [Phase 09-03]: SummaryStatsCards streak 필수 prop 대신 인라인 stat 카드 4종으로 직접 렌더링 (streak 데이터 불필요)
 - [Phase 09-03]: 학생 상세 오답노트: wrongNotes where('studentId') limit(5) — content 비동기 로드 생략, questionId만 표시
+- [Phase 09-ai]: AIGeneratePanel을 QuestionForm 최상단에 배치, hr 구분선으로 필수 입력과 시각적 분리
+- [Phase 09-ai]: 강사 마이페이지 AI 설정 카드: 앱 설정 아래, 보안 위에 배치 — API 키 input type=password 마스킹
 
 ### Roadmap Evolution
 
@@ -201,6 +204,6 @@ None yet.
 
 ## Session Continuity
 
-Last activity: 2026-02-21 - Phase 09 Plan 01 완료 (Gemini API 서비스 레이어 + Dexie API 키 저장 인프라 구축)
-Stopped at: Completed 09-ai-01-PLAN.md — 09-01-SUMMARY.md 생성, Phase 9 AIGEN-01, AIGEN-03, AIGEN-04 요구사항 완료
-Resume file: .planning/phases/09-ai/09-01-SUMMARY.md
+Last activity: 2026-02-21 - Phase 09 Plan 02 완료 (AIGeneratePanel UI + QuestionForm 통합 + 강사 마이페이지 API 키 관리)
+Stopped at: Completed 09-ai-02-PLAN.md — 09-02-SUMMARY.md 생성, Phase 9 AIGEN-01, AIGEN-02, AIGEN-03, AIGEN-04 요구사항 완료
+Resume file: .planning/phases/09-ai/09-02-SUMMARY.md
