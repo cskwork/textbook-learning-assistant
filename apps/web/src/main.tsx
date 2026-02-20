@@ -16,6 +16,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router'
 import './index.css'
 
 import { AuthProvider } from './contexts/AuthContext'
+import { PWAInstallBanner } from './components/pwa/PWAInstallBanner'
 import PublicRoute from './routes/public-route'
 import Layout from './routes/_layout'
 import LoginPage from './routes/login'
@@ -42,6 +43,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <AuthProvider>
+        <PWAInstallBanner />
         <Routes>
           {/* 공개 라우트: 비인증 사용자만 접근 */}
           <Route element={<PublicRoute />}>
