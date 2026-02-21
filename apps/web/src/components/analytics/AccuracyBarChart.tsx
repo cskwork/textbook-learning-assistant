@@ -7,6 +7,7 @@
  * - accuracy 오름차순 정렬 (취약 유형 먼저 표시)
  * - 최대 10개 유형 표시
  * - 빈 데이터 상태 처리
+ * - 그라데이션 fill + 상단 둥근 모서리 (기출탭탭 스타일)
  */
 
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts'
@@ -16,6 +17,7 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from '@/components/ui/chart'
+import { FadeIn } from '@/components/motion/FadeIn'
 
 /** 유형별 정답률 데이터 타입 */
 export interface AccuracyData {
@@ -39,9 +41,11 @@ export function AccuracyBarChart({ data }: AccuracyBarChartProps) {
   // 데이터 없을 때 안내 메시지
   if (!data || data.length === 0) {
     return (
-      <div className="flex items-center justify-center min-h-[200px] text-muted-foreground text-sm">
-        아직 풀이 데이터가 없습니다
-      </div>
+      <FadeIn>
+        <div className="flex items-center justify-center min-h-[200px] text-muted-foreground text-sm">
+          아직 풀이 데이터가 없습니다
+        </div>
+      </FadeIn>
     )
   }
 
@@ -53,7 +57,13 @@ export function AccuracyBarChart({ data }: AccuracyBarChartProps) {
   return (
     <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
       <BarChart data={sortedData} accessibilityLayer>
-        <CartesianGrid vertical={false} />
+        <defs>
+          <linearGradient id="accuracyGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="var(--color-accuracy)" stopOpacity={1} />
+            <stop offset="100%" stopColor="var(--color-accuracy)" stopOpacity={0.3} />
+          </linearGradient>
+        </defs>
+        <CartesianGrid vertical={false} strokeDasharray="3 3" opacity={0.3} />
         <XAxis
           dataKey="category"
           tickLine={false}
@@ -85,7 +95,11 @@ export function AccuracyBarChart({ data }: AccuracyBarChartProps) {
             />
           }
         />
-        <Bar dataKey="accuracy" fill="var(--color-accuracy)" radius={4} />
+        <Bar
+          dataKey="accuracy"
+          fill="url(#accuracyGradient)"
+          radius={[6, 6, 0, 0]}
+        />
       </BarChart>
     </ChartContainer>
   )

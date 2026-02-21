@@ -4,13 +4,14 @@
  * Props:
  *   data: { date: string; count: number; correct: number }[]
  *
- * - 최근 14일 추이 표시
- * - Line 2개: count(총 풀이), correct(정답)
+ * - 최근 N일 추이 표시 (날짜 범위 선택 연동)
+ * - ComposedChart: Line 2개 + Area 2개 (그라데이션 fill)
  * - ChartLegend 포함
  * - 빈 데이터 상태 처리
+ * - 그라데이션 fill (기출탭탭 스타일)
  */
 
-import { LineChart, Line, XAxis, YAxis, CartesianGrid } from 'recharts'
+import { ComposedChart, Line, Area, XAxis, YAxis, CartesianGrid } from 'recharts'
 import {
   ChartContainer,
   ChartTooltip,
@@ -70,8 +71,18 @@ export function DailyTrendLineChart({ data }: DailyTrendLineChartProps) {
 
   return (
     <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
-      <LineChart data={formattedData} accessibilityLayer>
-        <CartesianGrid vertical={false} />
+      <ComposedChart data={formattedData} accessibilityLayer>
+        <defs>
+          <linearGradient id="countGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="var(--color-count)" stopOpacity={0.3} />
+            <stop offset="100%" stopColor="var(--color-count)" stopOpacity={0.02} />
+          </linearGradient>
+          <linearGradient id="correctGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="var(--color-correct)" stopOpacity={0.3} />
+            <stop offset="100%" stopColor="var(--color-correct)" stopOpacity={0.02} />
+          </linearGradient>
+        </defs>
+        <CartesianGrid vertical={false} strokeDasharray="3 3" opacity={0.3} />
         <XAxis
           dataKey="date"
           tickLine={false}
@@ -87,23 +98,37 @@ export function DailyTrendLineChart({ data }: DailyTrendLineChartProps) {
         />
         <ChartTooltip content={<ChartTooltipContent />} />
         <ChartLegend content={<ChartLegendContent />} />
+        {/* 영역 fill (그라데이션) — Line 아래 */}
+        <Area
+          type="monotone"
+          dataKey="count"
+          fill="url(#countGradient)"
+          stroke="transparent"
+        />
+        <Area
+          type="monotone"
+          dataKey="correct"
+          fill="url(#correctGradient)"
+          stroke="transparent"
+        />
+        {/* 라인 */}
         <Line
           type="monotone"
           dataKey="count"
           stroke="var(--color-count)"
-          strokeWidth={2}
-          dot={false}
+          strokeWidth={2.5}
+          dot={{ r: 3, fill: 'white', strokeWidth: 2, stroke: 'var(--color-count)' }}
           activeDot={{ r: 4 }}
         />
         <Line
           type="monotone"
           dataKey="correct"
           stroke="var(--color-correct)"
-          strokeWidth={2}
-          dot={false}
+          strokeWidth={2.5}
+          dot={{ r: 3, fill: 'white', strokeWidth: 2, stroke: 'var(--color-correct)' }}
           activeDot={{ r: 4 }}
         />
-      </LineChart>
+      </ComposedChart>
     </ChartContainer>
   )
 }

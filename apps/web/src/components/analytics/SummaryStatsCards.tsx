@@ -1,8 +1,10 @@
 /**
- * 요약 통계 카드 컴포넌트 — 개별 컬러 악센트 디자인
+ * 요약 통계 카드 컴포넌트 — AnimatedCard + FadeIn 마이크로 인터랙션 (기출탭탭 스타일)
  */
 
 import { BookOpenCheck, Target, Clock, Flame } from 'lucide-react'
+import { AnimatedCard } from '@/components/motion/AnimatedCard'
+import { FadeIn } from '@/components/motion/FadeIn'
 
 export interface OverallStats {
   total: number
@@ -32,16 +34,17 @@ interface StatCardProps {
   value: string
   subLabel?: string
   accentClass: string
+  delay?: number
 }
 
-function StatCard({ icon, label, value, subLabel, accentClass }: StatCardProps) {
+function StatCard({ icon, label, value, subLabel, accentClass, delay = 0 }: StatCardProps) {
   return (
-    <div className={accentClass}>
-      <div className="rounded-2xl border-none shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 overflow-hidden relative group bg-white dark:bg-card p-4">
+    <FadeIn delay={delay}>
+      <AnimatedCard className={`${accentClass} overflow-hidden relative group`}>
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[var(--stat-bg)]" />
-        <div className="relative">
+        <div className="relative p-3.5">
           <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center mb-2.5"
+            className="w-8 h-8 rounded-xl flex items-center justify-center mb-2.5"
             style={{ background: 'var(--stat-bg-strong)' }}
           >
             <span style={{ color: 'var(--stat-color)' }}>{icon}</span>
@@ -54,8 +57,8 @@ function StatCard({ icon, label, value, subLabel, accentClass }: StatCardProps) 
             <div className="text-[10px] text-muted-foreground/60 mt-0.5">{subLabel}</div>
           )}
         </div>
-      </div>
-    </div>
+      </AnimatedCard>
+    </FadeIn>
   )
 }
 
@@ -68,6 +71,7 @@ export function SummaryStatsCards({ stats, todayCount, streak }: SummaryStatsCar
         value={`${stats.total.toLocaleString()}문제`}
         subLabel={`정답 ${stats.correct.toLocaleString()}문제`}
         accentClass="stat-accent-blue"
+        delay={0}
       />
 
       <StatCard
@@ -76,6 +80,7 @@ export function SummaryStatsCards({ stats, todayCount, streak }: SummaryStatsCar
         value={`${stats.accuracy}%`}
         subLabel={stats.total === 0 ? '풀이 데이터 없음' : `${stats.correct}/${stats.total} 정답`}
         accentClass="stat-accent-emerald"
+        delay={0.05}
       />
 
       <StatCard
@@ -84,6 +89,7 @@ export function SummaryStatsCards({ stats, todayCount, streak }: SummaryStatsCar
         value={formatMinutes(stats.totalTimeSeconds)}
         subLabel="총 누적 학습 시간"
         accentClass="stat-accent-amber"
+        delay={0.1}
       />
 
       <StatCard
@@ -92,6 +98,7 @@ export function SummaryStatsCards({ stats, todayCount, streak }: SummaryStatsCar
         value={`${todayCount}문제`}
         subLabel={streak.current > 0 ? `${streak.current}일 연속 학습` : '오늘 첫 학습'}
         accentClass="stat-accent-rose"
+        delay={0.15}
       />
     </div>
   )

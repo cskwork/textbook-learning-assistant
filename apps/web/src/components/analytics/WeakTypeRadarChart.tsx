@@ -5,7 +5,8 @@
  *   data: { category: string; pL: number }[]  (P(L) 0~1 값)
  *
  * - pL 값을 퍼센트로 변환하여 0~100 범위로 표시
- * - WEAK_THRESHOLD(40%) 이하 유형은 빨간 계열 fill
+ * - WEAK_THRESHOLD(40%) 이하 유형 존재 시 amber(warning) 계열 fill (덜 공격적인 톤)
+ * - PolarGrid 은은한 stroke 적용
  * - 빈 데이터 상태 처리
  */
 
@@ -60,10 +61,11 @@ export function WeakTypeRadarChart({ data }: WeakTypeRadarChartProps) {
   return (
     <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
       <RadarChart data={chartData} accessibilityLayer>
-        <PolarGrid />
+        {/* 은은한 PolarGrid */}
+        <PolarGrid stroke="hsl(var(--muted-foreground) / 0.2)" />
         <PolarAngleAxis
           dataKey="category"
-          tick={{ fontSize: 11 }}
+          tick={{ fontSize: 12, fontWeight: 500 }}
         />
         <ChartTooltip
           content={
@@ -74,9 +76,17 @@ export function WeakTypeRadarChart({ data }: WeakTypeRadarChartProps) {
         />
         <Radar
           dataKey="pLPercent"
-          fill={hasWeakCategories ? 'hsl(var(--destructive))' : 'hsl(var(--chart-1))'}
-          fillOpacity={0.3}
-          stroke={hasWeakCategories ? 'hsl(var(--destructive))' : 'hsl(var(--chart-1))'}
+          fill={
+            hasWeakCategories
+              ? 'hsl(var(--warning, 45 93% 47%))'
+              : 'hsl(var(--chart-1))'
+          }
+          fillOpacity={0.25}
+          stroke={
+            hasWeakCategories
+              ? 'hsl(var(--warning, 45 93% 47%))'
+              : 'hsl(var(--chart-1))'
+          }
           strokeWidth={2}
         />
       </RadarChart>
