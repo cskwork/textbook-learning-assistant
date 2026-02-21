@@ -262,7 +262,12 @@ Plans:
   2. 문제 관리 화면에서 문제 카드 그리드·필터 사이드바·일괄 작업 UI가 작동한다
   3. 강사 학생 분석 대시보드에서 개별 학생 상세 보기와 반 전체 비교 차트가 리디자인된 UI로 표시된다
   4. 그룹/과제 관리 화면에서 과제 진행률과 미완료 학생 알림이 새 UI로 표시된다
-**Plans**: TBD
+**Plans**: 4 plans (2 waves)
+Plans:
+- [ ] 14-01-PLAN.md — 강사 홈 대시보드 기출탭탭 스타일 리디자인 (AnimatedCard/FadeIn + 반별 성적 요약 + 최근 과제) [Wave 1]
+- [ ] 14-02-PLAN.md — 강사 문제 관리 UI 리디자인 (필터 사이드바/칩 + 일괄 선택/삭제 + QuestionList 선택 모드) [Wave 1]
+- [ ] 14-03-PLAN.md — 그룹/과제 관리 + 학생 분석 리디자인 (과제 진행률 + 미완료 알림 + 반 비교 차트 + AnimatedCard/FadeIn) [Wave 1]
+- [ ] 14-04-PLAN.md — Phase 14 통합 빌드 검증 + 사용자 시각 검증 체크포인트 [Wave 2]
 
 ## Progress
 
@@ -285,4 +290,4 @@ Phases execute in numeric order: 10 → 11 → 12 → 13 → 14
 | 11. 공통 레이아웃 + 애니메이션 | v2.0 | 5/5 | Complete | 2026-02-21 |
 | 12. 학생 홈 + 문제 풀이 UX | 4/4 | Complete    | 2026-02-21 | - |
 | 13. 분석 대시보드 + 학습 플래너 | 5/5 | Complete    | 2026-02-21 | - |
-| 14. 강사 포털 리뉴얼 | v2.0 | 0/TBD | Not started | - |
+| 14. 강사 포털 리뉴얼 | v2.0 | 0/4 | Planning complete | - |
