@@ -49,8 +49,8 @@
 
 - [x] **INST-01**: 강사 홈 대시보드 리디자인 (학생 현황 카드, 최근 과제, 반별 성적 요약)
 - [x] **INST-02**: 강사 문제 관리 UI 리디자인 (문제 카드 그리드, 필터 사이드바, 일괄 작업)
-- [ ] **INST-03**: 강사 학생 분석 대시보드 리디자인 (개별 학생 상세, 반 전체 비교 차트)
-- [ ] **INST-04**: 강사 그룹/과제 관리 UI 리디자인 (과제 진행률, 미완료 학생 알림)
+- [x] **INST-03**: 강사 학생 분석 대시보드 리디자인 (개별 학생 상세, 반 전체 비교 차트)
+- [x] **INST-04**: 강사 그룹/과제 관리 UI 리디자인 (과제 진행률, 미완료 학생 알림)
 
 ### 공통 레이아웃
 
@@ -107,8 +107,8 @@
 | PLAN-03 | Phase 13 | Complete |
 | INST-01 | Phase 14 | Complete |
 | INST-02 | Phase 14 | Complete |
-| INST-03 | Phase 14 | Pending |
-| INST-04 | Phase 14 | Pending |
+| INST-03 | Phase 14 | Complete |
+| INST-04 | Phase 14 | Complete |
 
 **Coverage:**
 - v2.0 requirements: 27 total

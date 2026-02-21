@@ -57,6 +57,7 @@ Progress: [██████████████████░░] 13/14 p
 | Phase 13-analytics-planner P05 | 67 | 2 tasks | 0 files |
 | Phase 14-instructor-portal P01 | 182 | 1 tasks | 1 files |
 | Phase 14-instructor-portal P02 | 146 | 1 tasks | 3 files |
+| Phase 14-instructor-portal P03 | 315 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -120,6 +121,8 @@ Recent decisions affecting current work:
 - [Phase 14-instructor-portal]: 전체 선택 ID 목록: 부모 컴포넌트의 allQuestions useLiveQuery로 관리 — QuestionList에 콜백 prop 불필요
 - [Phase 14-instructor-portal]: 하단 액션 바 위치: fixed bottom-20 — 탭바(bottom-0) 위에 겹치지 않도록
 - [Phase 14-instructor-portal]: 필터 사이드바/칩 바 동기화: 같은 filterSubject/filterDifficulty 상태를 lg:hidden vs hidden lg:block으로 두 뷰가 공유
+- [Phase 14-instructor-portal]: assignmentProgress: useEffect 내 Math.random()으로 mock 진행률 생성 — re-render 시 변경 방지
+- [Phase 14-instructor-portal]: [Phase 14-instructor-portal]: 반 전체 비교 차트: recharts BarChart layout=vertical + Cell 동적 색상 (emerald/amber/rose)
 
 ### Pending Todos
 
