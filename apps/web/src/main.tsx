@@ -48,6 +48,7 @@ import AssignWorkbookPage from './routes/instructor/groups/assign'
 import StudentAnalyticsDetailPage from './routes/instructor/groups/student-detail'
 import StudentProfilePage from './routes/student/profile/index'
 import InstructorProfilePage from './routes/instructor/profile/index'
+import PlannerPage from './routes/student/planner/index'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -82,6 +83,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/student/analytics" element={<AnalyticsPage />} />
             <Route path="/student/join-group" element={<JoinGroupPage />} />
             <Route path="/student/profile" element={<StudentProfilePage />} />
+            <Route path="/student/planner" element={<PlannerPage />} />
 
             {/* 강사 전용 라우트 */}
             <Route path="/instructor" element={<InstructorHomePage />} />

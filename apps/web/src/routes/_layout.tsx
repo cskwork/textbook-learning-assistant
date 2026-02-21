@@ -9,18 +9,19 @@
  */
 
 import { Navigate } from 'react-router'
-import { Home, BookOpen, BookOpenCheck, Users, BookMarked, BarChart2, User } from 'lucide-react'
+import { Home, BookOpen, BookOpenCheck, Users, BookMarked, BarChart2, User, CalendarDays } from 'lucide-react'
 import AppShell from '@/components/layout/AppShell'
 import { useAuth } from '@/contexts/AuthContext'
 import type { NavItem } from '@/components/layout/BottomNav'
 
-// 학생 메뉴 항목 — 05-04: '마이페이지' 탭을 '분석' 탭으로 교체 (5개 탭 유지)
+// 학생 메뉴 항목 — 13-04: 오답노트 탭 → 플래너 탭 교체
+// 오답노트는 홈 → 빠른 시작 → 오답 복습에서 접근 가능 (Phase 12 QuickActionButtons)
 const studentNavItems: NavItem[] = [
   { path: '/student', label: '홈', icon: Home },
   { path: '/student/problems', label: '문제풀기', icon: BookOpenCheck },
-  { path: '/student/wrong-notes', label: '오답노트', icon: BookOpen },
   { path: '/student/workbooks', label: '문제집', icon: BookMarked },
   { path: '/student/analytics', label: '분석', icon: BarChart2 },
+  { path: '/student/planner', label: '플래너', icon: CalendarDays },
 ]
 
 // 강사 메뉴 항목
