@@ -49,6 +49,8 @@ Progress: [█████████████████░░░] 12/14 p
 | Phase 12-student-home-quiz-ux P01 | 242 | 2 tasks | 6 files |
 | Phase 12-student-home-quiz-ux P02 | 302 | 2 tasks | 7 files |
 | Phase 12-student-home-quiz-ux P04 | 1 | 2 tasks | 0 files |
+| Phase 13-analytics-planner P03 | 177 | 2 tasks | 3 files |
+| Phase 13-analytics-planner P01 | 179 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -90,6 +92,11 @@ Recent decisions affecting current work:
 - [Phase 12-student-home-quiz-ux]: swiperRef 패턴: useSwiper 훅 대신 onSwiper callback + useRef<SwiperType> 사용 — 컴포넌트 계층 제약 우회
 - [Phase 12-student-home-quiz-ux]: WorkbookPlayPage: questions.length >= 2이면 QuizSwiperPage, 1개면 단독 QuizPlayer
 - [Phase 12-student-home-quiz-ux]: 빌드 청크 크기 경고(2780KB) 기록 — lazy import 개선은 Phase 13 이후 deferred, POC 환경에서 기능 우선
+- [Phase 13-analytics-planner]: Dexie version(7): studyPlans([studentId+date] 복합 인덱스) + studyTasks 테이블 추가 — version(1)~(6) 무수정 유지
+- [Phase 13-analytics-planner]: UserSetting 플래너 설정: weeklyGoal/subjectTimeAllocation/notificationEnabled/notificationTime — 인덱스 없는 선택 필드로 version 업 없이 TypeScript 인터페이스만 확장
+- [Phase 13-analytics-planner]: scheduleNotificationCheck: lastFired 변수로 setInterval 내 같은 분 중복 알림 방지 패턴 적용
+- [Phase 13-analytics-planner]: DailyTrendLineChart: LineChart → ComposedChart 전환 — recharts ComposedChart에서 Line+Area 혼합 가능
+- [Phase 13-analytics-planner]: DateRangeSelector 칩 필터: 7/14/30일 선택 → getDailyStats days 파라미터 동적 연동
 
 ### Pending Todos
 

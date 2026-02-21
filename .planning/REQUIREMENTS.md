@@ -35,9 +35,9 @@
 
 ### 학습 플래너
 
-- [ ] **PLAN-01**: 일간/주간 학습 플래너 UI (캘린더 뷰, 할 일 체크리스트, 목표 설정)
-- [ ] **PLAN-02**: 학습 리마인더 알림 (브라우저 Notification API, 일일 학습 미완료 시 알림)
-- [ ] **PLAN-03**: 학습 스케줄 관리 (주간 목표 문제 수, 과목별 시간 배분, 진행률 시각화)
+- [x] **PLAN-01**: 일간/주간 학습 플래너 UI (캘린더 뷰, 할 일 체크리스트, 목표 설정)
+- [x] **PLAN-02**: 학습 리마인더 알림 (브라우저 Notification API, 일일 학습 미완료 시 알림)
+- [x] **PLAN-03**: 학습 스케줄 관리 (주간 목표 문제 수, 과목별 시간 배분, 진행률 시각화)
 
 ### 전체 플로우 & 애니메이션
 
@@ -102,9 +102,9 @@
 | ANLZ-01 | Phase 13 | Pending |
 | ANLZ-02 | Phase 13 | Pending |
 | ANLZ-03 | Phase 13 | Pending |
-| PLAN-01 | Phase 13 | Pending |
-| PLAN-02 | Phase 13 | Pending |
-| PLAN-03 | Phase 13 | Pending |
+| PLAN-01 | Phase 13 | Complete |
+| PLAN-02 | Phase 13 | Complete |
+| PLAN-03 | Phase 13 | Complete |
 | INST-01 | Phase 14 | Pending |
 | INST-02 | Phase 14 | Pending |
 | INST-03 | Phase 14 | Pending |
