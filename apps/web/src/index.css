@@ -326,6 +326,15 @@ body {
   background: linear-gradient(135deg, oklch(0.38 0.18 260), oklch(0.42 0.2 275), oklch(0.35 0.18 295));
 }
 
+/* ─── Swiper 커스텀 (HOME-02) ─── */
+.swiper-pagination-bullet-active {
+  background: oklch(var(--primary)) !important;
+}
+.swiper-pagination-bullet {
+  background: oklch(var(--muted-foreground));
+  opacity: 0.3;
+}
+
 /* KaTeX 수식 글꼴 크기 — CSS custom property로 앱 전역 제어
    katex.min.css가 .katex에 font-size: 1.21em을 설정하므로 !important 필요 */
 .katex {
