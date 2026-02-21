@@ -146,6 +146,136 @@ export async function getWeakCategories(
 }
 
 /**
+ * 모든 유형별 마스터리 수준 계산 — ANLZ-02
+ * BKT pL 또는 정답률 기반으로 각 유형의 숙련도 레벨 반환
+ * level 판별: pL >= 0.95 → mastery, >= 0.7 → proficient, >= 0.4 → learning, < 0.4 → weak
+ */
+export async function getAllCategoryMastery(
+  studentId: string,
+): Promise<
+  {
+    category: string
+    pL: number
+    total: number
+    correct: number
+    level: 'mastery' | 'proficient' | 'learning' | 'weak'
+  }[]
+> {
+  const attempts = await db.quizAttempts.where('studentId').equals(studentId).toArray()
+
+  const questions = await db.questions.toArray()
+  const categoryMap = new Map(questions.map((q) => [q.id, q.questionCategory]))
+
+  // 유형별 시도 기록 그루핑
+  const grouped = new Map<string, { isCorrect: boolean }[]>()
+  const countMap = new Map<string, { correct: number; total: number }>()
+
+  for (const attempt of attempts) {
+    const cat = categoryMap.get(attempt.questionId) ?? '기타'
+
+    const list = grouped.get(cat) ?? []
+    list.push({ isCorrect: attempt.isCorrect })
+    grouped.set(cat, list)
+
+    const counts = countMap.get(cat) ?? { correct: 0, total: 0 }
+    countMap.set(cat, {
+      correct: counts.correct + (attempt.isCorrect ? 1 : 0),
+      total: counts.total + 1,
+    })
+  }
+
+  const useBKT = attempts.length >= 30
+
+  const results: {
+    category: string
+    pL: number
+    total: number
+    correct: number
+    level: 'mastery' | 'proficient' | 'learning' | 'weak'
+  }[] = []
+
+  for (const [category, categoryAttempts] of grouped) {
+    const counts = countMap.get(category) ?? { correct: 0, total: 0 }
+
+    const pL = useBKT
+      ? computeBKT(categoryAttempts, DEFAULT_BKT_PARAMS)
+      : counts.total > 0
+        ? counts.correct / counts.total
+        : 0
+
+    const level: 'mastery' | 'proficient' | 'learning' | 'weak' =
+      pL >= 0.95 ? 'mastery' : pL >= 0.7 ? 'proficient' : pL >= 0.4 ? 'learning' : 'weak'
+
+    results.push({
+      category,
+      pL,
+      total: counts.total,
+      correct: counts.correct,
+      level,
+    })
+  }
+
+  // pL 내림차순 (숙달 수준 높은 순)
+  return results.sort((a, b) => b.pL - a.pL)
+}
+
+/**
+ * 이번 주 vs 지난 주 통계 비교 — ANLZ-03
+ * 로컬 타임존 월요일 기준 주 계산
+ */
+export async function getWeeklyComparison(studentId: string): Promise<{
+  thisWeek: { count: number; correct: number; accuracy: number }
+  lastWeek: { count: number; correct: number; accuracy: number }
+  changePercent: number
+}> {
+  const now = new Date()
+
+  // 로컬 타임존 이번 주 월요일 자정
+  const dayOfWeek = now.getDay() // 0=일, 1=월, ..., 6=토
+  const daysFromMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1
+  const thisMonday = new Date(now)
+  thisMonday.setHours(0, 0, 0, 0)
+  thisMonday.setDate(now.getDate() - daysFromMonday)
+
+  const thisWeekStart = thisMonday.getTime()
+  const lastWeekStart = thisWeekStart - 7 * 24 * 60 * 60 * 1000
+
+  const attempts = await db.quizAttempts
+    .where('studentId')
+    .equals(studentId)
+    .filter((a) => a.attemptedAt >= lastWeekStart)
+    .toArray()
+
+  const thisWeekAttempts = attempts.filter((a) => a.attemptedAt >= thisWeekStart)
+  const lastWeekAttempts = attempts.filter(
+    (a) => a.attemptedAt >= lastWeekStart && a.attemptedAt < thisWeekStart,
+  )
+
+  const calcStats = (list: typeof attempts) => {
+    const count = list.length
+    const correct = list.filter((a) => a.isCorrect).length
+    return {
+      count,
+      correct,
+      accuracy: count > 0 ? Math.round((correct / count) * 100) : 0,
+    }
+  }
+
+  const thisWeek = calcStats(thisWeekAttempts)
+  const lastWeek = calcStats(lastWeekAttempts)
+
+  // 변화량: 정답률 기준 (lastWeek 정답률이 0이면 count 기준)
+  let changePercent = 0
+  if (lastWeek.accuracy > 0) {
+    changePercent = Math.round(((thisWeek.accuracy - lastWeek.accuracy) / lastWeek.accuracy) * 100)
+  } else if (lastWeek.count > 0) {
+    changePercent = Math.round(((thisWeek.count - lastWeek.count) / lastWeek.count) * 100)
+  }
+
+  return { thisWeek, lastWeek, changePercent }
+}
+
+/**
  * 맞춤 문제 추천 — AIAN-03
  * 취약 유형 상위 3개 → 해당 questions 중 최근 7일 isCorrect=true 제외 → limit개 반환
  * questions 테이블이 비어있으면 []
