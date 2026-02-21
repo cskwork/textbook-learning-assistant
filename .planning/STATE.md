@@ -10,10 +10,10 @@ See: .planning/PROJECT.md (updated 2026-02-21)
 ## Current Position
 
 Phase: 13 of 14 (분석 대시보드 + 학습 플래너) — 진행 중
-Plan: 2 of 5 완료 (01~02 완료, 03~05 대기)
-Status: Phase 13 Plan 02 완료 — ANLZ-02, ANLZ-03 충족
-Last activity: 2026-02-21 — Phase 13 Plan 02 완료 (마스터리 맵 + 학습 경로 + 히스토리 타임라인)
-Stopped at: Completed 13-analytics-planner-02-PLAN.md
+Plan: 4 of 5 완료 (01~04 완료, 05 대기)
+Status: Phase 13 Plan 04 완료 — PLAN-01, PLAN-02, PLAN-03 충족
+Last activity: 2026-02-21 — Phase 13 Plan 04 완료 (학습 플래너 UI: 캘린더+체크리스트+주간설정+알림+라우트)
+Stopped at: Completed 13-analytics-planner-04-PLAN.md
 
 Progress: [█████████████████░░░] 12/14 phases complete
 
@@ -53,6 +53,7 @@ Progress: [█████████████████░░░] 12/14 p
 | Phase 13-analytics-planner P03 | 177 | 2 tasks | 3 files |
 | Phase 13-analytics-planner P01 | 179 | 2 tasks | 6 files |
 | Phase 13-analytics-planner P02 | 215 | 2 tasks | 5 files |
+| Phase 13-analytics-planner P04 | 263 | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -102,6 +103,9 @@ Recent decisions affecting current work:
 - [Phase 13-analytics-planner]: getAllCategoryMastery: BKT(30회 이상)/휴리스틱(30회 미만) 이중 모드 — 기존 getWeakCategories 패턴 동일하게 유지
 - [Phase 13-analytics-planner]: HistoryTimeline 일별 바: 최대값 대비 비율 너비 계산(maxCount 기준) — 상대적 시각화
 - [Phase 13-analytics-planner]: analytics/index.tsx 레이아웃: 히스토리타임라인(전폭) → 마스터리맵+학습경로(lg:grid-cols-5) → AI추천 → 차트
+- [Phase 13-analytics-planner]: 탭바 오답노트→플래너 교체: 홈 QuickActionButtons에서 오답노트 접근 가능, 탭 5개 유지
+- [Phase 13-analytics-planner]: taskChangeCounter 패턴: useLiveQuery(studyTasks.count)로 태스크 변경 감지 + useEffect 재실행 트리거
+- [Phase 13-analytics-planner]: NotificationToggle cleanupRef 패턴: useRef<() => void | null>로 setInterval cleanup 관리
 
 ### Pending Todos
 
