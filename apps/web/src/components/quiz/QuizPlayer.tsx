@@ -3,12 +3,14 @@
 // useReducer 기반 playing → submitted 상태 머신
 import { useReducer, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { LatexPreview } from '@/components/questions/LatexPreview'
 import { TimerDisplay } from '@/components/quiz/TimerDisplay'
 import { MultipleChoiceInput } from '@/components/quiz/MultipleChoiceInput'
 import { ShortAnswerInput } from '@/components/quiz/ShortAnswerInput'
 import { QuizResult } from '@/components/quiz/QuizResult'
+import { FadeIn } from '@/components/motion/FadeIn'
 import { useTimer } from '@/hooks/useTimer'
 import { submitQuizAttempt } from '@/services/quiz.service'
 import type { Question } from '@/lib/db'
@@ -60,11 +62,21 @@ interface QuizPlayerProps {
   onComplete?: (isCorrect: boolean) => void  // 채점 완료 콜백 (오답노트 UI에서 활용)
   onNext?: () => void   // 다음 문제 버튼 콜백
   onBack?: () => void   // 문제 목록으로 돌아가기 콜백
+  questionIndex?: number    // 현재 문제 번호 (0-based, optional)
+  totalQuestions?: number   // 전체 문제 수 (optional)
 }
 
 // ─── 컴포넌트 ────────────────────────────────────────────────────────────────
 
-export function QuizPlayer({ question, studentId, onComplete, onNext, onBack }: QuizPlayerProps) {
+export function QuizPlayer({
+  question,
+  studentId,
+  onComplete,
+  onNext,
+  onBack,
+  questionIndex,
+  totalQuestions,
+}: QuizPlayerProps) {
   const [state, dispatch] = useReducer(quizReducer, {
     phase: 'playing',
     selectedAnswer: '',
@@ -117,16 +129,51 @@ export function QuizPlayer({ question, studentId, onComplete, onNext, onBack }: 
   }
 
   // ── playing 단계: 문제 + 답 입력 UI ──────────────────────────────────────
+  const showIndicator = questionIndex !== undefined && totalQuestions !== undefined
+
   return (
-    <div className="space-y-4">
-      {/* 타이머 */}
-      <div className="flex justify-end">
-        <TimerDisplay seconds={timer.seconds} formatted={timer.formatted} />
+    <FadeIn className="space-y-4">
+      {/* 문제 번호 인디케이터 + 타이머 */}
+      <div className="flex items-center justify-between">
+        {showIndicator ? (
+          <div className="space-y-1 flex-1 mr-4">
+            <p className="text-sm font-medium text-foreground">
+              문제 {questionIndex + 1} / {totalQuestions}
+            </p>
+            {/* 진행 바 */}
+            <div className="h-1 w-full rounded-full bg-muted overflow-hidden">
+              <div
+                className="h-full bg-primary rounded-full transition-all duration-300"
+                style={{ width: `${((questionIndex + 1) / totalQuestions) * 100}%` }}
+              />
+            </div>
+          </div>
+        ) : (
+          <div />
+        )}
+
+        {/* 타이머 — 우측 상단 */}
+        <div className="bg-muted/50 rounded-full px-3 py-1">
+          <TimerDisplay seconds={timer.seconds} formatted={timer.formatted} />
+        </div>
       </div>
 
       {/* 문제 본문 */}
-      <Card>
-        <CardContent className="pt-6">
+      <Card className="max-w-full">
+        {/* 과목/유형 뱃지 */}
+        <div className="flex items-center gap-2 px-6 pt-4">
+          {question.subject && (
+            <Badge variant="secondary" className="text-xs">
+              {question.subject}
+            </Badge>
+          )}
+          {question.questionCategory && (
+            <Badge variant="outline" className="text-xs">
+              {question.questionCategory}
+            </Badge>
+          )}
+        </div>
+        <CardContent className="p-6 md:p-8">
           <LatexPreview content={question.content} />
           {question.imageDataUrl && (
             <img
@@ -160,12 +207,12 @@ export function QuizPlayer({ question, studentId, onComplete, onNext, onBack }: 
 
       {/* 제출 버튼 */}
       <Button
-        className="w-full"
+        className="w-full rounded-xl h-12 text-base font-bold"
         disabled={!state.selectedAnswer}
         onClick={handleSubmit}
       >
         제출
       </Button>
-    </div>
+    </FadeIn>
   )
 }

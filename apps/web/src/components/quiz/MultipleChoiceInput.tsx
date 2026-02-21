@@ -1,5 +1,6 @@
 // apps/web/src/components/quiz/MultipleChoiceInput.tsx
-// 5지선다 버튼 UI — 선택 강조 + 제출 후 비활성화
+// 5지선다 버튼 UI — 세로 스택 레이아웃, 번호 원형 배지, 터치 타겟 확보
+import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 
 const OPTIONS = ['1', '2', '3', '4', '5'] as const
@@ -12,24 +13,42 @@ interface MultipleChoiceInputProps {
 
 export function MultipleChoiceInput({ selected, onSelect, disabled }: MultipleChoiceInputProps) {
   return (
-    <div className="grid grid-cols-5 gap-2">
-      {OPTIONS.map((opt) => (
-        <button
-          key={opt}
-          type="button"
-          disabled={disabled}
-          onClick={() => onSelect(opt)}
-          className={cn(
-            'h-12 rounded-lg border-2 text-lg font-bold transition-colors',
-            selected === opt
-              ? 'border-primary bg-primary text-primary-foreground'
-              : 'border-border hover:border-primary/50',
-            disabled && 'cursor-not-allowed opacity-70',
-          )}
-        >
-          {opt}
-        </button>
-      ))}
+    <div className="space-y-2.5">
+      {OPTIONS.map((opt) => {
+        const isSelected = selected === opt
+
+        return (
+          <motion.button
+            key={opt}
+            type="button"
+            disabled={disabled}
+            onClick={() => onSelect(opt)}
+            whileTap={{ scale: 0.98 }}
+            transition={{ duration: 0.1 }}
+            className={cn(
+              'flex w-full items-center gap-3 rounded-xl border-2 px-4 py-3 min-h-[52px] text-left transition-all duration-200',
+              isSelected
+                ? 'border-primary bg-primary/10 text-primary font-bold'
+                : 'border-border/50 hover:border-primary/30 hover:bg-primary/5',
+              disabled && 'cursor-not-allowed opacity-70',
+            )}
+          >
+            {/* 번호 원형 배지 */}
+            <span
+              className={cn(
+                'flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold',
+                isSelected
+                  ? 'bg-primary text-white'
+                  : 'bg-muted text-muted-foreground',
+              )}
+            >
+              {opt}
+            </span>
+            {/* 선택지 라벨 */}
+            <span className="text-base font-medium">번</span>
+          </motion.button>
+        )
+      })}
     </div>
   )
 }
