@@ -15,7 +15,7 @@ const mainWindow = new BrowserWindow({
     width: 1280,
     height: 800,
   },
-  titleBarStyle: 'hiddenInset',
+  titleBarStyle: 'default',
 })
 
 mainWindow.on('close', () => {
