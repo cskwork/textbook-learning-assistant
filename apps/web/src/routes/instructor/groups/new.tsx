@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent } from '@/components/ui/card'
 import { useAuth } from '@/contexts/AuthContext'
 import { createGroup, getGroup } from '@/services/group.service'
+import { FadeIn } from '@/components/motion/FadeIn'
 
 export default function GroupNewPage() {
   const { user } = useAuth()
@@ -46,7 +47,7 @@ export default function GroupNewPage() {
   if (createdGroupId && inviteCode) {
     return (
       <div className="p-4 md:p-6 lg:p-8 max-w-lg mx-auto flex flex-col items-center justify-center min-h-[60vh]">
-        <div className="animate-scale-in stagger-1 w-full">
+        <FadeIn delay={0} className="w-full">
           <Card className="rounded-2xl border-none shadow-sm bg-white dark:bg-card text-center">
             <CardContent className="p-8 space-y-5">
               <div className="w-14 h-14 rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center mx-auto">
@@ -80,14 +81,14 @@ export default function GroupNewPage() {
               </div>
             </CardContent>
           </Card>
-        </div>
+        </FadeIn>
       </div>
     )
   }
 
   return (
     <div className="p-4 md:p-6 lg:p-8 max-w-lg mx-auto flex flex-col justify-center min-h-[60vh]">
-      <div className="animate-fade-up stagger-1">
+      <FadeIn delay={0}>
         <h1 className="text-[1.65rem] font-extrabold tracking-tight text-foreground mb-1">새 반 만들기</h1>
         <p className="text-sm text-muted-foreground mb-6">반 이름을 입력하면 초대 코드가 자동 생성됩니다.</p>
 
@@ -117,7 +118,7 @@ export default function GroupNewPage() {
             </form>
           </CardContent>
         </Card>
-      </div>
+      </FadeIn>
     </div>
   )
 }

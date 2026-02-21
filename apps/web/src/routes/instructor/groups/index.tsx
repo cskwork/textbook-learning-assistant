@@ -9,6 +9,8 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { useAuth } from '@/contexts/AuthContext'
 import { db } from '@/lib/db'
+import { AnimatedCard } from '@/components/motion/AnimatedCard'
+import { FadeIn } from '@/components/motion/FadeIn'
 
 export default function GroupListPage() {
   const { user } = useAuth()
@@ -23,21 +25,23 @@ export default function GroupListPage() {
   return (
     <div className="p-4 md:p-6 lg:p-8 max-w-6xl mx-auto space-y-5">
       {/* 헤더 */}
-      <div className="flex items-center justify-between animate-fade-up stagger-1">
-        <div>
-          <h1 className="text-[1.65rem] font-extrabold tracking-tight text-foreground">반 관리</h1>
-          <p className="text-sm text-muted-foreground mt-0.5">
-            {groups ? `${groups.length}개의 반을 관리하고 있어요` : '로딩 중...'}
-          </p>
+      <FadeIn delay={0}>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-[1.65rem] font-extrabold tracking-tight text-foreground">반 관리</h1>
+            <p className="text-sm text-muted-foreground mt-0.5">
+              {groups ? `${groups.length}개의 반을 관리하고 있어요` : '로딩 중...'}
+            </p>
+          </div>
+          <Button className="rounded-xl shadow-sm font-semibold h-9 px-4" onClick={() => navigate('/instructor/groups/new')}>
+            <Plus className="h-4 w-4" />
+            새 반 만들기
+          </Button>
         </div>
-        <Button className="rounded-xl shadow-sm font-semibold h-9 px-4" onClick={() => navigate('/instructor/groups/new')}>
-          <Plus className="h-4 w-4" />
-          새 반 만들기
-        </Button>
-      </div>
+      </FadeIn>
 
       {!groups || groups.length === 0 ? (
-        <div className="animate-fade-up stagger-2">
+        <FadeIn delay={0.05}>
           <Card className="rounded-2xl border-none shadow-sm bg-white dark:bg-card">
             <CardContent className="p-12 text-center">
               <div className="w-16 h-16 rounded-2xl bg-muted/60 flex items-center justify-center mx-auto mb-4">
@@ -51,37 +55,39 @@ export default function GroupListPage() {
               </Button>
             </CardContent>
           </Card>
-        </div>
+        </FadeIn>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 animate-fade-up stagger-2">
-          {groups.map((group, idx) => (
-            <Card
-              key={group.id}
-              className="rounded-2xl border-none shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 cursor-pointer bg-white dark:bg-card overflow-hidden group"
-              style={{ animationDelay: `${0.05 * idx}s` }}
-              onClick={() => navigate(`/instructor/groups/${group.id}`)}
-            >
-              <CardContent className="p-5">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                    <Users className="w-5 h-5 text-primary" />
+        <FadeIn delay={0.05}>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {groups.map((group, idx) => (
+              <FadeIn key={group.id} delay={0.05 * (idx + 1)}>
+                <AnimatedCard
+                  className="border border-border/50 shadow-sm hover:shadow-md hover:border-border bg-white/80 dark:bg-card/60 backdrop-blur-sm overflow-hidden cursor-pointer"
+                  onClick={() => navigate(`/instructor/groups/${group.id}`)}
+                >
+                  <div className="p-5">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                        <Users className="w-5 h-5 text-primary" />
+                      </div>
+                      <ChevronRight className="w-4 h-4 text-muted-foreground/30" />
+                    </div>
+                    <h3 className="text-base font-bold text-foreground mb-2 truncate">{group.name}</h3>
+                    <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                      <Badge variant="secondary" className="font-mono text-[11px] rounded-md px-2 py-0.5">
+                        {group.inviteCode}
+                      </Badge>
+                      <span className="flex items-center gap-1">
+                        <CalendarDays className="h-3 w-3" />
+                        {new Date(group.createdAt).toLocaleDateString('ko-KR')}
+                      </span>
+                    </div>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-muted-foreground/30 group-hover:text-primary transition-colors" />
-                </div>
-                <h3 className="text-base font-bold text-foreground mb-2 truncate">{group.name}</h3>
-                <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                  <Badge variant="secondary" className="font-mono text-[11px] rounded-md px-2 py-0.5">
-                    {group.inviteCode}
-                  </Badge>
-                  <span className="flex items-center gap-1">
-                    <CalendarDays className="h-3 w-3" />
-                    {new Date(group.createdAt).toLocaleDateString('ko-KR')}
-                  </span>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                </AnimatedCard>
+              </FadeIn>
+            ))}
+          </div>
+        </FadeIn>
       )}
     </div>
   )

@@ -18,6 +18,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import { assignWorkbook, getGroup } from '@/services/group.service'
 import { listWorkbooks } from '@/services/workbook.service'
 import type { Workbook, Group } from '@/lib/db'
+import { FadeIn } from '@/components/motion/FadeIn'
 
 export default function AssignWorkbookPage() {
   const { id } = useParams<{ id: string }>()
@@ -72,7 +73,7 @@ export default function AssignWorkbookPage() {
 
   return (
     <div className="p-4 md:p-6 lg:p-8 max-w-lg mx-auto flex flex-col justify-center min-h-[60vh]">
-      <div className="animate-fade-up stagger-1">
+      <FadeIn delay={0}>
         <h1 className="text-[1.65rem] font-extrabold tracking-tight text-foreground mb-1">과제 배정</h1>
         <p className="text-sm text-muted-foreground mb-6">{group.name}</p>
 
@@ -124,7 +125,7 @@ export default function AssignWorkbookPage() {
             </CardContent>
           </Card>
         )}
-      </div>
+      </FadeIn>
     </div>
   )
 }
