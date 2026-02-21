@@ -1,8 +1,7 @@
 // apps/web/src/components/workbook/WorkbookCard.tsx
-// 문제집 카드 — 제목, 문제 수, 생성일, 풀기/삭제 버튼
+// 문제집 카드 — AnimatedCard 래퍼 + 제목/뱃지/날짜/풀기/삭제 버튼
 import { Play, Trash2 } from 'lucide-react'
 import {
-  Card,
   CardContent,
   CardFooter,
   CardHeader,
@@ -10,6 +9,7 @@ import {
 } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { AnimatedCard } from '@/components/motion/AnimatedCard'
 import type { Workbook } from '@/lib/db'
 
 interface WorkbookCardProps {
@@ -31,12 +31,15 @@ export function WorkbookCard({ workbook, onPlay, onDelete }: WorkbookCardProps) 
     : null
 
   return (
-    <Card className="rounded-2xl border-border/50 shadow-sm hover:shadow-md hover:border-border transition-all duration-300 bg-white/80 dark:bg-card/60 backdrop-blur-sm flex flex-col overflow-hidden">
+    <AnimatedCard className="border border-border/50 shadow-sm overflow-hidden flex flex-col">
+      {/* 상단: 제목 */}
       <CardHeader className="p-5 pb-2">
         <CardTitle className="text-lg font-bold tracking-tight text-foreground/90">{workbook.title}</CardTitle>
       </CardHeader>
+
+      {/* 중앙: 문제 수 + 필터 뱃지 + 날짜 */}
       <CardContent className="px-5 pb-5 pt-2 flex-1 space-y-4">
-        {/* 문제 수 + 필터 요약 */}
+        {/* 문제 수 + 필터 요약 뱃지 */}
         <div className="flex flex-wrap items-center gap-2">
           <Badge variant="secondary" className="rounded-full px-2.5 bg-primary/10 text-primary hover:bg-primary/20 border-none">
             {workbook.questionIds.length}문제
@@ -52,7 +55,7 @@ export function WorkbookCard({ workbook, onPlay, onDelete }: WorkbookCardProps) 
             </Badge>
           )}
         </div>
-        
+
         {/* 날짜 정보 */}
         <div className="flex flex-col gap-1 mt-auto">
           <div className="flex items-center gap-2 text-[13px] text-muted-foreground/80">
@@ -71,6 +74,8 @@ export function WorkbookCard({ workbook, onPlay, onDelete }: WorkbookCardProps) 
           )}
         </div>
       </CardContent>
+
+      {/* 바닥: 풀기 버튼 + 삭제 아이콘 */}
       <CardFooter className="p-4 pt-0 gap-3 border-t border-border/10 bg-muted/10 mt-auto">
         <Button
           size="sm"
@@ -90,6 +95,6 @@ export function WorkbookCard({ workbook, onPlay, onDelete }: WorkbookCardProps) 
           <Trash2 className="w-4 h-4" />
         </Button>
       </CardFooter>
-    </Card>
+    </AnimatedCard>
   )
 }
