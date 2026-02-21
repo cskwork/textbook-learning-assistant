@@ -41,8 +41,8 @@
 
 ### 전체 플로우 & 애니메이션
 
-- [ ] **FLOW-01**: 페이지 전환 애니메이션 (Framer Motion 기반, 슬라이드/페이드 전환)
-- [ ] **FLOW-02**: 마이크로 인터랙션 (버튼 ripple, 카드 hover 확대, 로딩 스켈레톤, 토스트 애니메이션)
+- [x] **FLOW-01**: 페이지 전환 애니메이션 (Framer Motion 기반, 슬라이드/페이드 전환)
+- [x] **FLOW-02**: 마이크로 인터랙션 (버튼 ripple, 카드 hover 확대, 로딩 스켈레톤, 토스트 애니메이션)
 - [ ] **FLOW-03**: 온보딩 플로우 리디자인 (스텝별 진행 표시, 역할 선택 카드, 완료 축하 애니메이션)
 
 ### 강사 포털
@@ -54,8 +54,8 @@
 
 ### 공통 레이아웃
 
-- [ ] **LYOT-01**: 사이드바/탭바 네비게이션 리디자인 (기출탭탭 스타일 아이콘, 활성 상태 인디케이터)
-- [ ] **LYOT-02**: 모바일 퍼스트 반응형 전면 검토 (터치 타겟 크기, 여백, 스크롤 영역)
+- [x] **LYOT-01**: 사이드바/탭바 네비게이션 리디자인 (기출탭탭 스타일 아이콘, 활성 상태 인디케이터)
+- [x] **LYOT-02**: 모바일 퍼스트 반응형 전면 검토 (터치 타겟 크기, 여백, 스크롤 영역)
 - [ ] **LYOT-03**: 오답노트/문제집 페이지 리디자인 (카드 그리드, 정렬/필터 UI)
 
 ## v2.1 Requirements (Deferred)
@@ -86,11 +86,11 @@
 | DSGN-02 | Phase 10 | Complete |
 | DSGN-03 | Phase 10 | Complete |
 | DSGN-04 | Phase 10 | Complete |
-| LYOT-01 | Phase 11 | Pending |
-| LYOT-02 | Phase 11 | Pending |
+| LYOT-01 | Phase 11 | Complete |
+| LYOT-02 | Phase 11 | Complete |
 | LYOT-03 | Phase 11 | Pending |
-| FLOW-01 | Phase 11 | Pending |
-| FLOW-02 | Phase 11 | Pending |
+| FLOW-01 | Phase 11 | Complete |
+| FLOW-02 | Phase 11 | Complete |
 | FLOW-03 | Phase 11 | Pending |
 | HOME-01 | Phase 12 | Pending |
 | HOME-02 | Phase 12 | Pending |
