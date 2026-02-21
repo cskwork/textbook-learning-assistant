@@ -25,7 +25,7 @@
 - [ ] **QUIZ-01**: 문제 풀이 화면 리디자인 (넓은 수식 영역, 직관적 선택지, 문제 번호 인디케이터)
 - [ ] **QUIZ-02**: 문제 간 Swiper 전환 (좌우 스와이프로 이전/다음 문제 이동)
 - [ ] **QUIZ-03**: 채점 결과 애니메이션 (정답 체크 효과, 오답 흔들림 효과, 점수 카운트업)
-- [ ] **QUIZ-04**: 문제 목록/선택 UI 리디자인 (필터 칩, 그리드 카드, 난이도 뱃지)
+- [x] **QUIZ-04**: 문제 목록/선택 UI 리디자인 (필터 칩, 그리드 카드, 난이도 뱃지)
 
 ### 분석 대시보드
 
@@ -98,7 +98,7 @@
 | QUIZ-01 | Phase 12 | Pending |
 | QUIZ-02 | Phase 12 | Pending |
 | QUIZ-03 | Phase 12 | Pending |
-| QUIZ-04 | Phase 12 | Pending |
+| QUIZ-04 | Phase 12 | Complete |
 | ANLZ-01 | Phase 13 | Pending |
 | ANLZ-02 | Phase 13 | Pending |
 | ANLZ-03 | Phase 13 | Pending |
