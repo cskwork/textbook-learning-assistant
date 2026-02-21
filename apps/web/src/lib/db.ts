@@ -1,5 +1,5 @@
 // apps/web/src/lib/db.ts
-// Dexie IndexedDB 스키마 — 문제 영구 저장 + 퀴즈 엔진 (version 2) + DIY 문제집 (version 3) + AI 분석 설정 (version 4) + 강사 관리 포털 (version 5) + 마이페이지 + 앱 설정 (version 6) + AI 문제 생성 (version 7 — 인덱스 없음)
+// Dexie IndexedDB 스키마 — 문제 영구 저장 + 퀴즈 엔진 (version 2) + DIY 문제집 (version 3) + AI 분석 설정 (version 4) + 강사 관리 포털 (version 5) + 마이페이지 + 앱 설정 (version 6) + 학습 플래너 (version 7)
 import Dexie, { type EntityTable } from 'dexie'
 
 export interface QuestionSource {
@@ -96,6 +96,38 @@ export interface UserSetting {
   katexFontSize?: number      // 수식 글꼴 크기 0.8~1.5 (앱 설정 — MYPAGE-02)
   // Phase 9: geminiApiKey 필드 추가 (인덱스 없는 선택 필드, db.version 변경 불필요)
   geminiApiKey?: string       // Gemini API 키 (Phase 9 — 인덱스 없음, 버전 업 불필요)
+  // Phase 13: 학습 플래너 설정 (인덱스 없는 선택 필드 — version 변경 불필요)
+  weeklyGoal?: number         // 주간 목표 문제 수 (기본: 50)
+  subjectTimeAllocation?: Record<string, number>  // 과목별 시간 배분 비율 (예: { '수학I': 30, '미적분': 40 })
+  notificationEnabled?: boolean  // 알림 활성화 여부
+  notificationTime?: string   // 알림 시간 (예: "20:00")
+}
+
+// Phase 13: 학습 플래너 — 일간/주간 학습 계획
+export interface StudyPlan {
+  id: number
+  studentId: string          // user email
+  date: string               // YYYY-MM-DD (로컬 타임존)
+  type: 'daily' | 'weekly'   // 일간/주간 구분
+  weekStartDate?: string     // 주간 플랜인 경우 해당 주 월요일 날짜
+  targetCount: number        // 목표 문제 수
+  createdAt: number          // Date.now()
+  updatedAt: number
+}
+
+// Phase 13: 학습 플래너 — 플랜 내 개별 할 일
+export interface StudyTask {
+  id: number
+  planId: number             // StudyPlan.id
+  studentId: string          // user email
+  title: string              // 할 일 제목 (예: "미적분 5문제 풀기")
+  subject?: string           // 과목 (선택)
+  targetCount: number        // 목표 문제 수
+  completedCount: number     // 완료 문제 수
+  isCompleted: boolean       // 완료 여부
+  order: number              // 정렬 순서
+  createdAt: number
+  completedAt?: number
 }
 
 export interface Group {
@@ -132,6 +164,8 @@ const db = new Dexie('mathQuestionDB') as Dexie & {
   groups: EntityTable<Group, 'id'>
   groupMembers: EntityTable<GroupMember, 'id'>
   assignments: EntityTable<Assignment, 'id'>
+  studyPlans: EntityTable<StudyPlan, 'id'>
+  studyTasks: EntityTable<StudyTask, 'id'>
 }
 
 // version(1): 절대 수정/삭제하지 말 것 — 기존 브라우저 IndexedDB 마이그레이션 경로
@@ -194,6 +228,22 @@ db.version(6).stores({
   groups: '++id, instructorId, &inviteCode',
   groupMembers: '++id, groupId, studentId, [groupId+studentId]',
   assignments: '++id, groupId, workbookId',
+})
+
+// version(7): 학습 플래너 테이블 추가 (studyPlans, studyTasks)
+// ⚠️ 기존 version(1)~(6) 절대 수정하지 말 것
+db.version(7).stores({
+  questions: '++id, subject, unit, questionCategory, difficulty, createdAt, createdBy',
+  quizSessions: '++id, questionId, studentId, startedAt',
+  quizAttempts: '++id, questionId, studentId, sessionId, attemptedAt, isCorrect',
+  wrongNotes: '++id, questionId, studentId, [questionId+studentId], unit, questionCategory, lastWrongAt',
+  workbooks: '++id, studentId, createdAt',
+  userSettings: '++id, &userId',
+  groups: '++id, instructorId, &inviteCode',
+  groupMembers: '++id, groupId, studentId, [groupId+studentId]',
+  assignments: '++id, groupId, workbookId',
+  studyPlans: '++id, studentId, date, type, [studentId+date]',
+  studyTasks: '++id, planId, studentId, isCompleted, order',
 })
 
 // 앱 시작 시 DB가 비어있으면 시드 데이터 자동 삽입
