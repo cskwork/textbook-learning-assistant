@@ -2,7 +2,7 @@
 
 ## What This Is
 
-고등학생을 위한 수학 기출문제 학습 웹앱(PWA). 기출탭탭에서 영감을 받아, 단원별/유형별/난이도별 기출문제를 풀고 AI 기반 취약 유형 분석과 맞춤 추천을 제공하는 서비스. 학생뿐 아니라 강사도 학생 관리와 과제 출제를 할 수 있는 기본 관리 기능을 포함한다.
+고등학생을 위한 수학 기출문제 학습 웹앱(PWA). 기출탭탭에서 영감을 받아, 단원별/유형별/난이도별 기출문제를 풀고 AI 기반 취약 유형 분석과 맞춤 추천을 제공하는 서비스. 학생뿐 아니라 강사도 학생 관리와 과제 출제를 할 수 있는 기본 관리 기능을 포함한다. v2.0에서 기출탭탭 스타일 디자인 시스템으로 전면 리뉴얼하여 프로페셔널한 교육 앱 UX를 완성했다.
 
 ## Core Value
 
@@ -32,68 +32,79 @@
 - ✓ 마이페이지 + 앱 설정 (다크모드, 수식 글꼴) — Phase 8
 - ✓ Electrobun 데스크톱 앱 래퍼 — Quick 6
 
+### Validated (v2.0)
+
+- ✓ 기출탭탭 스타일 디자인 시스템 (OKLCH 색상 토큰, Pretendard 폰트, 라이트/다크 모드) — Phase 10
+- ✓ 컴포넌트 리뉴얼 (Button/Card/Input/Badge 둥근 모서리, 그림자, hover) — Phase 10
+- ✓ Framer Motion 페이지 전환 + 마이크로 인터랙션 — Phase 11
+- ✓ BottomNav/Sidebar 기출탭탭 스타일 네비게이션 — Phase 11
+- ✓ 오답노트/문제집 카드 그리드 + 칩 필터 리디자인 — Phase 11
+- ✓ 온보딩 플로우 리디자인 (스텝별 진행, 축하 애니메이션) — Phase 11
+- ✓ 학생 홈 Swiper 대시보드 + 빠른 학습 시작 CTA — Phase 12
+- ✓ 퀴즈 Swiper 전환 + 채점 애니메이션 (정답 체크, 오답 흔들림) — Phase 12
+- ✓ 문제 목록 카드 그리드 + 난이도 뱃지 리디자인 — Phase 12
+- ✓ 분석 차트 그라데이션 + DateRangeSelector — Phase 13
+- ✓ 마스터리 맵 + 학습 경로 추천 + 히스토리 타임라인 — Phase 13
+- ✓ 학습 플래너 (캘린더, 체크리스트, 알림, 주간 설정) — Phase 13
+- ✓ 강사 홈 대시보드 리디자인 — Phase 14
+- ✓ 강사 문제 관리 필터 사이드바 + 일괄 작업 — Phase 14
+- ✓ 강사 학생 분석 + 반 비교 차트 리디자인 — Phase 14
+- ✓ 강사 그룹/과제 관리 리디자인 — Phase 14
+
 ### Active
 
-_See: Current Milestone v2.0 requirements in REQUIREMENTS.md_
-
-## Current Milestone: v2.0 기출탭탭 스타일 디자인 리뉴얼
-
-**Goal:** 기출탭탭에서 영감받은 프로페셔널 교육 앱 디자인으로 전면 리뉴얼하여 사용자 경험을 대폭 개선한다.
-
-**Target features:**
-- 기출탭탭 스타일 UI 디자인 시스템 (색상, 타이포그래피, 카드, 아이콘)
-- 학생/강사 대시보드 리디자인 (데이터 시각화, 학습 통계 강화)
-- Swiper 기반 탭/슬라이더 UI 패턴 도입
-- 문제 풀이 UX 개선 (더 직관적인 인터페이스)
-- 모바일 퍼스트 반응형 리뉴얼
-- 전체 페이지 일관된 디자인 랭귀지 적용
+_(다음 마일스톤에서 정의)_
 
 ### Out of Scope
 
-- eBook 교재 제공 — 저작권 문제 및 v1 범위 초과
+- eBook 교재 제공 — 저작권 문제 및 범위 초과
 - 실시간 채팅/질문답변 — 핵심 가치와 무관, 복잡도 높음
-- 결제/구독 시스템 — v1은 완전 무료, v2에서 구현
-- 수학 외 과목 — MVP는 수학 전용, 향후 확장
-- 학원 대시보드/화이트라벨 — v2 강사/학원 확장에서 구현
-- 학부모 리포트 발송 — v2 이후
-- OAuth 소셜 로그인 — v1은 이메일 로그인 충분
-- 서술형 AI 채점 — 복잡도 높음, v2 검토
-- 네이티브 앱 (iOS/Android) — PWA로 대체
+- 결제/구독 시스템 — 현재 완전 무료
+- 수학 외 과목 — 수학 전용 유지
+- 학원 대시보드/화이트라벨 — 향후 확장
+- 학부모 리포트 발송 — 향후 확장
+- OAuth 소셜 로그인 — 이메일 로그인 충분
+- 서술형 AI 채점 — 복잡도 높음
+- 네이티브 앱 (iOS/Android) — PWA + Electrobun으로 대체
 
 ## Context
 
-- **영감:** 비상교육 기출탭탭 — 고등 전 과목 기출문제 앱, 2022년 론칭, 구글 플레이 2023 우수상
+- **영감:** 비상교육 기출탭탭 — 고등 전 과목 기출문제 앱
 - **타겟 사용자:** 고등학생 (수학), 수학 강사/과외 교사
 - **MVP 과목:** 고등 수학 (수학I, 수학II, 미적분, 확률과통계, 기하)
 - **문제 데이터:** 관리자가 직접 입력/수집 (수능, 모의고사, 교육청 기출 등)
-- **AI 모델:** BKT(Bayesian Knowledge Tracing) 또는 DKT(Deep Knowledge Tracing) 기반 학습자 능력 추적
-- **수식 처리:** LaTeX로 저장, KaTeX로 클라이언트 렌더링, 그래프/도형은 이미지 파일
-- **기출탭탭과의 차별점:** 웹 기반 접근성, AI 지식 추적 모델의 깊이, 강사 협업 기능, 오픈 플랫폼 성격
+- **AI 모델:** BKT(Bayesian Knowledge Tracing) 기반 학습자 능력 추적
+- **수식 처리:** LaTeX로 저장, KaTeX로 클라이언트 렌더링
+- **현재 코드베이스:** 17,013 LOC (TypeScript/TSX/CSS), React 19 + Vite 7 + Tailwind v4 + shadcn/ui
+- **v2.0 신규 도입:** Swiper, Framer Motion, Pretendard 폰트, OKLCH 색상 토큰
+- **아키텍처:** POC (localStorage + Dexie IndexedDB mock), 백엔드 연동은 향후
 
 ## Constraints
 
-- **Tech Stack**: 웹앱 + PWA (React 기반) — 가장 빠른 MVP 개발 가능
-- **Backend**: Node.js — JavaScript 생태계 통일
-- **DB**: PostgreSQL (문제 메타데이터 RDB) — 관계형 데이터에 최적
-- **수식**: LaTeX + KaTeX — 수학 교육 업계 표준
-- **AI**: BKT/DKT 모델 — 교육 AI 분야 검증된 접근법
-- **수익**: v1 완전 무료 — 결제 시스템 없음
-- **과목**: 수학만 (MVP) — 과목 확장은 v2 이후
+- **Tech Stack**: React 19 + Vite 7 + Tailwind v4 + shadcn/ui
+- **Backend**: Express 5 + Drizzle ORM + PostgreSQL (현재 POC: localStorage mock)
+- **DB**: Dexie IndexedDB (클라이언트 사이드 POC)
+- **수식**: LaTeX + KaTeX
+- **AI**: BKT 지식 추적 모델
+- **수익**: 완전 무료
+- **과목**: 수학만 (MVP)
 
 ## Key Decisions
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| 웹앱 + PWA 선택 (네이티브 앱 대신) | 빠른 개발, 쉬운 배포, 크로스 플랫폼 | — Pending |
-| 수학 전용 MVP | 수식 렌더링에 집중, 범위 축소로 빠른 출시 | — Pending |
-| BKT/DKT 지식 추적 모델 | 교육 AI 분야에서 검증된 접근법, 단순 협업필터링보다 정교 | — Pending |
-| LaTeX + KaTeX 수식 렌더링 | 교육 업계 표준, 검색/편집 가능, 빠른 클라이언트 렌더링 | — Pending |
-| v1 완전 무료 | 사용자 확보 우선, 결제 복잡도 제거 | — Pending |
-| 강사 기본 기능 v1 포함 | B2B 시장 진입점 확보, 학원/과외 시장 검증 | — Pending |
-| 객관식 + 단답형만 (서술형 제외) | 자동 채점 가능한 범위로 제한, 서술형 AI 채점은 복잡 | — Pending |
-
-| 기출탭탭 스타일 디자인 리뉴얼 (v2.0) | 기존 기능 UI 전면 개선, 사용자 경험 대폭 향상 | — Pending |
-| PDF 문제 풀이 + 프린트 루프 (v2.1 예정) | 디지털↔종이 학습 갭 해소, PDF 뷰어/내보내기/필기 | — Deferred to v2.1 |
+| 웹앱 + PWA 선택 (네이티브 앱 대신) | 빠른 개발, 쉬운 배포, 크로스 플랫폼 | ✓ Good |
+| 수학 전용 MVP | 수식 렌더링에 집중, 범위 축소로 빠른 출시 | ✓ Good |
+| BKT 지식 추적 모델 | 교육 AI 분야에서 검증된 접근법 | ✓ Good |
+| LaTeX + KaTeX 수식 렌더링 | 교육 업계 표준, 빠른 클라이언트 렌더링 | ✓ Good |
+| v1/v2 완전 무료 | 사용자 확보 우선, 결제 복잡도 제거 | ✓ Good |
+| 강사 기본 기능 v1 포함 | B2B 시장 진입점 확보 | ✓ Good |
+| 객관식 + 단답형만 (서술형 제외) | 자동 채점 가능한 범위로 제한 | ✓ Good |
+| 기출탭탭 스타일 디자인 리뉴얼 (v2.0) | 기존 기능 UI 전면 개선, 사용자 경험 향상 | ✓ Good |
+| OKLCH 색상 + Pretendard 폰트 | 모던 색상 공간 + 한글 최적 가독성 | ✓ Good |
+| Swiper + Framer Motion 도입 | 터치 인터랙션 + 애니메이션 전문 라이브러리 | ✓ Good |
+| POC 아키텍처 유지 (v2.0) | 디자인 리뉴얼에 집중, 백엔드 연동은 v3 | ✓ Good |
+| PDF 문제 풀이 v2.1 연기 | 디자인 리뉴얼 완료 후 진행 | — Deferred |
 
 ---
-*Last updated: 2026-02-21 after milestone v2.0 start*
+*Last updated: 2026-02-21 after v2.0 milestone*
