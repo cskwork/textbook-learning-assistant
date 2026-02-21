@@ -56,7 +56,7 @@
 
 - [x] **LYOT-01**: 사이드바/탭바 네비게이션 리디자인 (기출탭탭 스타일 아이콘, 활성 상태 인디케이터)
 - [x] **LYOT-02**: 모바일 퍼스트 반응형 전면 검토 (터치 타겟 크기, 여백, 스크롤 영역)
-- [ ] **LYOT-03**: 오답노트/문제집 페이지 리디자인 (카드 그리드, 정렬/필터 UI)
+- [x] **LYOT-03**: 오답노트/문제집 페이지 리디자인 (카드 그리드, 정렬/필터 UI)
 
 ## v2.1 Requirements (Deferred)
 
@@ -88,7 +88,7 @@
 | DSGN-04 | Phase 10 | Complete |
 | LYOT-01 | Phase 11 | Complete |
 | LYOT-02 | Phase 11 | Complete |
-| LYOT-03 | Phase 11 | Pending |
+| LYOT-03 | Phase 11 | Complete |
 | FLOW-01 | Phase 11 | Complete |
 | FLOW-02 | Phase 11 | Complete |
 | FLOW-03 | Phase 11 | Complete |

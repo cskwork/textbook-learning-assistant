@@ -10,9 +10,9 @@ See: .planning/PROJECT.md (updated 2026-02-21)
 ## Current Position
 
 Phase: 11 of 14 (공통 레이아웃 + 애니메이션) — 진행 중
-Plan: 4 of 5 in current phase (11-04 완료)
-Status: Phase 11 진행 중 — 11-01, 11-02, 11-04 완료 / 11-03, 11-05 대기
-Last activity: 2026-02-21 — 11-04 완료: 온보딩 플로우 Framer Motion 리디자인 (스텝 인디케이터 + 카드 stagger + 축하 애니메이션) (FLOW-03 충족)
+Plan: 4 of 5 in current phase (11-03 완료)
+Status: Phase 11 진행 중 — 11-01, 11-02, 11-03, 11-04 완료 / 11-05 대기
+Last activity: 2026-02-21 — 11-03 완료: 오답노트/문제집 페이지 카드 그리드 + 칩 필터/정렬 리디자인 (LYOT-03 충족)
 
 Progress: [██████████░░░░░░░░░░] 9/14 phases complete (v1.0 기준)
 
@@ -43,6 +43,7 @@ Progress: [██████████░░░░░░░░░░] 9/14 ph
 | Phase 11-layout-animation P02 | 129 | 2 tasks | 3 files |
 | Phase 11-layout-animation P01 | 2 | 2 tasks | 6 files |
 | Phase 11-layout-animation P04 | 204 | 1 tasks | 1 files |
+| Phase 11-layout-animation P03 | 235 | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -71,6 +72,9 @@ Recent decisions affecting current work:
 - [Phase 11-layout-animation]: easing 통일: cubic-bezier(0.22, 1, 0.36, 1) easeOutExpo — 모든 애니메이션 컴포넌트 공통 적용
 - [Phase 11-layout-animation]: 온보딩 step 상태 'select'|'complete' 2단계 — AnimatePresence key prop으로 화면 전환, setTimeout 1500ms 후 navigate
 - [Phase 11-layout-animation]: 콘페티 파티클 배열을 모듈 최상단 상수(CONFETTI_PARTICLES)로 정의 — useMemo 불필요, 렌더 비용 없음
+- [Phase 11-layout-animation]: 칩 필터 토글 해제 패턴 — 이미 선택된 칩 재클릭 시 undefined로 해제 (cat === filterCategory ? undefined : cat)
+- [Phase 11-layout-animation]: sortBy를 useLiveQuery 의존성 배열에 포함 — DB 쿼리 미변경, .then() 정렬로 반응성 확보
+- [Phase 11-layout-animation]: AnimatedCard 패턴 — Card 대체 래퍼로 사용, CardHeader/CardContent/CardFooter 내부 구조 유지
 
 ### Pending Todos
 
@@ -85,6 +89,6 @@ None yet.
 
 ## Session Continuity
 
-Last activity: 2026-02-21 — 11-04 완료: 온보딩 플로우 Framer Motion 리디자인 (스텝 인디케이터 + 카드 stagger + 축하 애니메이션) (FLOW-03 충족)
-Stopped at: 11-04-PLAN.md 완전 실행 (온보딩 스텝 진행 표시 + 역할 선택 카드 애니메이션 + 완료 축하 효과)
+Last activity: 2026-02-21 — 11-03 완료: 오답노트/문제집 페이지 카드 그리드 + 칩 필터/정렬 리디자인 (LYOT-03 충족)
+Stopped at: Completed 11-03-PLAN.md (오답노트 칩 필터 + 문제집 정렬 토글 + AnimatedCard 마이크로 인터랙션 + 그리드 레이아웃)
 Resume file: None
