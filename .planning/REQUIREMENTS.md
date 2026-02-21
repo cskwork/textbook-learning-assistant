@@ -30,8 +30,8 @@
 ### 분석 대시보드
 
 - [x] **ANLZ-01**: 학생 분석 대시보드 차트 리디자인 (그라데이션, 인터랙티브 차트, 날짜 범위 선택)
-- [ ] **ANLZ-02**: 취약 유형 시각화 개선 (유형별 마스터리 맵, 추천 학습 경로 표시)
-- [ ] **ANLZ-03**: 학습 히스토리 타임라인 UI (일별 학습량, 정답률 추이, 주간 비교)
+- [x] **ANLZ-02**: 취약 유형 시각화 개선 (유형별 마스터리 맵, 추천 학습 경로 표시)
+- [x] **ANLZ-03**: 학습 히스토리 타임라인 UI (일별 학습량, 정답률 추이, 주간 비교)
 
 ### 학습 플래너
 
@@ -100,8 +100,8 @@
 | QUIZ-03 | Phase 12 | Complete |
 | QUIZ-04 | Phase 12 | Complete |
 | ANLZ-01 | Phase 13 | Complete |
-| ANLZ-02 | Phase 13 | Pending |
-| ANLZ-03 | Phase 13 | Pending |
+| ANLZ-02 | Phase 13 | Complete |
+| ANLZ-03 | Phase 13 | Complete |
 | PLAN-01 | Phase 13 | Complete |
 | PLAN-02 | Phase 13 | Complete |
 | PLAN-03 | Phase 13 | Complete |

@@ -10,10 +10,10 @@ See: .planning/PROJECT.md (updated 2026-02-21)
 ## Current Position
 
 Phase: 13 of 14 (분석 대시보드 + 학습 플래너) — 진행 중
-Plan: 1 of 5 완료 (01 완료, 02~05 대기)
-Status: Phase 13 Plan 01 완료 — ANLZ-01 충족
-Last activity: 2026-02-21 — Phase 13 Plan 01 완료 (차트 그라데이션 리디자인 + DateRangeSelector 통합)
-Stopped at: Completed 13-analytics-planner-01-PLAN.md
+Plan: 2 of 5 완료 (01~02 완료, 03~05 대기)
+Status: Phase 13 Plan 02 완료 — ANLZ-02, ANLZ-03 충족
+Last activity: 2026-02-21 — Phase 13 Plan 02 완료 (마스터리 맵 + 학습 경로 + 히스토리 타임라인)
+Stopped at: Completed 13-analytics-planner-02-PLAN.md
 
 Progress: [█████████████████░░░] 12/14 phases complete
 
@@ -52,6 +52,7 @@ Progress: [█████████████████░░░] 12/14 p
 | Phase 12-student-home-quiz-ux P04 | 1 | 2 tasks | 0 files |
 | Phase 13-analytics-planner P03 | 177 | 2 tasks | 3 files |
 | Phase 13-analytics-planner P01 | 179 | 2 tasks | 6 files |
+| Phase 13-analytics-planner P02 | 215 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -98,6 +99,9 @@ Recent decisions affecting current work:
 - [Phase 13-analytics-planner]: scheduleNotificationCheck: lastFired 변수로 setInterval 내 같은 분 중복 알림 방지 패턴 적용
 - [Phase 13-analytics-planner]: DailyTrendLineChart: LineChart → ComposedChart 전환 — recharts ComposedChart에서 Line+Area 혼합 가능
 - [Phase 13-analytics-planner]: DateRangeSelector 칩 필터: 7/14/30일 선택 → getDailyStats days 파라미터 동적 연동
+- [Phase 13-analytics-planner]: getAllCategoryMastery: BKT(30회 이상)/휴리스틱(30회 미만) 이중 모드 — 기존 getWeakCategories 패턴 동일하게 유지
+- [Phase 13-analytics-planner]: HistoryTimeline 일별 바: 최대값 대비 비율 너비 계산(maxCount 기준) — 상대적 시각화
+- [Phase 13-analytics-planner]: analytics/index.tsx 레이아웃: 히스토리타임라인(전폭) → 마스터리맵+학습경로(lg:grid-cols-5) → AI추천 → 차트
 
 ### Pending Todos
 
