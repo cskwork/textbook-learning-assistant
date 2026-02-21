@@ -8,7 +8,7 @@
 const isDev = process.env.NODE_ENV !== 'production'
 
 /** 프로덕션 배포 URL (Vercel 등 실제 배포 주소로 교체) */
-const PRODUCTION_URL = process.env.APP_URL ?? 'https://your-app.vercel.app'
+const PRODUCTION_URL = process.env.APP_URL ?? 'https://dist-agentic-era.vercel.app'
 
 const config = {
   appName: '수학기출학습도우미',
