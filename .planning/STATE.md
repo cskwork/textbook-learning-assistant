@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-21)
 
 **Core value:** 학생이 자신의 취약한 수학 유형을 정확히 파악하고, AI가 추천하는 맞춤 문제를 통해 효율적으로 실력을 향상시킬 수 있어야 한다
-**Current focus:** v2.0 기출탭탭 스타일 디자인 리뉴얼 — Phase 11: 공통 레이아웃 + 애니메이션 진행 중
+**Current focus:** v2.0 기출탭탭 스타일 디자인 리뉴얼 — Phase 12: 학생 홈 + 문제 풀이 UX 대기
 
 ## Current Position
 
-Phase: 11 of 14 (공통 레이아웃 + 애니메이션) — 진행 중
-Plan: 4 of 5 in current phase (11-03 완료)
-Status: Phase 11 진행 중 — 11-01, 11-02, 11-03, 11-04 완료 / 11-05 대기
-Last activity: 2026-02-21 — 11-03 완료: 오답노트/문제집 페이지 카드 그리드 + 칩 필터/정렬 리디자인 (LYOT-03 충족)
+Phase: 12 of 14 (학생 홈 + 문제 풀이 UX) — 계획 대기
+Plan: 0 of TBD in current phase
+Status: Phase 11 완료 — Phase 12 계획 진입
+Last activity: 2026-02-21 — Phase 11 통합 검증 완료 (LYOT-01~03, FLOW-01~03 전체 충족)
 
-Progress: [██████████░░░░░░░░░░] 9/14 phases complete (v1.0 기준)
+Progress: [████████████████░░░░] 11/14 phases complete
 
 ## Performance Metrics
 
@@ -28,7 +28,7 @@ Progress: [██████████░░░░░░░░░░] 9/14 ph
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 10. 디자인 시스템 | 3 완료 | ~7min | ~2.3min |
-| 11. 공통 레이아웃 + 애니메이션 | TBD | - | - |
+| 11. 공통 레이아웃 + 애니메이션 | 5 완료 | ~10min | ~2min |
 | 12. 학생 홈 + 문제 풀이 UX | TBD | - | - |
 | 13. 분석 대시보드 + 학습 플래너 | TBD | - | - |
 | 14. 강사 포털 리뉴얼 | TBD | - | - |
@@ -44,6 +44,7 @@ Progress: [██████████░░░░░░░░░░] 9/14 ph
 | Phase 11-layout-animation P01 | 2 | 2 tasks | 6 files |
 | Phase 11-layout-animation P04 | 204 | 1 tasks | 1 files |
 | Phase 11-layout-animation P03 | 235 | 2 tasks | 7 files |
+| Phase 11-layout-animation P05 | 15 | 2 tasks | 0 files |
 
 ## Accumulated Context
 
@@ -89,6 +90,6 @@ None yet.
 
 ## Session Continuity
 
-Last activity: 2026-02-21 — 11-03 완료: 오답노트/문제집 페이지 카드 그리드 + 칩 필터/정렬 리디자인 (LYOT-03 충족)
-Stopped at: Completed 11-03-PLAN.md (오답노트 칩 필터 + 문제집 정렬 토글 + AnimatedCard 마이크로 인터랙션 + 그리드 레이아웃)
+Last activity: 2026-02-21 — Phase 11 완료: 통합 검증 통과 (LYOT-01~03, FLOW-01~03 전체 충족)
+Stopped at: Phase 11 완료, Phase 12 계획 대기
 Resume file: None
