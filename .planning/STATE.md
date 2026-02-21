@@ -10,9 +10,9 @@ See: .planning/PROJECT.md (updated 2026-02-21)
 ## Current Position
 
 Phase: 11 of 14 (공통 레이아웃 + 애니메이션) — 진행 중
-Plan: 2 of 5 in current phase (11-02 완료)
-Status: Phase 11 진행 중 — 11-01, 11-02 완료 / 11-03, 11-04, 11-05 대기
-Last activity: 2026-02-21 — 11-02 완료: BottomNav + Sidebar + AppShell 기출탭탭 스타일 리뉴얼 (LYOT-01, LYOT-02 충족)
+Plan: 4 of 5 in current phase (11-04 완료)
+Status: Phase 11 진행 중 — 11-01, 11-02, 11-04 완료 / 11-03, 11-05 대기
+Last activity: 2026-02-21 — 11-04 완료: 온보딩 플로우 Framer Motion 리디자인 (스텝 인디케이터 + 카드 stagger + 축하 애니메이션) (FLOW-03 충족)
 
 Progress: [██████████░░░░░░░░░░] 9/14 phases complete (v1.0 기준)
 
@@ -42,6 +42,7 @@ Progress: [██████████░░░░░░░░░░] 9/14 ph
 | Phase 10-design-system P03 | 81 | 2 tasks | 0 files |
 | Phase 11-layout-animation P02 | 129 | 2 tasks | 3 files |
 | Phase 11-layout-animation P01 | 2 | 2 tasks | 6 files |
+| Phase 11-layout-animation P04 | 204 | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -68,6 +69,8 @@ Recent decisions affecting current work:
 - [Phase 11-layout-animation]: AnimatePresence mode='wait' 선택 — exit 완료 후 enter 시작으로 깔끔한 라우트 전환 보장
 - [Phase 11-layout-animation]: prevOutletRef 캐싱 패턴 — useOutlet() null 방지 (라우트 전환 중 이전 outlet 유지)
 - [Phase 11-layout-animation]: easing 통일: cubic-bezier(0.22, 1, 0.36, 1) easeOutExpo — 모든 애니메이션 컴포넌트 공통 적용
+- [Phase 11-layout-animation]: 온보딩 step 상태 'select'|'complete' 2단계 — AnimatePresence key prop으로 화면 전환, setTimeout 1500ms 후 navigate
+- [Phase 11-layout-animation]: 콘페티 파티클 배열을 모듈 최상단 상수(CONFETTI_PARTICLES)로 정의 — useMemo 불필요, 렌더 비용 없음
 
 ### Pending Todos
 
@@ -82,6 +85,6 @@ None yet.
 
 ## Session Continuity
 
-Last activity: 2026-02-21 — 11-01 완료: AnimatePresence 페이지 전환 + 마이크로 인터랙션 컴포넌트 4종 (FLOW-01, FLOW-02 완료)
-Stopped at: 11-01-PLAN.md 완전 실행 (PageTransition 업그레이드 + motion 컴포넌트 4종 생성)
+Last activity: 2026-02-21 — 11-04 완료: 온보딩 플로우 Framer Motion 리디자인 (스텝 인디케이터 + 카드 stagger + 축하 애니메이션) (FLOW-03 충족)
+Stopped at: 11-04-PLAN.md 완전 실행 (온보딩 스텝 진행 표시 + 역할 선택 카드 애니메이션 + 완료 축하 효과)
 Resume file: None

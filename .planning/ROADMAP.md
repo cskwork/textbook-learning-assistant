@@ -215,7 +215,7 @@ Plans:
 - [ ] 11-01-PLAN.md — Framer Motion 페이지 전환 + 마이크로 인터랙션 유틸리티 (RippleButton, AnimatedCard, FadeIn, Skeleton)
 - [ ] 11-02-PLAN.md — BottomNav/Sidebar/AppShell 기출탭탭 스타일 네비게이션 리뉴얼 + 반응형 검토
 - [ ] 11-03-PLAN.md — 오답노트/문제집 페이지 카드 그리드 + 칩 필터 + 정렬 UI 리디자인
-- [ ] 11-04-PLAN.md — 온보딩 플로우 리디자인 (스텝 진행 + 카드 애니메이션 + 축하 효과)
+- [x] 11-04-PLAN.md — 온보딩 플로우 리디자인 (스텝 진행 + 카드 애니메이션 + 축하 효과) (completed 2026-02-21)
 - [ ] 11-05-PLAN.md — Phase 11 통합 빌드 검증 + 사용자 시각 검증 체크포인트
 
 ### Phase 12: 학생 홈 + 문제 풀이 UX
@@ -271,7 +271,7 @@ Phases execute in numeric order: 10 → 11 → 12 → 13 → 14
 | 8. 마이페이지 + 앱 설정 | v1.0 | 4/4 | Complete | 2026-02-20 |
 | 9. AI 문제 생성 보조 | v1.0 | 3/3 | Complete | 2026-02-21 |
 | 10. 디자인 시스템 | v2.0 | 3/3 | Complete | 2026-02-20 |
-| 11. 공통 레이아웃 + 애니메이션 | 2/5 | In Progress|  | - |
+| 11. 공통 레이아웃 + 애니메이션 | v2.0 | 4/5 | In Progress | - |
 | 12. 학생 홈 + 문제 풀이 UX | v2.0 | 0/TBD | Not started | - |
 | 13. 분석 대시보드 + 학습 플래너 | v2.0 | 0/TBD | Not started | - |
 | 14. 강사 포털 리뉴얼 | v2.0 | 0/TBD | Not started | - |

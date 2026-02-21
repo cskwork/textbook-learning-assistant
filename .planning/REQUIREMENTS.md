@@ -43,7 +43,7 @@
 
 - [x] **FLOW-01**: 페이지 전환 애니메이션 (Framer Motion 기반, 슬라이드/페이드 전환)
 - [x] **FLOW-02**: 마이크로 인터랙션 (버튼 ripple, 카드 hover 확대, 로딩 스켈레톤, 토스트 애니메이션)
-- [ ] **FLOW-03**: 온보딩 플로우 리디자인 (스텝별 진행 표시, 역할 선택 카드, 완료 축하 애니메이션)
+- [x] **FLOW-03**: 온보딩 플로우 리디자인 (스텝별 진행 표시, 역할 선택 카드, 완료 축하 애니메이션)
 
 ### 강사 포털
 
@@ -91,7 +91,7 @@
 | LYOT-03 | Phase 11 | Pending |
 | FLOW-01 | Phase 11 | Complete |
 | FLOW-02 | Phase 11 | Complete |
-| FLOW-03 | Phase 11 | Pending |
+| FLOW-03 | Phase 11 | Complete |
 | HOME-01 | Phase 12 | Pending |
 | HOME-02 | Phase 12 | Pending |
 | HOME-03 | Phase 12 | Pending |
