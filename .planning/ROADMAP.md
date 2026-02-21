@@ -290,4 +290,4 @@ Phases execute in numeric order: 10 → 11 → 12 → 13 → 14
 | 11. 공통 레이아웃 + 애니메이션 | v2.0 | 5/5 | Complete | 2026-02-21 |
 | 12. 학생 홈 + 문제 풀이 UX | 4/4 | Complete    | 2026-02-21 | - |
 | 13. 분석 대시보드 + 학습 플래너 | 5/5 | Complete    | 2026-02-21 | - |
-| 14. 강사 포털 리뉴얼 | v2.0 | 0/4 | Planning complete | - |
+| 14. 강사 포털 리뉴얼 | 2/4 | In Progress|  | - |
