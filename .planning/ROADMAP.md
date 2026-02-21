@@ -245,7 +245,13 @@ Plans:
   3. 일별 학습량·정답률 추이·주간 비교가 포함된 학습 히스토리 타임라인 UI가 작동한다
   4. 캘린더 뷰와 할 일 체크리스트가 포함된 일간/주간 플래너에서 학습 목표를 설정하고 진행률을 확인할 수 있다
   5. 일일 학습 미완료 시 브라우저 알림(Notification API)이 발송되고, 주간 목표 문제 수·과목별 시간 배분 설정이 저장된다
-**Plans**: TBD
+**Plans**: 5 plans (3 waves)
+Plans:
+- [ ] 13-01-PLAN.md — 분석 차트 그라데이션 리디자인 + DateRangeSelector + 기출탭탭 스타일 적용 (ANLZ-01) [Wave 1]
+- [ ] 13-02-PLAN.md — 마스터리 맵 + 추천 학습 경로 + 학습 히스토리 타임라인 (ANLZ-02, ANLZ-03) [Wave 2]
+- [ ] 13-03-PLAN.md — Dexie version(7) 스키마 확장 + planner.service + notification.service 데이터 레이어 (PLAN-01, PLAN-02, PLAN-03) [Wave 1]
+- [ ] 13-04-PLAN.md — 학습 플래너 UI (캘린더 뷰 + 체크리스트 + 주간 설정 + 알림) + 라우트/탭바 연결 (PLAN-01, PLAN-02, PLAN-03) [Wave 2]
+- [ ] 13-05-PLAN.md — Phase 13 통합 빌드 검증 + 사용자 시각 검증 체크포인트 [Wave 3]
 
 ### Phase 14: 강사 포털 리뉴얼
 **Goal**: 강사가 학생 현황·문제 관리·학생 분석·그룹 과제 관리를 기출탭탭 스타일 인터페이스로 사용할 수 있다
@@ -278,5 +284,5 @@ Phases execute in numeric order: 10 → 11 → 12 → 13 → 14
 | 10. 디자인 시스템 | v2.0 | 3/3 | Complete | 2026-02-20 |
 | 11. 공통 레이아웃 + 애니메이션 | v2.0 | 5/5 | Complete | 2026-02-21 |
 | 12. 학생 홈 + 문제 풀이 UX | 4/4 | Complete    | 2026-02-21 | - |
-| 13. 분석 대시보드 + 학습 플래너 | v2.0 | 0/TBD | Not started | - |
+| 13. 분석 대시보드 + 학습 플래너 | v2.0 | 0/5 | Planned | - |
 | 14. 강사 포털 리뉴얼 | v2.0 | 0/TBD | Not started | - |
