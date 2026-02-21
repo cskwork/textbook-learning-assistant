@@ -1,6 +1,7 @@
 /**
  * 강사 학생별 상세 분석 페이지 (/instructor/groups/:id/student/:studentId)
  * 정답률 차트, 취약 유형 레이더 차트, 오답노트 미리보기, 전체 학습 통계
+ * 기출탭탭 스타일 리디자인 — AnimatedCard + FadeIn (INST-03)
  */
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router'
@@ -21,6 +22,8 @@ import type { AccuracyData } from '@/components/analytics/AccuracyBarChart'
 import type { WeakTypeData } from '@/components/analytics/WeakTypeRadarChart'
 import { AccuracyBarChart } from '@/components/analytics/AccuracyBarChart'
 import { WeakTypeRadarChart } from '@/components/analytics/WeakTypeRadarChart'
+import { FadeIn } from '@/components/motion/FadeIn'
+import { AnimatedCard } from '@/components/motion/AnimatedCard'
 
 interface OverallStats {
   total: number
@@ -101,167 +104,181 @@ export default function StudentAnalyticsDetailPage() {
     <div className="p-4 md:p-6 lg:p-8 max-w-6xl mx-auto space-y-5">
 
       {/* 헤더 */}
-      <div className="flex items-center gap-3 animate-fade-up stagger-1">
-        <Button variant="ghost" size="icon" className="rounded-xl h-9 w-9 shrink-0" asChild>
-          <Link to={`/instructor/groups/${groupId}/report`}>
-            <ArrowLeft className="h-4 w-4" />
-          </Link>
-        </Button>
-        <div>
-          <h1 className="text-[1.65rem] font-extrabold tracking-tight text-foreground">
-            학생 상세 분석
-          </h1>
-          <p className="text-sm text-muted-foreground mt-0.5">
-            {studentName}
-            {studentName !== studentId && (
-              <span className="font-mono text-[11px] ml-2 text-muted-foreground/50">{studentId}</span>
-            )}
-          </p>
+      <FadeIn delay={0}>
+        <div className="flex items-center gap-3">
+          <Button variant="ghost" size="icon" className="rounded-xl h-9 w-9 shrink-0" asChild>
+            <Link to={`/instructor/groups/${groupId}/report`}>
+              <ArrowLeft className="h-4 w-4" />
+            </Link>
+          </Button>
+          <div>
+            <h1 className="text-[1.65rem] font-extrabold tracking-tight text-foreground">
+              학생 상세 분석
+            </h1>
+            <p className="text-sm text-muted-foreground mt-0.5">
+              {studentName}
+              {studentName !== studentId && (
+                <span className="font-mono text-[11px] ml-2 text-muted-foreground/50">{studentId}</span>
+              )}
+            </p>
+          </div>
         </div>
-      </div>
+      </FadeIn>
 
-      {/* 전체 통계 카드 4종 */}
+      {/* 전체 통계 카드 4종 — AnimatedCard 적용 */}
       {overallStats && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 animate-fade-up stagger-2">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {/* 총 풀이 수 */}
-          <div className="stat-accent-blue">
-            <Card className="rounded-2xl border-none shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 overflow-hidden relative group bg-white dark:bg-card">
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[var(--stat-bg)]" />
-              <CardContent className="p-4 relative">
-                <div
-                  className="w-8 h-8 rounded-lg flex items-center justify-center mb-2"
-                  style={{ background: 'var(--stat-bg-strong)' }}
-                >
-                  <BookOpenCheck className="w-4 h-4" style={{ color: 'var(--stat-color)' }} />
+          <FadeIn delay={0.05}>
+            <div className="stat-accent-blue">
+              <AnimatedCard className="border-none shadow-sm overflow-hidden relative group bg-white dark:bg-card">
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[var(--stat-bg)]" />
+                <div className="p-4 relative">
+                  <div
+                    className="w-8 h-8 rounded-lg flex items-center justify-center mb-2"
+                    style={{ background: 'var(--stat-bg-strong)' }}
+                  >
+                    <BookOpenCheck className="w-4 h-4" style={{ color: 'var(--stat-color)' }} />
+                  </div>
+                  <div
+                    className="text-2xl font-black tracking-tight leading-none"
+                    style={{ color: 'var(--stat-color)' }}
+                  >
+                    {overallStats.total}
+                    <span className="text-xs font-semibold text-muted-foreground ml-0.5">문제</span>
+                  </div>
+                  <p className="text-[11px] font-medium text-muted-foreground mt-1 tracking-wide">
+                    총 풀이 수
+                  </p>
                 </div>
-                <div
-                  className="text-2xl font-black tracking-tight leading-none"
-                  style={{ color: 'var(--stat-color)' }}
-                >
-                  {overallStats.total}
-                  <span className="text-xs font-semibold text-muted-foreground ml-0.5">문제</span>
-                </div>
-                <p className="text-[11px] font-medium text-muted-foreground mt-1 tracking-wide">
-                  총 풀이 수
-                </p>
-              </CardContent>
-            </Card>
-          </div>
+              </AnimatedCard>
+            </div>
+          </FadeIn>
 
-          {/* 정답 수 */}
-          <div className="stat-accent-emerald">
-            <Card className="rounded-2xl border-none shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 overflow-hidden relative group bg-white dark:bg-card">
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[var(--stat-bg)]" />
-              <CardContent className="p-4 relative">
-                <div
-                  className="w-8 h-8 rounded-lg flex items-center justify-center mb-2"
-                  style={{ background: 'var(--stat-bg-strong)' }}
-                >
-                  <Target className="w-4 h-4" style={{ color: 'var(--stat-color)' }} />
+          {/* 정답률 */}
+          <FadeIn delay={0.1}>
+            <div className="stat-accent-emerald">
+              <AnimatedCard className="border-none shadow-sm overflow-hidden relative group bg-white dark:bg-card">
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[var(--stat-bg)]" />
+                <div className="p-4 relative">
+                  <div
+                    className="w-8 h-8 rounded-lg flex items-center justify-center mb-2"
+                    style={{ background: 'var(--stat-bg-strong)' }}
+                  >
+                    <Target className="w-4 h-4" style={{ color: 'var(--stat-color)' }} />
+                  </div>
+                  <div
+                    className="text-2xl font-black tracking-tight leading-none"
+                    style={{ color: 'var(--stat-color)' }}
+                  >
+                    {overallStats.accuracy}
+                    <span className="text-xs font-semibold text-muted-foreground ml-0.5">%</span>
+                  </div>
+                  <p className="text-[11px] font-medium text-muted-foreground mt-1 tracking-wide">
+                    전체 정답률
+                  </p>
+                  <p className="text-[10px] text-muted-foreground/60">
+                    {overallStats.correct}/{overallStats.total} 정답
+                  </p>
                 </div>
-                <div
-                  className="text-2xl font-black tracking-tight leading-none"
-                  style={{ color: 'var(--stat-color)' }}
-                >
-                  {overallStats.accuracy}
-                  <span className="text-xs font-semibold text-muted-foreground ml-0.5">%</span>
-                </div>
-                <p className="text-[11px] font-medium text-muted-foreground mt-1 tracking-wide">
-                  전체 정답률
-                </p>
-                <p className="text-[10px] text-muted-foreground/60">
-                  {overallStats.correct}/{overallStats.total} 정답
-                </p>
-              </CardContent>
-            </Card>
-          </div>
+              </AnimatedCard>
+            </div>
+          </FadeIn>
 
           {/* 학습 시간 */}
-          <div className="stat-accent-amber">
-            <Card className="rounded-2xl border-none shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 overflow-hidden relative group bg-white dark:bg-card">
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[var(--stat-bg)]" />
-              <CardContent className="p-4 relative">
-                <div
-                  className="w-8 h-8 rounded-lg flex items-center justify-center mb-2"
-                  style={{ background: 'var(--stat-bg-strong)' }}
-                >
-                  <Clock className="w-4 h-4" style={{ color: 'var(--stat-color)' }} />
+          <FadeIn delay={0.15}>
+            <div className="stat-accent-amber">
+              <AnimatedCard className="border-none shadow-sm overflow-hidden relative group bg-white dark:bg-card">
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[var(--stat-bg)]" />
+                <div className="p-4 relative">
+                  <div
+                    className="w-8 h-8 rounded-lg flex items-center justify-center mb-2"
+                    style={{ background: 'var(--stat-bg-strong)' }}
+                  >
+                    <Clock className="w-4 h-4" style={{ color: 'var(--stat-color)' }} />
+                  </div>
+                  <div
+                    className="text-2xl font-black tracking-tight leading-none"
+                    style={{ color: 'var(--stat-color)' }}
+                  >
+                    {formatTime(overallStats.totalTimeSeconds)}
+                  </div>
+                  <p className="text-[11px] font-medium text-muted-foreground mt-1 tracking-wide">
+                    총 학습 시간
+                  </p>
                 </div>
-                <div
-                  className="text-2xl font-black tracking-tight leading-none"
-                  style={{ color: 'var(--stat-color)' }}
-                >
-                  {formatTime(overallStats.totalTimeSeconds)}
-                </div>
-                <p className="text-[11px] font-medium text-muted-foreground mt-1 tracking-wide">
-                  총 학습 시간
-                </p>
-              </CardContent>
-            </Card>
-          </div>
+              </AnimatedCard>
+            </div>
+          </FadeIn>
 
           {/* 오답 수 */}
-          <div className="stat-accent-rose">
-            <Card className="rounded-2xl border-none shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 overflow-hidden relative group bg-white dark:bg-card">
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[var(--stat-bg)]" />
-              <CardContent className="p-4 relative">
-                <div
-                  className="w-8 h-8 rounded-lg flex items-center justify-center mb-2"
-                  style={{ background: 'var(--stat-bg-strong)' }}
-                >
-                  <AlertCircle className="w-4 h-4" style={{ color: 'var(--stat-color)' }} />
+          <FadeIn delay={0.2}>
+            <div className="stat-accent-rose">
+              <AnimatedCard className="border-none shadow-sm overflow-hidden relative group bg-white dark:bg-card">
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[var(--stat-bg)]" />
+                <div className="p-4 relative">
+                  <div
+                    className="w-8 h-8 rounded-lg flex items-center justify-center mb-2"
+                    style={{ background: 'var(--stat-bg-strong)' }}
+                  >
+                    <AlertCircle className="w-4 h-4" style={{ color: 'var(--stat-color)' }} />
+                  </div>
+                  <div
+                    className="text-2xl font-black tracking-tight leading-none"
+                    style={{ color: 'var(--stat-color)' }}
+                  >
+                    {overallStats.total - overallStats.correct}
+                    <span className="text-xs font-semibold text-muted-foreground ml-0.5">문제</span>
+                  </div>
+                  <p className="text-[11px] font-medium text-muted-foreground mt-1 tracking-wide">
+                    오답 수
+                  </p>
                 </div>
-                <div
-                  className="text-2xl font-black tracking-tight leading-none"
-                  style={{ color: 'var(--stat-color)' }}
-                >
-                  {overallStats.total - overallStats.correct}
-                  <span className="text-xs font-semibold text-muted-foreground ml-0.5">문제</span>
-                </div>
-                <p className="text-[11px] font-medium text-muted-foreground mt-1 tracking-wide">
-                  오답 수
-                </p>
-              </CardContent>
-            </Card>
-          </div>
+              </AnimatedCard>
+            </div>
+          </FadeIn>
         </div>
       )}
 
       {/* 차트 2컬럼 그리드 */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-fade-up stagger-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* 유형별 정답률 BarChart */}
-        <Card className="rounded-2xl border-none shadow-sm bg-white dark:bg-card">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-bold flex items-center gap-2">
-              <div className="w-6 h-6 rounded-lg bg-blue-50 dark:bg-blue-500/20 flex items-center justify-center">
-                <Target className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-              </div>
-              유형별 정답률
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <AccuracyBarChart data={accuracyData} />
-          </CardContent>
-        </Card>
+        <FadeIn delay={0.25}>
+          <Card className="rounded-2xl border-none shadow-sm bg-white dark:bg-card">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-bold flex items-center gap-2">
+                <div className="w-6 h-6 rounded-lg bg-blue-50 dark:bg-blue-500/20 flex items-center justify-center">
+                  <Target className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                </div>
+                유형별 정답률
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <AccuracyBarChart data={accuracyData} />
+            </CardContent>
+          </Card>
+        </FadeIn>
 
         {/* 취약 유형 RadarChart */}
-        <Card className="rounded-2xl border-none shadow-sm bg-white dark:bg-card">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-bold flex items-center gap-2">
-              <div className="w-6 h-6 rounded-lg bg-rose-50 dark:bg-rose-500/20 flex items-center justify-center">
-                <AlertCircle className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
-              </div>
-              취약 유형 레이더
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <WeakTypeRadarChart data={weakData} />
-          </CardContent>
-        </Card>
+        <FadeIn delay={0.3}>
+          <Card className="rounded-2xl border-none shadow-sm bg-white dark:bg-card">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-bold flex items-center gap-2">
+                <div className="w-6 h-6 rounded-lg bg-rose-50 dark:bg-rose-500/20 flex items-center justify-center">
+                  <AlertCircle className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
+                </div>
+                취약 유형 레이더
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <WeakTypeRadarChart data={weakData} />
+            </CardContent>
+          </Card>
+        </FadeIn>
       </div>
 
       {/* 최근 오답노트 */}
-      <div className="animate-fade-up stagger-4">
+      <FadeIn delay={0.35}>
         <Card className="rounded-2xl border-none shadow-sm bg-white dark:bg-card">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-bold flex items-center gap-2">
@@ -333,7 +350,7 @@ export default function StudentAnalyticsDetailPage() {
             )}
           </CardContent>
         </Card>
-      </div>
+      </FadeIn>
     </div>
   )
 }
