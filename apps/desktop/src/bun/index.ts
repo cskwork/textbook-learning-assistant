@@ -6,7 +6,7 @@
  */
 import { BrowserWindow, Utils } from "electrobun/bun"
 
-const APP_URL = 'https://dist-agentic-era.vercel.app'
+const APP_URL = 'https://dist-blush-gamma-43.vercel.app'
 
 const mainWindow = new BrowserWindow({
   title: '수학 기출 학습 도우미',
