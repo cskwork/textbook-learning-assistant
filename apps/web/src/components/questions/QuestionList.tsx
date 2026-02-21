@@ -1,19 +1,31 @@
 // apps/web/src/components/questions/QuestionList.tsx
-// useLiveQuery 기반 반응형 문제 목록 — 카드 그리드(1/2/3열) + FadeIn + Skeleton
+// useLiveQuery 기반 반응형 문제 목록 — 카드 그리드(1/2/3열) + FadeIn + Skeleton + 선택 모드
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '@/lib/db'
 import { QuestionCard } from './QuestionCard'
 import { FadeIn } from '@/components/motion/FadeIn'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Check } from 'lucide-react'
 import type { Question } from '@/lib/db'
 
 interface QuestionListProps {
   filterSubject?: Question['subject']
   filterDifficulty?: number
   basePath?: string
+  // 선택 모드 — optional props (기존 사용처 영향 없음)
+  selectionMode?: boolean
+  selectedIds?: Set<number>
+  onToggleSelect?: (id: number) => void
 }
 
-export function QuestionList({ filterSubject, filterDifficulty, basePath }: QuestionListProps) {
+export function QuestionList({
+  filterSubject,
+  filterDifficulty,
+  basePath,
+  selectionMode = false,
+  selectedIds,
+  onToggleSelect,
+}: QuestionListProps) {
   const questions = useLiveQuery(
     async () => {
       if (filterSubject) {
@@ -66,9 +78,40 @@ export function QuestionList({ filterSubject, filterDifficulty, basePath }: Ques
   return (
     <FadeIn>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        {filtered.map((q) => (
-          <QuestionCard key={q.id} question={q} basePath={basePath} />
-        ))}
+        {filtered.map((q) => {
+          const isSelected = selectedIds?.has(q.id) ?? false
+
+          if (selectionMode) {
+            return (
+              <div key={q.id} className="relative">
+                {/* 체크박스 오버레이 — 좌상단 */}
+                <button
+                  type="button"
+                  className="absolute top-3 left-3 z-10 w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors"
+                  style={{
+                    borderColor: isSelected ? 'var(--color-primary)' : 'var(--color-border)',
+                    backgroundColor: isSelected ? 'var(--color-primary)' : 'transparent',
+                    color: isSelected ? 'white' : 'transparent',
+                  }}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    onToggleSelect?.(q.id)
+                  }}
+                  aria-label={isSelected ? '선택 해제' : '선택'}
+                >
+                  {isSelected && <Check className="w-3 h-3" strokeWidth={3} />}
+                </button>
+                {/* 선택 시 ring 하이라이트 래퍼 */}
+                <div className={isSelected ? 'ring-2 ring-primary/50 rounded-2xl' : ''}>
+                  <QuestionCard question={q} basePath={basePath} />
+                </div>
+              </div>
+            )
+          }
+
+          return <QuestionCard key={q.id} question={q} basePath={basePath} />
+        })}
       </div>
     </FadeIn>
   )
