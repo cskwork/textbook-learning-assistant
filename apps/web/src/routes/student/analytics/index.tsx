@@ -5,9 +5,9 @@
  *
  * 데이터 로드 패턴:
  *   - useLiveQuery: quizAttempts 변경 감지 + 오늘 풀이 수 실시간
- *   - useEffect: 비동기 서비스 함수 호출 (attemptCount 의존)
+ *   - useEffect: 비동기 서비스 함수 호출 (attemptCount + days 의존)
  *
- * 요건: AIAN-03, AIAN-04, REPT-01, REPT-02, REPT-03, REPT-04, PLAN-02, PLAN-03
+ * 요건: AIAN-03, AIAN-04, REPT-01, REPT-02, REPT-03, REPT-04, PLAN-02, PLAN-03, ANLZ-01
  */
 
 import { useEffect, useState } from 'react'
@@ -30,14 +30,20 @@ import { SummaryStatsCards, type OverallStats, type StreakData } from '@/compone
 import DailyGoalProgress from '@/components/analytics/DailyGoalProgress'
 import StreakBadge from '@/components/analytics/StreakBadge'
 import AIRecommendations from '@/components/analytics/AIRecommendations'
+import DateRangeSelector from '@/components/analytics/DateRangeSelector'
 import type { Question } from '@/lib/db'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { FadeIn } from '@/components/motion/FadeIn'
+import { AnimatedCard } from '@/components/motion/AnimatedCard'
 
 /** WeakTypeRadarChart용 { category, pL }[] 타입 */
 type WeakCategoryData = { category: string; pL: number }
 
 export default function AnalyticsPage() {
   const { user } = useAuth()
+
+  /** 날짜 범위 선택 state (기본값 14일) */
+  const [days, setDays] = useState(14)
 
   // ---------------------------------------------------------------------------
   // 실시간 쿼리 (useLiveQuery)
@@ -102,7 +108,7 @@ export default function AnalyticsPage() {
       const [catAcc, daily, overall, weakCats, recommendedIds, streakData] =
         await Promise.all([
           getCategoryAccuracy(studentId),
-          getDailyStats(studentId, 14),
+          getDailyStats(studentId, days),
           getOverallStats(studentId),
           getWeakCategories(studentId),
           getRecommendedQuestions(studentId, 5),
@@ -132,82 +138,97 @@ export default function AnalyticsPage() {
     }
 
     loadAllData()
-  }, [user, attemptCount])
+  }, [user, attemptCount, days])
 
   if (!user) return null
 
   return (
-    <div className="p-4 md:p-6 lg:p-8 max-w-6xl mx-auto space-y-5">
-      {/* 헤더: 제목 + 스트릭 뱃지 */}
-      <div className="flex items-start justify-between gap-3 animate-fade-up stagger-1">
-        <div>
-          <h1 className="text-[1.65rem] font-extrabold text-foreground tracking-tight">학습 분석</h1>
-          <p className="text-sm text-muted-foreground mt-0.5">
-            나의 학습 현황을 한눈에 확인하세요
-          </p>
-        </div>
-        <StreakBadge streak={streak} />
-      </div>
+    <FadeIn>
+      <div className="p-4 md:p-6 lg:p-8 max-w-6xl mx-auto space-y-5">
+        {/* 헤더: 제목 + 스트릭 뱃지 + DateRangeSelector */}
+        <FadeIn delay={0}>
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <h1 className="text-[1.65rem] font-extrabold text-foreground tracking-tight">학습 분석</h1>
+              <p className="text-sm text-muted-foreground mt-0.5">
+                나의 학습 현황을 한눈에 확인하세요
+              </p>
+            </div>
+            <div className="flex flex-col items-end gap-2">
+              <StreakBadge streak={streak} />
+              <DateRangeSelector value={days} onChange={setDays} />
+            </div>
+          </div>
+        </FadeIn>
 
-      {/* 일일 목표 진행률 */}
-      <div className="animate-fade-up stagger-2">
-        <DailyGoalProgress userId={user.email} todayCount={todayCount} />
-      </div>
+        {/* 일일 목표 진행률 */}
+        <FadeIn delay={0.05}>
+          <DailyGoalProgress userId={user.email} todayCount={todayCount} />
+        </FadeIn>
 
-      {/* 요약 통계 카드 4종 */}
-      <div className="animate-fade-up stagger-3">
-        <SummaryStatsCards
-          stats={overallStats}
-          todayCount={todayCount}
-          streak={streak}
-        />
-      </div>
-
-      {/* AI 추천 문제 섹션 */}
-      <Card className="rounded-2xl border-none shadow-sm bg-white dark:bg-card animate-fade-up stagger-4">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-bold">AI 추천 문제</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <AIRecommendations
-            questions={recommendedQuestions}
-            isHeuristic={isHeuristic}
+        {/* 요약 통계 카드 4종 */}
+        <FadeIn delay={0.1}>
+          <SummaryStatsCards
+            stats={overallStats}
+            todayCount={todayCount}
+            streak={streak}
           />
-        </CardContent>
-      </Card>
+        </FadeIn>
 
-      {/* 차트 2컬럼 그리드: 데스크톱에서 나란히 배치 */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-5">
-        {/* 유형별 정답률 차트 */}
-        <Card className="rounded-2xl border-none shadow-sm bg-white dark:bg-card animate-fade-up stagger-5">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-bold">유형별 정답률</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <AccuracyBarChart data={categoryAccuracy} />
-          </CardContent>
-        </Card>
+        {/* AI 추천 문제 섹션 */}
+        <FadeIn delay={0.15}>
+          <AnimatedCard className="rounded-2xl border-none shadow-sm bg-white dark:bg-card">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-bold">AI 추천 문제</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <AIRecommendations
+                questions={recommendedQuestions}
+                isHeuristic={isHeuristic}
+              />
+            </CardContent>
+          </AnimatedCard>
+        </FadeIn>
 
-        {/* 취약 유형 분포 */}
-        <Card className="rounded-2xl border-none shadow-sm bg-white dark:bg-card animate-fade-up stagger-5">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-bold">취약 유형 분포</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <WeakTypeRadarChart data={weakCategories} />
-          </CardContent>
-        </Card>
+        {/* 차트 2컬럼 그리드: 데스크톱에서 나란히 배치 */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-5">
+          {/* 유형별 정답률 차트 */}
+          <FadeIn delay={0.2}>
+            <AnimatedCard className="rounded-2xl border-none shadow-sm bg-white dark:bg-card">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-bold">유형별 정답률</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <AccuracyBarChart data={categoryAccuracy} />
+              </CardContent>
+            </AnimatedCard>
+          </FadeIn>
+
+          {/* 취약 유형 분포 */}
+          <FadeIn delay={0.25}>
+            <AnimatedCard className="rounded-2xl border-none shadow-sm bg-white dark:bg-card">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-bold">취약 유형 분포</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <WeakTypeRadarChart data={weakCategories} />
+              </CardContent>
+            </AnimatedCard>
+          </FadeIn>
+        </div>
+
+        {/* 학습 추이 — 선택된 날짜 범위 기준, 전체 폭 */}
+        <FadeIn delay={0.3}>
+          <AnimatedCard className="rounded-2xl border-none shadow-sm bg-white dark:bg-card">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-bold">학습 추이 ({days}일)</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <DailyTrendLineChart data={dailyStats} />
+            </CardContent>
+          </AnimatedCard>
+        </FadeIn>
       </div>
-
-      {/* 학습 추이 (14일) — 전체 폭 */}
-      <Card className="rounded-2xl border-none shadow-sm bg-white dark:bg-card animate-fade-up stagger-6">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-bold">학습 추이 (14일)</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <DailyTrendLineChart data={dailyStats} />
-        </CardContent>
-      </Card>
-    </div>
+    </FadeIn>
   )
 }
