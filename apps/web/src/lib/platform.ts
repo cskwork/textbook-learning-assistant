@@ -7,7 +7,7 @@
 
 /** GitHub Releases 다운로드 베이스 URL (실제 배포 시 OWNER/REPO 교체) */
 export const DESKTOP_DOWNLOAD_BASE_URL =
-  'https://github.com/OWNER/REPO/releases/latest/download/'
+  'https://github.com/cskwork/textbook-learning-assistant/releases/latest/download/'
 
 export type DesktopOS = 'macos' | 'windows' | 'linux' | 'unknown'
 
@@ -42,11 +42,11 @@ export function detectOS(): DesktopOS {
 export function getDownloadUrl(os: DesktopOS): string | null {
   switch (os) {
     case 'macos':
-      return `${DESKTOP_DOWNLOAD_BASE_URL}기출학습도우미-macos-arm64.dmg`
+      return `${DESKTOP_DOWNLOAD_BASE_URL}math-study-helper-macos-arm64.dmg`
     case 'windows':
-      return `${DESKTOP_DOWNLOAD_BASE_URL}기출학습도우미-windows-x64.exe`
+      return `${DESKTOP_DOWNLOAD_BASE_URL}math-study-helper-windows-x64.exe`
     case 'linux':
-      return `${DESKTOP_DOWNLOAD_BASE_URL}기출학습도우미-linux-x64.AppImage`
+      return `${DESKTOP_DOWNLOAD_BASE_URL}math-study-helper-linux-x64.AppImage`
     default:
       return null
   }
