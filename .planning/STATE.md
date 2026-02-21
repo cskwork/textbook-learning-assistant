@@ -10,9 +10,9 @@ See: .planning/PROJECT.md (updated 2026-02-21)
 ## Current Position
 
 Phase: 12 of 14 (학생 홈 + 문제 풀이 UX) — 진행 중
-Plan: 3 of 4 in current phase
-Status: Phase 12 Plan 03 완료 — QUIZ-04 충족
-Last activity: 2026-02-21 — Phase 12 Plan 03 완료 (문제 목록 카드 그리드 + 칩 필터 리디자인)
+Plan: 1 of 4 in current phase (01 완료, 02/04 대기 중)
+Status: Phase 12 Plan 01 완료 — HOME-01, HOME-02, HOME-03 충족
+Last activity: 2026-02-21 — Phase 12 Plan 01 완료 (Swiper 배너 + 통계 카드 + CTA + 최근 활동 리디자인)
 
 Progress: [████████████████░░░░] 11/14 phases complete
 
@@ -46,6 +46,7 @@ Progress: [████████████████░░░░] 11/14 p
 | Phase 11-layout-animation P03 | 235 | 2 tasks | 7 files |
 | Phase 11-layout-animation P05 | 15 | 2 tasks | 0 files |
 | Phase 12-student-home-quiz-ux P03 | 129 | 2 tasks | 3 files |
+| Phase 12-student-home-quiz-ux P01 | 242 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -80,6 +81,9 @@ Recent decisions affecting current work:
 - [Phase 12-student-home-quiz-ux]: QuestionCard의 Card 완전 제거 — AnimatedCard가 외부 래퍼 역할, 내부 div 구조로 레이아웃 재구성
 - [Phase 12-student-home-quiz-ux]: 난이도 색상 코딩: 1(emerald)/2(green)/3(yellow)/4(orange)/5(red) + 다크모드 시맨틱 색상
 - [Phase 12-student-home-quiz-ux]: filterDifficulty 인메모리 필터 방식 — DB 쿼리 변경 없이 .filter()로 클라이언트 측 필터링
+- [Phase 12-student-home-quiz-ux]: HomeBannerSwiper 슬라이드 3종: AI 추천(cta-gradient)/오답 복습(rose-orange)/학습 팁(emerald-teal)
+- [Phase 12-student-home-quiz-ux]: StudentHomePage 구조: 인사→배너→통계카드→빠른시작→AI추천+최근활동 5단계 레이아웃
+- [Phase 12-student-home-quiz-ux]: RecentActivityList: useLiveQuery 2단계 조회(quizAttempts→questions) Promise.all 패턴
 
 ### Pending Todos
 

@@ -16,9 +16,9 @@
 
 ### 학생 홈 대시보드
 
-- [ ] **HOME-01**: 학생 홈 대시보드를 기출탭탭 스타일로 리디자인 (오늘의 학습 현황 카드, AI 추천 문제, 스트릭, 최근 학습 이력)
-- [ ] **HOME-02**: Swiper 기반 배너/카드 슬라이더 도입 (추천 문제, 취약 유형 알림, 이벤트 배너 등)
-- [ ] **HOME-03**: 빠른 학습 시작 CTA 버튼 영역 (오답 복습, AI 추천, 문제집 이어풀기)
+- [x] **HOME-01**: 학생 홈 대시보드를 기출탭탭 스타일로 리디자인 (오늘의 학습 현황 카드, AI 추천 문제, 스트릭, 최근 학습 이력)
+- [x] **HOME-02**: Swiper 기반 배너/카드 슬라이더 도입 (추천 문제, 취약 유형 알림, 이벤트 배너 등)
+- [x] **HOME-03**: 빠른 학습 시작 CTA 버튼 영역 (오답 복습, AI 추천, 문제집 이어풀기)
 
 ### 문제 풀이 UX
 
@@ -92,9 +92,9 @@
 | FLOW-01 | Phase 11 | Complete |
 | FLOW-02 | Phase 11 | Complete |
 | FLOW-03 | Phase 11 | Complete |
-| HOME-01 | Phase 12 | Pending |
-| HOME-02 | Phase 12 | Pending |
-| HOME-03 | Phase 12 | Pending |
+| HOME-01 | Phase 12 | Complete |
+| HOME-02 | Phase 12 | Complete |
+| HOME-03 | Phase 12 | Complete |
 | QUIZ-01 | Phase 12 | Pending |
 | QUIZ-02 | Phase 12 | Pending |
 | QUIZ-03 | Phase 12 | Pending |

@@ -277,6 +277,6 @@ Phases execute in numeric order: 10 → 11 → 12 → 13 → 14
 | 9. AI 문제 생성 보조 | v1.0 | 3/3 | Complete | 2026-02-21 |
 | 10. 디자인 시스템 | v2.0 | 3/3 | Complete | 2026-02-20 |
 | 11. 공통 레이아웃 + 애니메이션 | v2.0 | 5/5 | Complete | 2026-02-21 |
-| 12. 학생 홈 + 문제 풀이 UX | 1/4 | In Progress|  | - |
+| 12. 학생 홈 + 문제 풀이 UX | 2/4 | In Progress|  | - |
 | 13. 분석 대시보드 + 학습 플래너 | v2.0 | 0/TBD | Not started | - |
 | 14. 강사 포털 리뉴얼 | v2.0 | 0/TBD | Not started | - |
