@@ -47,6 +47,7 @@ Progress: [████████████████░░░░] 11/14 p
 | Phase 11-layout-animation P05 | 15 | 2 tasks | 0 files |
 | Phase 12-student-home-quiz-ux P03 | 129 | 2 tasks | 3 files |
 | Phase 12-student-home-quiz-ux P01 | 242 | 2 tasks | 6 files |
+| Phase 12-student-home-quiz-ux P02 | 302 | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -84,6 +85,9 @@ Recent decisions affecting current work:
 - [Phase 12-student-home-quiz-ux]: HomeBannerSwiper 슬라이드 3종: AI 추천(cta-gradient)/오답 복습(rose-orange)/학습 팁(emerald-teal)
 - [Phase 12-student-home-quiz-ux]: StudentHomePage 구조: 인사→배너→통계카드→빠른시작→AI추천+최근활동 5단계 레이아웃
 - [Phase 12-student-home-quiz-ux]: RecentActivityList: useLiveQuery 2단계 조회(quizAttempts→questions) Promise.all 패턴
+- [Phase 12-student-home-quiz-ux]: ShakeIcon 별도 컴포넌트 분리: framer-motion animate 배열 타입 충돌 우회 패턴
+- [Phase 12-student-home-quiz-ux]: swiperRef 패턴: useSwiper 훅 대신 onSwiper callback + useRef<SwiperType> 사용 — 컴포넌트 계층 제약 우회
+- [Phase 12-student-home-quiz-ux]: WorkbookPlayPage: questions.length >= 2이면 QuizSwiperPage, 1개면 단독 QuizPlayer
 
 ### Pending Todos
 
@@ -98,6 +102,6 @@ None yet.
 
 ## Session Continuity
 
-Last activity: 2026-02-21 — Phase 12 Plan 03 완료: 문제 목록 카드 그리드 + 칩 필터 리디자인 (QUIZ-04 충족)
-Stopped at: Completed 12-student-home-quiz-ux-03-PLAN.md
+Last activity: 2026-02-21 — Phase 12 Plan 02 완료: 퀴즈 UI 기출탭탭 리디자인 + Swiper 문제 전환 + 채점 애니메이션 (QUIZ-01/02/03 충족)
+Stopped at: Completed 12-student-home-quiz-ux-02-PLAN.md
 Resume file: None
