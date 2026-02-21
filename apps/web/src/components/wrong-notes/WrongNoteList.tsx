@@ -1,10 +1,10 @@
 // apps/web/src/components/wrong-notes/WrongNoteList.tsx
-// useLiveQuery 반응형 오답노트 목록 + 빈 상태 처리
+// useLiveQuery 반응형 오답노트 목록 + 카드 그리드 레이아웃 + 빈 상태 처리
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '@/lib/db'
 import { markAsMastered } from '@/services/wrongNote.service'
+import { Skeleton } from '@/components/ui/skeleton'
 import { WrongNoteCard } from './WrongNoteCard'
-import { Card, CardContent } from '@/components/ui/card'
 
 interface WrongNoteListProps {
   studentId: string
@@ -35,25 +35,26 @@ export function WrongNoteList({
     [studentId, filterUnit, filterCategory],
   )
 
-  // 로딩 중 — 스켈레톤 카드 3개
+  // 로딩 중 — 그리드 스켈레톤 카드 3개
   if (wrongNotes === undefined) {
     return (
-      <div className="space-y-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {[0, 1, 2].map((i) => (
-          <Card key={i}>
-            <CardContent className="p-4 space-y-3">
-              <div className="flex gap-2">
-                <div className="h-5 w-16 bg-muted animate-pulse rounded-full" />
-                <div className="h-5 w-20 bg-muted animate-pulse rounded-full" />
-                <div className="h-5 w-24 bg-muted animate-pulse rounded-full" />
-              </div>
-              <div className="h-4 w-36 bg-muted animate-pulse rounded" />
-              <div className="flex gap-2">
-                <div className="h-8 w-24 bg-muted animate-pulse rounded" />
-                <div className="h-8 w-24 bg-muted animate-pulse rounded" />
-              </div>
-            </CardContent>
-          </Card>
+          <div
+            key={i}
+            className="rounded-2xl border border-border/40 bg-white/60 dark:bg-card/40 p-5 space-y-3"
+          >
+            <div className="flex gap-2">
+              <Skeleton className="h-5 w-16 rounded-full" />
+              <Skeleton className="h-5 w-20 rounded-full" />
+              <Skeleton className="h-5 w-24 rounded-full" />
+            </div>
+            <Skeleton className="h-4 w-36" />
+            <div className="flex gap-2">
+              <Skeleton className="h-8 w-24" />
+              <Skeleton className="h-8 w-24" />
+            </div>
+          </div>
         ))}
       </div>
     )
@@ -62,7 +63,7 @@ export function WrongNoteList({
   // 빈 목록
   if (wrongNotes.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 text-center">
+      <div className="col-span-full flex flex-col items-center justify-center py-16 text-center">
         <p className="text-muted-foreground text-sm">
           오답노트가 비어있습니다. 계속 열심히 학습하세요!
         </p>
@@ -71,7 +72,7 @@ export function WrongNoteList({
   }
 
   return (
-    <div className="space-y-3">
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
       {wrongNotes.map((note) => (
         <WrongNoteCard
           key={note.id}

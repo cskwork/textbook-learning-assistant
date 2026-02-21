@@ -1,8 +1,9 @@
 // apps/web/src/routes/student/wrong-notes/index.tsx
-// 오답노트 페이지 — 필터 + 목록 조합
+// 오답노트 페이지 — 칩 필터 + 카드 그리드 목록
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useAuth } from '@/contexts/AuthContext'
+import { FadeIn } from '@/components/motion/FadeIn'
 import { WrongNoteFilter } from '@/components/wrong-notes/WrongNoteFilter'
 import { WrongNoteList } from '@/components/wrong-notes/WrongNoteList'
 
@@ -19,7 +20,7 @@ export default function WrongNotesPage() {
   }
 
   return (
-    <div className="p-4 md:p-6 max-w-4xl mx-auto space-y-4">
+    <FadeIn className="p-4 md:p-6 max-w-6xl mx-auto space-y-4">
       <h1 className="text-2xl font-bold">오답노트</h1>
       <WrongNoteFilter
         studentId={studentId}
@@ -34,6 +35,6 @@ export default function WrongNotesPage() {
         filterCategory={filterCategory}
         onRetry={handleRetry}
       />
-    </div>
+    </FadeIn>
   )
 }

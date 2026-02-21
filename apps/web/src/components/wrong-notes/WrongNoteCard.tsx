@@ -1,9 +1,10 @@
 // apps/web/src/components/wrong-notes/WrongNoteCard.tsx
-// 오답 카드 — 메타데이터 뱃지 + 다시 풀기 + 완전 학습 버튼
+// 오답 카드 — AnimatedCard 래퍼 + 메타데이터 뱃지 + 다시 풀기/완전 학습 버튼
 import { XCircle, RotateCcw, CheckCircle2, Bookmark } from 'lucide-react'
-import { Card, CardContent } from '@/components/ui/card'
+import { CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { AnimatedCard } from '@/components/motion/AnimatedCard'
 import type { WrongNote } from '@/lib/db'
 
 interface WrongNoteCardProps {
@@ -24,9 +25,9 @@ export function WrongNoteCard({ wrongNote, onRetry, onMastered }: WrongNoteCardP
     : null
 
   return (
-    <Card>
+    <AnimatedCard className="border border-border/50 shadow-sm overflow-hidden">
       <CardContent className="p-4 space-y-3">
-        {/* 메타데이터 뱃지 행 */}
+        {/* 상단: 메타데이터 뱃지 행 + 북마크 */}
         <div className="flex flex-wrap items-center gap-1.5">
           <Badge variant="default" className="text-xs">
             {wrongNote.subject}
@@ -42,7 +43,7 @@ export function WrongNoteCard({ wrongNote, onRetry, onMastered }: WrongNoteCardP
           )}
         </div>
 
-        {/* 오답 통계 + 날짜 */}
+        {/* 중앙: 오답 통계 + 날짜 */}
         <div className="flex items-center gap-4 text-sm text-muted-foreground">
           <span className="flex items-center gap-1">
             <XCircle className="size-4 text-destructive" />
@@ -53,7 +54,7 @@ export function WrongNoteCard({ wrongNote, onRetry, onMastered }: WrongNoteCardP
           )}
         </div>
 
-        {/* 버튼 행 */}
+        {/* 하단: 버튼 행 */}
         <div className="flex gap-2 pt-1">
           <Button
             size="sm"
@@ -75,6 +76,6 @@ export function WrongNoteCard({ wrongNote, onRetry, onMastered }: WrongNoteCardP
           </Button>
         </div>
       </CardContent>
-    </Card>
+    </AnimatedCard>
   )
 }
