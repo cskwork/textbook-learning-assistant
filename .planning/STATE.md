@@ -111,6 +111,10 @@ Recent decisions affecting current work:
 - [Phase 13-analytics-planner]: NotificationToggle cleanupRef 패턴: useRef<() => void | null>로 setInterval cleanup 관리
 - [Phase 13-analytics-planner]: Phase 13 통합 빌드 검증: TypeScript 0 에러 + Vite 프로덕션 빌드 성공 → Phase 13 완료 확정
 - [Phase 13-analytics-planner]: ANLZ-01~03 + PLAN-01~03 6개 요구사항 yolo 모드 자동 승인으로 Phase 13 완료 처리
+- [Phase 14-instructor-portal]: 강사 홈 통계 카드 AnimatedCard + stat-accent CSS 변수 조합 유지 — 학생 홈 패턴과 일관성
+- [Phase 14-instructor-portal]: groupSummaries Map<number, GroupSummary> useState + useEffect Promise.all — 반 목록 변경 시 자동 재집계
+- [Phase 14-instructor-portal]: 최근 과제 db.assignments.where('groupId').anyOf(groupIds) — 강사 전체 반 과제 통합 조회
+- [Phase 14-instructor-portal]: 빠른 이동 grid-cols-3 (반 관리/문제 관리/새 반 만들기) AnimatedCard 래퍼
 - [Phase 14-instructor-portal]: QuestionList 선택 모드 props를 optional로 설계 — selectionMode 미전달 시 기존 동작 100% 유지
 - [Phase 14-instructor-portal]: 일괄 삭제: db.questions.bulkDelete([...selectedIds]) 사용 — Dexie 내장 bulkDelete API 활용
 - [Phase 14-instructor-portal]: 전체 선택 ID 목록: 부모 컴포넌트의 allQuestions useLiveQuery로 관리 — QuestionList에 콜백 prop 불필요
