@@ -66,32 +66,32 @@ v4.0에서 명시적으로 제외된 기능.
 
 ## Traceability
 
-요구사항 ↔ Phase 매핑. 로드맵 생성 시 업데이트.
+요구사항 ↔ Phase 매핑.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| UPLOAD-01 | — | Pending |
-| UPLOAD-02 | — | Pending |
-| UPLOAD-03 | — | Pending |
-| UPLOAD-04 | — | Pending |
-| UPLOAD-05 | — | Pending |
-| UPLOAD-06 | — | Pending |
-| UPLOAD-07 | — | Pending |
-| REVIEW-01 | — | Pending |
-| VIEWER-01 | — | Pending |
-| VIEWER-02 | — | Pending |
-| VIEWER-03 | — | Pending |
-| VIEWER-04 | — | Pending |
-| EXPORT-01 | — | Pending |
-| EXPORT-02 | — | Pending |
-| DB-REG-01 | — | Pending |
-| DB-REG-02 | — | Pending |
+| UPLOAD-01 | Phase 22 | Pending |
+| UPLOAD-02 | Phase 22 | Pending |
+| UPLOAD-03 | Phase 22 | Pending |
+| UPLOAD-04 | Phase 23 | Pending |
+| UPLOAD-05 | Phase 22 | Pending |
+| UPLOAD-06 | Phase 22 | Pending |
+| UPLOAD-07 | Phase 22 | Pending |
+| REVIEW-01 | Phase 23 | Pending |
+| VIEWER-01 | Phase 21 | Pending |
+| VIEWER-02 | Phase 25 | Pending |
+| VIEWER-03 | Phase 25 | Pending |
+| VIEWER-04 | Phase 25 | Pending |
+| EXPORT-01 | Phase 24 | Pending |
+| EXPORT-02 | Phase 24 | Pending |
+| DB-REG-01 | Phase 26 | Pending |
+| DB-REG-02 | Phase 26 | Pending |
 
 **Coverage:**
 - v4.0 requirements: 16 total
-- Mapped to phases: 0
-- Unmapped: 16
+- Mapped to phases: 16
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-24*
-*Last updated: 2026-02-24 after POC 우선 방향 재구조화*
+*Last updated: 2026-02-24 after v4.0 로드맵 생성 완료 (Phase 21-26)*
