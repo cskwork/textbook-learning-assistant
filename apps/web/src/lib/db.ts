@@ -102,6 +102,11 @@ export interface UserSetting {
   subjectTimeAllocation?: Record<string, number>  // 과목별 시간 배분 비율 (예: { '수학I': 30, '미적분': 40 })
   notificationEnabled?: boolean  // 알림 활성화 여부
   notificationTime?: string   // 알림 시간 (예: "20:00")
+  // Phase 17: 사운드 설정 (인덱스 없는 선택 필드 — version 변경 불필요)
+  bgmVolume?: number          // BGM 볼륨 0~1 (기본 0.5)
+  sfxVolume?: number          // SFX 볼륨 0~1 (기본 0.7)
+  isSoundMuted?: boolean      // 전체 음소거 (기본 false)
+  bgmEnabled?: boolean        // BGM ON/OFF (기본 false — 유저 결정: 기본 OFF)
 }
 
 // Phase 13: 학습 플래너 — 일간/주간 학습 계획
