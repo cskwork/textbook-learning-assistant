@@ -68,11 +68,13 @@
 
 **Goal:** PDF ↔ 앱 양방향 연동 — PDF 업로드 시 AI 자동 파싱, 앱 내 PDF 뷰어에서 풀이 오버레이, 강사용 PDF→DB 자동 등록, 시험지/학습지 PDF 내보내기
 
+**접근 방식:** POC 우선 — DB 없이 Vercel static + serverless로 핵심 파이프라인 검증 먼저. DB 연동(문제 등록)은 검증 후 추가.
+
 **Target features:**
 - PDF 업로드 & Gemini Vision AI 문제 자동 추출 (사용자 검수/수정)
 - PDF 뷰어 + 풀이 오버레이 (iPad 시험지 느낌)
-- 강사용 PDF → DB 자동 등록
 - 앱 → PDF 내보내기 (시험지 스타일 + 학습지 스타일)
+- 강사용 PDF → DB 자동 등록 (POC 이후)
 
 ### Out of Scope
 
@@ -133,6 +135,7 @@
 | Phaser CANVAS 모드 | Three.js WebGL 컨텍스트와 충돌 방지 | ✓ Good |
 | PDF 문제 풀이 v2.1 연기 → v4.0 | 디자인 + 게이미피케이션 우선, PDF는 다음 milestone | ✓ Good (v4.0 시작) |
 | PDF 2-Way 시스템 (v4.0) | 업로드/파싱/뷰어/내보내기 양방향 PDF 연동 | — Pending |
+| POC 우선 접근 (v4.0) | DB 없이 Vercel static+serverless로 핵심 파이프라인 검증 먼저 | — Pending |
 
 ---
-*Last updated: 2026-02-24 after v4.0 milestone start*
+*Last updated: 2026-02-24 after v4.0 POC 우선 방향 확정*

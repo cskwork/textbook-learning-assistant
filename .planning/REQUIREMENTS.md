@@ -6,6 +6,7 @@
 ## v4.0 Requirements
 
 v4.0 PDF 2-Way 학습 시스템. PDF ↔ 앱 양방향 연동.
+**접근:** POC 우선 — DB 없이 Vercel static+serverless로 검증. DB 등록은 후속.
 
 ### UPLOAD (PDF 업로드 & AI 파싱)
 
@@ -17,11 +18,9 @@ v4.0 PDF 2-Way 학습 시스템. PDF ↔ 앱 양방향 연동.
 - [ ] **UPLOAD-06**: 추출된 문제가 문제 번호 순서대로 자동 정렬된다
 - [ ] **UPLOAD-07**: 파싱 실패 시 명확한 오류 메시지와 수동 입력 fallback이 안내된다
 
-### REVIEW (강사 검수 & DB 등록)
+### REVIEW (강사 검수)
 
 - [ ] **REVIEW-01**: 강사가 AI 추출 결과를 인라인 LaTeX 편집으로 검수/수정할 수 있다
-- [ ] **REVIEW-02**: 강사가 검수 완료된 문항을 1-클릭으로 기존 문제 DB에 등록할 수 있다
-- [ ] **REVIEW-03**: 등록 시 과목/단원/유형이 자동 분류 제안되고 강사가 확인/수정할 수 있다
 
 ### VIEWER (PDF 뷰어 & 오버레이)
 
@@ -34,6 +33,11 @@ v4.0 PDF 2-Way 학습 시스템. PDF ↔ 앱 양방향 연동.
 
 - [ ] **EXPORT-01**: 선택한 문제를 시험지 스타일 PDF로 내보낼 수 있다 (A4, 헤더, 수식 렌더링)
 - [ ] **EXPORT-02**: 선택한 문제를 학습지 스타일 PDF로 내보낼 수 있다 (해설 포함)
+
+### DB-REG (DB 연동 — POC 이후)
+
+- [ ] **DB-REG-01**: 강사가 검수 완료된 문항을 1-클릭으로 기존 문제 DB에 등록할 수 있다
+- [ ] **DB-REG-02**: 등록 시 과목/단원/유형이 자동 분류 제안되고 강사가 확인/수정할 수 있다
 
 ## v5.0+ Requirements
 
@@ -74,14 +78,14 @@ v4.0에서 명시적으로 제외된 기능.
 | UPLOAD-06 | — | Pending |
 | UPLOAD-07 | — | Pending |
 | REVIEW-01 | — | Pending |
-| REVIEW-02 | — | Pending |
-| REVIEW-03 | — | Pending |
 | VIEWER-01 | — | Pending |
 | VIEWER-02 | — | Pending |
 | VIEWER-03 | — | Pending |
 | VIEWER-04 | — | Pending |
 | EXPORT-01 | — | Pending |
 | EXPORT-02 | — | Pending |
+| DB-REG-01 | — | Pending |
+| DB-REG-02 | — | Pending |
 
 **Coverage:**
 - v4.0 requirements: 16 total
@@ -90,4 +94,4 @@ v4.0에서 명시적으로 제외된 기능.
 
 ---
 *Requirements defined: 2026-02-24*
-*Last updated: 2026-02-24 after initial definition*
+*Last updated: 2026-02-24 after POC 우선 방향 재구조화*
