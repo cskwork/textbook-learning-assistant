@@ -19,7 +19,8 @@
       "Bash(agent-browser console:*)",
       "Bash(agent-browser reload:*)",
       "Bash(agent-browser set:*)",
-      "Skill(gsd:new-milestone)"
+      "Skill(gsd:new-milestone)",
+      "Skill(gsd:complete-milestone)"
     ]
   }
 }
