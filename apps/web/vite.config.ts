@@ -52,4 +52,18 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  build: {
+    // 게임 청크는 크기가 클 수밖에 없으므로 경고 임계값 상향 조정
+    chunkSizeWarningLimit: 1500,
+    rollupOptions: {
+      output: {
+        manualChunks(id: string) {
+          if (id.includes('node_modules/phaser')) return 'game-phaser'
+          if (id.includes('node_modules/three')) return 'game-three'
+          if (id.includes('node_modules/howler')) return 'game-howler'
+          if (id.includes('node_modules/canvas-confetti')) return 'game-confetti'
+        },
+      },
+    },
+  },
 })
