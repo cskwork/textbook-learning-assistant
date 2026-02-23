@@ -1,120 +1,138 @@
 # Requirements: 수학 기출 학습 도우미
 
-**Defined:** 2026-02-21
+**Defined:** 2026-02-23
 **Core Value:** 학생이 자신의 취약한 수학 유형을 정확히 파악하고, AI가 추천하는 맞춤 문제를 통해 효율적으로 실력을 향상시킬 수 있어야 한다
 
-## v2.0 Requirements
+## v3.0 Requirements
 
-기출탭탭 스타일 전면 디자인 리뉴얼 + 학습 UX 전체 플로우 개선
+v3.0 반전 모드 — 게이미피케이션 학습 혁명. 커스터마이즈 버튼 클릭 시 전체 앱이 초재미 게이미피케이션 학습 환경으로 변신.
 
-### 디자인 시스템
+### 반전 모드 인프라 (INFRA)
 
-- [x] **DSGN-01**: 기출탭탭 스타일 색상 팔레트로 전면 교체 (교육 앱 파란/남색 계열, primary/secondary/accent 토큰)
-- [x] **DSGN-02**: 타이포그래피 시스템 리뉴얼 (Pretendard 또는 유사 한글 폰트, 크기 체계, 줄간격, 가독성)
-- [x] **DSGN-03**: 카드/버튼/입력 컴포넌트 디자인 전면 리뉴얼 (둥근 모서리, 그림자, hover 상태, 비활성 상태)
-- [x] **DSGN-04**: 다크모드 디자인 토큰 동시 업데이트 (라이트/다크 양쪽 일관된 경험)
+- [ ] **INFRA-01**: 사용자가 커스터마이즈 버튼을 클릭하여 일반 모드 ↔ 반전 모드를 즉시 전환할 수 있다
+- [ ] **INFRA-02**: 반전 모드 전환 시 전체 UI 테마(색상, 폰트, 레이아웃)가 재미있는 게임 스타일로 변신한다
+- [ ] **INFRA-03**: 반전 모드 선택이 사용자별로 저장되어 재접속 시 유지된다
+- [ ] **INFRA-04**: 반전 모드 게임 엔진(Phaser, Three.js, Howler)이 lazy loading되어 일반 모드 초기 로딩에 영향을 주지 않는다
+- [ ] **INFRA-05**: 반전 모드 최초 진입 시 재미있는 로딩 화면과 함께 게임 에셋이 로드된다
 
-### 학생 홈 대시보드
+### 보상 시스템 (RWRD)
 
-- [x] **HOME-01**: 학생 홈 대시보드를 기출탭탭 스타일로 리디자인 (오늘의 학습 현황 카드, AI 추천 문제, 스트릭, 최근 학습 이력)
-- [x] **HOME-02**: Swiper 기반 배너/카드 슬라이더 도입 (추천 문제, 취약 유형 알림, 이벤트 배너 등)
-- [x] **HOME-03**: 빠른 학습 시작 CTA 버튼 영역 (오답 복습, AI 추천, 문제집 이어풀기)
+- [ ] **RWRD-01**: 사용자가 문제를 풀 때마다 XP를 획득하고 실시간으로 XP 바에 반영된다
+- [ ] **RWRD-02**: 사용자가 누적 XP에 따라 레벨업하며 레벨업 애니메이션과 사운드가 재생된다
+- [ ] **RWRD-03**: 사용자가 연속 정답 시 콤보 카운터가 올라가며 콤보 배수에 따라 XP 보너스를 받는다
+- [ ] **RWRD-04**: 사용자가 매일 학습하면 스트릭 카운터가 증가하고 스트릭 보너스 XP를 받는다
+- [ ] **RWRD-05**: 사용자가 데일리 챌린지(매일 새로운 3~5문제)를 완료하면 특별 보상을 받는다
+- [ ] **RWRD-06**: 사용자가 특정 업적 달성 시 뱃지를 획득하고 프로필에 표시할 수 있다
+- [ ] **RWRD-07**: 사용자가 반 내 XP 리더보드에서 자신의 순위를 확인할 수 있다
+- [ ] **RWRD-08**: 사용자가 주간 챌린지에 참여하여 보너스 보상을 받을 수 있다
 
-### 문제 풀이 UX
+### 사운드 시스템 (SND)
 
-- [x] **QUIZ-01**: 문제 풀이 화면 리디자인 (넓은 수식 영역, 직관적 선택지, 문제 번호 인디케이터)
-- [x] **QUIZ-02**: 문제 간 Swiper 전환 (좌우 스와이프로 이전/다음 문제 이동)
-- [x] **QUIZ-03**: 채점 결과 애니메이션 (정답 체크 효과, 오답 흔들림 효과, 점수 카운트업)
-- [x] **QUIZ-04**: 문제 목록/선택 UI 리디자인 (필터 칩, 그리드 카드, 난이도 뱃지)
+- [ ] **SND-01**: 반전 모드에서 화면별 BGM이 재생되며 사용자가 ON/OFF 토글할 수 있다
+- [ ] **SND-02**: 정답/오답/콤보/레벨업 등 각 이벤트별 효과음이 재생된다
+- [ ] **SND-03**: BGM은 기본 OFF 상태이며 사용자가 직접 켜야 재생된다 (학습 환경 배려)
+- [ ] **SND-04**: 사용자가 효과음 볼륨과 BGM 볼륨을 각각 조절할 수 있다
+- [ ] **SND-05**: iOS/모바일에서 첫 사용자 제스처 후 사운드가 정상 활성화된다
 
-### 분석 대시보드
+### 시각 효과 (VFX)
 
-- [x] **ANLZ-01**: 학생 분석 대시보드 차트 리디자인 (그라데이션, 인터랙티브 차트, 날짜 범위 선택)
-- [x] **ANLZ-02**: 취약 유형 시각화 개선 (유형별 마스터리 맵, 추천 학습 경로 표시)
-- [x] **ANLZ-03**: 학습 히스토리 타임라인 UI (일별 학습량, 정답률 추이, 주간 비교)
+- [ ] **VFX-01**: 반전 모드에서 Three.js 3D 배경이 각 화면별로 다른 테마로 렌더링된다
+- [ ] **VFX-02**: 정답 시 파티클 폭발 이펙트가 화면에 재생된다
+- [ ] **VFX-03**: 오답 시 화면 흔들림(shake) + 빨간 플래시 이펙트가 재생된다
+- [ ] **VFX-04**: 레벨업 시 풀스크린 시네마틱 애니메이션이 재생된다
+- [ ] **VFX-05**: 콤보 달성 시 화면에 불꽃/번개 이펙트가 점점 강해진다
+- [ ] **VFX-06**: 스트릭 유지 시 홈 화면에 스트릭 불꽃 애니메이션이 표시된다
+- [ ] **VFX-07**: 퀴즈 완료 시 컨페티(축하 종이 조각) 애니메이션이 재생된다
 
-### 학습 플래너
+### 게임화 퀴즈 모드 (GAME)
 
-- [x] **PLAN-01**: 일간/주간 학습 플래너 UI (캘린더 뷰, 할 일 체크리스트, 목표 설정)
-- [x] **PLAN-02**: 학습 리마인더 알림 (브라우저 Notification API, 일일 학습 미완료 시 알림)
-- [x] **PLAN-03**: 학습 스케줄 관리 (주간 목표 문제 수, 과목별 시간 배분, 진행률 시각화)
+- [ ] **GAME-01**: 사용자가 타임어택 모드에서 제한 시간 내 최대한 많은 문제를 풀 수 있다
+- [ ] **GAME-02**: 사용자가 서바이벌 모드에서 3번 틀리면 종료되는 긴장감 있는 퀴즈를 할 수 있다
+- [ ] **GAME-03**: 사용자가 보스 배틀 모드에서 보스 HP를 깎는 방식으로 어려운 문제를 공략할 수 있다
+- [ ] **GAME-04**: 보스 배틀에서 보스의 공격 애니메이션과 플레이어의 공격 이펙트가 재생된다
+- [ ] **GAME-05**: 각 게임 모드 완료 후 결과 화면에 점수, XP 획득량, 신기록 여부가 표시된다
+- [ ] **GAME-06**: 사용자가 Canvas 기반 미니게임(수식 조합, 그래프 매칭 등)을 플레이할 수 있다
 
-### 전체 플로우 & 애니메이션
+### 전체 화면 반전 디자인 (SCRN)
 
-- [x] **FLOW-01**: 페이지 전환 애니메이션 (Framer Motion 기반, 슬라이드/페이드 전환)
-- [x] **FLOW-02**: 마이크로 인터랙션 (버튼 ripple, 카드 hover 확대, 로딩 스켈레톤, 토스트 애니메이션)
-- [x] **FLOW-03**: 온보딩 플로우 리디자인 (스텝별 진행 표시, 역할 선택 카드, 완료 축하 애니메이션)
+- [ ] **SCRN-01**: 학생 홈 화면이 반전 모드에서 게임 대시보드 스타일로 변신한다 (XP바, 레벨, 스트릭, 데일리 챌린지)
+- [ ] **SCRN-02**: 퀴즈 화면이 반전 모드에서 게임 HUD 스타일로 변신한다 (HP바, 콤보 카운터, 타이머)
+- [ ] **SCRN-03**: 분석 화면이 반전 모드에서 RPG 스탯 화면 스타일로 변신한다 (레이더 차트 → 능력치)
+- [ ] **SCRN-04**: 오답노트가 반전 모드에서 '몬스터 도감' 스타일로 변신한다 (틀린 문제 = 잡아야 할 몬스터)
+- [ ] **SCRN-05**: 문제집이 반전 모드에서 '퀘스트 북' 스타일로 변신한다
+- [ ] **SCRN-06**: 강사 포털이 반전 모드에서 '길드 마스터' 스타일로 변신한다 (학생 관리 = 길드원 관리)
+- [ ] **SCRN-07**: 마이페이지가 반전 모드에서 '캐릭터 프로필' 스타일로 변신한다 (레벨, 뱃지, 업적)
 
-### 강사 포털
+## v4 Requirements (Deferred)
 
-- [x] **INST-01**: 강사 홈 대시보드 리디자인 (학생 현황 카드, 최근 과제, 반별 성적 요약)
-- [x] **INST-02**: 강사 문제 관리 UI 리디자인 (문제 카드 그리드, 필터 사이드바, 일괄 작업)
-- [x] **INST-03**: 강사 학생 분석 대시보드 리디자인 (개별 학생 상세, 반 전체 비교 차트)
-- [x] **INST-04**: 강사 그룹/과제 관리 UI 리디자인 (과제 진행률, 미완료 학생 알림)
+### 고급 게이미피케이션
 
-### 공통 레이아웃
-
-- [x] **LYOT-01**: 사이드바/탭바 네비게이션 리디자인 (기출탭탭 스타일 아이콘, 활성 상태 인디케이터)
-- [x] **LYOT-02**: 모바일 퍼스트 반응형 전면 검토 (터치 타겟 크기, 여백, 스크롤 영역)
-- [x] **LYOT-03**: 오답노트/문제집 페이지 리디자인 (카드 그리드, 정렬/필터 UI)
-
-## v2.1 Requirements (Deferred)
-
-### PDF 문제 풀이
-
-- **PDF-01**: PDF 업로드 + 분할 뷰어 (좌측 PDF, 우측 문제 풀이)
-- **PDF-02**: PDF 그리기/필기 기능 (펜, 형광펜, 지우기)
-- **PDF-03**: 문제집 → 인쇄용 PDF 내보내기 (KaTeX 렌더링 포함)
-- **PDF-04**: 프린트 → 디지털 결과 입력 루프 (종이 풀이 후 답 입력 채점)
+- **ADV-01**: 사용자가 캐릭터를 선택/커스터마이즈할 수 있다 (아바타 시스템)
+- **ADV-02**: 학교/학원 간 리그 시스템으로 경쟁할 수 있다
+- **ADV-03**: 시즌별 한정 뱃지와 보상이 제공된다
+- **ADV-04**: 팀 배틀 모드에서 반 대항전을 할 수 있다
+- **ADV-05**: AI가 플레이어 수준에 맞춰 보스 난이도를 동적 조절한다
 
 ## Out of Scope
 
 | Feature | Reason |
 |---------|--------|
-| PDF 뷰어/내보내기 | v2.1로 연기 — 디자인 리뉴얼 완료 후 진행 |
-| 실시간 채팅 | 핵심 가치와 무관 |
-| 결제/구독 시스템 | v1/v2는 무료 |
-| 수학 외 과목 | 수학 전용 유지 |
-| 네이티브 앱 | Electrobun + PWA로 대체 |
-| 서술형 AI 채점 | 복잡도 높음 |
+| 실제 금전적 보상 (캐시/포인트 환전) | 교육 앱에 부적합, 법적 이슈 |
+| 가챠/뽑기 시스템 | 미성년자 대상 도박성 요소 — 교육 연구에서 명확한 안티패턴 |
+| 공개 전체 리더보드 | 저성취 학생에게 부정적 영향 — 반 내 리더보드만 허용 |
+| 자동 재생 BGM | 학습 환경(도서관, 교실) 방해 — 기본 OFF 필수 |
+| GSAP 애니메이션 라이브러리 | 기존 Framer Motion과 중복 — Framer Motion 활용 |
+| React Three Fiber (R3F) | 배경용으로 과도한 오버헤드 — vanilla Three.js 직접 사용 |
+| Phaser 4 | 현재 RC(beta) 단계로 불안정 — Phaser 3.90 사용 |
 
 ## Traceability
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DSGN-01 | Phase 10 | Complete |
-| DSGN-02 | Phase 10 | Complete |
-| DSGN-03 | Phase 10 | Complete |
-| DSGN-04 | Phase 10 | Complete |
-| LYOT-01 | Phase 11 | Complete |
-| LYOT-02 | Phase 11 | Complete |
-| LYOT-03 | Phase 11 | Complete |
-| FLOW-01 | Phase 11 | Complete |
-| FLOW-02 | Phase 11 | Complete |
-| FLOW-03 | Phase 11 | Complete |
-| HOME-01 | Phase 12 | Complete |
-| HOME-02 | Phase 12 | Complete |
-| HOME-03 | Phase 12 | Complete |
-| QUIZ-01 | Phase 12 | Complete |
-| QUIZ-02 | Phase 12 | Complete |
-| QUIZ-03 | Phase 12 | Complete |
-| QUIZ-04 | Phase 12 | Complete |
-| ANLZ-01 | Phase 13 | Complete |
-| ANLZ-02 | Phase 13 | Complete |
-| ANLZ-03 | Phase 13 | Complete |
-| PLAN-01 | Phase 13 | Complete |
-| PLAN-02 | Phase 13 | Complete |
-| PLAN-03 | Phase 13 | Complete |
-| INST-01 | Phase 14 | Complete |
-| INST-02 | Phase 14 | Complete |
-| INST-03 | Phase 14 | Complete |
-| INST-04 | Phase 14 | Complete |
+| INFRA-01 | Phase 15 | Pending |
+| INFRA-02 | Phase 15 | Pending |
+| INFRA-03 | Phase 15 | Pending |
+| INFRA-04 | Phase 15 | Pending |
+| INFRA-05 | Phase 15 | Pending |
+| RWRD-01 | Phase 16 | Pending |
+| RWRD-02 | Phase 16 | Pending |
+| RWRD-03 | Phase 16 | Pending |
+| RWRD-04 | Phase 16 | Pending |
+| RWRD-05 | Phase 16 | Pending |
+| RWRD-06 | Phase 16 | Pending |
+| RWRD-07 | Phase 16 | Pending |
+| RWRD-08 | Phase 16 | Pending |
+| SND-01 | Phase 17 | Pending |
+| SND-02 | Phase 17 | Pending |
+| SND-03 | Phase 17 | Pending |
+| SND-04 | Phase 17 | Pending |
+| SND-05 | Phase 17 | Pending |
+| VFX-01 | Phase 18 | Pending |
+| VFX-02 | Phase 18 | Pending |
+| VFX-03 | Phase 18 | Pending |
+| VFX-04 | Phase 18 | Pending |
+| VFX-05 | Phase 18 | Pending |
+| VFX-06 | Phase 18 | Pending |
+| VFX-07 | Phase 18 | Pending |
+| GAME-01 | Phase 19 | Pending |
+| GAME-02 | Phase 19 | Pending |
+| GAME-03 | Phase 19 | Pending |
+| GAME-04 | Phase 19 | Pending |
+| GAME-05 | Phase 19 | Pending |
+| GAME-06 | Phase 19 | Pending |
+| SCRN-01 | Phase 20 | Pending |
+| SCRN-02 | Phase 20 | Pending |
+| SCRN-03 | Phase 20 | Pending |
+| SCRN-04 | Phase 20 | Pending |
+| SCRN-05 | Phase 20 | Pending |
+| SCRN-06 | Phase 20 | Pending |
+| SCRN-07 | Phase 20 | Pending |
 
 **Coverage:**
-- v2.0 requirements: 27 total
-- Mapped to phases: 27
-- Unmapped: 0
+- v3.0 requirements: 38 total
+- Mapped to phases: 38
+- Unmapped: 0 ✓
 
 ---
-*Requirements defined: 2026-02-21*
-*Last updated: 2026-02-21 after milestone v2.0 roadmap creation*
+*Requirements defined: 2026-02-23*
+*Last updated: 2026-02-23 after v3.0 milestone definition*
