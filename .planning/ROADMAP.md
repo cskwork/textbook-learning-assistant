@@ -39,7 +39,7 @@
 - [x] **Phase 15: 반전 모드 기반 인프라 + 번들 전략** — FunModeContext, 코드 스플리팅, Phaser POC (completed 2026-02-23)
 - [x] **Phase 16: 보상 시스템** — XP/레벨/스트릭/콤보/뱃지/리더보드/챌린지 (gap closure 진행 중) (completed 2026-02-23)
 - [x] **Phase 17: 사운드 시스템** — Howler.js BGM + SFX, iOS 잠금 해제 (completed 2026-02-23)
-- [ ] **Phase 18: Three.js 시각 효과** — 3D 배경, 파티클, 레벨업 시네마틱
+- [x] **Phase 18: Three.js 시각 효과** — 3D 배경, 파티클, 레벨업 시네마틱 (completed 2026-02-24)
 - [ ] **Phase 19: 게임화 퀴즈 엔진** — 타임어택/서바이벌/보스배틀/미니게임 (Phaser)
 - [ ] **Phase 20: 전체 화면 반전 디자인** — 모든 화면 게임 테마 적용
 
@@ -113,10 +113,10 @@ Plans:
 **계획**: 4 plans
 
 Plans:
-- [ ] 18-01-PLAN.md — R3F Canvas 인프라 + 화면별 4개 3D 배경 씬 + GPU 감지 + CSS fallback
-- [ ] 18-02-PLAN.md — 정답/오답/콤보 이벤트 반응 VFX (ParticleBurst + WrongAnswerFx + EventBus)
-- [ ] 18-03-PLAN.md — 레벨업 시네마틱 VFX (LevelUpVfx) + 스트릭 불꽃 애니메이션 (StreakFlame)
-- [ ] 18-04-PLAN.md — 퀴즈 완료 컨페티 (ConfettiEffect) + 페이지별 ThreeBackground 연동
+- [x] 18-01-PLAN.md — R3F Canvas 인프라 + 화면별 4개 3D 배경 씬 + GPU 감지 + CSS fallback
+- [x] 18-02-PLAN.md — 정답/오답/콤보 이벤트 반응 VFX (ParticleBurst + WrongAnswerFx + EventBus)
+- [x] 18-03-PLAN.md — 레벨업 시네마틱 VFX (LevelUpVfx) + 스트릭 불꽃 애니메이션 (StreakFlame)
+- [x] 18-04-PLAN.md — 퀴즈 완료 컨페티 (ConfettiEffect) + 페이지별 ThreeBackground 연동
 
 ### Phase 19: 게임화 퀴즈 엔진
 
@@ -165,6 +165,6 @@ Plans:
 | 15. 반전 모드 기반 인프라 + 번들 전략 | 3/3 | Complete    | 2026-02-23 | - |
 | 16. 보상 시스템 | 5/5 | Complete    | 2026-02-23 | - |
 | 17. 사운드 시스템 | 2/2 | Complete    | 2026-02-23 | - |
-| 18. Three.js 시각 효과 | 1/4 | In Progress|  | - |
+| 18. Three.js 시각 효과 | 4/4 | Complete | 2026-02-24 | - |
 | 19. 게임화 퀴즈 엔진 | v3.0 | 0/? | 미시작 | - |
 | 20. 전체 화면 반전 디자인 | v3.0 | 0/? | 미시작 | - |
