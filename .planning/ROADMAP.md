@@ -110,7 +110,13 @@ Plans:
   3. 오답 제출 시 화면이 흔들리며 빨간 플래시가 번쩍인다
   4. 레벨업 시 풀스크린 시네마틱 연출이 재생된 후 새 레벨 정보가 표시된다
   5. 퀴즈 완료 시 컨페티(종이 조각) 축하 애니메이션이 화면에 쏟아진다
-**계획**: 미정
+**계획**: 4 plans
+
+Plans:
+- [ ] 18-01-PLAN.md — R3F Canvas 인프라 + 화면별 4개 3D 배경 씬 + GPU 감지 + CSS fallback
+- [ ] 18-02-PLAN.md — 정답/오답/콤보 이벤트 반응 VFX (ParticleBurst + WrongAnswerFx + EventBus)
+- [ ] 18-03-PLAN.md — 레벨업 시네마틱 VFX (LevelUpVfx) + 스트릭 불꽃 애니메이션 (StreakFlame)
+- [ ] 18-04-PLAN.md — 퀴즈 완료 컨페티 (ConfettiEffect) + 페이지별 ThreeBackground 연동
 
 ### Phase 19: 게임화 퀴즈 엔진
 
