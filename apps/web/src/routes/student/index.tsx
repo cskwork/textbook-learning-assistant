@@ -5,6 +5,7 @@
  *   a. 인사 영역 (FadeIn)
  *   b. Swiper 배너 (HomeBannerSwiper — HOME-02)
  *   c. 통계 카드 그리드 4종 (AnimatedCard — HOME-01)
+ *   [FunMode] 게이미피케이션 위젯 4종 (StreakCounter / DailyChallenge / WeeklyChallenge / Leaderboard)
  *   d. 빠른 학습 시작 CTA (QuickActionButtons — HOME-03)
  *   e. AI 추천 + 최근 활동 2컬럼 (lg:grid-cols-5)
  *
@@ -29,6 +30,9 @@ import { FadeIn } from '@/components/motion/FadeIn'
 import { HomeBannerSwiper } from '@/components/home/HomeBannerSwiper'
 import { QuickActionButtons } from '@/components/home/QuickActionButtons'
 import { RecentActivityList } from '@/components/home/RecentActivityList'
+import { useFunMode } from '@/hooks/useFunMode'
+import { useGamification } from '@/hooks/useGamification'
+import { StreakCounter, DailyChallenge, WeeklyChallenge, Leaderboard } from '@/components/gamification'
 import type { Question } from '@/lib/db'
 
 /** 시간대별 인사말 */
@@ -44,6 +48,8 @@ export default function StudentHomePage() {
   const { user } = useAuth()
   const navigate = useNavigate()
   const greeting = getGreeting()
+  const { isFunMode } = useFunMode()
+  const { profile } = useGamification(user?.email)
 
   const userSetting = useLiveQuery(
     async () => {
@@ -78,6 +84,16 @@ export default function StudentHomePage() {
     () => user ? db.wrongNotes.where('studentId').equals(user.email).count() : 0,
     [user?.email],
   ) ?? 0
+
+  // 리더보드 표시용 — 학생이 속한 반 ID 조회
+  const studentGroupId = useLiveQuery(
+    async () => {
+      if (!user) return null
+      const membership = await db.groupMembers.where('studentId').equals(user.email).first()
+      return membership?.groupId ?? null
+    },
+    [user?.email],
+  )
 
   const [accuracy, setAccuracy] = useState<number | undefined>(undefined)
   const [streakCurrent, setStreakCurrent] = useState<number | undefined>(undefined)
@@ -114,6 +130,11 @@ export default function StudentHomePage() {
     if (all.length === 0) return
     const random = all[Math.floor(Math.random() * all.length)]
     navigate(`/student/quiz/${random.id}`)
+  }
+
+  /** 데일리 챌린지 시작 — Phase 19에서 실제 챌린지 모드 구현 전까지 문제 목록으로 이동 */
+  function handleStartDailyChallenge() {
+    navigate('/student/problems')
   }
 
   // ── 로딩 스켈레톤 ──
@@ -395,6 +416,42 @@ export default function StudentHomePage() {
           </div>
         </div>
       </FadeIn>
+
+      {/* ── FunMode 게이미피케이션 위젯 ── */}
+      {isFunMode && profile && (
+        <FadeIn delay={0.12}>
+          <div className="space-y-4">
+            {/* 스트릭 + 데일리 챌린지 한 줄 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <AnimatedCard className="border-none shadow-sm bg-white dark:bg-card p-4">
+                <StreakCounter
+                  streakDays={profile.streakDays}
+                  bonusXP={0}
+                />
+              </AnimatedCard>
+              <AnimatedCard className="border-none shadow-sm bg-white dark:bg-card">
+                <DailyChallenge
+                  studentId={user!.email}
+                  onStartChallenge={handleStartDailyChallenge}
+                />
+              </AnimatedCard>
+            </div>
+
+            {/* 주간 챌린지 */}
+            <AnimatedCard className="border-none shadow-sm bg-white dark:bg-card">
+              <WeeklyChallenge studentId={user!.email} />
+            </AnimatedCard>
+
+            {/* 리더보드 */}
+            <AnimatedCard className="border-none shadow-sm bg-white dark:bg-card">
+              <Leaderboard
+                groupId={studentGroupId ?? null}
+                currentStudentId={user!.email}
+              />
+            </AnimatedCard>
+          </div>
+        </FadeIn>
+      )}
 
       {/* ── d. 빠른 학습 시작 CTA (HOME-03) ── */}
       <FadeIn delay={0.15}>
