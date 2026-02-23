@@ -307,3 +307,390 @@ BKT EM 알고리즘이 `P(Slip) = 0.8` 같은 비현실적인 파라미터로 �
 ---
 *Pitfalls research for: 수학 기출문제 학습 웹앱 (Math Exam Learning PWA)*
 *Researched: 2026-02-19*
+
+---
+
+---
+
+# v3.0 반전 모드 — 게이미피케이션 통합 함정
+
+**도메인 추가:** React 교육 앱에 Phaser 3 / Three.js / 게이미피케이션 추가
+**Researched:** 2026-02-23
+**Confidence:** MEDIUM-HIGH (GitHub issues, official templates, academic research, MDN 공식 문서 교차 검증)
+
+---
+
+## Critical Pitfalls (v3.0 게이미피케이션)
+
+### Pitfall G1: React StrictMode + Phaser 이중 초기화
+
+**What goes wrong:**
+React 18/19의 StrictMode가 개발 모드에서 컴포넌트를 두 번 마운트(mount → unmount → remount)하는데, `useEffect` 내에서 `new Phaser.Game(config)`를 초기화하면 게임 인스턴스가 2개 생성된다. 두 번째 인스턴스가 같은 DOM 컨테이너에 Canvas를 붙이려다 충돌하거나, 첫 번째 인스턴스가 cleanup 없이 남아 메모리 누수가 발생한다.
+
+**Why it happens:**
+Phaser의 `Game` 초기화는 멱등적(idempotent)이지 않다. React StrictMode는 순수하지 않은 side effect를 찾기 위해 의도적으로 마운트를 두 번 실행한다. `useEffect`의 cleanup 함수에서 `game.destroy(true)`를 호출해도 Phaser의 destroy는 비동기적으로 다음 프레임에 실행되므로, React의 두 번째 마운트 시점에 정리가 완료되지 않아 충돌이 발생한다.
+
+**How to avoid:**
+- `useRef`에 게임 인스턴스를 저장하고, `if (gameRef.current) return` 가드로 이중 초기화 방지.
+- Phaser 공식 React TypeScript 템플릿(`phaserjs/template-react-ts`)의 `PhaserGame.tsx` 패턴을 그대로 따른다 — `forwardRef` + EventBus 패턴.
+- 개발 환경에서만 StrictMode를 게임 컴포넌트 외부로 분리하는 것을 검토한다.
+- `game.destroy(true)`는 cleanup 함수에서 호출하되, `DESTROY` 이벤트를 수신하여 비동기 완료를 확인한다.
+
+**Warning signs:**
+- 개발 환경 콘솔에 "Canvas is already in use" 또는 Phaser 초기화 오류
+- 게임이 두 개의 Canvas 요소를 DOM에 생성
+- 메모리 사용량이 페이지 전환마다 선형으로 증가
+
+**Phase to address:** Phase 15 (반전 모드 기반 인프라) — Phaser 통합 POC 단계에서 가장 먼저 검증
+
+---
+
+### Pitfall G2: Phaser 씬(Scene) unmount 시 메모리 누수
+
+**What goes wrong:**
+React 라우터로 페이지를 이동하면 Phaser 게임 컴포넌트가 unmount되는데, `game.destroy(true)`를 호출했음에도 텍스처 아틀라스, 오디오 버퍼, 애니메이션 클립이 GPU/오디오 메모리에 남는다. 특히 Phaser의 WebAudio는 `AudioContext`를 명시적으로 닫지 않으면 브라우저 프로세스가 참조를 유지한다.
+
+**Why it happens:**
+Phaser는 `game.destroy(true)`에 `true`(RemoveCanvas) 플래그를 전달해야 Canvas DOM 요소도 제거한다. `false`로 호출하면 Canvas가 DOM에 남는다. 씬별로 `preload`한 텍스처는 `scene.textures.remove(key)` 또는 `this.cache.audio.remove(key)`를 씬의 `shutdown` 핸들러에서 명시적으로 제거하지 않으면 TextureManager 레벨에서 유지된다.
+
+**How to avoid:**
+- 모든 씬의 `shutdown` 이벤트 핸들러에서 씬 전용 텍스처/오디오 제거:
+  ```javascript
+  this.events.on('shutdown', () => {
+    this.textures.remove('boss-spritesheet');
+    this.cache.audio.remove('bgm-battle');
+  });
+  ```
+- `game.destroy(true)`를 `useEffect` cleanup에서 호출.
+- `scene.sys.events.off()` 로 씬에 등록된 이벤트 리스너 전부 제거.
+- Chrome DevTools Memory 탭에서 페이지 이동 전후 heap 스냅샷 비교로 검증.
+
+**Warning signs:**
+- 반전 모드 진입/퇴장을 5회 반복하면 브라우저 탭 메모리가 100MB+ 증가
+- `AudioContext` 인스턴스가 DevTools에서 닫히지 않고 쌓임
+- `performance.memory.usedJSHeapSize`가 세션 중 단조 증가
+
+**Phase to address:** Phase 15 (반전 모드 기반 인프라), Phase 16 (Phaser 퀴즈 엔진) — 씬 전환마다 검증
+
+---
+
+### Pitfall G3: WebGL Context 한도 초과 (Phaser + Three.js 공존)
+
+**What goes wrong:**
+브라우저는 동시에 8~16개의 WebGL 컨텍스트만 허용한다. Phaser가 Canvas/WebGL 렌더러로 컨텍스트 1개를 사용하고, Three.js 파티클 이펙트가 별도 Canvas로 추가 컨텍스트를 생성하면, 다른 컴포넌트(KaTeX SVG, 분석 차트 등)의 컨텍스트까지 합산되어 한도에 근접한다. 오래된 컨텍스트가 강제 소멸되면 "WebGL context lost" 오류가 발생하고 Canvas가 검게 표시된다.
+
+**Why it happens:**
+현존 브라우저(Chrome, Safari)는 탭당 WebGL 컨텍스트 수를 하드 제한한다. Safari의 OffscreenCanvas는 최대 4개까지만 허용한다는 2024년 실측 결과도 있다. Phaser와 Three.js를 별도 Canvas로 동시 실행하면 필연적으로 한도에 가까워진다.
+
+**How to avoid:**
+- Phaser와 Three.js를 **하나의 Canvas**에서 공존시키지 않고, Three.js 이펙트는 Phaser 씬 내의 `RenderTexture` 또는 CSS 레이어(DOM 오버레이)로 대체 검토.
+- Three.js는 반전 모드 레벨업/보스전 등 특별한 순간에만 단일 Full-screen Canvas로 띄우고, 사용 후 즉시 `renderer.dispose()` + `forceContextLoss()` 호출.
+- 동시 활성 WebGL 컨텍스트 수를 DevTools에서 모니터링 (`WebGL Inspector` 확장 프로그램 활용).
+- 분석 차트 라이브러리(Recharts, Chart.js)가 WebGL 렌더러를 사용하는지 확인하고 SVG 모드로 고정.
+
+**Warning signs:**
+- 콘솔에 "WARNING: Too many active WebGL contexts. Oldest context will be lost."
+- 특정 화면이 검은 Canvas로 표시됨
+- iOS Safari에서만 재현되는 Canvas 소실
+
+**Phase to address:** Phase 15 (아키텍처 설계), Phase 17 (Three.js 이펙트) — 컨텍스트 예산 계획 필수
+
+---
+
+### Pitfall G4: iOS Web Audio API 자동재생 차단
+
+**What goes wrong:**
+게임 BGM이나 정답 효과음을 `AudioContext.createBuffer()` + `source.start()`로 재생하려 하면 iOS(Safari, Chrome-on-iOS 동일)에서 "AudioContext was not allowed to start" 오류가 발생한다. 사용자 제스처(터치/클릭) 없이는 오디오를 재생할 수 없으며, 심지어 사용자가 소리를 허용했더라도 기기가 무음 모드이면 Web Audio API 사운드는 재생되지 않는다.
+
+**Why it happens:**
+iOS의 Web Audio API는 처음 `AudioContext`를 생성하면 `suspended` 상태이며, 사용자 gesture event handler 내부에서 `audioContext.resume()`을 호출해야 `running` 상태로 전환된다. 한 번 resume된 이후에는 같은 컨텍스트에서 자유롭게 재생 가능하다. Phaser의 `SoundManager`도 내부적으로 동일한 제약을 받는다.
+
+**How to avoid:**
+- 반전 모드 진입 버튼의 click 핸들러에서 `audioContext.resume()`을 명시적으로 호출하여 오디오 컨텍스트를 활성화 — 이후 모든 사운드가 정상 작동.
+- Phaser 설정에서 `audio: { noAudio: false }` 유지하되, `game.sound.unlock()` 메서드를 유저 제스처에 연결.
+- `<audio>` HTML 요소를 무음 상태로 하나 생성하여 사용자 제스처 시 play/pause를 호출하는 "unlock trick" 적용 (iOS Safari 15.4+ 이전 구버전 대응).
+- 오디오 초기화 실패 시 소리 없이 진동/시각 피드백으로 graceful degrade.
+
+**Warning signs:**
+- iOS 기기에서 게임 시작 시 소리 없음
+- 콘솔에 "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture."
+- Android에서는 정상, iOS에서만 무음
+
+**Phase to address:** Phase 16 (Phaser 퀴즈 엔진), Phase 18 (사운드 시스템) — iOS 실기기 테스트 필수
+
+---
+
+### Pitfall G5: 번들 사이즈 폭발 (기존 2.7MB + Phaser ~1MB + Three.js ~600KB)
+
+**What goes wrong:**
+현재 앱 번들이 이미 2.7MB인 상황에서 Phaser 3를 `import Phaser from 'phaser'`로 전체 import하면 ~1MB, Three.js를 `import * as THREE from 'three'`로 import하면 ~600KB가 추가된다. 초기 번들이 4MB+로 증가하면 3G 환경에서 15초 이상 로딩이 발생하고, Lighthouse Performance 점수가 30점대로 폭락한다.
+
+**Why it happens:**
+Phaser와 Three.js 모두 monolithic 라이브러리로 설계되어 있어 tree-shaking이 완전히 동작하지 않는다. 특히 Phaser는 물리 엔진, 게임 오브젝트, 씬 시스템 등 모든 모듈이 긴밀히 결합되어 있어 부분 import가 어렵다.
+
+**How to avoid:**
+- Phaser와 Three.js 모두 `React.lazy()` + `Suspense`로 동적 import:
+  ```javascript
+  const GameMode = React.lazy(() => import('./GameMode'));
+  ```
+- Vite 설정에서 `manualChunks`로 Phaser/Three.js를 별도 청크로 분리 — 반전 모드 첫 진입 시 한 번만 다운로드.
+- Three.js는 필요한 모듈만 named import: `import { Scene, PerspectiveCamera, WebGLRenderer } from 'three'`.
+- Phaser는 커스텀 빌드를 통한 불필요 모듈 제거 검토 (Matter.js 물리, Tilemaps 등).
+- 반전 모드 진입 버튼 hover 시 prefetch 트리거로 사용자 체감 로딩 시간 단축.
+
+**Warning signs:**
+- `vite build --report` 결과에서 Phaser/Three.js 청크가 메인 번들에 포함됨
+- Lighthouse FCP/TTI가 일반 모드 대비 3배 이상 증가
+- 반전 모드 진입 버튼 클릭 후 5초 이상 로딩 스피너
+
+**Phase to address:** Phase 15 (반전 모드 기반 인프라) — 번들 전략을 코드 작성 전에 결정
+
+---
+
+### Pitfall G6: 게이미피케이션이 학습 내재 동기를 약화시킴
+
+**What goes wrong:**
+XP, 뱃지, 리더보드, 연속 출석 스트릭 같은 외재적 보상(extrinsic reward)에 과도하게 집중하면 학생이 "배지를 위해 문제를 푸는" 행동으로 전환된다. 2025년 메타분석(K-12 31개 연구, n=5,000+)에서 게이미피케이션은 외재 동기(g=0.713)에는 큰 효과가 있지만 내재 동기(g=0.638)에는 상대적으로 낮은 효과를 보였으며, 장기 노출 시 내재 동기가 감소한다는 종단 연구 결과가 있다.
+
+**Why it happens:**
+보상이 예측 가능하고 반복되면 인지적 과부하 없이 "보상 루프"만 작동한다. 학생이 문제의 어려움을 회피하고 쉬운 문제만 반복하여 XP를 획득하는 전략을 취하게 된다. Duolingo의 스트릭은 강력한 리텐션 도구이지만 동시에 불안과 강박을 유발하는 것으로 알려져 있다.
+
+**How to avoid:**
+- 외재적 보상보다 **자율성(Autonomy), 유능감(Competence), 관계성(Relatedness)** — 자기결정이론(SDT) 기반 설계.
+- XP와 뱃지는 "학습 성취" 기반으로만 지급하고, 단순 클릭/시간 소비 기반 보상 제거.
+- 보스전/타임어택은 어려운 문제를 도전으로 프레이밍하되, 실패해도 패널티가 없는 설계.
+- 리더보드는 "개인 성장 비교" (이번 주 vs 지난 주 자기 자신)로 구현하고, 타인과의 경쟁 순위는 opt-in으로만 제공.
+- 반전 모드는 언제든 끌 수 있어야 한다 — 강제 게이미피케이션은 역효과.
+
+**Warning signs:**
+- 학생이 쉬운 문제만 골라 빠르게 XP 수집하는 패턴 (로그 분석)
+- 스트릭이 끊길까 봐 앱을 끄지 못하는 피드백
+- 반전 모드 이탈 후 일반 모드 사용 시간이 감소
+
+**Phase to address:** Phase 15 (설계 단계) — 보상 설계 원칙을 구현 전에 문서화; Phase 19 (리워드 시스템)
+
+---
+
+### Pitfall G7: 이중 UI 상태 — 모든 화면에 두 가지 버전 유지
+
+**What goes wrong:**
+홈, 퀴즈, 분석, 오답노트 등 모든 페이지가 "일반 모드"와 "반전 모드" 두 가지 UI를 동시에 가져야 한다. 이를 나이브하게 구현하면 각 컴포넌트에 `if (gameMode) return <GameVersion /> else return <NormalVersion />`이 흩어져 코드베이스가 두 배로 증가하고, 수정 시 두 버전을 동시에 관리해야 한다.
+
+**Why it happens:**
+모드 분기를 각 컴포넌트 내부에서 처리하는 패턴은 초기에 간단해 보이지만, 컴포넌트 수가 20개 이상이 되면 "일반 모드 버그 수정 시 게임 모드도 확인해야" 하는 인지 부하가 폭발한다.
+
+**How to avoid:**
+- **Provider 패턴**: `GameModeContext`를 앱 루트에 두고, 각 페이지는 `useGameMode()` 훅으로 모드 감지.
+- **컴포넌트 교체 전략**: 페이지 라우터 레벨에서 모드에 따라 완전히 다른 컴포넌트를 lazy load — `QuizPage`(일반) vs `GameQuizPage`(반전).
+- **공통 데이터 레이어 분리**: 문제 데이터, 채점 로직, 학습 기록은 모드와 무관한 공통 훅으로 추출 — UI만 교체.
+- 절대 피해야 할 패턴: 기존 컴포넌트에 `gameMode` prop을 추가하는 방식 (prop drilling 지옥).
+
+**Warning signs:**
+- 일반 모드 버그 수정 후 게임 모드에서 동일 버그 재발
+- 컴포넌트 파일에 `// game mode` 주석이 50줄 이상
+- 두 모드 간 상태 동기화 버그(점수가 잘못 공유됨)
+
+**Phase to address:** Phase 15 (반전 모드 기반 인프라) — 모드 아키텍처를 첫 번째 피처 구현 전에 확정
+
+---
+
+### Pitfall G8: 저사양 태블릿에서 60fps Canvas 렌더링 실패
+
+**What goes wrong:**
+고등학생의 주요 기기인 저가형 Android 태블릿(Snapdragon 450, 2GB RAM)에서 Phaser의 WebGL 렌더러가 30fps 이하로 떨어지거나, Three.js 파티클 이펙트 시 브라우저가 다운된다. 학습 앱이 유희를 제공하다 앱 자체를 불안정하게 만드는 역효과가 발생한다.
+
+**Why it happens:**
+저가형 Android 태블릿은 GPU 드라이버가 구형이고 WebGL 2.0을 지원하지 않는 경우가 많다. 스프라이트 배치가 500개 이상이거나 실시간 파티클 이펙트가 1000개 이상이면 60fps 유지가 불가능하다.
+
+**How to avoid:**
+- 기기 감지: `navigator.hardwareConcurrency < 4` 또는 WebGL `MAX_TEXTURE_SIZE < 4096`이면 "라이트 모드" 이펙트 사용.
+- Phaser 렌더러를 WebGL 우선으로 설정하되, WebGL 미지원 시 Canvas 렌더러로 자동 폴백.
+- Three.js 파티클은 `InstancedMesh`로 최적화하고, 최대 파티클 수를 기기 성능에 따라 동적으로 조절.
+- 반전 모드 이펙트에 "품질 레벨" 설정 추가: 고성능(파티클 1000개) / 중간(파티클 300개) / 저성능(CSS 애니메이션으로 대체).
+- 저사양 기기에서는 Phaser 대신 CSS 애니메이션 + Canvas 2D로 게임 UI를 구현하는 폴백 경로 준비.
+
+**Warning signs:**
+- 실제 저가형 Android 기기에서 FPS가 20 이하로 표시
+- `requestAnimationFrame` 콜백 간격이 50ms 이상
+- 게임 시작 후 브라우저 탭이 "느린 페이지" 경고 표시
+
+**Phase to address:** Phase 16 (Phaser 퀴즈 엔진) — 저사양 기기 테스트를 개발 초기부터 포함
+
+---
+
+## Moderate Pitfalls (v3.0 게이미피케이션)
+
+### Pitfall G9: Phaser 텍스처 아틀라스 경로 혼동 (public vs import)
+
+**What goes wrong:**
+Vite 프로젝트에서 Phaser의 `this.load.atlas('key', 'path/to/texture.png', 'path/to/atlas.json')`에 경로를 잘못 지정하면 개발 환경에서는 로딩되지만 프로덕션 빌드에서 404가 발생한다.
+
+**Prevention:**
+- Phaser 에셋(텍스처, 오디오, 스프라이트시트)은 모두 `/public/assets/` 디렉토리에 배치하고 절대 경로 참조.
+- `import`로 가져온 에셋 URL(Vite가 해시를 붙임)과 `/public` 정적 파일 경로를 혼용하지 않는다.
+- Phaser 공식 React 템플릿의 에셋 경로 규칙을 준수: static files in `/public/assets`, imported modules use bundled paths.
+- 배포 전 프로덕션 빌드(`vite build`)로 에셋 경로 검증을 CI에 포함.
+
+---
+
+### Pitfall G10: EventBus 메모리 누수 — React-Phaser 통신
+
+**What goes wrong:**
+React 컴포넌트가 Phaser EventBus에 리스너를 등록하고, 컴포넌트 unmount 시 리스너를 제거하지 않으면 GC되지 않는 클로저가 쌓인다. 반전 모드를 여러 번 토글하면 같은 이벤트에 리스너가 중복 등록된다.
+
+**Prevention:**
+- React `useEffect` cleanup에서 `EventBus.removeListener(event, handler)` 반드시 호출.
+- `EventBus.on()` 대신 `EventBus.once()`를 사용하는 이벤트는 자동 해제되므로 cleanup 불필요.
+- Phaser 씬의 `shutdown` 핸들러에서 `EventBus.removeAllListeners()` 호출하여 씬 수명에 종속된 리스너 전부 제거.
+
+---
+
+### Pitfall G11: 게임 모드에서 수학 수식(KaTeX) 렌더링 충돌
+
+**What goes wrong:**
+Phaser Canvas 위에 수학 문제(LaTeX 수식)를 표시하려고 HTML DOM 요소를 Canvas에 오버레이하면, Phaser의 input 시스템(터치, 클릭)이 DOM 오버레이에 막혀 작동하지 않는다.
+
+**Prevention:**
+- 퀴즈 문제 텍스트는 HTML/CSS 레이어(position: absolute, z-index 높음)로 Phaser Canvas 위에 오버레이.
+- Phaser input을 DOM 이벤트로 포워딩하거나, 수식 영역에는 Phaser input을 비활성화.
+- 또는 KaTeX 렌더링 결과를 SVG로 생성한 뒤 Phaser의 `this.add.image()`로 Canvas 내에 직접 로드하는 방식 — 단, 동적 수식 업데이트가 복잡해짐.
+- 정답 선택지(버튼)는 Phaser 내 게임 오브젝트로 구현하고, 문제 텍스트만 HTML 오버레이로 처리하는 하이브리드 접근이 현실적.
+
+---
+
+### Pitfall G12: HMR(Hot Module Replacement)이 Phaser 씬을 제대로 교체하지 못함
+
+**What goes wrong:**
+Vite HMR이 작동할 때 React 컴포넌트는 교체되지만 Phaser 게임 인스턴스는 이미 실행 중이어서 씬 코드가 업데이트되지 않는다. 씬 로직을 수정해도 브라우저를 수동으로 새로고침해야 반영된다.
+
+**Prevention:**
+- Phaser 씬 파일을 수정할 때는 전체 페이지 새로고침이 필요함을 팀에 공유 — DX 기대치 설정.
+- `import.meta.hot.accept()` 핸들러에서 Phaser 게임을 destroy 후 재초기화하는 HMR 핸들러 구현 (복잡도 높음, 선택 사항).
+- 씬 로직 개발 중에는 Phaser의 Standalone 모드(React 없이 순수 HTML)에서 먼저 검증 후 통합하는 워크플로우 채택.
+
+---
+
+### Pitfall G13: 반전 모드 토글 시 애니메이션 상태 손실
+
+**What goes wrong:**
+학생이 문제를 풀다가 반전 모드를 켜면 현재 문제 풀이 진행 상태, 타이머, 채점 결과가 초기화된다. 반대로 게임 모드에서 일반 모드로 돌아와도 리워드 획득 결과가 사라진다.
+
+**Prevention:**
+- 반전 모드는 UI 레이어만 교체하고, 문제 풀이 상태(현재 문제 인덱스, 남은 시간, 정답 여부)는 React 전역 상태(Zustand 또는 Context)에서 관리.
+- 모드 전환은 라우터 이동이 아닌 조건부 렌더링으로 구현 — URL은 동일하게 유지.
+- 게임 모드 획득 XP/뱃지는 모드 전환과 무관하게 즉시 localStorage에 저장.
+
+---
+
+## Technical Debt Patterns (v3.0)
+
+| 단축키 | 즉각적 이점 | 장기 비용 | 수용 가능 여부 |
+|--------|-------------|-----------|----------------|
+| Phaser 전체 import (`import Phaser from 'phaser'`) | 빠른 개발 시작 | 번들 +1MB, TTI 3배 증가 | Never — lazy import 필수 |
+| 각 컴포넌트 내 `if (gameMode)` 분기 | 빠른 구현 | 컴포넌트 수 20개 이상 시 유지보수 불가 | 1-2개 컴포넌트에서만 허용, 이후 리팩토링 |
+| Phaser Canvas 렌더러 고정 (WebGL 미사용) | 저사양 호환 | 파티클/이펙트 성능 제한 | MVP에서 한시적 허용 |
+| 사운드 파일을 `/public`에 원본 MP3로 배치 | 간단 | 파일 크기 최적화 미적용, 모바일 로딩 느림 | 개발 중 허용, 배포 전 WebM/OGG + MP3 폴백으로 변환 |
+| 리더보드를 localStorage에만 저장 | 백엔드 불필요 | POC에서 서버 동기화 불가, 다기기 지원 없음 | POC 단계 한정 허용 |
+
+---
+
+## Integration Gotchas (v3.0)
+
+| 통합 대상 | 흔한 실수 | 올바른 접근 |
+|-----------|-----------|------------|
+| Phaser + React | `new Phaser.Game()` 직접 호출 | `PhaserGame` 브릿지 컴포넌트 + `useRef` + EventBus 패턴 |
+| Phaser + Vite | 에셋을 `src/`에서 `import`로 참조 | 에셋은 `/public/assets/`에 배치하고 런타임 문자열 경로 사용 |
+| Three.js + React | 컴포넌트마다 `new THREE.WebGLRenderer()` 생성 | 렌더러를 전역 싱글톤으로 유지, 씬만 교체 |
+| Three.js 씬 전환 | `scene.clear()` 호출 후 이동 | `geometry.dispose()`, `material.dispose()`, `texture.dispose()` 각각 호출 |
+| Web Audio + iOS | `AudioContext` 초기화 시 바로 소리 재생 | 첫 번째 유저 제스처 핸들러에서 `audioContext.resume()` 호출 후 재생 |
+| Phaser + Tailwind v4 | Phaser Canvas가 Tailwind global reset에 영향받음 | Phaser 컨테이너에 `all: initial` 또는 CSS 격리 적용 |
+
+---
+
+## Performance Traps (v3.0)
+
+| 트랩 | 증상 | 예방 | 임계점 |
+|------|------|------|--------|
+| Phaser 파티클 이미터 미제거 | 씬 전환 시 파티클이 계속 생성 | `scene.shutdown`에서 `emitter.destroy()` | 파티클 이미터 3개 이상 동시 활성 |
+| Three.js 텍스처 미해제 | GPU 메모리 증가, 렌더링 느려짐 | 씬 종료 시 `texture.dispose()` 일괄 호출 | 1024x1024 텍스처 10개 이상 |
+| 반전 모드 진입 시 동기 초기화 | 모드 전환 시 UI 블록 1~3초 | Phaser 초기화를 비동기 + Suspense로 처리 | Phaser 최초 초기화 시점 |
+| 오디오 버퍼 중복 로드 | 사운드 재생 시 딜레이, 메모리 증가 | Phaser AudioManager가 씬 간 공유 캐시 사용 | 효과음 20개 이상 |
+| requestAnimationFrame 루프 + React 리렌더링 동시 | 60fps 유지 불가, jank 발생 | Phaser 상태를 React state로 연결 최소화 — EventBus 경유 | React 컴포넌트 10개+ Phaser 상태 구독 |
+
+---
+
+## UX Pitfalls (v3.0)
+
+| 함정 | 사용자 영향 | 개선 방향 |
+|------|------------|-----------|
+| 반전 모드 전환 시 즉각적 화면 점프 | 방향감 상실, 멀미 | Framer Motion으로 300ms 전환 애니메이션 + reduced-motion 지원 |
+| 게임 BGM이 꺼지지 않아 수업 시간에 소리 남 | 민망함, 사용 중단 | BGM 볼륨을 별도로 저장, 반전 모드 종료 시 자동 페이드아웃 |
+| 보스전 타임어택이 수학 불안 학생에게 스트레스 | 학습 거부 | 타임어택을 opt-in으로 설계, 기본값은 타이머 없음 |
+| 리더보드가 상위권 학생만 동기 부여 | 하위권 학생 이탈 | 개인 성장 리더보드(지난 주 대비 향상) 우선, 전체 순위는 숨김 |
+| 뱃지를 모두 잠금 해제 후 할 것이 없음 | 급격한 흥미 감소 | 주기적 시즌 뱃지 + 개인 목표 달성 뱃지로 롱텀 목표 유지 |
+| 반전 모드에서 수식이 게임 이펙트에 가려짐 | 문제 내용 미확인 | 수식 레이어의 z-index를 이펙트 레이어보다 항상 높게 유지 |
+
+---
+
+## "Looks Done But Isn't" Checklist (v3.0)
+
+- [ ] **메모리 누수 검증:** 반전 모드 진입/퇴장 10회 반복 후 Chrome DevTools 메모리 힙 스냅샷 비교 — 200MB 이상 증가 없어야 함
+- [ ] **iOS 오디오:** iPhone(실기기)에서 반전 모드 진입 후 첫 정답 효과음이 실제로 재생되는지 확인
+- [ ] **WebGL 컨텍스트 수:** Phaser + Three.js 동시 실행 시 DevTools에서 활성 WebGL 컨텍스트가 4개 이하인지 확인
+- [ ] **저사양 기기:** 저가형 Android 태블릿(Snapdragon 450급)에서 Phaser 씬이 30fps 이상 유지되는지 측정
+- [ ] **번들 크기:** `vite build` 후 `dist` 분석에서 Phaser/Three.js가 별도 청크로 분리되었는지 확인
+- [ ] **모드 상태 보존:** 퀴즈 3번째 문제에서 반전 모드 켜기 → 꺼기 → 다시 켜기 후 문제 번호와 타이머가 올바른지 확인
+- [ ] **reduced-motion:** 시스템 `prefers-reduced-motion: reduce` 설정 시 Phaser 애니메이션이 멈추는지 확인
+- [ ] **수식 가시성:** 게임 이펙트(파티클, 플래시) 재생 중에도 문제 수식이 읽을 수 있는지 확인
+
+---
+
+## Recovery Strategies (v3.0)
+
+| 함정 | 복구 비용 | 복구 단계 |
+|------|-----------|-----------|
+| Phaser 이중 초기화로 인한 앱 크래시 | MEDIUM | (1) StrictMode 외부에 게임 컴포넌트 격리 (2) `useRef` 가드 추가 (3) 기존 인스턴스 destroy 후 재초기화 |
+| WebGL 컨텍스트 소진 | HIGH | (1) Three.js를 Canvas 렌더러로 교체 (2) Phaser 씬 공유 렌더러로 전환 (3) 이펙트를 CSS 애니메이션으로 대체 |
+| 번들 사이즈 폭발 (4MB+) | MEDIUM | (1) Phaser/Three.js를 `React.lazy()`로 전환 (2) `manualChunks` 설정 (3) 필요 없는 Phaser 플러그인 제거 |
+| 게이미피케이션으로 인한 학습 동기 저하 | HIGH | (1) 보상 시스템 감사(audit) (2) 외재적 보상 빈도 축소 (3) 성취 기반 보상으로 재설계 (4) A/B 테스트 |
+| iOS 오디오 완전 미작동 | LOW | (1) `AudioContext.resume()` 호출 시점을 반전 모드 버튼 click 핸들러로 이동 (2) 기존 unlock trick 구현 추가 |
+
+---
+
+## Pitfall-to-Phase Mapping (v3.0)
+
+| 함정 | 방지 단계 | 검증 방법 |
+|------|-----------|-----------|
+| React StrictMode + Phaser 이중 초기화 | Phase 15 (기반 인프라 POC) | StrictMode 환경에서 Canvas 개수 = 1 확인 |
+| Phaser 씬 메모리 누수 | Phase 15-16 (Phaser 통합) | 10회 모드 전환 후 메모리 힙 스냅샷 |
+| WebGL 컨텍스트 한도 초과 | Phase 15 (아키텍처 설계) | Phaser + Three.js 동시 실행 시 컨텍스트 수 모니터링 |
+| iOS Web Audio 차단 | Phase 18 (사운드 시스템) | iPhone 실기기에서 첫 사운드 재생 확인 |
+| 번들 사이즈 폭발 | Phase 15 (번들 전략) | `vite-bundle-visualizer`로 청크 분리 확인 |
+| 게이미피케이션 동기 약화 | Phase 15 (설계), Phase 19 (리워드) | 보상 설계 원칙 문서 + 학생 인터뷰 |
+| 이중 UI 상태 복잡도 | Phase 15 (아키텍처) | 모드 전환 시 공통 데이터 레이어 상태 유지 확인 |
+| 저사양 기기 성능 | Phase 16-17 (Phaser/Three.js) | 저가형 Android 기기에서 FPS 30+ 확인 |
+| EventBus 메모리 누수 | Phase 16 (Phaser 퀴즈) | 씬 전환 시 리스너 중복 등록 없음 확인 |
+| HMR Phaser 씬 미교체 | Phase 15-16 전반 | 팀 워크플로우 문서화로 DX 기대치 설정 |
+
+---
+
+## Sources (v3.0)
+
+- Phaser 3 공식 React TypeScript 템플릿: [https://github.com/phaserjs/template-react-ts](https://github.com/phaserjs/template-react-ts)
+- Phaser + React 공식 발표 (2024-02): [https://phaser.io/news/2024/02/official-phaser-3-and-react-template](https://phaser.io/news/2024/02/official-phaser-3-and-react-template)
+- Phaser 메모리 누수 이슈 #5456: [https://github.com/photonstorm/phaser/issues/5456](https://github.com/photonstorm/phaser/issues/5456)
+- Phaser Game.destroy() React 이슈 #4305: [https://github.com/phaserjs/phaser/issues/4305](https://github.com/phaserjs/phaser/issues/4305)
+- Three.js WebGL 메모리 누수 이슈 #18759: [https://github.com/mrdoob/three.js/issues/18759](https://github.com/mrdoob/three.js/issues/18759)
+- react-three-fiber WebGL 컨텍스트 Safari 이슈: [https://github.com/pmndrs/react-three-fiber/discussions/2457](https://github.com/pmndrs/react-three-fiber/discussions/2457)
+- Three.js 메모리 누수 방지 팁: [https://roger-chi.vercel.app/blog/tips-on-preventing-memory-leak-in-threejs-scene](https://roger-chi.vercel.app/blog/tips-on-preventing-memory-leak-in-threejs-scene)
+- MDN Web Audio API 자동재생 가이드: [https://developer.mozilla.org/en-US/docs/Web/Media/Guides/Autoplay](https://developer.mozilla.org/en-US/docs/Web/Media/Guides/Autoplay)
+- MDN Web Audio API 모범 사례: [https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Best_practices](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Best_practices)
+- 게이미피케이션 내재 동기 메타분석 (2025, K-12): [https://onlinelibrary.wiley.com/doi/10.1002/pits.70056](https://onlinelibrary.wiley.com/doi/10.1002/pits.70056)
+- 게이미피케이션이 학습을 방해하는 방법 (Frontiers in Education, 2024): [https://public-pages-files-2025.frontiersin.org/journals/education/articles/10.3389/feduc.2024.1474733/pdf](https://public-pages-files-2025.frontiersin.org/journals/education/articles/10.3389/feduc.2024.1474733/pdf)
+- 게이미피케이션 다크 패턴 (MDPI, 2024): [https://arxiv.org/html/2412.05039v1](https://arxiv.org/html/2412.05039v1)
+- Springer 게이미피케이션 메타분석 (2023): [https://link.springer.com/article/10.1007/s11423-023-10337-7](https://link.springer.com/article/10.1007/s11423-023-10337-7)
+- WebGL 컨텍스트 한도 실측 (OffscreenCanvas, 2024): [https://groups.google.com/g/webgl-dev-list/c/LMXMoEUCaj4](https://groups.google.com/g/webgl-dev-list/c/LMXMoEUCaj4)
+- Vite 번들 최적화 가이드 (2025): [https://www.frontendtools.tech/blog/reduce-javascript-bundle-size-2025](https://www.frontendtools.tech/blog/reduce-javascript-bundle-size-2025)
+
+---
+*v3.0 게이미피케이션 함정 연구 추가: 2026-02-23*
