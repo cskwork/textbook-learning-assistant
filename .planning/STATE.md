@@ -9,12 +9,12 @@ See: .planning/PROJECT.md (updated 2026-02-23)
 
 ## Current Position
 
-Phase: 15 (반전 모드 기반 인프라 + 번들 전략)
-Plan: 03 (Plan 02 완료)
-Status: 진행 중
-Last activity: 2026-02-23 — Plan 02 완료 (Vite manualChunks + EventBus + GameLoadingSpinner + FunModeGate)
+Phase: 15 (반전 모드 기반 인프라 + 번들 전략) — 완료
+Plan: 전체 완료 (3/3 plans)
+Status: Phase 15 완료, Phase 16 준비 중
+Last activity: 2026-02-23 — Plan 03 완료 (Dexie v8 마이그레이션 + Phaser POC PhaserBridge)
 
-진행 상황: [Phase 15 ██░░░░░░░░] 66% (2/3 plans) | v3.0 전체 [░░░░░░░░░░] 0/6 phases
+진행 상황: [Phase 15 ██████████] 100% (3/3 plans) | v3.0 전체 [█░░░░░░░░░] 1/6 phases
 
 ## Performance Metrics
 
@@ -25,6 +25,7 @@ Last activity: 2026-02-23 — Plan 02 완료 (Vite manualChunks + EventBus + Gam
 | v3.0 반전 모드 | 6 | 미정 | 진행 중 |
 | Phase 15-infra-fun-mode P02 | 3 | 2 tasks | 5 files |
 | Phase 15 P01 | 2 | 2 tasks | 6 files |
+| Phase 15 P03 | 2 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -41,6 +42,8 @@ Last activity: 2026-02-23 — Plan 02 완료 (Vite manualChunks + EventBus + Gam
 - [Phase 15-infra-fun-mode]: FunModeGate Phase 15에서 Suspense 인프라만 구축 — Phase 18 ThreeBackground, Phase 19 PhaserBridge lazy import 활성화 예정
 - [Phase 15]: FunModeProvider 위치: SettingsProvider > FunModeProvider > AuthProvider 순서 (인증 여부와 무관한 테마 동작 보장)
 - [Phase 15]: CSS 변수 오버라이드 방식: [data-fun-mode='true'] 선택자를 @layer base 내부에 배치해 :root 변수보다 높은 우선순위 적용
+- [Phase 15-infra-fun-mode]: Dexie version(8) 신규 테이블만 정의 — 기존 테이블 자동 상속, gamificationProfiles/xpEvents/badges Phase 16 준비
+- [Phase 15-infra-fun-mode]: PhaserBridge POC 패턴 확립 — useRef 가드 + dynamic import + cleanup(destroy(true)) 3단계로 G1/G2/G3 pitfall 방지
 
 ### Critical Pitfalls (Phase 15에서 먼저 검증 필수)
 
@@ -67,7 +70,7 @@ Last activity: 2026-02-23 — Plan 02 완료 (Vite manualChunks + EventBus + Gam
 
 ## Session Continuity
 
-Last activity: 2026-02-23 — Plan 02 완료 (manualChunks + EventBus + GameLoadingSpinner + FunModeGate)
-Stopped at: Completed 15-infra-fun-mode-02-PLAN.md
+Last activity: 2026-02-23 — Plan 03 완료 (Dexie v8 + PhaserBridge POC)
+Stopped at: Completed 15-infra-fun-mode-03-PLAN.md
 Resume file: None
-Next command: `/gsd:execute-phase 15` (Plan 03)
+Next command: `/gsd:discuss-phase 16` (Phase 16: 보상 시스템 — XP/레벨/스트릭/콤보/배지)
