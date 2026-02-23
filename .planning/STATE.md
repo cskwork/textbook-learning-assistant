@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-23)
 ## Current Position
 
 Phase: 15 (반전 모드 기반 인프라 + 번들 전략)
-Plan: —
-Status: 계획 수립 대기 중
-Last activity: 2026-02-23 — v3.0 로드맵 생성 완료
+Plan: 03 (Plan 02 완료)
+Status: 진행 중
+Last activity: 2026-02-23 — Plan 02 완료 (Vite manualChunks + EventBus + GameLoadingSpinner + FunModeGate)
 
-진행 상황: [Phase 15 ░░░░░░░░░░] 0% | v3.0 전체 [░░░░░░░░░░] 0/6 phases
+진행 상황: [Phase 15 ██░░░░░░░░] 66% (2/3 plans) | v3.0 전체 [░░░░░░░░░░] 0/6 phases
 
 ## Performance Metrics
 
@@ -23,6 +23,8 @@ Last activity: 2026-02-23 — v3.0 로드맵 생성 완료
 | v1.0 MVP | 9 | 38 | 완료 |
 | v2.0 디자인 리뉴얼 | 5 | 21 | 완료 |
 | v3.0 반전 모드 | 6 | 미정 | 진행 중 |
+| Phase 15-infra-fun-mode P02 | 3 | 2 tasks | 5 files |
+| Phase 15 P01 | 2 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -35,6 +37,10 @@ Last activity: 2026-02-23 — v3.0 로드맵 생성 완료
 - **신규 라이브러리 버전**: Phaser 3.90.0, Three.js 0.183.1, @react-three/fiber 9.5.0, @react-three/drei 10.7.7, Howler 2.2.4, use-sound 5.0.0, canvas-confetti 1.9.4.
 - **Phaser 4 제외**: 현재 RC(beta) 단계로 불안정. Phaser 3.90 사용.
 - **R3F v8 제외**: React 18 전용. v9(React 19 전용) 사용.
+- [Phase 15-infra-fun-mode]: eventemitter3 대신 경량 SimpleEventEmitter 직접 구현 — Phase 19에서 Phaser.Events.EventEmitter 교체 예정
+- [Phase 15-infra-fun-mode]: FunModeGate Phase 15에서 Suspense 인프라만 구축 — Phase 18 ThreeBackground, Phase 19 PhaserBridge lazy import 활성화 예정
+- [Phase 15]: FunModeProvider 위치: SettingsProvider > FunModeProvider > AuthProvider 순서 (인증 여부와 무관한 테마 동작 보장)
+- [Phase 15]: CSS 변수 오버라이드 방식: [data-fun-mode='true'] 선택자를 @layer base 내부에 배치해 :root 변수보다 높은 우선순위 적용
 
 ### Critical Pitfalls (Phase 15에서 먼저 검증 필수)
 
@@ -61,7 +67,7 @@ Last activity: 2026-02-23 — v3.0 로드맵 생성 완료
 
 ## Session Continuity
 
-Last activity: 2026-02-23 — v3.0 로드맵 생성 완료
-Stopped at: Phase 15 계획 수립 전
+Last activity: 2026-02-23 — Plan 02 완료 (manualChunks + EventBus + GameLoadingSpinner + FunModeGate)
+Stopped at: Completed 15-infra-fun-mode-02-PLAN.md
 Resume file: None
-Next command: `/gsd:plan-phase 15`
+Next command: `/gsd:execute-phase 15` (Plan 03)

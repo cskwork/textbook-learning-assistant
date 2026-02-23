@@ -9,11 +9,11 @@ v3.0 반전 모드 — 게이미피케이션 학습 혁명. 커스터마이즈 �
 
 ### 반전 모드 인프라 (INFRA)
 
-- [ ] **INFRA-01**: 사용자가 커스터마이즈 버튼을 클릭하여 일반 모드 ↔ 반전 모드를 즉시 전환할 수 있다
-- [ ] **INFRA-02**: 반전 모드 전환 시 전체 UI 테마(색상, 폰트, 레이아웃)가 재미있는 게임 스타일로 변신한다
-- [ ] **INFRA-03**: 반전 모드 선택이 사용자별로 저장되어 재접속 시 유지된다
-- [ ] **INFRA-04**: 반전 모드 게임 엔진(Phaser, Three.js, Howler)이 lazy loading되어 일반 모드 초기 로딩에 영향을 주지 않는다
-- [ ] **INFRA-05**: 반전 모드 최초 진입 시 재미있는 로딩 화면과 함께 게임 에셋이 로드된다
+- [x] **INFRA-01**: 사용자가 커스터마이즈 버튼을 클릭하여 일반 모드 ↔ 반전 모드를 즉시 전환할 수 있다
+- [x] **INFRA-02**: 반전 모드 전환 시 전체 UI 테마(색상, 폰트, 레이아웃)가 재미있는 게임 스타일로 변신한다
+- [x] **INFRA-03**: 반전 모드 선택이 사용자별로 저장되어 재접속 시 유지된다
+- [x] **INFRA-04**: 반전 모드 게임 엔진(Phaser, Three.js, Howler)이 lazy loading되어 일반 모드 초기 로딩에 영향을 주지 않는다
+- [x] **INFRA-05**: 반전 모드 최초 진입 시 재미있는 로딩 화면과 함께 게임 에셋이 로드된다
 
 ### 보상 시스템 (RWRD)
 
@@ -89,11 +89,11 @@ v3.0 반전 모드 — 게이미피케이션 학습 혁명. 커스터마이즈 �
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INFRA-01 | Phase 15 | Pending |
-| INFRA-02 | Phase 15 | Pending |
-| INFRA-03 | Phase 15 | Pending |
-| INFRA-04 | Phase 15 | Pending |
-| INFRA-05 | Phase 15 | Pending |
+| INFRA-01 | Phase 15 | Complete |
+| INFRA-02 | Phase 15 | Complete |
+| INFRA-03 | Phase 15 | Complete |
+| INFRA-04 | Phase 15 | Complete |
+| INFRA-05 | Phase 15 | Complete |
 | RWRD-01 | Phase 16 | Pending |
 | RWRD-02 | Phase 16 | Pending |
 | RWRD-03 | Phase 16 | Pending |
