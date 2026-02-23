@@ -56,7 +56,12 @@
   3. 반전 모드 최초 진입 시 재미있는 로딩 화면이 표시되며, 게임 에셋 로드 진행률을 확인할 수 있다
   4. 일반 모드에서 앱을 열 때 Phaser/Three.js/Howler.js 관련 코드가 번들에 포함되지 않아 초기 로딩이 빠르다
   5. 반전 모드와 일반 모드 간 전환을 10회 반복해도 앱이 정상 동작하며 메모리 오류가 발생하지 않는다
-**계획**: 미정
+**계획**: 3 plans
+
+Plans:
+- [ ] 15-01-PLAN.md — FunModeContext + CSS 테마 변수 + 커스터마이즈 토글 버튼
+- [ ] 15-02-PLAN.md — Vite manualChunks 번들 분리 + GameLoadingSpinner + FunModeGate
+- [ ] 15-03-PLAN.md — Dexie v8 마이그레이션 + Phaser POC 검증 + 인간 체크포인트
 
 ### Phase 16: 보상 시스템
 
