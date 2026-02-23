@@ -3,6 +3,7 @@ import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
+/// <reference types="vitest" />
 
 export default defineConfig({
   plugins: [
@@ -65,5 +66,10 @@ export default defineConfig({
         },
       },
     },
+  },
+  test: {
+    globals: true,
+    environment: 'node',
+    include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
   },
 })
