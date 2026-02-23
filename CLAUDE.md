@@ -3,9 +3,9 @@
 ## 현재 상태
 
 - **현재 Milestone:** v3.0 반전 모드 — 게이미피케이션 학습 혁명
-- **현재 Phase:** 19 (게임화 퀴즈 엔진)
-- **진행 상황:** Phase 18 완료, Phase 19 대기
-- **다음 명령어:** `/gsd:discuss-phase 19`
+- **현재 Phase:** 20 (전체 화면 반전 디자인)
+- **진행 상황:** Phase 19 완료, Phase 20 대기
+- **다음 명령어:** `/gsd:discuss-phase 20`
 - **참고:** `/clear` 먼저 실행 후 위 명령어 실행 권장 (fresh context)
 
 ## v3.0 로드맵 요약
