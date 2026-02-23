@@ -184,7 +184,7 @@ Zustand gamificationSlice {
 
 ---
 
-## Sources
+## Sources (v3.0)
 
 - npm registry 실시간 조회 (2026-02-23) — phaser 3.90.0 / three 0.183.1 / @react-three/fiber 9.5.0 / @react-three/drei 10.7.7 / howler 2.2.4 / use-sound 5.0.0 / canvas-confetti 1.9.4 / zustand 5.0.11 버전 확인
 - [phaserjs/template-react-ts GitHub](https://github.com/phaserjs/template-react-ts) — React 19.0 + Phaser 3.90 공식 통합 패턴 확인 (HIGH)
@@ -200,3 +200,204 @@ Zustand gamificationSlice {
 
 *Stack research for: v3.0 반전 모드 게이미피케이션 — 신규 추가 라이브러리 only*
 *Researched: 2026-02-23*
+
+---
+---
+
+# v4.0 PDF 2-Way 학습 시스템 — 신규 추가 스택
+
+**Domain:** PDF ↔ 앱 양방향 연동 (업로드/파싱/뷰어/내보내기)
+**Researched:** 2026-02-24
+**Confidence:** HIGH (PDF 뷰어/생성/AI SDK), MEDIUM (annotation 오버레이 호환성)
+
+> **중요:** v3.0까지의 기존 스택은 위 섹션에 기록됨. 이 섹션은 v4.0 PDF 기능에 필요한 신규 라이브러리만 다룬다.
+
+---
+
+## Recommended Stack — v4.0 신규 추가
+
+### PDF 뷰어 (앱 내 렌더링)
+
+| Technology | Version | Purpose | Why Recommended |
+|------------|---------|---------|-----------------|
+| react-pdf | 10.4.0 | PDF 렌더링 (PDF.js 기반 React 컴포넌트) | 2026-02-21 릴리즈. PDF.js 5.3.31 탑재. React 16.8+ peer — React 19 만족. 메모리 최적화 및 렌더링 속도 개선 포함. ESM-only → Vite 7과 자연스럽게 호환. 주간 다운로드 100만+. 가장 널리 쓰이는 React PDF 뷰어 |
+| react-pdf-highlighter-plus | 1.1.3 | PDF 위 annotation 오버레이 (텍스트 하이라이트 + 영역 선택 + 풀이 메모) | "Built with React 19" 명시. MIT 라이선스. PDF.js 기반으로 react-pdf와 동일 엔진 공유. 텍스트 하이라이트, 자유 메모, 드래그 이동 지원. 브라우저 100% 클라이언트 처리 (서버 불필요). iPad 시험지 오버레이 UX에 최적 |
+
+**주의:** react-pdf-highlighter-plus는 react-pdf와 별도로 자체 PDF.js 인스턴스를 포함한다. 두 라이브러리를 같은 페이지에서 사용할 경우 PDF.js 버전 충돌 가능성 있음. PDF 뷰어 페이지에서는 react-pdf-highlighter-plus 단독 사용 권장 (react-pdf는 비-인터랙티브 미리보기 전용으로 분리).
+
+### PDF 생성/내보내기
+
+| Technology | Version | Purpose | Why Recommended |
+|------------|---------|---------|-----------------|
+| @react-pdf/renderer | 4.3.2 | 시험지/학습지 PDF 생성 및 다운로드 | React 19.2.x 공식 지원 (v4.1.0+부터, `@react-pdf/reconciler@2.0.0`). JSX로 PDF 레이아웃 선언 — 기존 React 패턴 유지. TTF 폰트 등록 지원 → Pretendard 한글 폰트 임베딩 가능. 브라우저에서 직접 PDF Blob 생성 (서버 불필요). 860k+/주 다운로드 |
+
+**한글 폰트 처리:** `Font.register()` API로 Pretendard TTF 파일을 폰트 패밀리로 등록. Variable 폰트 미지원 — 굵기별 개별 TTF 파일 등록 필요 (Pretendard-Regular.ttf, Pretendard-Bold.ttf 등).
+
+**수식 렌더링 주의:** `@react-pdf/renderer`는 KaTeX HTML 출력을 지원하지 않는다. PDF 내 수식은 두 가지 옵션:
+1. 서버에서 수식을 SVG로 렌더링 후 이미지로 임베딩 (권장)
+2. 수식을 텍스트로만 표현 (수학 앱에 부적합)
+
+### AI 문제 파싱 (Gemini Vision)
+
+| Technology | Version | Purpose | Why Recommended |
+|------------|---------|---------|-----------------|
+| @google/genai | 1.x (latest ~1.42.0) | Gemini Vision API 호출 — PDF → 문제 구조화 추출 | **구 `@google/generative-ai`를 대체하는 공식 통합 SDK.** 2025년 5월 GA 달성. `@google/generative-ai`는 2025-11-30 지원 종료 예정 → 반드시 신규 SDK 사용. `npm install @google/genai` |
+
+**Gemini 모델 선택:** `gemini-2.5-flash` 권장
+- PDF/문서 처리 multimodal 지원 (최대 1000페이지, 50MB, ~258 토큰/페이지)
+- 한국어 + 수식 추출 성능 우수 (Gemini 2.5 시리즈 최적)
+- Files API로 PDF 업로드 → 48시간 무료 캐싱 → 재처리 시 대역폭 절약
+- 구조화 출력: `responseMimeType: 'application/json'` + `responseSchema`(Zod 스키마)로 문제 배열 직접 추출
+- `gemini-2.0-flash`는 2026-03-31 지원 종료 예정 — 신규 개발에 사용 금지
+
+### 파일 업로드 유틸리티
+
+| Library | Version | Purpose | When to Use |
+|---------|---------|---------|-------------|
+| react-dropzone | 14.x (latest) | PDF 파일 드래그&드롭 업로드 UI | 이미 생태계 표준 (React 16.8+ 호환). `accept` prop으로 PDF만 허용. 파일 업로드 UI 구현 시 |
+
+**주의:** react-dropzone은 UI 전용이며 서버 전송 기능이 없다. PDF → Gemini 전달은 브라우저에서 `File` 객체를 직접 `@google/genai` Files API로 전송.
+
+---
+
+## v4.0 통합 아키텍처 패턴
+
+```
+PDF 업로드 플로우:
+  react-dropzone (드래그&드롭 UI)
+    → File 객체
+    → @google/genai Files API (PDF 업로드)
+    → Gemini 2.5 Flash (vision 파싱)
+    → JSON 구조화 응답 (문제 배열)
+    → 사용자 검수/수정 UI
+    → Dexie IndexedDB (로컬 저장)
+
+PDF 뷰어 플로우:
+  react-pdf-highlighter-plus
+    → PDF 렌더링 + 오버레이 레이어
+    → 풀이 annotation 저장 (Dexie)
+    → iPad 시험지 느낌 UX
+
+PDF 내보내기 플로우:
+  @react-pdf/renderer
+    → 시험지 레이아웃 JSX 컴포넌트
+    → Pretendard TTF 임베딩
+    → 수식 SVG 이미지 임베딩
+    → PDF Blob → 브라우저 다운로드
+```
+
+---
+
+## v4.0 Installation
+
+```bash
+# PDF 뷰어
+pnpm add react-pdf
+
+# PDF 뷰어 + annotation 오버레이 (택일 또는 용도 분리)
+pnpm add react-pdf-highlighter-plus
+
+# Vite 정적 에셋 복사 (react-pdf worker용)
+pnpm add -D vite-plugin-static-copy
+
+# PDF 생성
+pnpm add @react-pdf/renderer
+
+# Gemini AI SDK (신규 공식 통합 SDK)
+pnpm add @google/genai
+
+# 파일 업로드 UI
+pnpm add react-dropzone
+```
+
+**react-pdf Vite 설정 (vite.config.ts):**
+
+```ts
+import { viteStaticCopy } from 'vite-plugin-static-copy'
+
+export default {
+  plugins: [
+    viteStaticCopy({
+      targets: [
+        { src: 'node_modules/pdfjs-dist/cmaps', dest: '' },
+        { src: 'node_modules/pdfjs-dist/standard_fonts', dest: '' },
+      ],
+    }),
+  ],
+}
+```
+
+**react-pdf worker 설정 (앱 엔트리):**
+
+```ts
+import { pdfjs } from 'react-pdf'
+// ESM worker (.mjs 확장자 — v10 변경사항)
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.mjs',
+  import.meta.url,
+).toString()
+```
+
+---
+
+## v4.0 Alternatives Considered
+
+| Category | Recommended | Alternative | Why Not |
+|----------|-------------|-------------|---------|
+| PDF 뷰어 | react-pdf 10 | PDF.js 직접 사용 | React 컴포넌트 추상화 없이 수동 canvas 관리 필요. react-pdf가 이미 래핑 제공 |
+| PDF 뷰어 | react-pdf 10 | @pdftron/webviewer | 엔터프라이즈 유료 라이선스. 오픈소스 불필요 |
+| PDF 뷰어 | react-pdf 10 | pspdfkit | 유료 SaaS. 학생/무료 앱에 부적합 |
+| annotation 오버레이 | react-pdf-highlighter-plus 1.1.3 | react-pdf-highlighter (원본) | 원본은 v8.0.0-rc.0에서 멈춤 (1년+ 업데이트 없음). -plus 포크가 React 19 지원 및 더 많은 기능 |
+| annotation 오버레이 | react-pdf-highlighter-plus | react-pdf-highlighter-extended | -extended는 9개월 전 업데이트. -plus가 더 최신 (10일 전 업데이트) |
+| PDF 생성 | @react-pdf/renderer | jsPDF | jsPDF는 HTML→PDF 변환 방식 — CSS 레이아웃 재현 불완전. 시험지 정밀 포맷에 부적합 |
+| PDF 생성 | @react-pdf/renderer | pdfmake | JSON 선언 방식 — JSX보다 React 개발자 경험 나쁨. React 컴포넌트 재사용 불가 |
+| PDF 생성 | @react-pdf/renderer | pdf-lib | 기존 PDF 수정용 — 새 문서 생성보다 편집에 특화. 2021년 이후 업데이트 없음 (유지보수 우려) |
+| Gemini SDK | @google/genai | @google/generative-ai (구버전) | **2025-11-30 지원 종료 공식 발표.** 신규 기능 없음. 반드시 @google/genai로 마이그레이션 |
+| Gemini 모델 | gemini-2.5-flash | gemini-2.0-flash | 2026-03-31 지원 종료 예정. 2.5 시리즈로 즉시 전환 권장 |
+
+---
+
+## v4.0 What NOT to Add
+
+| Avoid | Why | Use Instead |
+|-------|-----|-------------|
+| @google/generative-ai (구 SDK) | 2025-11-30 공식 지원 종료. 신규 Gemini 2.0+ 기능 없음 | @google/genai (신규 통합 SDK) |
+| pdf-lib | 마지막 릴리즈 2021년 11월 (v1.17.1). 유지보수 중단 의심. 포크(@cantoo/pdf-lib) 필요 시에만 고려 | @react-pdf/renderer (생성), 수정 기능 불필요 |
+| pdfjs-dist 직접 설치 | react-pdf 10이 pdfjs-dist를 peer dependency로 관리. 버전 충돌 원인 | react-pdf가 번들링하는 버전 사용 |
+| Tesseract.js | 브라우저 OCR 엔진 — Gemini Vision이 수식+한국어+레이아웃 모두 처리 가능. Tesseract는 수식 인식 불가 | @google/genai + Gemini 2.5 Flash |
+| mammoth.js | DOCX → HTML 변환 라이브러리. v4.0 scope는 PDF 전용 | 해당 없음 (DOCX 지원은 Out of Scope) |
+| react-pdf-highlighter (원본 agentcooper) | RC 단계에서 1년+ 방치. React 19 미지원 | react-pdf-highlighter-plus |
+
+---
+
+## v4.0 Version Compatibility
+
+| Package | Compatible With | Notes |
+|---------|-----------------|-------|
+| react-pdf 10.4.0 | React 16.8+ (React 19 포함) | peer `react: ">=16.8"`. ESM-only → Vite 7과 호환 양호. worker 파일 확장자 .mjs로 변경됨 (v10 breaking change) |
+| react-pdf-highlighter-plus 1.1.3 | React 19 | "Built with React 19" 명시. MIT 라이선스 |
+| @react-pdf/renderer 4.3.2 | React 19.2.x | `@react-pdf/reconciler@2.0.0`이 React 19.2.x 지원 추가 (PR #3224). Variable 폰트 미지원 |
+| @google/genai 1.x | Node.js + 브라우저 | API Key 필요. PDF 처리는 Files API 경유. 브라우저 직접 호출 시 API Key 노출 주의 → 프록시 또는 서버 경유 권장 |
+| react-dropzone 14.x | React 16.8+ | React 19 호환 |
+
+**보안 주의:** `@google/genai`를 브라우저에서 직접 호출하면 Gemini API Key가 클라이언트에 노출됨. POC 단계에서는 환경변수로 관리하되, 프로덕션 전환 시 Express 5 백엔드 프록시 라우트 경유 필수.
+
+---
+
+## Sources (v4.0)
+
+- [react-pdf GitHub Releases](https://github.com/wojtekmaj/react-pdf/releases) — v10.4.0 (2026-02-21 릴리즈), PDF.js 5.3.31, ESM-only 변경 확인 (HIGH)
+- [react-pdf-highlighter-plus Demo](https://react-pdf-highlighter-plus-demo.vercel.app/) — v1.1.3, React 19 명시, 기능 목록 확인 (HIGH)
+- [diegomura/react-pdf Releases](https://github.com/diegomura/react-pdf/releases) — v4.3.2 (2026-12월), React 19.2.x 지원 확인 (HIGH)
+- [Google AI for Developers — Gemini Libraries](https://ai.google.dev/gemini-api/docs/libraries) — @google/genai GA (2025-05), @google/generative-ai 지원 종료 2025-11-30 확인 (HIGH)
+- [Google AI for Developers — Document Processing](https://ai.google.dev/gemini-api/docs/document-processing) — PDF 처리 limits (1000페이지, 50MB, ~258 토큰/페이지), Files API 48시간 캐싱 확인 (HIGH)
+- [Gemini Structured Output Docs](https://ai.google.dev/gemini-api/docs/structured-output) — JSON Schema + Zod 스키마 지원, responseMimeType 설정 확인 (HIGH)
+- [@google/genai npm](https://www.npmjs.com/package/@google/genai) — v1.42.0 (4일 전 업데이트), Gemini 2.5 Flash 지원 확인 (HIGH)
+- [npm-compare: @react-pdf/renderer vs jsPDF vs pdfmake](https://npm-compare.com/@react-pdf/renderer,jspdf,pdfmake,react-pdf) — 다운로드 수 및 GitHub 스타 비교 (MEDIUM)
+- [react-pdf-highlighter-extended GitHub](https://github.com/DanielArnould/react-pdf-highlighter-extended) — 9개월 전 업데이트 vs -plus 10일 전 업데이트 비교 (MEDIUM)
+- WebSearch 다수 (2026-02-24) — Gemini 2.5 Flash 한국어/수식 OCR 성능, pdf-lib 유지보수 상태 확인 (MEDIUM)
+
+---
+
+*Stack research for: v4.0 PDF 2-Way 학습 시스템 — 신규 추가 라이브러리 only*
+*Researched: 2026-02-24*

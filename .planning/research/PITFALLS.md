@@ -694,3 +694,408 @@ Vite HMR이 작동할 때 React 컴포넌트는 교체되지만 Phaser 게임 �
 
 ---
 *v3.0 게이미피케이션 함정 연구 추가: 2026-02-23*
+
+
+---
+
+# v4.0 PDF 2-Way 학습 시스템 — PDF 통합 함정
+
+**도메인 추가:** 기존 수학 학습 웹앱에 PDF 업로드/파싱/뷰어/내보내기 추가
+**Researched:** 2026-02-24
+**Confidence:** MEDIUM-HIGH (GitHub issues, official docs, academic benchmarks, Mozilla/Google 공식 문서 교차 검증)
+
+---
+
+## Critical Pitfalls (v4.0 PDF 2-Way)
+
+### Pitfall P1: PDF.js 대용량 파일 브라우저 메모리 폭발
+
+**What goes wrong:**
+수능/모의고사 PDF(30~100페이지, 5~20MB)를 PDF.js로 로드하면 Canvas RGBA 버퍼가 페이지마다 쌓인다. 100페이지 A4 PDF를 전부 렌더링하면 힙 메모리가 500MB~2GB까지 치솟아 모바일/태블릿에서 탭이 강제 종료된다. 스크롤을 빠르게 내리면 여러 페이지의 렌더링 요청이 동시에 쌓여 문제가 배가된다.
+
+**Why it happens:**
+PDF.js는 각 페이지를 Canvas로 렌더링하고 그 RGBA typed array를 워커 스레드에서 메인 스레드로 복사한다. 이 과정에서 동일 데이터가 세 벌 존재하는 순간이 생긴다(워커 사본, 직렬화 사본, 메인 스레드 사본). 페이지를 스크롤해도 이미 렌더링된 Canvas 데이터가 GC되지 않고 누적된다.
+
+**How to avoid:**
+- 가상화(virtualization): 뷰포트에서 2페이지 이상 벗어난 Canvas를 즉시 `canvas.width = 0`으로 초기화하여 GPU 메모리 해제.
+- `renderTask.cancel()` API로 현재 보이지 않는 페이지의 렌더링 작업을 취소.
+- `PDFPageProxy.cleanup()`을 페이지가 뷰포트에서 벗어날 때 호출하여 내부 캐시 해제.
+- 한 번에 로드하는 최대 페이지 수를 제한(권장: 뷰포트 기준 앞뒤 3페이지만 렌더링 유지).
+- 태블릿/모바일에서는 PDF 업로드 전 파일 크기 경고: 20MB 초과 시 "용량이 크면 느릴 수 있습니다" 알림.
+
+**Warning signs:**
+- Chrome DevTools Memory 탭에서 PDF 뷰어 페이지 메모리가 500MB 초과
+- 30페이지 이상 스크롤 후 탭이 자동으로 새로고침됨
+- `performance.memory.usedJSHeapSize`가 PDF 페이지 전환마다 선형 증가
+
+**Phase to address:** PDF 뷰어 구현 Phase — Canvas 가상화를 뷰어 POC 단계에서 바로 적용
+
+---
+
+### Pitfall P2: iOS Safari PDF.js 렌더링 완전 실패
+
+**What goes wrong:**
+iOS Safari(및 Chrome-on-iOS, 동일 WebKit 엔진)에서 PDF.js 워커 스크립트가 `ReadableStream`, `Promise.allSettled` API 누락으로 초기화에 실패하거나, 복잡한 수식 PDF(벡터 많음)에서 Safari가 배터리 절약을 위해 렌더링을 강제 중단한다. iPad 목표 플랫폼에서 PDF가 흰 화면으로만 표시될 수 있다.
+
+**Why it happens:**
+PDF.js는 최신 Web API를 적극 사용하는데, WebKit은 Chromium보다 Web API 구현이 느리다. Safari iOS 16+는 복잡한 벡터 PDF(수학 기출 PDF는 수식/그래프로 인해 벡터 집약적)에서 "성능 보호" 차원에서 JS 실행을 throttle한다. 또한 PDF.js fake worker 경고("Setting up fake worker")는 워커 파일 경로 오류를 의미한다.
+
+**How to avoid:**
+- PDF.js의 ES5 호환 빌드를 사용하거나, `pdfjs-dist`의 legacy 빌드(`pdfjs-dist/legacy/build/pdf.worker.min.js`)를 iOS에서 사용.
+- `workerSrc`를 명시적으로 CDN URL 또는 로컬 파일로 지정 — Vite 번들 후 워커 경로가 변경되는 문제 방지.
+- iPad + iOS Safari에서 실제 수능 PDF로 테스트를 반드시 수행 — 에뮬레이터로는 재현 안 됨.
+- iOS에서 렌더링 실패 시 폴백: `<iframe src="blob:...">` 방식으로 네이티브 PDF 뷰어 사용 (기능 제한이 있지만 최소한 표시됨).
+- Safari에서는 캔버스 크기를 제한(`scale` 값 1.5 이하 권장): 고해상도 렌더링은 Safari에서 메모리 초과로 실패.
+
+**Warning signs:**
+- iPad Chrome/Safari에서 "Warning: Setting up fake worker" 콘솔 경고
+- iOS에서만 재현되는 흰 Canvas 또는 1페이지만 표시
+- `PDFDocument.getPage()` Promise가 iOS에서만 reject됨
+
+**Phase to address:** PDF 뷰어 Phase — 최초 POC 단계에서 iPhone/iPad 실기기 테스트 필수 항목으로 등록
+
+---
+
+### Pitfall P3: Gemini Vision AI 수학 수식 파싱 환각(Hallucination)
+
+**What goes wrong:**
+Gemini Vision으로 수능 수학 PDF를 파싱하면 LaTeX 수식 출력이 원본과 다른 경우가 발생한다. 적분 기호(`\int`), 시그마(`\sum`), 분수(`\frac`), 극한(`\lim`) 등 복잡한 수식에서 기호가 누락되거나 지수/아래첨자가 뒤바뀐다. 특히 두 수식이 인접해 있을 때 경계를 잘못 인식하여 두 수식을 하나로 합치거나 나눈다.
+
+**Why it happens:**
+LLM 기반 Vision 모델은 LaTeX 구조를 "이해"하는 것이 아니라 시각 패턴에서 확률적으로 생성한다. 수식 밀도가 높은 문제(수능 수학은 한 문제에 수식 10개 이상)에서 attention이 분산되고 hallucination이 증가한다. 또한 Gemini의 LaTeX 출력은 구분자(delimiter) 사용이 일관되지 않아(`$...$` vs `\(...\)` vs 코드 블록) 파싱 후처리가 복잡해진다.
+
+**How to avoid:**
+- AI 파싱 결과를 사용자가 검수/수정하는 UI를 필수로 설계 — AI 결과를 DB에 바로 저장하지 않는다.
+- Gemini 요청 시 structured output(JSON schema)을 강제하여 수식 경계를 명확히 지정:
+  ```json
+  {
+    "problem_text": "string",
+    "latex_formulas": ["string"],
+    "answer_choices": ["string"]
+  }
+  ```
+- 파싱 후 KaTeX `renderToString`으로 검증: 파싱 오류 시 해당 수식을 "수동 입력 필요" 상태로 플래그.
+- 동일 문제를 2회 파싱하여 결과를 비교 — 불일치 수식을 자동으로 검수 대상으로 표시.
+- 수식이 많은 페이지는 페이지 단위 대신 문제 단위(문제 영역 크롭 이미지)로 파싱 요청 분할 — accuracy 향상.
+
+**Warning signs:**
+- KaTeX 렌더링 시 `ParseError: KaTeX parse error` 비율이 파싱된 수식의 5% 초과
+- 파싱 결과에서 수식 구분자가 혼재(`$`, `$$`, `\(`, 백틱)
+- 동일 PDF를 두 번 파싱했을 때 수식 문자열이 다름
+
+**Phase to address:** AI 파싱 Phase — 파싱 파이프라인의 검수 UI를 AI 연동과 동시에 구현
+
+---
+
+### Pitfall P4: IndexedDB에 PDF Blob 저장 시 Base64 인코딩 메모리 폭발
+
+**What goes wrong:**
+PDF를 IndexedDB(Dexie)에 저장할 때 `ArrayBuffer`나 `Blob` 대신 Base64 문자열로 변환하여 저장하면 Chromium이 기가바이트 단위 RAM을 할당하는 버그가 발생한다. 10MB PDF가 Base64 인코딩 후 ~13MB 문자열이 되고, 이를 IndexedDB V8 엔진이 파싱할 때 내부적으로 원본의 4~10배 메모리를 사용한다.
+
+**Why it happens:**
+IndexedDB는 Blob을 직접 저장할 수 있는데 많은 개발자들이 "안전하게" Base64로 변환하여 저장한다. V8 엔진은 대형 Base64 문자열을 IndexedDB에 저장/로드할 때 이를 여러 번 복사하면서 메모리 사용이 폭증한다. Dexie.js 공식 문서도 이 문제를 경고하며 Blob 직접 저장을 권장한다.
+
+**How to avoid:**
+- PDF를 반드시 `Blob` 타입으로 IndexedDB에 저장:
+  ```typescript
+  await db.pdfFiles.add({ id, blob: new Blob([arrayBuffer], { type: 'application/pdf' }) });
+  ```
+- Base64 인코딩 저장은 절대 사용하지 않는다.
+- `StorageManager.estimate()`로 IndexedDB 사용량을 주기적으로 확인하고 사용자에게 표시.
+- 저장 전 `navigator.storage.persist()`를 요청하여 브라우저가 저장소를 임의로 정리하지 않도록 보호(iOS Safari 저장소 정책 대응).
+- 단일 PDF Blob은 인덱싱하지 않음 — `Dexie` 스키마에서 Blob 컬럼을 index 대상에서 제외.
+
+**Warning signs:**
+- PDF 저장 후 Chrome 탭 메모리가 비정상적으로 높게 유지됨
+- `Dexie.add()` 후 페이지가 느려짐
+- `performance.memory.usedJSHeapSize`가 PDF 크기의 10배 이상
+
+**Phase to address:** PDF 업로드 Phase — 저장 포맷을 첫 구현 시 Blob으로 확정
+
+---
+
+### Pitfall P5: Gemini Files API 48시간 파일 만료 — 재파싱 불가
+
+**What goes wrong:**
+Gemini Files API에 업로드한 PDF는 48시간 후 자동 삭제된다. 강사가 PDF를 업로드하고 파싱 검수를 며칠 후에 진행하려 하면 원본 파일이 이미 삭제된 상태여서 재파싱이 불가능하다. 또한 파일당 50MB 제한에 걸리는 대용량 문제집 PDF는 청킹(chunking) 없이는 처리 자체가 안 된다.
+
+**Why it happens:**
+Gemini Files API는 임시 저장소로 설계되었으며 영구 저장을 지원하지 않는다. 교육 콘텐츠 파이프라인에서 AI 처리는 비동기이므로 업로드와 처리 사이 시간 지연이 발생한다.
+
+**How to avoid:**
+- 원본 PDF를 항상 IndexedDB(Dexie)에 로컬 저장하고, Gemini 업로드는 파싱 작업 직전에 수행.
+- 파싱 요청 전 `files.get(fileId)`로 파일 상태(`ACTIVE` vs 만료)를 확인하고, 만료된 경우 로컬에서 재업로드.
+- 50MB 초과 PDF는 페이지 단위로 분할 업로드: 10페이지씩 청크로 나누어 순차 파싱 후 결과 병합.
+- 페이지당 258 토큰 비용을 고려: 100페이지 PDF = ~25,800 토큰 = 비용 주의. 사용자에게 처리 토큰 수 예상치 표시 권장.
+- 파싱 완료 후 Gemini Files API 파일을 즉시 `files.delete(fileId)`로 삭제하여 API 할당량 확보.
+
+**Warning signs:**
+- "File not found" 오류가 업로드 후 48시간 이후 발생
+- 대용량 PDF 업로드 시 `400 File too large` 에러
+- 파싱 비용이 예상보다 10배 이상 청구됨
+
+**Phase to address:** AI 파싱 Phase — 파일 생명주기 관리 로직을 파싱 파이프라인 설계 시 포함
+
+---
+
+### Pitfall P6: PDF 내보내기에서 한국어 폰트 누락 — 글자가 빈 상자로 출력
+
+**What goes wrong:**
+jsPDF, @react-pdf/renderer, pdfmake 등 JS PDF 생성 라이브러리의 기본 14가지 표준 폰트는 ASCII만 지원한다. 한국어를 포함한 CJK 문자를 한글 폰트 임베딩 없이 PDF에 출력하면 모든 한국어 텍스트가 빈 사각형(`□□□□`)으로 표시되거나 아예 누락된다. 시험지 PDF 내보내기에서 문제 텍스트가 사라지는 치명적 결과를 낳는다.
+
+**Why it happens:**
+PDF 파일 포맷은 폰트 데이터를 파일 내에 임베딩해야 올바른 문자 표시가 보장된다. 브라우저에서 CSS로 적용된 Pretendard 폰트는 PDF 생성 라이브러리가 자동으로 접근할 수 없다. 폰트 파일을 명시적으로 Base64 또는 ArrayBuffer로 로드하여 라이브러리에 등록해야 한다.
+
+**How to avoid:**
+- @react-pdf/renderer 사용 시:
+  ```typescript
+  import { Font } from '@react-pdf/renderer';
+  Font.register({ family: 'Pretendard', src: '/fonts/Pretendard-Regular.ttf' });
+  ```
+- 폰트 파일(TTF/WOFF)을 `/public/fonts/`에 배치하고 런타임에 fetch하여 등록.
+- 한글 폰트 파일은 5~10MB 크기로 크므로, PDF 생성 첫 호출 시 한 번만 로드하고 캐시.
+- Noto Sans KR 또는 Pretendard 폰트를 선택 — 수식 기호(특수문자) 포함 여부 사전 확인.
+- PDF 생성 결과를 개발 중 실제 기기에서 열어서 한글 표시 여부를 눈으로 확인.
+
+**Warning signs:**
+- 생성된 PDF를 열었을 때 한국어 텍스트 위치에 빈 상자나 점이 표시됨
+- PDF 파일 크기가 예상보다 훨씬 작음 (폰트 미임베딩 시 파일이 작아짐)
+- Windows/macOS 모두에서 동일하게 한글이 누락됨
+
+**Phase to address:** PDF 내보내기 Phase — 폰트 임베딩을 첫 번째 "Hello World" PDF 생성 시 검증
+
+---
+
+### Pitfall P7: LaTeX 수식의 PDF 내보내기 렌더링 실패
+
+**What goes wrong:**
+앱 내에서 KaTeX로 완벽히 렌더링되던 수식을 PDF로 내보낼 때 수식이 깨지거나 누락된다. jsPDF는 KaTeX/MathJax HTML/SVG를 직접 해석하지 못하고, @react-pdf/renderer는 HTML 수식 컴포넌트를 지원하지 않는다. SVG → Canvas → PDF 변환 체인에서 수식 선의 굵기가 달라지거나 분수 기호 위치가 틀려진다.
+
+**Why it happens:**
+PDF 생성 라이브러리들은 자체 렌더링 엔진을 가지며 HTML/CSS/SVG를 완전히 해석하지 않는다. KaTeX는 브라우저 DOM에 의존하는 렌더링을 하므로 서버/라이브러리 환경에서 직접 동작하지 않는다. MathJax SVG를 jsPDF에 넣을 때도 SVG→Canvas 변환 시 해상도와 좌표 계산 오류가 발생한다.
+
+**How to avoid:**
+- 수식이 포함된 PDF 내보내기는 **html2canvas → jsPDF** 파이프라인 사용: DOM에서 렌더링된 결과를 이미지로 캡처 후 PDF에 삽입.
+- 고해상도를 위해 `html2canvas({ scale: 2, useCORS: true })`로 캡처.
+- `@react-pdf/renderer`의 `<Image>` 컴포넌트에 KaTeX SVG를 PNG로 변환하여 삽입하는 방식도 유효:
+  ```typescript
+  // KaTeX → SVG 문자열 → Blob URL → <Image src>
+  const svg = katex.renderToString(latex, { output: 'mathml' });
+  ```
+- 수식 이미지 캡처 시 `devicePixelRatio`를 고려하여 흐릿함(blur) 방지.
+- 반드시 수식이 많은 실제 수능 문제로 PDF 출력 테스트를 진행하고 육안 검수.
+
+**Warning signs:**
+- 생성된 PDF에서 수식이 텍스트 대신 토픽(raw LaTeX 문자열)으로 표시됨
+- 분수나 적분 기호의 크기/위치가 앱 내 표시와 다름
+- 수식 주변에 여백이 과도하게 추가되거나 수식이 텍스트와 겹침
+
+**Phase to address:** PDF 내보내기 Phase — html2canvas + jsPDF 파이프라인을 수식 포함 테스트케이스로 우선 검증
+
+---
+
+## Moderate Pitfalls (v4.0 PDF 2-Way)
+
+### Pitfall P8: 한국어 PDF 파싱 시 인코딩 오류 — 자모 분리 및 깨진 문자
+
+**What goes wrong:**
+PDF에서 텍스트를 추출할 때 한글이 자모로 분리되거나(`ㄱㅏㄴㄴㅏ` → `가나`), 물음표(`?`) 또는 빈 사각형(`□`)으로 표시된다. 특히 스캔된 PDF나 비표준 CJK CMap 인코딩을 사용하는 한글 PDF에서 발생한다.
+
+**Prevention:**
+- PDF.js 텍스트 추출 결과를 NFC 유니코드 정규화(`text.normalize('NFC')`)로 후처리.
+- Gemini Vision 파싱을 텍스트 추출이 아닌 **이미지→텍스트 변환** 방식으로 사용 — 인코딩 오류를 OCR로 우회.
+- 스캔 PDF는 텍스트 추출 불가로 간주하고, 항상 Vision AI 경로(이미지 분석)를 사용.
+- PDF.js `getTextContent()` 결과에서 한글 CMap 오류 감지: 추출 텍스트에 `\uFFFD` 또는 빈 문자 비율이 10% 초과 시 OCR 모드로 전환.
+
+---
+
+### Pitfall P9: PDF 풀이 오버레이에서 터치 이벤트 충돌 (iPad 펜 vs 손가락)
+
+**What goes wrong:**
+iPad에서 PDF 뷰어 위에 풀이 오버레이(Canvas 레이어)를 얹으면 손가락 스크롤과 스타일러스 필기를 구분하는 로직이 없어서 손으로 스크롤하다 의도치 않은 필기가 생기거나, 반대로 Apple Pencil로 필기하다 PDF가 스크롤된다.
+
+**Prevention:**
+- `PointerEvent.pointerType`으로 입력 구분: `'pen'`이면 필기, `'touch'`이면 스크롤.
+- `touch-action: none`을 오버레이 Canvas에만 적용하고, PDF 뷰어 div에는 `touch-action: pan-y`를 유지.
+- 필기 모드(툴바에서 선택 시)에서만 오버레이 Canvas가 포인터 이벤트를 캡처 — 기본 상태는 PDF 스크롤 우선.
+- Apple Pencil이 연결된 경우 `PencilAdoptedEvent` (WebKit 전용) 감지하여 자동으로 필기 모드 전환 고려.
+
+---
+
+### Pitfall P10: PDF 뷰어와 게이미피케이션 시스템 충돌 — v3.0 WebGL 컨텍스트 경쟁
+
+**What goes wrong:**
+반전 모드(Phaser/Three.js WebGL)가 활성화된 상태에서 PDF 뷰어를 열면, PDF.js가 Canvas 2D 컨텍스트를 추가로 생성하고 v3.0 WebGL 컨텍스트 수가 한도(8~16개)에 더 빨리 도달한다. 또한 PDF 렌더링의 무거운 CPU 사용이 Phaser 게임 루프와 경합하여 게임 FPS가 급락한다.
+
+**Prevention:**
+- PDF 뷰어 페이지에서는 반전 모드를 자동으로 일시 정지(pause)하거나 비활성화 권장.
+- PDF 뷰어에서 Phaser 씬을 `scene.pause()`로 중단하고, 뷰어 종료 시 `scene.resume()`.
+- PDF.js 렌더링을 `requestIdleCallback`으로 스케줄링하여 Phaser rAF 루프와 경합 최소화.
+- WebGL 컨텍스트 예산 재점검: PDF 뷰어 추가 후 총 Canvas 수를 DevTools로 확인.
+
+---
+
+### Pitfall P11: 대용량 PDF Dexie 저장 용량 초과 — iOS Safari 50MB 한도
+
+**What goes wrong:**
+iOS Safari의 IndexedDB 할당량은 기기별로 다르지만 실질적으로 50~150MB 수준이며, 사용자 거부 시 `DOMException: QuotaExceededError`가 발생한다. 강사가 여러 PDF(각 10~20MB)를 저장하면 금방 한도에 도달하고, 에러 처리가 없으면 앱이 조용히 실패한다.
+
+**Prevention:**
+- 저장 전 `navigator.storage.estimate()`로 남은 공간 확인:
+  ```typescript
+  const { usage, quota } = await navigator.storage.estimate();
+  if (quota - usage < file.size * 1.5) { /* 경고 표시 */ }
+  ```
+- `navigator.storage.persist()`를 앱 최초 실행 시 요청하여 Safari의 임의 정리 방지.
+- Dexie 저장 시 `QuotaExceededError` 핸들러를 항상 구현하고 사용자에게 "저장 공간 부족" 안내 UI 표시.
+- PDF를 저장할 때 오래된 파일을 LRU(Least Recently Used) 방식으로 자동 정리하는 정책 설계.
+- iOS 한도 문제로 인해 PDF 파일당 저장 크기 제한(권장: 15MB 이하) 설정 고려.
+
+---
+
+### Pitfall P12: Gemini Vision 수식 이미지(그래프/도형) 인식 오류
+
+**What goes wrong:**
+수능 수학 PDF에는 함수 그래프, 기하 도형, 좌표 평면 다이어그램이 빈번하다. Gemini Vision은 이를 텍스트로 설명하거나 잘못된 SVG/코드로 변환하려 한다. "반지름 r인 원이 있다"처럼 이미지를 텍스트로 대체하면 원래 도형 정보가 손실된다.
+
+**Prevention:**
+- 그래프/도형 이미지는 Gemini에 "이 이미지를 텍스트로 설명하지 말고, 원본 이미지 영역을 크롭하여 문제에 이미지로 포함시켜야 한다"고 프롬프트에 명시.
+- 파싱 결과 스키마에 `image_regions: [{page, x, y, width, height}]` 필드를 포함하여 도형 위치를 기록하고, PDF.js로 해당 영역을 Canvas 크롭하여 이미지로 저장.
+- 강사 검수 UI에서 도형 이미지를 미리보기로 표시하여 누락/오인식 여부를 쉽게 확인할 수 있도록 설계.
+- 도형이 많은 기하(幾何) 문제는 AI 파싱 정확도가 현저히 낮음을 사용자에게 안내.
+
+---
+
+## Technical Debt Patterns (v4.0)
+
+| 단축키 | 즉각적 이점 | 장기 비용 | 수용 가능 여부 |
+|--------|-------------|-----------|----------------|
+| PDF.js 페이지 가상화 없이 전체 렌더링 | 구현 단순 | 50페이지 이상 PDF에서 탭 크래시, 모바일 사용 불가 | Never — 가상화 필수 |
+| PDF를 Base64 문자열로 IndexedDB 저장 | 코드 단순 | 10MB PDF에 100MB+ RAM 사용, 탭 강제 종료 | Never — Blob 저장 필수 |
+| AI 파싱 결과를 검수 없이 DB 직접 저장 | 파이프라인 단순 | LaTeX 오류가 학생에게 그대로 노출, 데이터 오염 | Never — 검수 UI 필수 |
+| 한글 폰트 임베딩 없이 PDF 내보내기 테스트 | 개발 빠름 | 한국어 텍스트 전체 누락, 내보내기 기능 무용 | Never — 첫 구현부터 폰트 임베딩 |
+| 파싱 실패 시 오류 숨김 (자동 재시도만) | UX 단순 | 강사가 파싱 실패를 인지 못해 빈 문제가 DB에 등록 | Never — 파싱 상태 항상 사용자에게 표시 |
+| iOS Safari 테스트를 배포 직전에만 수행 | 개발 속도 향상 | iOS PDF.js 실패 → 전체 뷰어 재구현 위험 | Never — Phase 첫 POC에서 iOS 테스트 |
+| PDF 뷰어를 외부 iframe으로 구현 | 빠른 시작 | 오버레이/주석/상태 연동 불가 | MVP 초기에만 허용, Phase 내 교체 예정으로 명시 |
+
+---
+
+## Integration Gotchas (v4.0)
+
+| 통합 대상 | 흔한 실수 | 올바른 접근 |
+|-----------|-----------|------------|
+| PDF.js + Vite | `pdfjsLib.GlobalWorkerOptions.workerSrc` 미설정으로 fake worker 경고 | `pdfjs-dist` 패키지의 `pdf.worker.min.mjs`를 명시적으로 Vite `assetsInclude`에 포함하고 URL 직접 지정 |
+| Gemini Files API + Blob | `fetch`로 파일 전송 시 Content-Type 누락 | `FormData`에 `Blob` + MIME type 명시(`application/pdf`) 후 전송 |
+| @react-pdf/renderer + KaTeX | KaTeX HTML을 PDF 컴포넌트에 직접 삽입 시도 | KaTeX → SVG → PNG 변환 후 `<Image>` 컴포넌트에 삽입 |
+| Dexie v9 + Blob | 스키마에 Blob 필드 `++id, blob` 형태로 인덱스 추가 | Blob 필드는 인덱스 제외: `'++id, fileName, createdAt'` (blob 컬럼은 스키마 외 별도 저장) |
+| html2canvas + KaTeX | 외부 폰트(KaTeX 수식 폰트)가 CORS 오류로 캡처 안 됨 | `html2canvas({ useCORS: true, allowTaint: false })` + KaTeX 폰트를 동일 도메인에 self-hosting |
+| PDF.js + Tailwind v4 | Tailwind 글로벌 CSS reset이 PDF.js 텍스트 레이어(`pdf.js-textLayer`) 스타일 충돌 | `pdf.js-textLayer` 클래스에 `all: initial` 또는 PDF.js 공식 CSS 파일을 명시적으로 import |
+| Gemini Vision + 구조화 출력 | `response_mime_type: "application/json"` 미설정으로 JSON 파싱 실패 | `generationConfig: { response_mime_type: "application/json", response_schema: {...} }` 명시 |
+
+---
+
+## Performance Traps (v4.0)
+
+| 트랩 | 증상 | 예방 | 임계점 |
+|------|------|------|--------|
+| PDF 모든 페이지 동시 렌더링 | 탭 메모리 1GB+ 초과, 크래시 | 뷰포트 기준 앞뒤 3페이지만 렌더링 유지, 벗어난 Canvas 즉시 해제 | 20페이지 이상 |
+| Gemini 대용량 PDF 단일 요청 | 타임아웃 또는 `429 Too Many Requests` | 10페이지 청크로 분할 후 순차 요청, 요청 간 1초 지연 | 30페이지 이상 단일 요청 |
+| html2canvas 고해상도 전체 문서 캡처 | PDF 생성 10초 이상 + 메모리 스파이크 | 문제 단위로 나눠 캡처 후 병합, `scale: 1.5` 이하 사용 | 문제 20개 이상 한 번에 캡처 |
+| 한글 폰트 파일 매 PDF 생성마다 재로드 | PDF 생성 첫 호출마다 5~10초 지연 | 폰트를 앱 시작 시 preload하고 ArrayBuffer를 모듈 변수에 캐시 | 모든 PDF 생성 첫 호출 |
+| PDF.js 텍스트 레이어 불필요한 활성화 | 뷰어 렌더링 속도 30~50% 저하 | 검색/복사 기능 불필요한 뷰어에서는 `renderTextLayer: false` | 항상 발생 |
+
+---
+
+## Security Mistakes (v4.0)
+
+| 실수 | 위험 | 예방 |
+|------|------|------|
+| 업로드된 PDF를 파일 타입 검증 없이 처리 | 악성 JavaScript 임베딩 PDF로 XSS/백도어 공격 | `file.type === 'application/pdf'` + 파일 매직 바이트(`%PDF-`) 검증, PDF.js sandbox 환경에서만 렌더링 |
+| Gemini API 키를 클라이언트 번들에 포함 | API 키 유출, 비용 폭탄 | Gemini 호출을 반드시 서버(Edge Function/API Route)를 통해 프록시, 클라이언트는 API 키 미노출 |
+| 저작권 있는 교과서 PDF 업로드 기능 제공 | 저작권 침해 책임 | 이용약관에 사용자 직접 제작 또는 권한 있는 자료만 업로드 명시, AI 파싱 결과 공개 범위 제한 |
+| Dexie IndexedDB의 PDF Blob을 다른 사용자와 공유 | 개인 학습 자료 노출 | PDF Blob은 사용자별 격리 저장, POC 단계에서도 userId prefix 적용 |
+| 내보내기 PDF에 학생 개인 정보 노출 | PIPA(개인정보보호법) 위반 | 내보내기 PDF에 학생 이름/ID를 포함할 경우 명시적 동의 UI 및 선택적 제외 옵션 제공 |
+
+---
+
+## UX Pitfalls (v4.0)
+
+| 함정 | 사용자 영향 | 개선 방향 |
+|------|------------|-----------|
+| AI 파싱 진행 상태를 알 수 없음 | 강사가 "앱이 멈춘 건지 처리 중인지" 혼란 | 파싱 단계별 진행 표시(업로드 → 파싱 → 검수 대기), 예상 소요 시간 표시 |
+| 파싱 검수 UI 없이 결과 저장 | 오파싱된 수식이 학생에게 노출 | 파싱 후 반드시 강사 검수 단계 거침 — "자동 저장" 옵션은 제공하지 않음 |
+| PDF 뷰어에서 문제 번호 없이 수백 페이지 탐색 | 특정 문제 찾기 어려움 | 문제 번호 점프 기능 + 목차 패널(파싱된 문제 목록에서 클릭 이동) |
+| PDF 내보내기 결과가 앱 표시와 다름 | 강사 신뢰 하락 | 내보내기 전 "미리보기" 팝업으로 1~2페이지 확인 후 다운로드 |
+| 모바일에서 PDF 업로드 버튼 찾기 어려움 | 업로드 포기 | 드래그앤드롭 + "파일 선택" 버튼 모두 제공, 카메라 직접 촬영도 허용(모바일 file input의 `capture` 속성) |
+| 파싱 실패한 문제를 어떻게 해야 할지 안내 없음 | 강사 혼란 | 파싱 실패 문제에 "수동 입력" CTA 버튼 표시, LaTeX 에디터로 바로 연결 |
+
+---
+
+## "Looks Done But Isn't" Checklist (v4.0)
+
+- [ ] **iOS PDF 뷰어:** iPad + Safari에서 실제 수능 PDF(20페이지 이상)를 열어 스크롤 및 렌더링 확인
+- [ ] **메모리 관리:** 50페이지 PDF 뷰어에서 스크롤 후 Chrome DevTools 메모리 < 300MB 확인
+- [ ] **한글 PDF 내보내기:** 생성된 PDF를 macOS Preview, Windows PDF 뷰어, iOS Files에서 열어 한글 텍스트 표시 확인
+- [ ] **수식 PDF 내보내기:** `\int_{0}^{1}`, `\frac{d}{dx}`, `\sum_{k=1}^{n}` 등 복잡한 수식이 PDF에서 올바르게 표시되는지 육안 확인
+- [ ] **Gemini 파싱 검수:** 실제 수능 수학 1번~30번 PDF를 파싱하여 LaTeX 정확도 및 KaTeX 렌더링 성공률 측정
+- [ ] **IndexedDB 용량:** 3개 PDF(각 10MB) 저장 후 `navigator.storage.estimate()` 결과와 실제 할당량 확인
+- [ ] **파싱 실패 처리:** Gemini API 타임아웃/오류 시 앱이 무한 로딩이 아닌 에러 UI를 표시하는지 확인
+- [ ] **저작권 안내:** PDF 업로드 화면에 저작권 관련 안내 문구 및 동의 체크박스 존재 여부 확인
+- [ ] **Gemini API 키:** 클라이언트 번들(`dist/`)에 API 키가 포함되지 않았는지 빌드 출력 grep으로 확인
+
+---
+
+## Recovery Strategies (v4.0)
+
+| 함정 | 복구 비용 | 복구 단계 |
+|------|-----------|-----------|
+| PDF.js 가상화 미구현으로 모바일 크래시 | HIGH | (1) react-pdf 또는 PDF.js 직접 구현에 페이지 가상화 추가 (2) IntersectionObserver로 Canvas lifecycle 관리 (3) 기존 full-render 코드 교체 |
+| IndexedDB Base64 저장으로 메모리 폭발 | MEDIUM | (1) 기존 Base64 데이터를 Blob으로 마이그레이션하는 Dexie 스키마 버전 업 (2) 기존 저장 데이터 일괄 변환 스크립트 |
+| iOS Safari PDF.js 렌더링 실패 | HIGH | (1) PDF.js legacy 빌드로 전환 (2) iOS 대상 iframe 네이티브 뷰어 폴백 구현 (3) 사용자에게 Chrome 앱 사용 안내 |
+| PDF 내보내기 한글 폰트 누락 | MEDIUM | (1) 폰트 임베딩 코드 추가 (2) 기존 생성 PDF에 대해 재생성 안내 (3) 폰트 파일 캐싱 전략 추가 |
+| Gemini API 키 클라이언트 노출 | HIGH | (1) 즉시 API 키 재발급 (2) 서버 프록시 엔드포인트 구현 (3) 클라이언트 코드에서 직접 호출 제거 후 재배포 |
+| AI 파싱 오류 데이터가 DB에 대량 저장 | HIGH | (1) 문제 파싱 출처 필드(`source: 'ai_parsed' | 'manual'`) 기반 오파싱 데이터 격리 (2) 강사 재검수 프로세스 가동 (3) KaTeX 검증 통과 조건 추가 |
+
+---
+
+## Pitfall-to-Phase Mapping (v4.0)
+
+| 함정 | 방지 단계 | 검증 방법 |
+|------|-----------|-----------|
+| PDF.js 대용량 메모리 폭발 | PDF 뷰어 Phase (POC) | 50페이지 PDF 스크롤 후 메모리 < 300MB |
+| iOS Safari PDF.js 실패 | PDF 뷰어 Phase (POC) | iPad + Safari 실기기 렌더링 성공 확인 |
+| Gemini 수식 환각 | AI 파싱 Phase | KaTeX ParseError 비율 < 5% 목표 |
+| IndexedDB Base64 저장 | PDF 업로드 Phase | Blob 저장 코드리뷰 + 메모리 측정 |
+| Gemini Files API 48시간 만료 | AI 파싱 Phase | 파일 생명주기 관리 로직 단위 테스트 |
+| PDF 한글 폰트 누락 | PDF 내보내기 Phase (첫 POC) | 생성 PDF macOS/iOS/Windows 3개 환경 확인 |
+| LaTeX 수식 PDF 렌더링 실패 | PDF 내보내기 Phase | 수능 수식 10종 포함 테스트 PDF 육안 검수 |
+| 한국어 인코딩 오류 | AI 파싱 Phase | 자모 분리 문자 비율 측정 + NFC 정규화 검증 |
+| iPad 터치/펜 충돌 | PDF 뷰어 오버레이 Phase | Apple Pencil + 손가락 동시 사용 시나리오 테스트 |
+| v3.0 WebGL 컨텍스트 경쟁 | PDF 뷰어 통합 Phase | 반전 모드 + PDF 뷰어 동시 실행 시 컨텍스트 수 < 8 |
+| iOS IndexedDB 용량 초과 | PDF 저장 Phase | 3개 PDF 저장 후 QuotaExceededError 핸들링 확인 |
+| Gemini 도형/그래프 오인식 | AI 파싱 Phase | 기하 문제 파싱 결과 육안 검수 + 이미지 크롭 기능 확인 |
+| Gemini API 키 노출 | 인프라 설정 Phase (Day 1) | `dist/` 번들에서 API 키 검색 없음 확인 |
+
+---
+
+## Sources (v4.0)
+
+- PDF.js 메모리 누수 이슈 #10021: [https://github.com/mozilla/pdf.js/issues/10021](https://github.com/mozilla/pdf.js/issues/10021)
+- PDF.js 렌더링 최적화 가이드 (Joyfill): [https://joyfill.io/blog/optimizing-in-browser-pdf-rendering-viewing](https://joyfill.io/blog/optimizing-in-browser-pdf-rendering-viewing)
+- PDF.js iOS Safari 렌더링 실패 이슈 #15855: [https://github.com/mozilla/pdf.js/issues/15855](https://github.com/mozilla/pdf.js/issues/15855)
+- react-pdf 대용량 PDF 성능 이슈 #1691: [https://github.com/wojtekmaj/react-pdf/discussions/1691](https://github.com/wojtekmaj/react-pdf/discussions/1691)
+- Dexie.js 대용량 바이너리 저장 Best Practice: [https://medium.com/dexie-js/keep-storing-large-images-just-dont-index-the-binary-data-itself-10b9d9c5c5d7](https://medium.com/dexie-js/keep-storing-large-images-just-dont-index-the-binary-data-itself-10b9d9c5c5d7)
+- IndexedDB 최대 저장 한도 (RxDB): [https://rxdb.info/articles/indexeddb-max-storage-limit.html](https://rxdb.info/articles/indexeddb-max-storage-limit.html)
+- Dexie StorageManager API: [https://dexie.org/docs/StorageManager](https://dexie.org/docs/StorageManager)
+- Gemini API 문서 - 파일 처리: [https://ai.google.dev/gemini-api/docs/document-processing](https://ai.google.dev/gemini-api/docs/document-processing)
+- Gemini Files API 파일 크기 한도: [https://blog.google/innovation-and-ai/technology/developers-tools/gemini-api-new-file-limits/](https://blog.google/innovation-and-ai/technology/developers-tools/gemini-api-new-file-limits/)
+- 수학 수식 PDF 파싱 벤치마크 (arXiv 2024): [https://www.arxiv.org/pdf/2512.09874](https://www.arxiv.org/pdf/2512.09874)
+- OmniDocBench - PDF 파싱 평가 (CVPR 2025): [https://openaccess.thecvf.com/content/CVPR2025/papers/Ouyang_OmniDocBench_Benchmarking_Diverse_PDF_Document_Parsing_with_Comprehensive_Annotations_CVPR_2025_paper.pdf](https://openaccess.thecvf.com/content/CVPR2025/papers/Ouyang_OmniDocBench_Benchmarking_Diverse_PDF_Document_Parsing_with_Comprehensive_Annotations_CVPR_2025_paper.pdf)
+- MathJax + jsPDF 수식 렌더링 이슈: [https://github.com/parallax/jsPDF/issues/953](https://github.com/parallax/jsPDF/issues/953)
+- react-pdf 한글 폰트 이슈 #806: [https://github.com/diegomura/react-pdf/issues/806](https://github.com/diegomura/react-pdf/issues/806)
+- PDF 생성 라이브러리 비교 (2025): [https://joyfill.io/blog/comparing-open-source-pdf-libraries-2025-edition](https://joyfill.io/blog/comparing-open-source-pdf-libraries-2025-edition)
+- Korean AI 교육 멀티모달 평가 (NAACL 2025): [https://arxiv.org/pdf/2502.15422](https://arxiv.org/pdf/2502.15422)
+- PDF 텍스트 추출 어려움 해설 (CompPDF): [https://www.compdf.com/blog/what-is-so-hard-about-pdf-text-extraction](https://www.compdf.com/blog/what-is-so-hard-about-pdf-text-extraction)
+
+---
+*v4.0 PDF 2-Way 학습 시스템 함정 연구 추가: 2026-02-24*

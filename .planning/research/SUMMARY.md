@@ -1,190 +1,393 @@
-# Project Research Summary
+# Research Summary — v4.0 PDF 2-Way 학습 시스템
 
-**Project:** 수학 기출문제 학습 웹앱 — v3.0 "반전 모드" (게이미피케이션)
-**Domain:** EdTech / Korean High School Math Exam Practice App — Gamification Layer
-**Researched:** 2026-02-23
-**Confidence:** MEDIUM-HIGH
+**프로젝트:** 수학 기출문제 학습 도우미
+**마일스톤:** v4.0 PDF 2-Way 학습 시스템
+**합성일:** 2026-02-24
+**합성 대상:** STACK.md, FEATURES.md, ARCHITECTURE.md, PITFALLS.md
+
+> **참고:** v3.0 반전 모드 게이미피케이션 리서치 요약은 이전 버전 SUMMARY.md에 있음 (git 이력 참조).
+> 이 문서는 v4.0 PDF 2-Way 관련 내용만 다룬다.
+
+---
 
 ## Executive Summary
 
-v3.0 반전 모드는 기존 React 19 + Vite 7 + Tailwind v4 스택 위에 게이미피케이션 레이어를 선택적으로 오버레이하는 방식으로 구현한다. 핵심 전략은 **토글 기반 이중 모드 아키텍처**: 노말 모드는 기존 코드베이스를 전혀 건드리지 않고, 반전 모드 진입 시에만 Phaser 3 / Three.js / Howler.js 등 무거운 라이브러리를 React.lazy() + Vite manualChunks로 동적 로드한다. 이 전략으로 초기 번들에 게임 라이브러리가 포함되지 않아 노말 모드 성능을 완전히 보호하면서, 반전 모드에서 약 520KB gz 수준의 게임 경험을 제공할 수 있다. 기존 스택의 Zustand와 Dexie를 그대로 활용해 XP/레벨/뱃지/스트릭 상태를 관리하므로 외부 게이미피케이션 전용 라이브러리는 불필요하다.
+v4.0은 기존 수학 학습 앱(React 19 + Vite 7 + Tailwind v4 + Dexie)에 PDF 양방향 연동을 추가하는 마일스톤이다. 핵심 방향은 두 가지다. 첫째, 강사가 기출문제 PDF를 업로드하면 Gemini 2.5 Flash가 수식을 LaTeX로 자동 추출하고, 강사가 검수 후 1-클릭으로 문제 DB에 등록하는 "PDF → 앱" 파이프라인. 둘째, 앱의 문제를 시험지 또는 학습지 스타일 PDF로 내보내고, PDF 뷰어에서 풀이 오버레이(정답 가리기)를 제공하는 "앱 → PDF" 파이프라인. 기존 코드베이스(gemini.service, question.service, Dexie, KaTeX)를 최대한 재활용하며, 신규 라이브러리는 react-pdf(뷰어), @react-pdf/renderer(생성), @google/genai(AI)만 추가한다.
 
-아키텍처의 핵심은 **FunModeContext가 모든 게임 기능의 단일 게이트**라는 점이다. `data-fun-mode` DOM 속성 + CSS 변수로 테마를 즉시 전환하고, 각 페이지는 `isFunMode` 훅 하나로 UI를 분기한다. Phaser 게임 씬은 React DOM과 완전히 분리된 EventBus 패턴으로 통신하며, Three.js 배경은 `z-index: -1` fixed canvas로 React 클릭 이벤트를 방해하지 않는다. Howler.js는 React 외부 싱글턴으로 관리한다. 각 기술 레이어가 명확히 분리되어 있어 개별적으로 교체·폴백이 가능하다.
+핵심 기술적 도전은 세 가지다. (1) Gemini Vision의 수식 환각(hallucination) — 강사 검수 UI가 필수이며, AI 결과를 검수 없이 DB에 직접 저장하는 것은 절대 피해야 한다. (2) PDF 뷰어의 메모리 관리 — 대용량 PDF 전체 렌더링은 태블릿 탭 크래시를 일으키므로 Canvas 가상화(뷰포트 앞뒤 3페이지만 유지)가 필수다. (3) PDF 내보내기의 KaTeX → PDF 변환 — @react-pdf/renderer가 HTML을 직접 해석하지 못하므로 KaTeX → PNG/SVG → Image 변환 파이프라인을 구축해야 한다.
 
-가장 큰 리스크는 기술적 함정군이다: React StrictMode의 Phaser 이중 초기화, WebGL 컨텍스트 한도 초과(브라우저당 8~16개 제한), iOS Web Audio 자동재생 차단, 저사양 Android 태블릿의 30fps 이하 렌더링. 이 함정들은 Phase 15(기반 인프라 POC) 단계에서 반드시 검증해야 하며, 각각의 폴백 전략(Canvas 렌더러 폴백, CSS 애니메이션 대체, AudioContext.resume() unlock trick, 기기 감지 기반 품질 레벨)이 연구로 확인되었다. 교육적 관점에서는 외재적 보상 과다로 인한 내재 동기 저해(K-12 31개 연구, n=5,000+ 메타분석)를 방지하기 위해 반전 모드는 기본값 OFF, 사운드는 기본값 OFF, 보상은 학습 성취 기반으로만 설계해야 한다.
+경쟁사(콴다, Flexcil, Goodnotes)와 비교할 때 이 앱의 고유한 차별점은 수식 LaTeX 변환 + DB 자동 등록 + 기존 BKT 취약 분석 연동이다. 단순 PDF 뷰어나 퀴즈 생성이 아닌, 강사의 문제 DB 구축 파이프라인을 자동화하는 것이 v4.0의 실질적 가치다.
+
+---
 
 ## Key Findings
 
-### Recommended Stack
+### STACK.md — v4.0 신규 라이브러리 결정
 
-기존 스택(React 19, Vite 7, Tailwind v4, shadcn/ui, Framer Motion, Swiper, KaTeX, Dexie, Zustand, Recharts)은 v2.0에서 검증 완료되어 변경 없이 유지한다. v3.0에 추가되는 신규 라이브러리는 모두 반전 모드 전용 레이어로, 노말 모드 번들에는 포함되지 않는다.
+**신규 추가 라이브러리:**
 
-**Core technologies (신규 추가):**
-- **Phaser 3.90.0**: 타임어택 퀴즈·보스전 게임 씬 — React 19 + Vite 7 공식 템플릿(phaserjs/template-react-ts) 검증, v3 최종 안정 릴리즈. (Phaser 4 RC는 비안정 단계로 제외)
-- **Three.js 0.183.1 + @react-three/fiber 9.5.0 + @react-three/drei 10.7.7**: 3D 파티클 배경·레벨업 연출 — R3F v9는 React 19 전용(`react: ">=19 <19.3"`). drei Stars/Sparkles로 파티클 30줄 이내 구현.
-- **Howler 2.2.4 + use-sound 5.0.0**: BGM + SFX — 프레임워크 독립, 오디오 스프라이트 지원. use-sound는 140k/주 다운로드로 생태계 검증.
-- **canvas-confetti 1.9.4**: 정답·레벨업 confetti 효과 — zero-dependency 2.5kb gz, Three.js 없이 즉시 적용.
-- **Zustand 기존 슬라이스 확장**: XP·레벨·뱃지·스트릭 전역 상태 — 이미 설치됨, 별도 게이미피케이션 라이브러리 불필요.
+| 라이브러리 | 버전 | 역할 | 신뢰도 |
+|-----------|------|------|--------|
+| react-pdf | 10.4.0 | PDF 뷰어 (PDF.js 5.3.31 탑재, ESM-only) | HIGH |
+| react-pdf-highlighter-plus | 1.1.3 | PDF 위 annotation 오버레이 (React 19 명시) | HIGH |
+| @react-pdf/renderer | 4.3.2 | 시험지/학습지 PDF 생성 (React 19.2.x 지원) | HIGH |
+| @google/genai | 1.x | Gemini API 공식 통합 SDK | HIGH |
+| react-dropzone | 14.x | 파일 업로드 UI | HIGH |
+| vite-plugin-static-copy | latest | pdfjs-dist CMap 에셋 복사 | HIGH |
 
-**번들 전략**: 반전 모드 전체(Phaser ~350kb gz + Three.js ~185kb gz + Howler ~9kb gz) = 약 520kb gz 추가. 초기 번들 영향 = 0. React.lazy() + Vite manualChunks('game-phaser', 'game-three', 'game-howler')로 완전 분리.
+**핵심 버전 결정:**
+- `@google/generative-ai` (구 SDK)는 반드시 `@google/genai`로 교체 — 2025-11-30 공식 지원 종료
+- Gemini 모델: `gemini-2.5-flash` 사용 — `gemini-2.0-flash`는 2026-03-31 지원 종료 예정
+- react-pdf v10은 ESM-only이며 worker 파일 확장자가 `.mjs`로 변경됨 (v10 breaking change)
+- @react-pdf/renderer + 한글: Variable 폰트 미지원 → 굵기별 개별 TTF 파일(Pretendard-Regular.ttf, Pretendard-Bold.ttf) 등록 필수
+- react-pdf와 react-pdf-highlighter-plus는 내부 PDF.js 인스턴스가 충돌할 수 있으므로 용도별 페이지 분리 필요
 
-**피해야 할 라이브러리**: Phaser 4 RC(불안정), @react-three/fiber v8(React 18 전용), gsap(Framer Motion 중복), lottie-react(에셋 관리 부담), Matter.js(Phaser 내장 물리로 충분), socket.io(v3.0 scope 밖).
+**번들 전략 (기존 v3.0 패턴과 동일):**
+```
+pdf-viewer   chunk (pdfjs-dist)           → ~1.2MB min / gzip ~400KB
+pdf-renderer chunk (@react-pdf/renderer)  → ~500KB min / gzip ~180KB
+```
+두 청크 모두 React.lazy + Suspense로 해당 라우트 진입 시에만 로드.
 
-### Expected Features
+**vite.config.ts 추가 설정:**
+```typescript
+// manualChunks 확장 (기존 game-phaser 등 수정하지 말 것)
+if (id.includes('node_modules/pdfjs-dist')) return 'pdf-viewer'
+if (id.includes('node_modules/@react-pdf/renderer')) return 'pdf-renderer'
 
-게이미피케이션 앱으로서 사용자 기대치와 경쟁사 분석(Duolingo, Kahoot, 수학대왕, Khan Academy)을 종합하면, v3.0에 필요한 기능 우선순위는 명확하다.
+// vite-plugin-static-copy
+viteStaticCopy({ targets: [{ src: 'node_modules/pdfjs-dist/cmaps', dest: 'cmaps' }] })
+```
 
-**Must have (v3.0 출시 필수 — P1):**
-- **반전 모드 토글 + FunModeContext** — 모든 게임 기능의 진입점. 없으면 아무것도 작동 안 함.
-- **XP + 레벨 시스템** — 레벨, 뱃지, 리더보드, 챌린지 전부 XP에 의존. 가장 먼저 구현해야 함.
-- **일일 스트릭** — Duolingo 데이터 기반, 이탈률 21% 감소. 가장 검증된 리텐션 메커니즘.
-- **콤보 카운터** — 연속 정답 보너스 XP. 구현 복잡도 낮음.
-- **정답/오답 파티클 피드백** — canvas-confetti로 빠른 구현 가능.
-- **타임어택 모드** — 수능 실전 감각 + 게임성. React 타이머로 충분, Phaser 없이 구현 가능.
-- **서바이벌 모드** — 하트 3개, 오답 시 소진. 적당한 복잡도.
-- **Three.js 3D 배경** — 반전 모드의 시각적 WOW 포인트. 경쟁사(Duolingo, Kahoot, 수학대왕) 중 유일한 차별점.
-- **사운드 시스템 (BGM + SFX)** — 청각 피드백 없는 게임 모드는 형용 모순.
-- **레벨업 시네마틱** — Framer Motion으로 구현 가능, Three.js 불필요.
+---
 
-**Should have (Phase 3, 검증 후 — P2):**
-- 보스 배틀 모드 (높은 구현 복잡도), 뱃지/업적 시스템 (30개 콘텐츠 설계), 반 내 리더보드 (강사 그룹 연동), 주간 챌린지, 오답노트 복수전 모드.
+### FEATURES.md — v4.0 기능 우선순위
 
-**Defer (v3.x+ — P3):**
-- 전교 익명 랭킹, 캐릭터 아바타 커스터마이징, 시즌제 이벤트, 오프라인 게임 기능.
+**Table Stakes (없으면 v4.0 자체가 없음):**
+- PDF 파일 업로드 (drag-and-drop + 버튼, 50MB 한도 검증)
+- AI 파싱 진행 상태 UI (단계별: "분석 중" → "추출 중" → "검수 준비 완료")
+- 추출 결과 검수/수정 UI (인라인 LaTeX 편집, 카드별 승인/거절)
+- 신뢰도 시각화 (빨간색 강조 — 검수 효율 최대화)
+- 강사용 1-클릭 DB 등록 (검수 완료 항목 일괄 등록)
+- PDF 뷰어 (기본 렌더링, 페이지 전환, 줌)
+- 풀이 오버레이 (정답 가리기/보이기 토글)
+- 파싱 실패/오류 명확한 안내 + 수동 입력 fallback
 
-**의도적 제외 (Anti-Features):**
-- 전교 공개 리더보드 (하위권 이탈 유발, 개인정보 문제), 뽑기/가챠 (미성년자 도박 메커니즘), 실시간 멀티플레이어 (인프라 복잡도 과도, POC 아키텍처와 불일치), 강제 BGM (학교/도서관 환경 불가), 반전 모드 기본값 ON (저사양 기기 성능 문제, 연구에서 35% 이탈 확인).
+**Differentiators (v4.0 핵심 정체성):**
+- Gemini Vision 수식 → LaTeX 자동 변환 (수학 앱에서 유일한 차별화)
+- AI 추출 결과 신뢰도 시각화 (빨간 70% 미만 항목 자동 강조)
+- 시험지 스타일 + 학습지 스타일 PDF 내보내기 (강사 출력 workflow 완결)
+- 페이지 범위 선택 파싱 (Gemini API 비용 최적화, 최대 50페이지/회)
+- PDF 뷰어 + 즉석 문제 풀기 (기존 채점 엔진 재사용)
 
-### Architecture Approach
+**Anti-Features (의도적 제외):**
+- 손글씨 필기 OCR — 수식 정확도 미보장, v5.0 이후 검토
+- 서버사이드 PDF 렌더링 — POC 아키텍처 위반 (Puppeteer 불필요)
+- PDF 내 자유 필기/Apple Pencil 입력 — 구현 복잡도 폭증, 오버레이로 충분
+- 보안(비밀번호) PDF 지원 — 저작권/보안 우회 법적 리스크
+- 무제한 페이지 파싱 — Gemini API 비용 제어 위해 최대 50페이지/회 제한
+- PDF 편집 기능 — 완전히 다른 제품 영역
 
-기존 17,000 LOC React 앱에 게임 레이어를 통합하는 핵심 원칙은 **기존 코드 최소 수정**이다. AppShell에는 FunModeToggleButton 삽입만 추가하고, 각 페이지 내부에서 `useFunMode()` 훅으로 UI를 분기한다. Phaser 씬과 React DOM은 EventBus를 통해서만 통신하고, Three.js와 Howler.js는 React 외부 싱글턴으로 관리한다. 게임 상태는 절대 React useState에 저장하지 않는다(60fps 애니메이션에서 리렌더링 유발 방지).
+**기능 우선순위:**
 
-**Major components:**
-1. **FunModeContext** — 반전 모드 on/off 전역 게이트. localStorage 유지. `data-fun-mode` DOM 속성으로 CSS 테마 즉시 전환.
-2. **PhaserBridge** — Phaser Game 인스턴스 마운트·언마운트 관리. forwardRef + useLayoutEffect + EventBus 패턴.
-3. **ThreeBackground** — Three.js WebGL canvas를 `position: fixed; z-index: -1`로 배경 고정. 반전 모드 OFF시 null 반환(Three.js 미로드).
-4. **SoundManager (싱글턴)** — Howler.js BGM 루프 + SFX 스프라이트. React 외부 관리. 모드 전환 시 자동 BGM 시작/정지.
-5. **gamification.service.ts** — XP 계산, 레벨 산정, 뱃지 언락. Dexie v8 신규 테이블(gamificationProfiles, xpEvents, badges).
-6. **FunModeToggleButton** — AppShell 헤더 삽입 커스터마이즈 버튼. 기존 다크모드 토글 패턴 재활용.
-7. **Dexie v8 스키마 확장** — 기존 v7 테이블 유지 + 게이미피케이션 전용 3개 테이블 추가.
+| 기능 | 우선순위 | Phase |
+|------|---------|-------|
+| PDF 업로드 + AI 파싱 파이프라인 전체 | P1 | Phase 1-2 |
+| PDF 뷰어 + 풀이 오버레이 | P1 | Phase 1-2 |
+| 페이지 범위 선택 | P1 | Phase 2 |
+| PDF 내보내기 (시험지 + 학습지) | P2 | Phase 3 |
+| 즉석 문제 풀기 | P2 | Phase 4 |
+| 양방향 PDF-문제카드 네비게이션 (bbox 기반) | P3 | Phase 5 (검증 후) |
 
-**Build Order (의존성 기반)**: 모드 토글 인프라 → XP/레벨 서비스 → 사운드 → Three.js 배경 → Phaser 퀴즈 엔진 → 고급 게임 씬.
+---
 
-### Critical Pitfalls
+### ARCHITECTURE.md — 핵심 아키텍처 패턴
 
-기존 앱(v1/v2) 함정과 v3.0 게이미피케이션 신규 함정을 통합하면 최우선 주의 항목은 다음과 같다.
+**기존 아키텍처와의 관계:**
+v4.0은 기존 코드베이스를 확장하는 방식. 신규 컴포넌트(`/components/pdf/`)와 라우트 3개, `gemini.service.ts`에 `parsePDFDocument()` 추가, `lib/db.ts`에 `version(11)` 추가가 전부다. 기존 코드는 `routes/_layout.tsx`에 메뉴 항목 추가, 문제집/오답노트에 "내보내기" 버튼 추가 정도만 수정한다.
 
-1. **React StrictMode + Phaser 이중 초기화 (G1 — CRITICAL)** — `useRef` 가드로 이중 초기화 방지. Phaser 공식 React TypeScript 템플릿의 PhaserGame.tsx 패턴 그대로 사용. Phase 15 POC에서 가장 먼저 검증.
-2. **WebGL 컨텍스트 한도 초과 (G3 — CRITICAL)** — Phaser + Three.js를 동시에 별도 캔버스로 실행 시 브라우저 한도(8~16개)에 근접. Three.js 이펙트는 특별한 순간에만 Full-screen Canvas, 사용 후 즉시 dispose(). Recharts를 SVG 모드로 고정.
-3. **iOS Web Audio 자동재생 차단 (G4 — CRITICAL)** — 반전 모드 진입 버튼 click 핸들러에서 `audioContext.resume()` 명시 호출. iPhone 실기기 테스트 필수.
-4. **번들 사이즈 폭발 (G5 — CRITICAL)** — Phaser/Three.js 정적 import 절대 금지. 반드시 React.lazy() + manualChunks. Phase 15에서 번들 전략 결정 후 코드 작성.
-5. **게이미피케이션 내재 동기 약화 (G6 — CRITICAL)** — XP/뱃지를 학습 성취 기반으로만 지급. 리더보드는 반 내 익명. 반전 모드 기본값 OFF, 사운드 기본값 OFF. 자기결정이론(SDT) 기반 설계 원칙을 구현 전 문서화.
-6. **Phaser 씬 메모리 누수 (G2 — CRITICAL)** — 씬 shutdown 핸들러에서 텍스처/오디오 명시 제거. `game.destroy(true)` cleanup 호출. 10회 모드 전환 후 힙 스냅샷으로 검증.
-7. **이중 UI 상태 복잡도 (G7 — HIGH)** — 각 컴포넌트 내 `if (gameMode)` 분기 패턴 금지. 페이지 라우터 레벨에서 완전한 컴포넌트 교체 + 공통 데이터 레이어 분리.
+**신규 라우트:**
+- `/student/pdf-viewer/:id` — PDF 뷰어 + 풀이 오버레이
+- `/instructor/pdf-upload` — PDF 업로드 → AI 파싱 → 검수 → DB 등록
+- `/instructor/pdf-export` — 문제 선택 → PDF 내보내기 (강사 + 학생 공용)
+
+**신규 컴포넌트 (`/components/pdf/`):**
+- `PDFViewerLazy.tsx` — react-pdf lazy 래퍼 + pdfjs 워커 설정
+- `FileDropZone.tsx` — 파일 드래그앤드롭 UI (PDF 유효성 검사 포함)
+- `PDFParseReviewer.tsx` — AI 파싱 결과 검수 UI (수정/승인/거절)
+- `PDFParseProgress.tsx` — Gemini 호출 진행 상태 UI
+- `PDFOverlayViewer.tsx` — 뷰어 + 풀이 오버레이 합성 컴포넌트
+- `templates/ExamPDFTemplate.tsx` — 시험지 스타일 (@react-pdf/renderer)
+- `templates/StudySheetTemplate.tsx` — 학습지 스타일 (@react-pdf/renderer)
+
+**데이터 흐름 3개:**
+
+1. **PDF → 앱 (업로드 파이프라인):**
+   ```
+   FileDropZone → File 객체 (메모리 only, DB 저장 안 함)
+   → API 키 사전 확인 게이트
+   → gemini.service.parsePDFDocument() [20MB 기준 inline/Files API 분기]
+   → PDFParseProgress UI
+   → PDFParseReviewer (강사 검수/수정)
+   → question.service.bulkCreate() → db.questions
+   → pdf.service.markImported()
+   ```
+
+2. **PDF 뷰어 + 오버레이:**
+   ```
+   PDFOverlayViewer
+   ├─ [하단 레이어] PDFViewerLazy (react-pdf + PDF.js canvas)
+   └─ [상단 레이어] position:absolute div 오버레이
+         풀이 단계 KaTeX 렌더링 + 정답/오답 인터랙션
+   ```
+
+3. **앱 → PDF (내보내기):**
+   ```
+   question.service.getByIds() [부모에서 미리 로드, Template에 props 전달]
+   → KaTeX.renderToString() → PNG DataURL (html-to-image, scale: 2)
+   → ExamPDFTemplate / StudySheetTemplate (@react-pdf/renderer)
+   → PDFDownloadLink → 브라우저 다운로드
+   ```
+
+**핵심 결정사항 (HIGH confidence):**
+- PDF 원본 Blob은 IndexedDB에 저장하지 않음 — Firefox/Chrome 대용량 blob 트랜잭션 블로킹 버그(Mozilla Bugzilla #837141)
+- File 객체는 컴포넌트 state(메모리)에만 보관, 파싱 완료 후 메타데이터만 Dexie에 저장
+- PDF.js Canvas 위에 `position: absolute` div 오버레이 (Annotation Layer API 수정 없음)
+- KaTeX → PDF 변환: canvas → PNG 접근 B로 시작, 출력 품질 부족 시 SVG 변환 접근 A로 전환
+- API 키 확인을 FileDropZone 진입 전에 수행 (기존 NewQuestionPage 패턴 동일)
+
+**업로드 플로우 상태 머신:**
+```typescript
+type UploadFlowStep = 'idle' | 'uploading' | 'parsing' | 'reviewing' | 'importing' | 'done' | 'error'
+```
+
+**Dexie version(11) 스키마 (기존 version 1~10 절대 수정 금지):**
+```typescript
+pdfDocuments:       '++id, uploadedBy, parseStatus, uploadedAt'
+pdfExtractedItems:  '++id, pdfDocumentId, reviewStatus, pageNumber'
+```
+
+---
+
+### PITFALLS.md — v4.0 핵심 함정
+
+**Critical Pitfalls (7개):**
+
+| 함정 | 예방 전략 | 방지 Phase |
+|------|-----------|-----------|
+| P1: PDF.js 대용량 메모리 폭발 (탭 크래시) | 뷰포트 앞뒤 3페이지만 렌더링, 벗어난 Canvas `canvas.width=0` 즉시 해제, `renderTask.cancel()` 활용 | PDF 뷰어 POC 단계 |
+| P2: iOS Safari PDF.js 렌더링 완전 실패 | iPad 실기기 테스트 필수 (에뮬레이터 재현 불가), workerSrc 명시 설정, 실패 시 `<iframe>` fallback | 뷰어 Phase 첫 POC |
+| P3: Gemini Vision 수식 환각(Hallucination) | 검수 UI 필수(AI 결과 직접 DB 저장 금지), structured output 강제, KaTeX 파싱 오류율 5% 초과 시 알림 | AI 파싱 Phase |
+| P4: IndexedDB Base64 메모리 폭발 | Blob 타입 직접 저장 필수 (`Base64` 절대 금지) | 업로드 Phase 첫 구현 |
+| P5: Gemini Files API 48시간 만료 | 원본 PDF 로컬 저장 후 파싱 직전 업로드, `files.get()` 상태 확인 후 만료 시 재업로드 | AI 파싱 Phase |
+| P6: 한글 폰트 누락 → 빈 사각형 출력 | `Font.register()`로 Pretendard TTF 임베딩, 첫 "Hello World" PDF에서 즉시 검증 | 내보내기 Phase 첫 구현 |
+| P7: LaTeX 수식 PDF 내보내기 렌더링 실패 | KaTeX → canvas → PNG → `<Image>`, html2canvas `useCORS: true` + KaTeX 폰트 self-hosting | 내보내기 Phase |
+
+**Moderate Pitfalls (5개):**
+- P8: 한국어 PDF 인코딩 오류 — NFC 정규화 + Vision AI OCR 경로 우선
+- P9: iPad 터치/펜 이벤트 충돌 — `PointerEvent.pointerType`으로 'pen'/'touch' 구분
+- P10: PDF 뷰어 + v3.0 WebGL 컨텍스트 경쟁 — PDF 뷰어 진입 시 Phaser 씬 `scene.pause()`, 뷰어 종료 시 `scene.resume()`
+- P11: iOS IndexedDB 50MB 한도 — `StorageManager.estimate()` 사전 확인 + LRU 정책 + `QuotaExceededError` 핸들러
+- P12: 그래프/도형 이미지 인식 오류 — 파싱 스키마에 `image_regions: [{page, x, y, width, height}]` 포함, 강사 검수 UI에서 도형 미리보기
+
+**절대 하지 말 것 (Technical Debt Never):**
+- PDF.js 페이지 가상화 없이 전체 렌더링 — 탭 크래시 확실
+- PDF를 Base64로 IndexedDB 저장 — 메모리 10배 폭발
+- AI 파싱 결과 검수 없이 DB 직접 저장 — 데이터 오염
+- 한글 폰트 임베딩 없이 PDF 내보내기 테스트 — 한국어 전체 누락
+- iOS Safari 테스트를 배포 직전에만 수행 — 전체 뷰어 재구현 위험
+
+---
 
 ## Implications for Roadmap
 
-연구에서 도출된 의존성 체인과 함정 방지 전략을 기반으로 아래 phase 구조를 제안한다.
+### 권장 Phase 구조
 
-### Phase 15: 반전 모드 기반 인프라 + 번들 전략
-**Rationale:** 모든 게임 기능의 게이트이자 함정이 가장 집중된 단계. FunModeContext 없이는 어떤 반전 기능도 렌더링 불가. 번들 전략과 WebGL 컨텍스트 예산을 첫 코드 작성 전에 확정해야 나중에 전면 리팩토링을 막는다.
-**Delivers:** FunModeContext, FunModeToggleButton, CSS 테마 변수(`data-fun-mode` 선택자), Dexie v8 스키마 확장, Vite manualChunks 설정, Phaser 통합 POC (이중 초기화 검증).
-**Addresses:** 반전 모드 토글 (P1), 코드 스플리팅 아키텍처.
-**Avoids:** G1(Phaser 이중 초기화), G3(WebGL 컨텍스트 한도), G5(번들 사이즈 폭발), G7(이중 UI 복잡도).
+v4.0은 5개 Phase로 구성한다. Phase 1-2는 병렬 진행 가능(뷰어와 AI 파싱 파이프라인은 독립적). Phase 3도 Phase 2와 병렬 가능(기존 question.service만 의존). Phase 4는 1+2 완료 후, Phase 5는 검증 후 결정.
 
-### Phase 16: XP/레벨/스트릭/콤보 — 게이미피케이션 상태 레이어
-**Rationale:** XP 시스템이 레벨, 뱃지, 리더보드, 챌린지 전체의 기반. 이 단계 없이는 어떤 보상 기능도 독립적으로 구현할 수 없다. canvas-confetti는 추가 의존성 없이 즉시 적용 가능하여 시각적 보상 피드백을 조기에 제공한다.
-**Delivers:** gamification.service.ts, useXP 훅, XPBar/LevelBadge UI, 일일 스트릭 로직, 콤보 카운터, canvas-confetti 정답 피드백, 반전 모드 홈 UI 변신.
-**Uses:** Zustand 슬라이스 확장, Dexie v8 gamificationProfiles/xpEvents 테이블.
-**Avoids:** G6(게이미피케이션 내재 동기 약화 — SDT 기반 보상 설계 원칙 적용).
+```
+Phase 1 (뷰어 인프라)  ─────────────────────────────────> Phase 4 (오버레이 통합) ─> Phase 5 (즉석 풀기)
+Phase 2 (AI 파싱)     ──────────────────────────────────/
+Phase 3 (내보내기)    ← 2와 병렬 가능, 기존 서비스만 의존
+```
 
-### Phase 17: 사운드 시스템 (Howler.js)
-**Rationale:** 청각 피드백은 게임 몰입감의 결정적 요소. Three.js보다 먼저 구현하는 이유는 사운드가 Three.js와 독립적이며, iOS 차단 함정(G4)을 별도 Phase에서 집중 해결하기 위함. 사운드만으로도 즉각적인 게임 느낌을 제공할 수 있다.
-**Delivers:** SoundManager 싱글턴, BGM 3종(기본/타임어택/보스), 핵심 SFX 스프라이트(정답/오답/콤보/레벨업/모드전환), 볼륨 조절 + 기본값 OFF.
-**Uses:** Howler 2.2.4, use-sound 5.0.0.
-**Avoids:** G4(iOS 자동재생 차단 — 유저 제스처 unlock trick).
+---
 
-### Phase 18: Three.js 3D 배경 + 레벨업 시네마틱
-**Rationale:** 반전 모드의 시각적 WOW 포인트. 경쟁사(Duolingo, Kahoot, 수학대왕) 중 3D 시각 효과를 가진 앱이 없다는 점에서 강력한 차별점. WebGL 컨텍스트 예산이 Phase 15에서 확정된 이후에만 구현 가능.
-**Delivers:** ThreeBackground 컴포넌트(fixed canvas, z-index -1), 파티클 시스템(기기 감지 기반 품질 레벨), 레벨업 시네마틱(Framer Motion + drei Sparkles).
-**Uses:** Three.js 0.183.1, @react-three/fiber 9.5.0, @react-three/drei 10.7.7.
-**Avoids:** G3(WebGL 컨텍스트 한도 — Phaser와 별도 canvas, 사용 후 dispose), G8(저사양 기기 폴백 — 기기 감지 품질 레벨).
+**Phase 1: PDF 뷰어 기반 인프라**
 
-### Phase 19: 타임어택 모드 + 서바이벌 모드 (Phaser 퀴즈 엔진)
-**Rationale:** XP·사운드·시각효과가 모두 준비된 후 게임 모드를 구현해야 완성된 게임 경험을 테스트할 수 있다. Phaser는 이 단계에서 처음 본격 사용되며, EventBus 패턴과 퀴즈 채점 로직의 통합이 핵심 난관이다.
-**Delivers:** PhaserBridge 컴포넌트, QuizScene(타임어택), 서바이벌 하트 시스템, EventBus 기반 React ↔ Phaser 통신, 게임오버/승리 화면.
-**Uses:** Phaser 3.90.0, EventBus(Phaser.Events.EventEmitter 싱글턴).
-**Avoids:** G2(씬 메모리 누수 — shutdown 핸들러 등록), G11(KaTeX + Phaser 렌더링 충돌 — HTML 오버레이와 게임 오브젝트 분리).
+**근거:** 다른 모든 Phase의 기반. 뷰어 없이는 오버레이도, AI 파싱 결과 미리보기도 불가능. iOS Safari 검증이 가장 시급하며 여기서 블로킹 이슈가 있으면 전체 일정에 영향을 준다.
 
-### Phase 20: 고급 게임 씬 + 보상 시스템 확장
-**Rationale:** Phase 19 완료 후 사용자 피드백과 성능 데이터를 기반으로 진행 여부를 결정한다. 보스 배틀은 구현 복잡도가 가장 높으므로 기반 인프라가 완전히 안정화된 후 추가.
-**Delivers:** BossScene(보스 HP 바, Three.js 캐릭터), 뱃지/업적 시스템(30개), 반 내 리더보드, 주간 챌린지, 오답노트 복수전 모드.
-**Avoids:** Anti-Feature 목록(전교 공개 랭킹, 가챠, 강제 BGM 적용 확인).
+**내용:**
+- react-pdf + pdfjs-dist lazy 청크 설정 (`pdf-viewer` 청크)
+- `PDFViewerLazy` 컴포넌트 (워커 설정, `.mjs` 확장자 주의)
+- vite-plugin-static-copy 설정 (CMap 파일 복사)
+- `PDFOverlayViewer` 기본 구조 (뷰어만, 오버레이 없이)
+- iOS Safari iPad 실기기 테스트 (P2 함정 방지 — 에뮬레이터 불가)
+- Canvas 가상화 구현 (P1 함정 방지 — 뷰포트 앞뒤 3페이지)
 
-### Phase Ordering Rationale
+**회피 함정:** P1(메모리 폭발), P2(iOS Safari 실패)
 
-- **인프라 → 상태 → 오디오 → 시각 → 게임 → 콘텐츠** 순서는 ARCHITECTURE.md의 Build Order와 FEATURES.md의 의존성 체인을 그대로 따른다.
-- XP가 모든 보상의 기반이므로 Phase 16이 Phase 17~20보다 반드시 먼저 와야 한다.
-- Three.js(Phase 18)가 Phaser(Phase 19)보다 먼저인 이유: WebGL 컨텍스트 예산 검증이 Phaser 풀 통합 전에 필요하다.
-- 사운드(Phase 17)가 Three.js(Phase 18)보다 먼저인 이유: iOS 함정이 독립적이며, 사운드는 Three.js 없이도 즉시 게임 느낌을 제공한다.
-- Phase 20은 검증 게이트를 거친 후 진행 — Phase 19 완료 시 사용자 피드백과 성능 데이터로 우선순위 재조정.
+**리서치 플래그:** 표준적인 react-pdf Vite 패턴, 별도 리서치 불필요. 단 iOS 실기기 검증 결과에 따라 fallback 구현 필요 여부 결정.
 
-### Research Flags
+---
 
-**더 깊은 리서치가 필요한 단계:**
-- **Phase 15 (기반 인프라):** Phaser + React StrictMode 통합 POC를 반드시 먼저 구현·검증. 패턴이 공식 템플릿에 있지만 기존 17K LOC와의 통합에 미지수가 남는다.
-- **Phase 18 (Three.js):** WebGL 컨텍스트 예산이 실제 환경에서 어떻게 동작하는지 실측 필요. Safari OffscreenCanvas 4개 한도가 특히 우려 대상.
-- **Phase 19 (Phaser 퀴즈):** KaTeX HTML 오버레이 + Phaser Input 시스템 충돌(G11)이 실제로 발생하는지, 해결책이 예상대로 작동하는지 POC 검증 필요.
+**Phase 2: Gemini PDF 파싱 + 강사 업로드 플로우**
 
-**표준 패턴으로 리서치 불필요한 단계:**
-- **Phase 16 (XP/스트릭):** Zustand 슬라이스 + Dexie 테이블 추가는 기존 패턴 그대로. SettingsContext/StreakService 패턴 재활용.
-- **Phase 17 (사운드):** Howler.js 공식 문서와 싱글턴 패턴이 명확하게 확립. iOS unlock trick도 MDN에 문서화됨.
-- **Phase 20 (콘텐츠):** Phase 19 인프라 위에 콘텐츠(뱃지 설계, 챌린지 로직)를 추가하는 작업으로 신규 기술 의존성 없음.
+**근거:** v4.0의 핵심 파이프라인. Gemini Vision 수식 추출이 이 마일스톤 전체의 핵심 가치이며, 강사 검수 UI는 AI 환각 대응의 필수 안전망이다. Phase 1과 병렬 진행 가능.
+
+**내용:**
+- Dexie version(11) — pdfDocuments + pdfExtractedItems
+- `gemini.service.ts` — `parsePDFDocument()` 추가 (20MB 기준 inline/Files API 분기)
+- `pdf.service.ts` 신규 생성 (메타데이터 CRUD)
+- `FileDropZone` + `PDFParseProgress` 컴포넌트
+- `PDFParseReviewer` (인라인 LaTeX 편집 + 신뢰도 시각화 + 승인/거절)
+- 강사용 1-클릭 DB 등록 + 등록 결과 요약
+- `/instructor/pdf-upload` 라우트
+- API 키 사전 확인 게이트 (기존 NewQuestionPage 패턴)
+- 페이지 범위 선택 UI (최대 50페이지/회)
+- 수동 입력 fallback 안내 (기존 LaTeX 에디터 링크)
+
+**회피 함정:** P3(Gemini 환각 — 검수 UI 필수), P4(Blob 저장), P5(Files API 만료 관리)
+
+**리서치 플래그:** Gemini Files API CORS 허용 여부를 Phase 구현 초반에 브라우저에서 직접 검증해야 한다. CORS 차단 시 20MB+ PDF는 Express 5 프록시 라우트로 우회 필요.
+
+---
+
+**Phase 3: PDF 내보내기 (시험지 + 학습지)**
+
+**근거:** Phase 1, 2와 독립적. 기존 question.service만 의존하므로 Phase 2와 병렬 가능. KaTeX → PDF 변환 파이프라인 복잡도가 높아 별도 Phase로 분리.
+
+**내용:**
+- @react-pdf/renderer 설치 및 `pdf-renderer` lazy 청크 설정
+- Pretendard TTF 폰트 임베딩 (`Font.register()`) — 첫 구현에서 검증
+- `lib/pdf-utils.ts` — KaTeX → canvas → PNG 변환 유틸 (html-to-image, scale: 2)
+- `ExamPDFTemplate` (시험지: A4 세로, 헤더, 문제 번호, 수식 이미지)
+- `StudySheetTemplate` (학습지: 해설 포함)
+- `/instructor/pdf-export` 라우트
+- 문제집/오답노트 페이지에 "PDF로 내보내기" 버튼 추가
+- 한글 폰트 + 수식 렌더링 육안 검수 (실제 수능 문제로 테스트)
+
+**회피 함정:** P6(한글 폰트 누락), P7(LaTeX→PDF 수식 실패)
+
+**리서치 플래그:** canvas PNG vs SVG 접근 중 최적 방법은 POC로 결정. 인쇄 해상도 부족 시 SVG 변환 접근으로 전환 준비.
+
+---
+
+**Phase 4: PDF 뷰어 풀이 오버레이 통합**
+
+**근거:** Phase 1 + 2 완료 후 가능 (뷰어 기반 + 파싱된 문제 메타데이터 필요). "iPad 시험지 느낌"의 핵심 사용자 가치.
+
+**내용:**
+- `PDFOverlayViewer` 풀이 레이어 완성 (정답 가리기/보이기 토글)
+- PDF.js 좌표 → DOM 좌표 변환 공식: `y_dom = page_height - (y_pdf + height)`
+- `/student/pdf-viewer/:id` 라우트
+- 기존 quiz.service 재사용 (채점 엔진 연동)
+- 정답 확인 후 오답노트 자동 등록 (기존 로직 재사용)
+- iPad 터치 vs 펜 이벤트 구분 처리 (P9 함정)
+
+**회피 함정:** P9(iPad 터치/펜 충돌), P10(WebGL 컨텍스트 경쟁 — Phaser 씬 pause)
+
+**리서치 플래그:** 별도 Phase 리서치 불필요. PDF.js canvas 오버레이 패턴은 표준적.
+
+---
+
+**Phase 5: 즉석 문제 풀기 + 고급 기능 (검증 후 결정)**
+
+**근거:** Phase 4 완료 후. Gemini bbox 좌표 정확도가 실제 수능 PDF에서 검증된 후에야 양방향 네비게이션 구현 여부를 결정할 수 있다.
+
+**내용 (검증 후):**
+- PDF 뷰어 내 즉석 문제 풀기 (채점 엔진 연동 + 오답노트 자동 등록)
+- 양방향 PDF-문제카드 네비게이션 (bbox 기반, Gemini 정확도 검증 필수)
+- 문제 번호 자동 정렬 (2단 레이아웃 감지)
+
+**회피 함정:** bbox 좌표 오류 시 fallback (문제 번호 기반 텍스트 검색)
+
+**리서치 플래그:** Gemini bbox 좌표 추출 정확도가 실제 수능 PDF에서 얼마나 신뢰할 수 있는지 Phase 2 완료 후 데이터로 평가 필요. 필요 시 `/gsd:research-phase` 적용.
+
+---
+
+### 종속성 요약
+
+```
+Phase 1 (뷰어 인프라)  ─────────────────────────────────> Phase 4 (오버레이 통합)
+Phase 2 (AI 파싱)     ──────────────────────────────────/      └────────────> Phase 5
+Phase 3 (내보내기)    ← 독립적 (기존 question.service만 의존)
+```
+
+Phase 1-2-3은 모두 병렬 진행 가능. Phase 4는 1+2 완료 후. Phase 5는 4 완료 + bbox 정확도 검증 후.
+
+---
 
 ## Confidence Assessment
 
-| Area | Confidence | Notes |
-|------|------------|-------|
-| Stack | HIGH | npm 실시간 버전 조회 + 공식 React TypeScript 템플릿 검증 완료. R3F v9 peer dep 직접 확인. |
-| Features | MEDIUM | Duolingo/Kahoot 케이스 스터디는 다수 소스 교차. 교육학 메타분석(K-12 31개 연구)은 HIGH. 35% 이탈 수치는 단일 소스. |
-| Architecture | HIGH | Phaser 공식 템플릿 패턴 직접 확인. Three.js fixed canvas 패턴은 커뮤니티 사례 MEDIUM. EventBus 패턴은 HIGH. |
-| Pitfalls | MEDIUM-HIGH | GitHub 이슈 교차 검증 + MDN 공식 문서. iOS Audio 차단은 HIGH. WebGL 한도 실측은 MEDIUM(단일 소스). |
+| 영역 | 신뢰도 | 근거 |
+|------|--------|------|
+| PDF 뷰어 스택 (react-pdf 10) | HIGH | GitHub 릴리즈 직접 확인, React 19 호환 검증, ESM-only 변경 사항 확인 |
+| Gemini AI SDK (@google/genai) | HIGH | Google 공식 문서에서 GA 확인, 구 SDK 지원 종료 공식 발표 |
+| PDF 생성 (@react-pdf/renderer) | HIGH | React 19.2.x 지원 PR #3224 공식 확인, 한글 폰트 등록 방법 확인 |
+| KaTeX → PDF 변환 파이프라인 | MEDIUM | 두 가지 접근(PNG/SVG) 중 최적 방법은 POC로 결정 필요 |
+| iOS Safari PDF.js 호환성 | MEDIUM | WebKit 버그 실제 보고 있음, 최신 PDF.js로 해결 여부 POC 필요 |
+| Gemini Files API CORS 허용 | MEDIUM-LOW | 브라우저 직접 호출 시 CORS 허용 여부 미검증 (Phase 2 POC 필수) |
+| Gemini bbox 좌표 정확도 | MEDIUM | 실제 수능 PDF에서 좌표 추출 품질 실측 필요 |
+| Gemini 수식 LaTeX 변환 정확도 | MEDIUM | 수능 수식 밀도에서 환각 빈도 실측 필요 |
 
-**Overall confidence:** MEDIUM-HIGH
+**전체 신뢰도: MEDIUM-HIGH**
 
-### Gaps to Address
-
-- **저사양 Android 태블릿 실측 데이터 부재:** Snapdragon 450급 기기에서 Phaser 30fps 유지 가능성을 사전 확인할 방법이 없음. Phase 19 초기에 실기기 테스트 계획 수립 필요.
-- **Safari WebGL 컨텍스트 한도:** 4개(OffscreenCanvas)라는 실측 결과가 단일 소스(WebGL dev mailing list). Phase 15 POC에서 실제 확인 필요.
-- **R3F v9 React 19.3+ 호환성:** peer dep이 `react: ">=19 <19.3"`으로 제한됨. React 19.3이 릴리즈되면 즉시 재검토 필요. 현재(2026-02-23) 기준으로는 문제 없음.
-- **사운드 에셋 소싱:** Howler 스프라이트용 BGM 3종 + SFX 7종 파일이 필요. 무료 CC0 소스(freesound.org, pixabay) 또는 직접 제작 결정 미완료. Phase 17 전에 결정 필요.
-- **보상 설계 원칙 문서화:** G6 함정 방지를 위한 SDT 기반 보상 설계 원칙을 Phase 15 설계 단계에서 팀 내 합의 문서로 확정해야 함. 연구는 완료되었으나 설계 결정은 별도 논의 필요.
-
-## Sources
-
-### Primary (HIGH confidence)
-- [phaserjs/template-react-ts GitHub](https://github.com/phaserjs/template-react-ts) — React 19 + Phaser 3.90 공식 통합 패턴 (PhaserBridge, EventBus)
-- [Phaser v3.90.0 "Tsugumi" 릴리즈](https://phaser.io/news/2025/05/phaser-v390-released) — v3 최종 안정 릴리즈 확인
-- [@react-three/fiber npm](https://www.npmjs.com/package/@react-three/fiber) — v9 peer `react: ">=19 <19.3"` 직접 확인
-- [MDN Web Audio API 자동재생 가이드](https://developer.mozilla.org/en-US/docs/Web/Media/Guides/Autoplay) — iOS 차단 메커니즘 공식 문서
-- [howler.js 공식 문서](https://howlerjs.com/) — 오디오 스프라이트 + Web Audio API fallback
-- [Vite manualChunks GitHub Discussion](https://github.com/vitejs/vite/discussions/17730) — 게임 번들 분리 전략
-- [CSS 변수 기반 테마 토글 — CSS-Tricks](https://css-tricks.com/easy-dark-mode-and-multiple-color-themes-in-react/) — FunModeContext CSS 테마 패턴
-- npm registry 실시간 조회 (2026-02-23) — 모든 신규 라이브러리 버전 및 peer deps 확인
-
-### Secondary (MEDIUM confidence)
-- [게이미피케이션 내재 동기 메타분석 (2025, K-12)](https://onlinelibrary.wiley.com/doi/10.1002/pits.70056) — 31개 연구, n=5,000+ (외재 동기 g=0.713, 내재 동기 g=0.638)
-- [Phaser 메모리 누수 이슈 #5456](https://github.com/photonstorm/phaser/issues/5456) — 씬 cleanup 패턴 검증
-- [Three.js WebGL 메모리 누수 이슈 #18759](https://github.com/mrdoob/three.js/issues/18759) — dispose() 패턴 확인
-- [react-three-fiber WebGL 컨텍스트 Safari 이슈](https://github.com/pmndrs/react-three-fiber/discussions/2457) — Safari 컨텍스트 한도 실측
-- [Duolingo 게이미피케이션 전략](https://www.orizon.co/blog/duolingos-gamification-secrets) — 스트릭 21% 이탈률 감소 데이터
-- [게이미피케이션 실패 이유 2026](https://medium.com/design-bootcamp/why-gamification-fails-new-findings-for-2026-fff0d186722f) — 35% 사용자 이탈 데이터
-- [게이미피케이션 유령 효과 — Frontiers in Education 2024](https://www.frontiersin.org/journals/education/articles/10.3389/feduc.2024.1474733/full) — 외재 보상 내재 동기 저해
-
-### Tertiary (LOW confidence)
-- Phaser 번들 크기 980kb min / Three.js 658kb min — WebSearch 단일 소스, `vite build --report`로 직접 확인 권장
-- WebGL 컨텍스트 한도 4개 (Safari OffscreenCanvas) — 단일 커뮤니티 소스(WebGL dev mailing list), 실측 필요
+리서치 품질은 높으나, Gemini Files API CORS, iOS PDF.js 동작, bbox 정확도는 실제 환경 검증이 필요하다. 모두 Phase 1-2 POC 단계에서 즉시 확인 가능한 수준이며, 대안(fallback) 경로가 모두 설계되어 있어 블로킹 위험은 낮다.
 
 ---
-*Research completed: 2026-02-23*
+
+## Gaps to Address
+
+1. **Gemini Files API CORS 브라우저 호환성** — Phase 2 구현 시 첫 번째 검증 과제. 차단 시 20MB+ PDF는 Express 5 프록시 라우트로 우회.
+
+2. **KaTeX → PDF 수식 품질** — canvas→PNG 방식의 인쇄 해상도 검증 필요. `scale: 2.0` 이상으로 고해상도 캡처 + 육안 검수로 최종 결정.
+
+3. **실제 수능 PDF에서 Gemini 환각 빈도** — KaTeX 파싱 오류율이 5%를 초과하는지 측정. 초과 시 페이지 단위 대신 문제 단위(크롭 이미지) 파싱으로 전환 검토.
+
+4. **iOS Safari + iPad 실기기 테스트** — Phase 1 완료 즉시 iPad에서 실제 수능 PDF 렌더링 검증. 에뮬레이터로는 재현 불가.
+
+5. **저작권 처리 방침** — KICE 수능 기출문제 저작권(PITFALLS.md Pitfall 4). v4.0은 강사가 직접 소유한 자료만 업로드한다는 이용 조건을 명시 필요. 개발 착수 전 정책 확정 필요.
+
+6. **Gemini API 비용 모니터링** — 100페이지 PDF ≈ 50K 토큰 ≈ $0.005 (gemini-2.5-flash 기준). 무제한 허용 시 비용 폭증 위험. 사용량 로깅 + 페이지 제한(최대 50페이지/회) 필수.
+
+---
+
+## Research Flags
+
+**별도 Phase 리서치 필요:**
+- **Phase 5 (bbox 기반 양방향 네비게이션)** — Gemini 좌표 추출 실제 정확도에 따라 구현 방향이 달라짐. Phase 2 완료 후 실제 파싱 결과 데이터를 확보한 후 `/gsd:research-phase`로 검증.
+
+**표준 패턴, 추가 리서치 불필요:**
+- Phase 1 (react-pdf Vite 설정): 공식 문서 + 예제 충분
+- Phase 2 (Gemini structured output): 공식 문서 확인됨
+- Phase 3 (@react-pdf/renderer 레이아웃): 예제 충분
+- Phase 4 (CSS overlay): 표준 패턴
+
+---
+
+## Sources (통합)
+
+**PRIMARY (HIGH confidence):**
+- react-pdf GitHub Releases — v10.4.0 (2026-02-21), PDF.js 5.3.31, ESM-only (HIGH)
+- react-pdf-highlighter-plus Demo — v1.1.3, React 19 명시 (HIGH)
+- @react-pdf/renderer npm — v4.3.2, React 19.2.x 지원 PR #3224 (HIGH)
+- Google AI for Developers — @google/genai GA 2025-05, 구 SDK 지원 종료 2025-11-30 (HIGH)
+- Google AI Document Processing 공식 문서 — PDF 한도 50MB/1000페이지, Files API 48h 캐싱 (HIGH)
+- Gemini Structured Output 공식 문서 — JSON Schema, responseMimeType (HIGH)
+- Mozilla Bugzilla #837141 — IndexedDB 대용량 blob 성능 버그 (HIGH)
+
+**SECONDARY (MEDIUM confidence):**
+- Gemini API 파일 크기 업데이트 (2026-01-12) — inline 100MB (MEDIUM)
+- react-pdf-highlighter-extended GitHub — 업데이트 비교 (-plus 10일 전 vs -extended 9개월 전) (MEDIUM)
+- npm-compare: @react-pdf/renderer vs jsPDF vs pdfmake (MEDIUM)
+- html2canvas + KaTeX CORS 이슈 커뮤니티 보고 (MEDIUM)
+- PDF.js 메모리 최적화 실측 보고 (MEDIUM)
+- iOS Safari WebKit PDF.js 실패 사례 (MEDIUM)
+- Gemini Vision 수식 환각 패턴 실측 보고 (MEDIUM)
+
+---
+
+*Research synthesis for: v4.0 PDF 2-Way 학습 시스템 — 수학 기출문제 학습 도우미*
+*Synthesized: 2026-02-24*
 *Ready for roadmap: yes*
