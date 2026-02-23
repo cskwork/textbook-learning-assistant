@@ -15,6 +15,7 @@ export interface Question {
   content: string           // LaTeX 포함 문제 본문
   imageDataUrl?: string     // base64 이미지 (그래프/도형) — QBNK-07
   answer: string            // 정답 (객관식: '1'~'5', 단답형: 숫자 문자열)
+  choices?: string[]        // 객관식 선택지 텍스트 (5개, LaTeX 포함 가능)
   questionType: 'multiple' | 'short'
   // 해설 — QBNK-04
   explanation: string       // LaTeX 포함 해설 본문

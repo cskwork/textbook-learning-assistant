@@ -195,6 +195,7 @@ export function QuizPlayer({
             selected={state.selectedAnswer}
             onSelect={(answer) => dispatch({ type: 'SELECT_ANSWER', answer })}
             disabled={false}
+            choices={question.choices}
           />
         ) : (
           <ShortAnswerInput

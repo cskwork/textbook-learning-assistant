@@ -10,6 +10,7 @@ import { GoogleGenAI } from '@google/genai'
 export interface GeneratedQuestion {
   content: string           // 문제 본문 (LaTeX $...$ 또는 $$...$$ 형식)
   answer: string            // 객관식: '1'~'5', 단답형: 숫자 문자열
+  choices?: string[]        // 객관식 선택지 텍스트 (5개, LaTeX 포함 가능)
   explanation: string       // 단계별 해설 (LaTeX 포함)
   questionType: 'multiple' | 'short'
   difficulty: 1 | 2 | 3 | 4 | 5
@@ -30,6 +31,11 @@ const MATH_QUESTION_SCHEMA = {
       type: 'string',
       description: '객관식은 정답 번호 문자열 1~5, 단답형은 숫자 문자열',
     },
+    choices: {
+      type: 'array',
+      items: { type: 'string' },
+      description: '객관식 5지선다 선택지 텍스트 배열 (5개, LaTeX 가능). 단답형이면 빈 배열.',
+    },
     explanation: {
       type: 'string',
       description: '단계별 풀이 과정 (한국어 + LaTeX)',
@@ -46,7 +52,7 @@ const MATH_QUESTION_SCHEMA = {
       description: '난이도 1(최하)~5(최상)',
     },
   },
-  required: ['content', 'answer', 'explanation', 'questionType', 'difficulty'],
+  required: ['content', 'answer', 'choices', 'explanation', 'questionType', 'difficulty'],
 }
 
 /**
@@ -55,8 +61,8 @@ const MATH_QUESTION_SCHEMA = {
 const SYSTEM_PROMPT = `당신은 한국 수학 교사입니다. 수능/내신 수준의 수학 문제를 출제합니다.
 규칙:
 - 모든 수식은 KaTeX 호환 LaTeX 사용: 인라인은 $...$, 블록은 $$...$$
-- 객관식(multiple)은 5지선다로 작성, answer는 정답 번호 문자열 '1'~'5'
-- 단답형(short)은 answer는 숫자 문자열
+- 객관식(multiple)은 5지선다로 작성, answer는 정답 번호 문자열 '1'~'5', choices는 5개 선택지 텍스트 배열
+- 단답형(short)은 answer는 숫자 문자열, choices는 빈 배열
 - explanation은 단계별 풀이 과정을 한국어로 작성`
 
 /**

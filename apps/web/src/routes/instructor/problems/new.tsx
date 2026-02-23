@@ -22,6 +22,7 @@ export default function NewQuestionPage() {
         content: data.content,
         imageDataUrl: data.imageDataUrl,
         answer: data.answer,
+        choices: data.choices,
         questionType: data.questionType,
         explanation: data.explanation,
         explanationImageDataUrl: data.explanationImageDataUrl,

@@ -27,6 +27,7 @@ import type { Question } from '@/lib/db'
 export const questionSchema = z.object({
   content: z.string().min(5, '문제 내용은 5자 이상이어야 합니다'),
   answer: z.string().min(1, '정답을 입력하세요'),
+  choices: z.array(z.string()).optional(),
   questionType: z.enum(['multiple', 'short']),
   subject: z.enum(['수학I', '수학II', '미적분', '확률과통계', '기하']),
   unit: z.string().min(1, '단원을 입력하세요'),
@@ -82,6 +83,9 @@ export function QuestionForm({
     form.setValue('explanation', result.explanation)
     form.setValue('questionType', result.questionType)
     form.setValue('difficulty', result.difficulty)
+    if (result.choices?.length) {
+      form.setValue('choices', result.choices)
+    }
     form.trigger(['content', 'answer', 'explanation'])
   }
 

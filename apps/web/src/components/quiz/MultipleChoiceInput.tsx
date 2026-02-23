@@ -1,7 +1,8 @@
 // apps/web/src/components/quiz/MultipleChoiceInput.tsx
-// 5지선다 버튼 UI — 세로 스택 레이아웃, 번호 원형 배지, 터치 타겟 확보
+// 5지선다 버튼 UI — 세로 스택 레이아웃, 번호 원형 배지, 선택지 텍스트, 터치 타겟 확보
 import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
+import { LatexPreview } from '@/components/questions/LatexPreview'
 
 const OPTIONS = ['1', '2', '3', '4', '5'] as const
 
@@ -9,13 +10,15 @@ interface MultipleChoiceInputProps {
   selected: string
   onSelect: (answer: string) => void
   disabled?: boolean  // 제출 후 선택 잠금
+  choices?: string[]  // 선택지 텍스트 배열 (5개, LaTeX 포함 가능)
 }
 
-export function MultipleChoiceInput({ selected, onSelect, disabled }: MultipleChoiceInputProps) {
+export function MultipleChoiceInput({ selected, onSelect, disabled, choices }: MultipleChoiceInputProps) {
   return (
     <div className="space-y-2.5">
-      {OPTIONS.map((opt) => {
+      {OPTIONS.map((opt, idx) => {
         const isSelected = selected === opt
+        const choiceText = choices?.[idx]
 
         return (
           <motion.button
@@ -44,8 +47,14 @@ export function MultipleChoiceInput({ selected, onSelect, disabled }: MultipleCh
             >
               {opt}
             </span>
-            {/* 선택지 라벨 */}
-            <span className="text-base font-medium">번</span>
+            {/* 선택지 텍스트 */}
+            {choiceText ? (
+              <span className="text-base font-medium flex-1 min-w-0">
+                <LatexPreview content={choiceText} />
+              </span>
+            ) : (
+              <span className="text-base font-medium text-muted-foreground">{opt}번</span>
+            )}
           </motion.button>
         )
       })}

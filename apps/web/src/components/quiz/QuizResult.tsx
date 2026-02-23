@@ -124,12 +124,26 @@ export function QuizResult({
             {!isCorrect && (
               <div className="text-sm">
                 <span className="text-muted-foreground">내 답: </span>
-                <span className="text-destructive font-medium">{userAnswer}</span>
+                <span className="text-destructive font-medium">
+                  {userAnswer}
+                  {question.choices && question.questionType === 'multiple' && (
+                    <span className="ml-1 text-muted-foreground font-normal">
+                      ({question.choices[Number(userAnswer) - 1]})
+                    </span>
+                  )}
+                </span>
               </div>
             )}
             <div className="text-sm">
               <span className="text-muted-foreground">정답: </span>
-              <span className="text-success font-medium">{question.answer}</span>
+              <span className="text-success font-medium">
+                {question.answer}
+                {question.choices && question.questionType === 'multiple' && (
+                  <span className="ml-1 text-muted-foreground font-normal">
+                    ({question.choices[Number(question.answer) - 1]})
+                  </span>
+                )}
+              </span>
             </div>
           </CardContent>
         </Card>
