@@ -54,6 +54,7 @@ export default function ThreeBackground({ scene }: ThreeBackgroundProps) {
   return (
     <div className="fixed inset-0 -z-10 pointer-events-none">
       <Canvas
+        className="pointer-events-none"
         dpr={dpr}
         gl={{
           antialias: false,
@@ -62,7 +63,7 @@ export default function ThreeBackground({ scene }: ThreeBackgroundProps) {
         }}
         camera={{ position: [0, 0, 5], fov: 60 }}
         frameloop="always"
-        style={{ width: '100%', height: '100%' }}
+        style={{ width: '100%', height: '100%', pointerEvents: 'none' }}
       >
         <PerformanceMonitor
           onDecline={() => setDpr(0.5)}

@@ -3,6 +3,7 @@
 // Phase 19 게임화 퀴즈 엔진
 
 import { EventBus } from '@/game/EventBus'
+import Phaser from 'phaser'
 
 // Phaser 타입은 dynamic import 시 로드됨
 type PhaserText = import('phaser').GameObjects.Text
@@ -279,6 +280,7 @@ export default class FormulaComboScene extends Phaser.Scene {
       // 정답
       this.score += 100
       this.scoreText.setText(`${this.score}`)
+      EventBus.emit('minigame-correct')
 
       // 슬롯 초록 플래시
       for (const text of this.slotTexts) {
@@ -293,6 +295,7 @@ export default class FormulaComboScene extends Phaser.Scene {
       })
     } else {
       // 오답 — 슬롯 빨간 플래시 후 초기화
+      EventBus.emit('minigame-wrong')
       for (const text of this.slotTexts) {
         text.setColor('#ef4444')
       }
@@ -351,6 +354,9 @@ export default class FormulaComboScene extends Phaser.Scene {
     this.fallingItems = []
 
     // 결과 전달
+    if (this.score >= 300) {
+      EventBus.emit('minigame-success')
+    }
     EventBus.emit('minigame-complete', {
       score: this.score,
       xp: Math.round(this.score / 10),

@@ -125,6 +125,20 @@ chunk size 경고(2844KB)는 STATE.md에 이미 등록된 기존 이슈 — Phas
 - Plan 03(리더보드/챌린지/뱃지 패널)에서 `import { XPBar, LevelUpOverlay, BadgeUnlockOverlay, ... } from '@/components/gamification'` 즉시 사용 가능
 - 모든 컴포넌트가 props 기반 독립 동작 — 퀴즈 페이지 연동 시 onCorrect/onWrong 콜백에 hook
 
+## Self-Check: PASSED
+
+- XPBar.tsx: FOUND
+- XPFloatingText.tsx: FOUND
+- ComboCounter.tsx: FOUND
+- LevelUpOverlay.tsx: FOUND
+- BadgeUnlockOverlay.tsx: FOUND
+- StreakCounter.tsx: FOUND
+- index.ts: FOUND
+- ae2818d: FOUND (Task 1 commit)
+- 0255547: FOUND (Task 2 commit)
+- TypeScript 에러: 0개
+- 프로덕션 빌드: 성공
+
 ---
 *Phase: 16-reward-system*
 *Completed: 2026-02-23*

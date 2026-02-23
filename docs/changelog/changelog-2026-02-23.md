@@ -1,0 +1,36 @@
+# 변경 로그 (2026-02-23)
+
+## Desktop
+- `apps/desktop/src/bun/index.ts`의 하드코딩 URL(`dist-blush-gamma-43.vercel.app`)을 제거하고, 환경에 따라 URL을 선택하도록 수정했습니다.
+  - 개발 모드: `APP_DEV_URL` 또는 `http://localhost:5173`
+  - 프로덕션: `APP_URL` 또는 `https://your-app.vercel.app`
+- 데스크톱 앱 시작 시 URL 접근 가능 여부를 사전 점검하도록 추가했습니다.
+- URL 로딩 실패 시 빈 화면 대신 원인과 조치 방법을 표시하는 fallback HTML 화면을 추가했습니다.
+
+## Web
+- `apps/web/src/lib/db.ts`에 Dexie `version(10)` 마이그레이션을 추가하여 `gamificationProfiles.totalXP` 인덱스를 생성했습니다.
+- `MiniLeaderboard`의 `orderBy('totalXP')` 실행 시 발생하던 `SchemaError`(`KeyPath totalXP ... is not indexed`)가 더 이상 발생하지 않도록 수정했습니다.
+- 게임 모드 메뉴 버튼이 간헐적으로 눌리지 않던 문제를 수정했습니다.
+  - `apps/web/src/components/gamification/LevelUpOverlay.tsx`의 전체화면 오버레이를 `pointer-events-none`으로 변경하고, 중앙 콘텐츠만 `pointer-events-auto`로 클릭 가능하도록 조정했습니다.
+  - `apps/web/src/components/gamification/BadgeUnlockOverlay.tsx`에도 동일한 방식으로 적용해, 보상 연출 중에도 메뉴/내비게이션 클릭이 차단되지 않도록 개선했습니다.
+- 게임 모드(타임어택/서바이벌/보스배틀) 진입 안정성을 개선했습니다.
+  - `apps/web/src/hooks/useGameSession.ts`에 `RESET_SESSION` 동기화를 추가해, 문제 목록이 `[]`에서 실제 데이터로 로드되는 경우 세션이 `준비 중` 상태에 고정되지 않도록 수정했습니다.
+  - `apps/web/src/components/game/quiz/GameModeSelector.tsx`에서 문제 세트가 준비되기 전에는 해당 모드 카드를 비활성화하도록 변경했습니다.
+- 웹 퀴즈 포커스 화면 UX를 개선했습니다.
+  - `apps/web/src/components/layout/AppShell.tsx`의 포커스 헤더(`/quiz`, `/play`)에 `FunModeToggleButton`을 노출하여 일반/게임 모드 전환 버튼이 항상 보이도록 수정했습니다.
+  - 포커스 화면에서는 `ThreeBackground`를 비활성화하여 WebGL 컨텍스트 경쟁을 줄였습니다.
+  - `apps/web/src/routes/student/quiz/index.tsx`에서 게임 모드 활성 시 컨테이너를 전체 폭/높이에 맞춰 렌더링하도록 레이아웃을 조정했습니다.
+- 홈 게임 런처/모드 진입 UX를 수정했습니다.
+  - `apps/web/src/components/home/GameModeLauncher.tsx`를 `/student/quiz/:id?mode=...` 형태의 유효 경로로 변경하여, 클릭 시 리다이렉트처럼 보이던 문제를 해결했습니다.
+  - `apps/web/src/routes/student/quiz/index.tsx`에서 `mode` 쿼리를 읽어 모드 선택 화면을 건너뛰고 즉시 해당 모드로 진입하도록 변경했습니다.
+- 보스배틀/타임어택/서바이벌 입력 잠금 버그를 수정했습니다.
+  - `apps/web/src/components/game/quiz/BossBattleMode.tsx`, `SurvivalMode.tsx`, `TimeAttackMode.tsx`에서 답안 잠금 상태를 `ref`만으로 관리하던 로직을 `state` 기반으로 보강해, 2번째 문제부터 입력이 먹지 않던 현상을 수정했습니다.
+- 미니게임 로드/사운드 동작을 보완했습니다.
+  - `apps/web/src/components/game/minigame/scenes/FormulaComboScene.ts`에 `Phaser` 런타임 import를 추가해 `미니게임을 로드하는 중 오류`를 해결했습니다.
+  - 미니게임 씬에서 `minigame-correct/minigame-wrong/minigame-success` 이벤트를 발행하고, `apps/web/src/components/game/quiz/MiniGameMode.tsx`에서 `useSfx`로 연결해 미니게임 중 효과음이 재생되도록 수정했습니다.
+- 홈 FunMode에서 프로필 미생성 시 빈 화면으로 머무르던 문제를 수정했습니다.
+  - `apps/web/src/lib/gamification/gamification.service.ts`에 `ensureGamificationProfile`을 추가했습니다.
+  - `apps/web/src/hooks/useGamification.ts`에서 최초 진입 시 프로필을 자동 생성하도록 연결했습니다.
+- 게임 문제 세트 안정성을 강화했습니다.
+  - `apps/web/src/lib/game/question-pool.ts`를 추가해 모드 문제 풀 생성(보강/중복 확장)을 공통화했습니다.
+  - `apps/web/src/routes/student/quiz/index.tsx`에서 해당 유틸을 사용하도록 변경했습니다.

@@ -3,13 +3,15 @@
 // Phase 16 보상 시스템
 
 import { useLiveQuery } from 'dexie-react-hooks'
+import { useEffect } from 'react'
 import { db } from '@/lib/db'
 import { calculateXPForNextLevel, calculateXPProgress } from '@/lib/gamification/xp-formula'
+import { ensureGamificationProfile } from '@/lib/gamification/gamification.service'
 import type { GamificationProfile, BadgeRecord } from '@/lib/db'
 
 export interface UseGamificationReturn {
-  /** 게이미피케이션 프로필 (undefined = 로딩 중) */
-  profile: GamificationProfile | undefined
+  /** 게이미피케이션 프로필 (null = 없음/미생성, loading 동안 undefined) */
+  profile: GamificationProfile | null
   /** 다음 레벨까지 필요한 XP (최대 레벨이면 Infinity) */
   xpForNextLevel: number
   /** 현재 레벨 내 XP 진행률 (0~1) */
@@ -29,13 +31,13 @@ export interface UseGamificationReturn {
  * @param studentId - 학생 이메일 (없으면 null/undefined)
  */
 export function useGamification(studentId: string | null | undefined): UseGamificationReturn {
-  // 프로필 구독 — dependency [studentId] 필수 (Pitfall 2 방지)
-  const profile = useLiveQuery(
+  const profileResult = useLiveQuery<GamificationProfile | undefined, null>(
     () => {
       if (!studentId) return undefined
       return db.gamificationProfiles.where('studentId').equals(studentId).first()
     },
     [studentId],
+    null,
   )
 
   // 뱃지 목록 구독
@@ -48,8 +50,18 @@ export function useGamification(studentId: string | null | undefined): UseGamifi
     [],
   )
 
-  // 로딩 상태: profile이 undefined이고 studentId가 있으면 로딩 중
-  const isLoading = studentId != null && profile === undefined
+  const isLoading = isProfileLoading(studentId, profileResult)
+  const profile = profileResult ?? null
+
+  // 프로필이 없으면 자동 생성하여 홈/대시보드가 즉시 렌더링되도록 보장
+  useEffect(() => {
+    if (!studentId) return
+    if (profileResult !== undefined) return
+
+    void ensureGamificationProfile(studentId).catch(() => {
+      // 생성 실패는 조용히 무시 (다음 reactive 사이클에서 재시도 가능)
+    })
+  }, [studentId, profileResult])
 
   // XP 진행률 계산
   const currentLevel = profile?.level ?? 1
@@ -64,4 +76,11 @@ export function useGamification(studentId: string | null | undefined): UseGamifi
     allBadges: allBadges ?? [],
     isLoading,
   }
+}
+
+export function isProfileLoading(
+  studentId: string | null | undefined,
+  profileResult: GamificationProfile | null | undefined,
+) {
+  return studentId != null && profileResult === null
 }

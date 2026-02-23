@@ -120,11 +120,17 @@ interface GameModeSelectorProps {
   onSelectMode: (mode: SelectableMode) => void
   /** 사용 가능한 문제 목록 (문제 수 표시용) */
   questions?: Question[]
+  /** 게임 문제 세트 준비 여부 (타임어택/서바이벌/보스배틀 활성화 기준) */
+  isGameQuestionsReady?: boolean
 }
 
 // ─── 컴포넌트 ────────────────────────────────────────────────────────────────
 
-export function GameModeSelector({ onSelectMode, questions }: GameModeSelectorProps) {
+export function GameModeSelector({
+  onSelectMode,
+  questions,
+  isGameQuestionsReady = false,
+}: GameModeSelectorProps) {
   const questionCount = questions?.length ?? 0
 
   return (
@@ -149,32 +155,44 @@ export function GameModeSelector({ onSelectMode, questions }: GameModeSelectorPr
         animate="show"
         className="grid grid-cols-1 sm:grid-cols-2 gap-3"
       >
-        {MODE_CARDS.map((card) => (
-          <motion.button
-            key={card.mode}
-            variants={item}
-            whileHover={{ scale: 1.02, y: -2 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => onSelectMode(card.mode)}
-            className={`
-              relative overflow-hidden rounded-2xl border-2 ${card.color}
-              bg-gradient-to-br ${card.bgGradient}
-              p-5 text-left transition-shadow duration-200
-              hover:shadow-lg hover:shadow-black/20
-              focus:outline-none focus:ring-2 focus:ring-white/20
-            `}
-          >
-            <div className="flex items-start gap-4">
-              {/* 아이콘 */}
-              <div className="text-white/80 shrink-0">{card.icon}</div>
-              {/* 텍스트 */}
-              <div className="space-y-1 min-w-0">
-                <h3 className="text-lg font-bold text-white">{card.name}</h3>
-                <p className="text-sm text-gray-300">{card.description}</p>
+        {MODE_CARDS.map((card) => {
+          const requiresQuestions =
+            card.mode === 'timeAttack' || card.mode === 'survival' || card.mode === 'bossBattle'
+          const disabled = requiresQuestions && !isGameQuestionsReady
+
+          return (
+            <motion.button
+              key={card.mode}
+              type="button"
+              variants={item}
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => onSelectMode(card.mode)}
+              disabled={disabled}
+              className={`
+                relative overflow-hidden rounded-2xl border-2 ${card.color}
+                bg-gradient-to-br ${card.bgGradient}
+                p-5 text-left transition-shadow duration-200
+                hover:shadow-lg hover:shadow-black/20
+                focus:outline-none focus:ring-2 focus:ring-white/20
+                disabled:opacity-45 disabled:cursor-not-allowed disabled:hover:shadow-none
+              `}
+            >
+              <div className="flex items-start gap-4">
+                {/* 아이콘 */}
+                <div className="text-white/80 shrink-0">{card.icon}</div>
+                {/* 텍스트 */}
+                <div className="space-y-1 min-w-0">
+                  <h3 className="text-lg font-bold text-white">{card.name}</h3>
+                  <p className="text-sm text-gray-300">{card.description}</p>
+                  {disabled && (
+                    <p className="text-xs text-amber-300/90 mt-1">문제 세트 로딩 중...</p>
+                  )}
+                </div>
               </div>
-            </div>
-          </motion.button>
-        ))}
+            </motion.button>
+          )
+        })}
       </motion.div>
     </div>
   )

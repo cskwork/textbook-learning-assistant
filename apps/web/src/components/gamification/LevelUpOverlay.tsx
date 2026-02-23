@@ -52,12 +52,11 @@ export function LevelUpOverlay({ newLevel, visible, onDone }: LevelUpOverlayProp
     <AnimatePresence>
       {visible && (
         <motion.div
-          className="fixed inset-0 z-[100] flex flex-col items-center justify-center cursor-pointer select-none"
+          className="fixed inset-0 z-[100] pointer-events-none flex flex-col items-center justify-center select-none"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          onClick={onDone}
         >
           {/* 배경: 블랙 반투명 */}
           <div className="absolute inset-0 bg-black/80" />
@@ -90,7 +89,10 @@ export function LevelUpOverlay({ newLevel, visible, onDone }: LevelUpOverlayProp
           />
 
           {/* 중앙 콘텐츠 컨테이너 */}
-          <div className="relative z-10 flex flex-col items-center gap-4">
+          <div
+            className="relative z-10 pointer-events-auto cursor-pointer flex flex-col items-center gap-4"
+            onClick={onDone}
+          >
             {/* LEVEL UP! 텍스트 — spring 애니메이션 */}
             <motion.div
               className="text-6xl font-black text-yellow-400 tracking-widest"

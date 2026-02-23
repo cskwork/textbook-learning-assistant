@@ -49,6 +49,7 @@ export default function BossBattleMode({ questions, studentId, onComplete, onBac
   const [bossState, setBossState] = useState<BossAnimState>('idle')
   const [damageText, setDamageText] = useState<string>('')
   const answerProcessingRef = useRef(false)
+  const [isAnswerLocked, setIsAnswerLocked] = useState(false)
 
   // 게임 시작
   useEffect(() => {
@@ -60,6 +61,7 @@ export default function BossBattleMode({ questions, studentId, onComplete, onBac
   // 문제 변경 시 잠금 해제
   useEffect(() => {
     answerProcessingRef.current = false
+    setIsAnswerLocked(false)
   }, [state.currentQuestionIndex])
 
   // 게임 종료 시 onComplete 호출
@@ -95,6 +97,7 @@ export default function BossBattleMode({ questions, studentId, onComplete, onBac
     async (answer: string) => {
       if (!currentQuestion || answerProcessingRef.current) return
       answerProcessingRef.current = true
+      setIsAnswerLocked(true)
 
       const isCorrect = answer === currentQuestion.answer
 
@@ -183,7 +186,7 @@ export default function BossBattleMode({ questions, studentId, onComplete, onBac
       <GameQuizShell
         question={currentQuestion}
         onAnswer={handleAnswer}
-        disabled={answerProcessingRef.current}
+        disabled={isAnswerLocked}
         questionLabel={`Q${state.currentQuestionIndex + 1}/${slicedQuestions.length}`}
       />
 

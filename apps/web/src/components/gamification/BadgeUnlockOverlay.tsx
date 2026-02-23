@@ -98,12 +98,11 @@ export function BadgeUnlockOverlay({ badge, visible, onDone }: BadgeUnlockOverla
     <AnimatePresence>
       {visible && badge && (
         <motion.div
-          className={`fixed inset-0 z-[100] flex flex-col items-center justify-center cursor-pointer select-none ${RARITY_BG_OPACITY[rarity]}`}
+          className={`fixed inset-0 z-[100] pointer-events-none flex flex-col items-center justify-center select-none ${RARITY_BG_OPACITY[rarity]}`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25 }}
-          onClick={onDone}
         >
           {/* 방사형 빛 효과 — 희귀도별 색상 */}
           <div
@@ -127,7 +126,10 @@ export function BadgeUnlockOverlay({ badge, visible, onDone }: BadgeUnlockOverla
           )}
 
           {/* 중앙 콘텐츠 */}
-          <div className="relative z-10 flex flex-col items-center gap-3">
+          <div
+            className="relative z-10 pointer-events-auto cursor-pointer flex flex-col items-center gap-3"
+            onClick={onDone}
+          >
             {/* 상단 레이블 */}
             <motion.p
               className={`text-sm font-bold tracking-widest ${RARITY_COLOR[rarity]} opacity-80`}

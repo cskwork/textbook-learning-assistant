@@ -3,10 +3,12 @@
 // Phase 19 게임화 퀴즈 엔진
 // Note: GameResult는 퀴즈 페이지(index.tsx)에서 통합 렌더링
 
-import { useRef, useCallback } from 'react'
+import { useRef, useCallback, useEffect } from 'react'
 import { MiniGameBridge } from '@/components/game/minigame/MiniGameBridge'
 import { awardXP } from '@/lib/gamification/gamification.service'
 import type { GameSessionResult } from '@/hooks/useGameSession'
+import { useSfx } from '@/hooks/useSfx'
+import { EventBus } from '@/game/EventBus'
 
 interface MiniGameModeProps {
   /** 학생 ID */
@@ -26,6 +28,24 @@ interface MiniGameResult {
 export default function MiniGameMode({ studentId, onComplete, onBack }: MiniGameModeProps) {
   // 중복 호출 방지 가드
   const completedRef = useRef(false)
+  const { playSfx } = useSfx()
+
+  // 미니게임 씬 이벤트 → SFX 재생 연결
+  useEffect(() => {
+    const onCorrect = () => playSfx('correct')
+    const onWrong = () => playSfx('wrong')
+    const onSuccess = () => playSfx('levelUp')
+
+    EventBus.on('minigame-correct', onCorrect)
+    EventBus.on('minigame-wrong', onWrong)
+    EventBus.on('minigame-success', onSuccess)
+
+    return () => {
+      EventBus.off('minigame-correct', onCorrect)
+      EventBus.off('minigame-wrong', onWrong)
+      EventBus.off('minigame-success', onSuccess)
+    }
+  }, [playSfx])
 
   const handleGameComplete = useCallback(async (result: MiniGameResult) => {
     if (completedRef.current) return

@@ -2,7 +2,7 @@
 // useReducer 기반 게임 세션 상태머신 — 모든 게임 모드에서 공유
 // Phase 19 게임화 퀴즈 엔진
 
-import { useReducer, useCallback, useMemo } from 'react'
+import { useReducer, useCallback, useMemo, useEffect } from 'react'
 import type { Question } from '@/lib/db'
 import type { GameMode } from '@/lib/db'
 
@@ -52,10 +52,11 @@ type GameAction =
   | { type: 'TIME_UP' }
   | { type: 'FINISH_GAME' }
   | { type: 'RECOVER_HEART' }
+  | { type: 'RESET_SESSION'; mode: GameMode; questions: Question[] }
 
 // ─── 리듀서 ───────────────────────────────────────────────────────────────────
 
-function gameReducer(state: GameSessionState, action: GameAction): GameSessionState {
+export function gameReducer(state: GameSessionState, action: GameAction): GameSessionState {
   switch (action.type) {
     case 'START_GAME':
       return {
@@ -117,7 +118,22 @@ function gameReducer(state: GameSessionState, action: GameAction): GameSessionSt
 
     case 'NEXT_QUESTION': {
       const nextIndex = state.currentQuestionIndex + 1
-      // 마지막 문제 완료 시 (서바이벌 제외 — 서바이벌은 하트 0으로만 종료)
+      // 서바이벌은 문제 인덱스를 순환시키고, 종료는 하트 0에서만 처리한다.
+      if (state.mode === 'survival') {
+        if (state.questions.length === 0) {
+          return {
+            ...state,
+            phase: 'finished',
+            endTime: Date.now(),
+          }
+        }
+        return {
+          ...state,
+          currentQuestionIndex: nextIndex % state.questions.length,
+        }
+      }
+
+      // 마지막 문제 완료 시 종료
       if (nextIndex >= state.questions.length) {
         return {
           ...state,
@@ -153,6 +169,9 @@ function gameReducer(state: GameSessionState, action: GameAction): GameSessionSt
         hearts: Math.min(3, state.hearts + 1),
       }
 
+    case 'RESET_SESSION':
+      return createInitialState(action.mode, action.questions)
+
     default:
       return state
   }
@@ -160,7 +179,7 @@ function gameReducer(state: GameSessionState, action: GameAction): GameSessionSt
 
 // ─── 초기 상태 생성 ───────────────────────────────────────────────────────────
 
-function createInitialState(mode: GameMode, questions: Question[]): GameSessionState {
+export function createInitialState(mode: GameMode, questions: Question[]): GameSessionState {
   // 타임어택 난이도별 시간 계산
   let timePerQuestion = 20
   if (mode === 'timeAttack' && questions.length > 0) {
@@ -191,6 +210,11 @@ function createInitialState(mode: GameMode, questions: Question[]): GameSessionS
   }
 }
 
+/** 문제 목록 변경 감지를 위한 시그니처 문자열 생성 */
+export function createQuestionsSignature(questions: Question[]): string {
+  return questions.map((q) => q.id).join(',')
+}
+
 // ─── 훅 ────────────────────────────────────────────────────────────────────
 
 export function useGameSession(mode: GameMode, questions: Question[]) {
@@ -199,6 +223,14 @@ export function useGameSession(mode: GameMode, questions: Question[]) {
     { mode, questions },
     ({ mode, questions }) => createInitialState(mode, questions),
   )
+
+  const questionsSignature = useMemo(() => createQuestionsSignature(questions), [questions])
+
+  // 질문 세트/모드가 바뀌면 세션 상태를 초기화한다.
+  // (초기 로딩 시 [] → 실제 문제 목록 전환 케이스 포함)
+  useEffect(() => {
+    dispatch({ type: 'RESET_SESSION', mode, questions })
+  }, [mode, questionsSignature])
 
   const startGame = useCallback(() => dispatch({ type: 'START_GAME' }), [])
   const answerCorrect = useCallback(

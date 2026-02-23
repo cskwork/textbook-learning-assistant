@@ -8,7 +8,18 @@
       "Bash(node:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Skill(gsd:progress)"
+      "Skill(gsd:progress)",
+      "Skill(agent-browser)",
+      "Bash(agent-browser screenshot:*)",
+      "Bash(agent-browser snapshot:*)",
+      "Bash(agent-browser fill:*)",
+      "Bash(agent-browser click:*)",
+      "Bash(agent-browser wait:*)",
+      "Bash(agent-browser get:*)",
+      "Bash(agent-browser console:*)",
+      "Bash(agent-browser reload:*)",
+      "Bash(agent-browser set:*)",
+      "Skill(gsd:new-milestone)"
     ]
   }
 }

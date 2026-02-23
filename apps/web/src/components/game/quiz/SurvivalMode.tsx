@@ -2,7 +2,7 @@
 // 서바이벌 모드 — 하트 3개로 끝까지 생존
 // Phase 19 게임화 퀴즈 엔진
 
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef, useCallback, useState } from 'react'
 import { motion } from 'framer-motion'
 import { GameQuizShell } from './GameQuizShell'
 import { HeartDisplay } from './HeartDisplay'
@@ -41,6 +41,7 @@ export default function SurvivalMode({ questions, studentId, onComplete, onBack 
   const { comboCount, onCorrect: comboOnCorrect, onWrong: comboOnWrong } = useCombo()
   const { playSfx } = useSfx()
   const answerProcessingRef = useRef(false)
+  const [isAnswerLocked, setIsAnswerLocked] = useState(false)
 
   // 게임 시작
   useEffect(() => {
@@ -52,6 +53,7 @@ export default function SurvivalMode({ questions, studentId, onComplete, onBack 
   // 문제 변경 시 답안 처리 잠금 해제
   useEffect(() => {
     answerProcessingRef.current = false
+    setIsAnswerLocked(false)
   }, [state.currentQuestionIndex])
 
   // 게임 종료 시 onComplete 호출
@@ -78,6 +80,7 @@ export default function SurvivalMode({ questions, studentId, onComplete, onBack 
     async (answer: string) => {
       if (!currentQuestion || answerProcessingRef.current) return
       answerProcessingRef.current = true
+      setIsAnswerLocked(true)
 
       const isCorrect = answer === currentQuestion.answer
 
@@ -132,7 +135,7 @@ export default function SurvivalMode({ questions, studentId, onComplete, onBack 
       <GameQuizShell
         question={currentQuestion}
         onAnswer={handleAnswer}
-        disabled={answerProcessingRef.current}
+        disabled={isAnswerLocked}
         questionLabel={`Q${state.currentQuestionIndex + 1}`}
         headerSlot={
           <div className="flex items-center justify-between w-full">

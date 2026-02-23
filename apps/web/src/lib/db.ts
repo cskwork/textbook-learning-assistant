@@ -1,5 +1,5 @@
 // apps/web/src/lib/db.ts
-// Dexie IndexedDB 스키마 — 문제 영구 저장 + 퀴즈 엔진 (version 2) + DIY 문제집 (version 3) + AI 분석 설정 (version 4) + 강사 관리 포털 (version 5) + 마이페이지 + 앱 설정 (version 6) + 학습 플래너 (version 7) + 게이미피케이션 (version 8)
+// Dexie IndexedDB 스키마 — 문제 영구 저장 + 퀴즈 엔진 (version 2) + DIY 문제집 (version 3) + AI 분석 설정 (version 4) + 강사 관리 포털 (version 5) + 마이페이지 + 앱 설정 (version 6) + 학습 플래너 (version 7) + 게이미피케이션 (version 8) + 게임 기록 (version 9) + 리더보드 XP 인덱스 (version 10)
 import Dexie, { type EntityTable } from 'dexie'
 
 export interface QuestionSource {
@@ -314,6 +314,12 @@ db.version(8).stores({
 // 기존 테이블은 자동 상속됨. 신규 테이블만 정의.
 db.version(9).stores({
   gameRecords: '++id, studentId, mode, score, playedAt, [studentId+mode]',
+})
+
+// version(10): 리더보드 정렬용 totalXP 인덱스 추가
+// ⚠️ 기존 version(1)~(9) 절대 수정하지 말 것
+db.version(10).stores({
+  gamificationProfiles: '++id, &studentId, totalXP',
 })
 
 // 앱 시작 시 DB가 비어있으면 시드 데이터 자동 삽입

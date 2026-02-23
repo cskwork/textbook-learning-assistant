@@ -9,9 +9,10 @@ import { useNavigate } from 'react-router'
 import { motion } from 'framer-motion'
 import { GlassCard, NeonBorder, NeonText } from '@/components/game/ui'
 import { LightningIcon, HeartIcon, SkullIcon, StarIcon } from '@/components/game/icons'
+import { db } from '@/lib/db'
 
 interface GameMode {
-  id: string
+  id: 'timeAttack' | 'survival' | 'bossBattle' | 'miniGame'
   label: string
   desc: string
   icon: typeof LightningIcon
@@ -21,7 +22,7 @@ interface GameMode {
 
 const modes: GameMode[] = [
   {
-    id: 'timeattack',
+    id: 'timeAttack',
     label: '타임어택',
     desc: '시간과의 싸움!',
     icon: LightningIcon,
@@ -37,7 +38,7 @@ const modes: GameMode[] = [
     iconColor: 'var(--fun-neon-red)',
   },
   {
-    id: 'bossbattle',
+    id: 'bossBattle',
     label: '보스배틀',
     desc: '보스를 쓰러뜨려라!',
     icon: SkullIcon,
@@ -45,7 +46,7 @@ const modes: GameMode[] = [
     iconColor: 'var(--fun-neon-magenta)',
   },
   {
-    id: 'minigame',
+    id: 'miniGame',
     label: '미니게임',
     desc: '재미있는 도전!',
     icon: StarIcon,
@@ -56,6 +57,17 @@ const modes: GameMode[] = [
 
 export function GameModeLauncher() {
   const navigate = useNavigate()
+
+  async function handleLaunch(modeId: GameMode['id']) {
+    const allQuestions = await db.questions.toArray()
+    if (allQuestions.length === 0) {
+      navigate('/student/problems')
+      return
+    }
+
+    const randomQuestion = allQuestions[Math.floor(Math.random() * allQuestions.length)]
+    navigate(`/student/quiz/${randomQuestion.id}?mode=${modeId}`)
+  }
 
   return (
     <div className="space-y-3">
@@ -75,7 +87,9 @@ export function GameModeLauncher() {
               <NeonBorder color={mode.neonColor}>
                 <GlassCard
                   className="p-4 cursor-pointer"
-                  onClick={() => navigate(`/student/quiz?mode=${mode.id}`)}
+                  onClick={() => {
+                    void handleLaunch(mode.id)
+                  }}
                 >
                   <div className="flex flex-col items-center text-center gap-2">
                     <Icon size={36} color={mode.iconColor} glow />

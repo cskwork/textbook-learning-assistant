@@ -43,8 +43,21 @@ export function FunModeHome() {
     [user?.email],
   )
 
-  if (isLoading || !profile) {
+  if (isLoading) {
     return <GameLoadingSpinner />
+  }
+
+  if (!profile) {
+    return (
+      <div
+        className="min-h-screen p-4 md:p-6 lg:p-8 max-w-4xl mx-auto flex items-center justify-center text-center space-y-2"
+        style={{ background: 'var(--fun-bg-primary)', color: 'var(--fun-text-primary)' }}
+      >
+        <p className="text-sm text-muted-foreground">
+          게이미피케이션 프로필을 준비 중입니다. 잠시만 기다려 주세요.
+        </p>
+      </div>
+    )
   }
 
   const userName = user?.email?.split('@')[0] ?? '모험가'

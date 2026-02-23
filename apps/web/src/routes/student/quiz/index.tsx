@@ -3,7 +3,7 @@
 // Phase 16: 게이미피케이션 오버레이 (FunMode 시 LevelUpOverlay + BadgeUnlockOverlay)
 // Phase 19: 게임 모드 통합 (FunMode ON → 모드 선택 → 게임 플레이 → 결과)
 import { lazy, Suspense, useState, useEffect, useCallback } from 'react'
-import { useParams, useNavigate } from 'react-router'
+import { useParams, useNavigate, useSearchParams } from 'react-router'
 import { Bookmark, ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -12,9 +12,11 @@ import { QuizPlayer } from '@/components/quiz/QuizPlayer'
 import { FadeIn } from '@/components/motion/FadeIn'
 import { AnimatedCard } from '@/components/motion/AnimatedCard'
 import { GameModeSelector } from '@/components/game/quiz/GameModeSelector'
+import { cn } from '@/lib/utils'
 import { useAuth } from '@/contexts/AuthContext'
 import { useFunMode } from '@/hooks/useFunMode'
 import { db, type Question, type GameMode } from '@/lib/db'
+import { buildGameQuestionPool, shuffleArray } from '@/lib/game/question-pool'
 import { getWrongNote, toggleBookmark } from '@/services/wrongNote.service'
 import { LevelUpOverlay, BadgeUnlockOverlay } from '@/components/gamification'
 import { BADGE_DEFINITIONS, type BadgeDefinition } from '@/lib/gamification/badge-definitions'
@@ -45,28 +47,30 @@ type QuizPageView =
   | 'miniGame'
   | 'result'
 
+function parseRequestedMode(value: string | null): GameMode | 'normal' | null {
+  if (!value) return null
+
+  const lower = value.toLowerCase()
+  if (lower === 'normal') return 'normal'
+  if (lower === 'timeattack' || lower === 'time_attack') return 'timeAttack'
+  if (lower === 'survival') return 'survival'
+  if (lower === 'bossbattle' || lower === 'boss_battle') return 'bossBattle'
+  if (lower === 'minigame' || lower === 'mini_game') return 'miniGame'
+
+  return null
+}
+
 // ─── 게임 모드 로딩 스피너 ──────────────────────────────────────────────────
 
-function GameModeLoading() {
+function GameModeLoading({ message = '게임 모드 로딩 중...' }: { message?: string }) {
   return (
     <div className="flex items-center justify-center h-64">
       <div className="text-center space-y-3">
         <div className="w-8 h-8 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin mx-auto" />
-        <p className="text-white/60 text-sm">게임 모드 로딩 중...</p>
+        <p className="text-white/60 text-sm">{message}</p>
       </div>
     </div>
   )
-}
-
-// ─── 문제 셔플 유틸 ──────────────────────────────────────────────────────────
-
-function shuffleArray<T>(arr: T[]): T[] {
-  const shuffled = [...arr]
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
-  }
-  return shuffled
 }
 
 // ─── 메인 컴포넌트 ─────────────────────────────────────────────────────────
@@ -74,6 +78,7 @@ function shuffleArray<T>(arr: T[]): T[] {
 export default function QuizPage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
   const { user } = useAuth()
   const { isFunMode } = useFunMode()
 
@@ -95,6 +100,15 @@ export default function QuizPage() {
   const [showConfetti, setShowConfetti] = useState(false)
 
   const studentId = user?.email ?? ''
+  const requestedMode = parseRequestedMode(searchParams.get('mode'))
+  const isGameQuestionsReady = gameQuestions.length > 0
+  const isImmersiveGameView =
+    view === 'timeAttack' || view === 'survival' || view === 'bossBattle' || view === 'miniGame'
+  const isAutoModeEntryPending =
+    isFunMode
+    && view === 'modeSelect'
+    && requestedMode !== null
+    && requestedMode !== 'normal'
 
   // 문제 로드 (기존: 단일 문제)
   useEffect(() => {
@@ -113,21 +127,24 @@ export default function QuizPage() {
   useEffect(() => {
     if (!question || !isFunMode) return
 
-    // 같은 과목의 문제를 최대 50개 로딩 (서바이벌용)
+    // 같은 과목 문제를 우선 사용하고, 부족분은 전체 문제로 보강
     const loadGameQuestions = async () => {
-      let questions: Question[]
+      let subjectQuestions: Question[]
+      let allQuestions: Question[]
 
       if (question.subject) {
-        questions = await db.questions
+        subjectQuestions = await db.questions
           .where('subject')
           .equals(question.subject)
           .toArray()
+        allQuestions = await db.questions.toArray()
       } else {
-        questions = await db.questions.toArray()
+        allQuestions = await db.questions.toArray()
+        subjectQuestions = allQuestions
       }
 
-      // 셔플해서 저장
-      setGameQuestions(shuffleArray(questions).slice(0, 50))
+      const pool = buildGameQuestionPool(subjectQuestions, allQuestions, 50)
+      setGameQuestions(pool)
     }
 
     loadGameQuestions()
@@ -175,28 +192,27 @@ export default function QuizPage() {
 
   // Phase 19: 모드 선택 핸들러
   const handleModeSelect = useCallback((mode: GameMode | 'normal') => {
-    setSelectedMode(mode)
-
     if (mode === 'normal') {
+      setSelectedMode(mode)
       setView('normal')
       return
     }
 
     // 미니게임은 문제 불필요
     if (mode === 'miniGame') {
+      setSelectedMode(mode)
       setView('miniGame')
       return
     }
 
-    // 문제가 충분한지 확인
-    if (gameQuestions.length === 0) {
-      // 문제가 아직 로딩 안 됐으면 대기
-      setView(mode)
+    // 문제 세트가 준비되지 않은 상태에서는 게임 모드 진입을 막는다.
+    if (!isGameQuestionsReady) {
       return
     }
 
+    setSelectedMode(mode)
     setView(mode)
-  }, [gameQuestions.length])
+  }, [isGameQuestionsReady])
 
   // Phase 19: 게임 완료 핸들러
   const handleGameComplete = useCallback((result: GameSessionResult) => {
@@ -222,6 +238,24 @@ export default function QuizPage() {
     setGameResult(null)
     setView('modeSelect')
   }, [])
+
+  // 홈 런처에서 전달된 mode 쿼리가 있으면 모드 선택 화면을 건너뛰고 즉시 진입
+  useEffect(() => {
+    if (!isFunMode) return
+    if (!requestedMode) return
+    if (view !== 'modeSelect') return
+
+    // 문제가 필요한 모드는 문제 세트 준비 후에만 즉시 진입
+    if (
+      (requestedMode === 'timeAttack' || requestedMode === 'survival' || requestedMode === 'bossBattle')
+      && !isGameQuestionsReady
+    ) {
+      return
+    }
+
+    handleModeSelect(requestedMode)
+    setSearchParams({}, { replace: true })
+  }, [isFunMode, requestedMode, view, isGameQuestionsReady, handleModeSelect, setSearchParams])
 
   // 로딩 중 — Skeleton 카드 형태
   if (question === undefined) {
@@ -307,13 +341,25 @@ export default function QuizPage() {
   // ─── FunMode ON: 게임 모드 분기 ──────────────────────────────────────────
 
   return (
-    <div className="p-4 md:p-6 max-w-3xl mx-auto space-y-4">
+    <div
+      className={cn(
+        'space-y-4',
+        isImmersiveGameView
+          ? 'w-full max-w-none min-h-[calc(100vh-3.5rem)] px-3 py-3 md:px-6 md:py-5'
+          : 'p-4 md:p-6 max-w-3xl mx-auto',
+      )}
+    >
       {/* 모드 선택 화면 */}
       {view === 'modeSelect' && (
-        <GameModeSelector
-          onSelectMode={handleModeSelect}
-          questions={gameQuestions}
-        />
+        isAutoModeEntryPending ? (
+          <GameModeLoading message="선택한 모드로 이동 중..." />
+        ) : (
+          <GameModeSelector
+            onSelectMode={handleModeSelect}
+            questions={gameQuestions}
+            isGameQuestionsReady={isGameQuestionsReady}
+          />
+        )
       )}
 
       {/* 일반 모드 (FunMode ON이지만 일반 모드 선택) */}

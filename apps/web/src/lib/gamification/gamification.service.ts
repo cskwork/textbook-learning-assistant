@@ -40,6 +40,26 @@ export interface AwardXPResult {
 }
 
 /**
+ * 게이미피케이션 프로필 보장 생성
+ * - 프로필이 없을 때만 기본값으로 1회 생성
+ * - 학습 기록(스트릭)에는 영향 없음
+ */
+export async function ensureGamificationProfile(studentId: string): Promise<void> {
+  const existing = await db.gamificationProfiles.where('studentId').equals(studentId).first()
+  if (existing) return
+
+  const now = Date.now()
+  await db.gamificationProfiles.add({
+    studentId,
+    totalXP: 0,
+    level: 1,
+    streakDays: 0,
+    lastStudyDate: now,
+    updatedAt: now,
+  })
+}
+
+/**
  * XP 지급 — Dexie transaction 내에서 원자적 실행
  * - 프로필 없으면 생성
  * - XP 이벤트 기록

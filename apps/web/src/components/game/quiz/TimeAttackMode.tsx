@@ -48,6 +48,7 @@ export default function TimeAttackMode({ questions, studentId, onComplete, onBac
   const [timeRemaining, setTimeRemaining] = useState(state.timePerQuestion)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const answerProcessingRef = useRef(false)
+  const [isAnswerLocked, setIsAnswerLocked] = useState(false)
 
   // 게임 시작
   useEffect(() => {
@@ -61,6 +62,7 @@ export default function TimeAttackMode({ questions, studentId, onComplete, onBac
     if (state.phase !== 'playing') return
     setTimeRemaining(state.timePerQuestion)
     answerProcessingRef.current = false
+    setIsAnswerLocked(false)
   }, [state.currentQuestionIndex, state.phase, state.timePerQuestion])
 
   // 카운트다운 타이머
@@ -76,6 +78,7 @@ export default function TimeAttackMode({ questions, studentId, onComplete, onBac
           // 시간 소진
           if (!answerProcessingRef.current) {
             answerProcessingRef.current = true
+            setIsAnswerLocked(true)
             playSfx('wrong')
             EventBus.emit('vfx:wrong')
             comboOnWrong()
@@ -104,6 +107,7 @@ export default function TimeAttackMode({ questions, studentId, onComplete, onBac
     async (answer: string) => {
       if (!currentQuestion || answerProcessingRef.current) return
       answerProcessingRef.current = true
+      setIsAnswerLocked(true)
 
       const isCorrect = answer === currentQuestion.answer
 
@@ -151,7 +155,7 @@ export default function TimeAttackMode({ questions, studentId, onComplete, onBac
       <GameQuizShell
         question={currentQuestion}
         onAnswer={handleAnswer}
-        disabled={answerProcessingRef.current}
+        disabled={isAnswerLocked}
         questionLabel={`Q${state.currentQuestionIndex + 1}/${slicedQuestions.length}`}
         headerSlot={
           <div className="flex items-center justify-between w-full">

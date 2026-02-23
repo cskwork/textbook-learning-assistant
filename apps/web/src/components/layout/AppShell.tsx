@@ -46,7 +46,7 @@ export default function AppShell({ children, navItems, onLogout, profilePath }: 
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Phase 18: ThreeBackground — FunMode 전용, 레이아웃 수준 배치 */}
-      {isFunMode && (
+      {isFunMode && !isFocusMode && (
         <Suspense fallback={null}>
           <ThreeBackground scene={currentScene} />
         </Suspense>
@@ -75,6 +75,11 @@ export default function AppShell({ children, navItems, onLogout, profilePath }: 
             <ArrowLeft className="w-4 h-4" />
             <span>돌아가기</span>
           </button>
+
+          <div className="ml-auto flex items-center gap-1">
+            <FunModeToggleButton />
+            {isFunMode && <BgmToggleButton />}
+          </div>
         </header>
       )}
 

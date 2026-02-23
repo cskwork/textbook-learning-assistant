@@ -27,6 +27,7 @@ export interface SfxPlayOptions {
  */
 export class SfxEngine {
   private static instance: SfxEngine | null = null
+  private resumePromise: Promise<void> | null = null
 
   private constructor() {}
 
@@ -37,13 +38,29 @@ export class SfxEngine {
     return SfxEngine.instance
   }
 
-  /** SFX 재생 — AudioContext 없거나 suspended이면 무음 반환 */
+  /** SFX 재생 — suspended 상태면 resume 후 재생 */
   play(type: SfxType, options?: SfxPlayOptions): void {
     const ctx = Howler.ctx as AudioContext | undefined
     if (!ctx || ctx.state === 'closed') return
 
-    // suspended 상태에서는 무음 반환 (iOS 잠금 해제 전)
-    if (ctx.state === 'suspended') return
+    // suspended 상태면 재개 시도 후 1회 재생
+    if (ctx.state === 'suspended') {
+      if (!this.resumePromise) {
+        this.resumePromise = ctx.resume()
+          .then(() => undefined)
+          .catch(() => undefined)
+          .finally(() => {
+            this.resumePromise = null
+          })
+      }
+
+      void this.resumePromise.then(() => {
+        if (ctx.state === 'running') {
+          this.play(type, options)
+        }
+      })
+      return
+    }
 
     const volume = soundManager.sfxVolume
     if (volume <= 0) return
