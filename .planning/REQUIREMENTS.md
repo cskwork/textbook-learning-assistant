@@ -36,7 +36,7 @@ v3.0 반전 모드 — 게이미피케이션 학습 혁명. 커스터마이즈 �
 
 ### 시각 효과 (VFX)
 
-- [ ] **VFX-01**: 반전 모드에서 Three.js 3D 배경이 각 화면별로 다른 테마로 렌더링된다
+- [x] **VFX-01**: 반전 모드에서 Three.js 3D 배경이 각 화면별로 다른 테마로 렌더링된다
 - [ ] **VFX-02**: 정답 시 파티클 폭발 이펙트가 화면에 재생된다
 - [ ] **VFX-03**: 오답 시 화면 흔들림(shake) + 빨간 플래시 이펙트가 재생된다
 - [ ] **VFX-04**: 레벨업 시 풀스크린 시네마틱 애니메이션이 재생된다
@@ -107,7 +107,7 @@ v3.0 반전 모드 — 게이미피케이션 학습 혁명. 커스터마이즈 �
 | SND-03 | Phase 17 | Complete |
 | SND-04 | Phase 17 | Complete |
 | SND-05 | Phase 17 | Complete |
-| VFX-01 | Phase 18 | Pending |
+| VFX-01 | Phase 18 | Complete |
 | VFX-02 | Phase 18 | Pending |
 | VFX-03 | Phase 18 | Pending |
 | VFX-04 | Phase 18 | Pending |
