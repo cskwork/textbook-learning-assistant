@@ -1,5 +1,5 @@
 // apps/web/src/lib/db.ts
-// Dexie IndexedDB 스키마 — 문제 영구 저장 + 퀴즈 엔진 (version 2) + DIY 문제집 (version 3) + AI 분석 설정 (version 4) + 강사 관리 포털 (version 5) + 마이페이지 + 앱 설정 (version 6) + 학습 플래너 (version 7)
+// Dexie IndexedDB 스키마 — 문제 영구 저장 + 퀴즈 엔진 (version 2) + DIY 문제집 (version 3) + AI 분석 설정 (version 4) + 강사 관리 포털 (version 5) + 마이페이지 + 앱 설정 (version 6) + 학습 플래너 (version 7) + 게이미피케이션 (version 8)
 import Dexie, { type EntityTable } from 'dexie'
 
 export interface QuestionSource {
@@ -155,6 +155,33 @@ export interface Assignment {
   dueDate?: number       // 마감일 (ms, 선택)
 }
 
+// v3.0 Gamification 스키마 (Phase 16 사용)
+export interface GamificationProfile {
+  id?: number
+  studentId: string
+  totalXP: number
+  level: number
+  streakDays: number
+  lastStudyDate: number // timestamp
+  updatedAt: number    // timestamp
+}
+
+export interface XPEvent {
+  id?: number
+  studentId: string
+  amount: number
+  reason: string       // 'quiz_correct' | 'combo_bonus' | 'streak_bonus' | 'daily_challenge'
+  comboMultiplier: number
+  timestamp: number
+}
+
+export interface BadgeRecord {
+  id?: number
+  studentId: string
+  badgeId: string
+  unlockedAt: number
+}
+
 const db = new Dexie('mathQuestionDB') as Dexie & {
   questions: EntityTable<Question, 'id'>
   quizSessions: EntityTable<QuizSession, 'id'>
@@ -167,6 +194,9 @@ const db = new Dexie('mathQuestionDB') as Dexie & {
   assignments: EntityTable<Assignment, 'id'>
   studyPlans: EntityTable<StudyPlan, 'id'>
   studyTasks: EntityTable<StudyTask, 'id'>
+  gamificationProfiles: EntityTable<GamificationProfile, 'id'>
+  xpEvents: EntityTable<XPEvent, 'id'>
+  badges: EntityTable<BadgeRecord, 'id'>
 }
 
 // version(1): 절대 수정/삭제하지 말 것 — 기존 브라우저 IndexedDB 마이그레이션 경로
@@ -245,6 +275,15 @@ db.version(7).stores({
   assignments: '++id, groupId, workbookId',
   studyPlans: '++id, studentId, date, type, [studentId+date]',
   studyTasks: '++id, planId, studentId, isCompleted, order',
+})
+
+// version(8): v3.0 게이미피케이션 테이블 추가 (gamificationProfiles, xpEvents, badges)
+// ⚠️ 기존 version(1)~(7) 절대 수정하지 말 것
+// 기존 테이블은 자동 상속됨. 신규 테이블만 정의.
+db.version(8).stores({
+  gamificationProfiles: '++id, &studentId',
+  xpEvents: '++id, studentId, reason, timestamp',
+  badges: '++id, studentId, badgeId, unlockedAt',
 })
 
 // 앱 시작 시 DB가 비어있으면 시드 데이터 자동 삽입
