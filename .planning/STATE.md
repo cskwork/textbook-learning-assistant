@@ -10,12 +10,12 @@ See: .planning/PROJECT.md (updated 2026-02-23)
 ## Current Position
 
 Phase: 20 (전체 화면 반전 디자인) — 실행 중
-Plan: 1/4 plans 완료 (Plan 01 완료, Plan 02~04 대기)
-Status: Plan 01 완료 — SVG 아이콘 12종 + CSS 변수 확장 + 공용 UI 4종. Plan 02~04 실행 대기
-Last activity: 2026-02-24 — Plan 20-01 실행 완료 (디자인 시스템 기반)
-Next: /gsd:execute-phase 20 재실행 (Plan 02~04 남음, fresh context 필요)
+Plan: 2/4 plans 완료 (Plan 01-02 완료, Plan 03-04 대기)
+Status: Wave 1 완료 — 디자인 시스템 + 홈/퀴즈 반전 디자인. Wave 2 (오답노트/마이페이지/분석/문제집/강사/복원) 대기
+Last activity: 2026-02-24 — Plan 20-01, 20-02 실행 완료 (Wave 1)
+Next: /gsd:execute-phase 20 재실행 (Plan 03-04 남음, fresh context 필요)
 
-진행 상황: [Phase 20 ██░░░░░░░░] 25% (1/4 plans) | v3.0 전체 [█████████░] 5.25/6 phases
+진행 상황: [Phase 20 █████░░░░░] 50% (2/4 plans) | v3.0 전체 [█████████░] 5.5/6 phases
 
 ## Performance Metrics
 
