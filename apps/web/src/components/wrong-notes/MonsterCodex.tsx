@@ -32,7 +32,7 @@ export function MonsterCodex() {
   // 간단한 defeated 판별: correctCount > 0
   const notesWithStatus = wrongNotes.map(note => ({
     ...note,
-    defeated: (note as Record<string, unknown>).correctCount ? Number((note as Record<string, unknown>).correctCount) > 0 : false,
+    defeated: 'correctCount' in note ? Number((note as unknown as { correctCount?: number }).correctCount) > 0 : false,
     difficulty: (note.wrongCount ?? 1) >= 3 ? 'hard' as const : (note.wrongCount ?? 1) >= 2 ? 'medium' as const : 'easy' as const,
   }))
 

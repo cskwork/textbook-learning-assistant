@@ -4,7 +4,7 @@ import { motion, type HTMLMotionProps } from 'framer-motion';
 interface GlassCardProps extends Omit<HTMLMotionProps<'div'>, 'children'> {
   children: ReactNode;
   className?: string;
-  onClick?: () => void;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
   layoutId?: string;
 }
 

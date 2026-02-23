@@ -2,6 +2,7 @@
 // React Suspense의 fallback으로 사용됨
 import { useEffect, useState } from 'react'
 import { EventBus } from '@/game/EventBus'
+import { SwordIcon } from '@/components/game/icons'
 
 /**
  * 반전 모드 게임 번들 로딩 중 표시되는 로딩 화면.
@@ -35,7 +36,9 @@ export function GameLoadingSpinner() {
 
   return (
     <div className="fixed inset-0 flex flex-col items-center justify-center bg-background z-50">
-      <div className="text-6xl mb-6 animate-bounce select-none">🎮</div>
+      <div className="mb-6 animate-bounce select-none">
+        <SwordIcon size={64} color="var(--fun-neon-cyan, hsl(var(--primary)))" glow />
+      </div>
       <p className="text-primary font-bold text-xl mb-4">반전 모드 로딩 중...</p>
       <div className="w-64 h-3 bg-muted rounded-full overflow-hidden">
         <div
@@ -45,7 +48,7 @@ export function GameLoadingSpinner() {
       </div>
       <p className="text-muted-foreground text-sm mt-2">{progress}%</p>
       <p className="text-muted-foreground text-xs mt-4 animate-pulse">
-        게임 엔진을 준비하고 있어요 ✨
+        게임 엔진을 준비하고 있어요
       </p>
     </div>
   )

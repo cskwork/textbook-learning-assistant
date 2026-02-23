@@ -12,7 +12,7 @@ import { GlassCard, NeonText } from '@/components/game/ui'
 import { CrownIcon, TrophyIcon } from '@/components/game/icons'
 
 interface MiniLeaderboardProps {
-  groupId: string | null
+  groupId: number | null
   currentStudentId: string
 }
 

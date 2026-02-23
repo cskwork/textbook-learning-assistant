@@ -5,6 +5,7 @@
 import { lazy, Suspense, useEffect, useRef } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useFunMode } from '@/contexts/FunModeContext'
+import { StarIcon, GemIcon } from '@/components/game/icons'
 
 // Phase 18: 레벨업 파티클 VFX (FunMode only, lazy load)
 const LevelUpVfx = lazy(() => import('@/components/game/effects/LevelUpVfx'))
@@ -125,9 +126,9 @@ export function LevelUpOverlay({ newLevel, visible, onDone }: LevelUpOverlayProp
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.5, duration: 0.4 }}
             >
-              <span>⭐</span>
-              <span>✨</span>
-              <span>⭐</span>
+              <StarIcon size={28} color="#facc15" glow />
+              <GemIcon size={28} color="#a78bfa" glow />
+              <StarIcon size={28} color="#facc15" glow />
             </motion.div>
 
             {/* 클릭 안내 */}

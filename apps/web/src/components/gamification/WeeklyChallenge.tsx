@@ -5,6 +5,7 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { FadeIn } from '@/components/motion/FadeIn'
+import { StarIcon, TrophyIcon, GemIcon } from '@/components/game/icons'
 import {
   getWeeklyChallengeProgress,
   type WeeklyChallengeProgress,
@@ -27,7 +28,7 @@ function formatWeekRange(weekStartDate: string): string {
 
 /** 진행률에 따른 격려 메시지 */
 function getEncourageMessage(progress: number, remaining: number): string {
-  if (progress >= 1) return '이번 주 목표 달성! 대단해요! 🎊'
+  if (progress >= 1) return '이번 주 목표 달성! 대단해요!'
   if (progress >= 0.8) return `거의 다 왔어요! ${remaining}문제만 더!`
   if (progress >= 0.5) return `절반 넘었어요! ${remaining}문제 남았어요`
   if (progress >= 0.2) return `좋은 시작! ${remaining}문제 남았어요`
@@ -104,15 +105,16 @@ export function WeeklyChallenge({ studentId }: WeeklyChallengeProps) {
         <div className="flex items-start justify-between mb-3">
           <div>
             <h3 className="text-sm font-bold text-gray-100 flex items-center gap-1.5">
-              <span>📊</span>
+              <StarIcon size={16} color="#a78bfa" />
               <span>주간 챌린지</span>
             </h3>
             <p className="text-xs text-gray-400 mt-0.5">이번 주 {weekRange}</p>
           </div>
 
           {isCompleted && (
-            <span className="rounded-full bg-purple-600/20 border border-purple-500/30 px-2 py-0.5 text-[10px] font-bold text-purple-300">
-              🎊 완료!
+            <span className="rounded-full bg-purple-600/20 border border-purple-500/30 px-2 py-0.5 text-[10px] font-bold text-purple-300 flex items-center gap-1">
+              <TrophyIcon size={12} color="#c084fc" />
+              완료!
             </span>
           )}
         </div>
@@ -178,14 +180,14 @@ export function WeeklyChallenge({ studentId }: WeeklyChallengeProps) {
         {/* 완료 보너스 또는 보상 미리보기 */}
         {isCompleted ? (
           <div className="flex items-center gap-1.5 rounded-xl bg-purple-700/20 border border-purple-600/30 px-3 py-2">
-            <span className="text-lg">🎊</span>
+            <TrophyIcon size={20} color="#c084fc" glow />
             <span className="text-sm font-bold text-purple-200">
               +{bonusXP.toLocaleString()} XP 보너스 획득!
             </span>
           </div>
         ) : (
           <div className="flex items-center gap-1.5 text-xs text-yellow-400/80">
-            <span>🎁</span>
+            <GemIcon size={14} color="#fbbf24" />
             <span>
               완료 시 <span className="font-bold text-yellow-400">+{bonusXP.toLocaleString()} XP</span> 보너스!
             </span>

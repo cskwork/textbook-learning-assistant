@@ -4,6 +4,7 @@
 
 import { useEffect, useState } from 'react'
 import { FadeIn } from '@/components/motion/FadeIn'
+import { FlameIcon, LightningIcon, StarIcon, ScrollIcon, TrophyIcon, GemIcon, ShieldIcon } from '@/components/game/icons'
 import {
   getDailyChallengeConfig,
   isDailyChallengeCompleted,
@@ -28,18 +29,18 @@ function formatDateKorean(date: Date): string {
   return `${month}월 ${day}일 (${dayName})`
 }
 
-/** 난이도별 이모지 */
-function getDifficultyEmoji(difficulty: number): string {
-  if (difficulty >= 4) return '🔥'
-  if (difficulty >= 3) return '⚡'
-  return '✨'
+/** 난이도별 아이콘 컴포넌트 */
+function DifficultyIcon({ difficulty }: { difficulty: number }) {
+  if (difficulty >= 4) return <FlameIcon size={28} color="#ef4444" glow />
+  if (difficulty >= 3) return <LightningIcon size={28} color="#f59e0b" glow />
+  return <StarIcon size={28} color="#06b6d4" glow />
 }
 
 /**
  * DailyChallenge — 오늘의 챌린지 카드 위젯
  *
  * - 요일에 따라 3~5문제 + 난이도 변동
- * - 주말: "🎉 주말 특별 챌린지!" 배지 표시
+ * - 주말: "주말 특별 챌린지!" 배지 표시
  * - 완료 상태: 체크마크 + "완료!" + 버튼 비활성화
  * - 미완료: "도전하기" 버튼 → onStartChallenge 콜백
  * - 보상 미리보기: "+500 XP 보너스!" 표시
@@ -77,7 +78,7 @@ export function DailyChallenge({ studentId, onStartChallenge }: DailyChallengePr
 
   const today = new Date()
   const dateLabel = formatDateKorean(today)
-  const difficultyEmoji = getDifficultyEmoji(config.difficulty)
+  const _difficulty = config.difficulty
 
   return (
     <FadeIn>
@@ -92,7 +93,7 @@ export function DailyChallenge({ studentId, onStartChallenge }: DailyChallengePr
         <div className="flex items-start justify-between mb-3">
           <div>
             <h3 className="text-sm font-bold text-gray-100 flex items-center gap-1.5">
-              <span>📋</span>
+              <ScrollIcon size={16} color="#9ca3af" />
               <span>오늘의 챌린지</span>
             </h3>
             <p className="text-xs text-gray-400 mt-0.5">{dateLabel}</p>
@@ -100,15 +101,16 @@ export function DailyChallenge({ studentId, onStartChallenge }: DailyChallengePr
 
           {/* 주말 특별 배지 */}
           {config.isWeekend && (
-            <span className="rounded-full bg-pink-600/20 border border-pink-500/30 px-2 py-0.5 text-[10px] font-bold text-pink-300">
-              🎉 주말 특별
+            <span className="rounded-full bg-pink-600/20 border border-pink-500/30 px-2 py-0.5 text-[10px] font-bold text-pink-300 flex items-center gap-1">
+              <TrophyIcon size={12} color="#f9a8d4" />
+              주말 특별
             </span>
           )}
         </div>
 
         {/* 챌린지 정보 */}
         <div className="flex items-center gap-3 mb-4 py-3 rounded-xl bg-gray-700/40 px-3">
-          <span className="text-3xl">{difficultyEmoji}</span>
+          <DifficultyIcon difficulty={_difficulty} />
           <div>
             <div className="text-lg font-black text-gray-100">
               {config.questionCount}문제 도전
@@ -124,7 +126,7 @@ export function DailyChallenge({ studentId, onStartChallenge }: DailyChallengePr
           {/* 완료 체크마크 */}
           {isCompleted && (
             <div className="ml-auto flex flex-col items-center">
-              <span className="text-2xl">✅</span>
+              <ShieldIcon size={24} color="#4ade80" glow />
               <span className="text-xs font-bold text-green-400 mt-0.5">완료!</span>
             </div>
           )}
@@ -132,7 +134,7 @@ export function DailyChallenge({ studentId, onStartChallenge }: DailyChallengePr
 
         {/* 보상 미리보기 */}
         <div className="mb-3 flex items-center gap-1.5 text-xs text-yellow-400/80">
-          <span>🎁</span>
+          <GemIcon size={14} color="#fbbf24" />
           <span>완료 시 <span className="font-bold text-yellow-400">+500 XP</span> 보너스!</span>
         </div>
 

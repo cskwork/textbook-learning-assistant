@@ -3,6 +3,7 @@
 // Phase 16 보상 시스템
 
 import { motion } from 'framer-motion'
+import { FlameIcon } from '@/components/game/icons'
 
 interface StreakCounterProps {
   /** 연속 학습 일수 */
@@ -11,13 +12,12 @@ interface StreakCounterProps {
   bonusXP?: number
 }
 
-/** 스트릭 일수에 따른 불꽃 아이콘 */
-function getFlameIcon(days: number): string {
-  if (days >= 30) return '🌋' // 화산 — 30일 이상 극강
-  if (days >= 14) return '🔥' // 큰 불꽃
-  if (days >= 7) return '🔥' // 불꽃
-  if (days >= 3) return '🔥' // 불꽃
-  return '🔥'
+/** 스트릭 일수에 따른 불꽃 아이콘 크기 */
+function getFlameSize(days: number): number {
+  if (days >= 30) return 28
+  if (days >= 14) return 24
+  if (days >= 7) return 22
+  return 20
 }
 
 /** 스트릭 일수에 따른 색상 클래스 */
@@ -38,12 +38,13 @@ function getGlowColor(days: number): string {
   return 'rgba(250, 204, 21, 0.4)'
 }
 
-/** 스트릭 아이콘 크기 — 일수가 높을수록 크게 */
-function getIconSize(days: number): string {
-  if (days >= 30) return 'text-3xl'
-  if (days >= 14) return 'text-2xl'
-  if (days >= 7) return 'text-2xl'
-  return 'text-xl'
+/** 스트릭 불꽃 색상 */
+function getFlameColor(days: number): string {
+  if (days >= 30) return '#ef4444'
+  if (days >= 14) return '#fb923c'
+  if (days >= 7) return '#f97316'
+  if (days >= 3) return '#eab308'
+  return '#facc15'
 }
 
 /**
@@ -56,10 +57,10 @@ function getIconSize(days: number): string {
  * - 숫자 변경 시 bounce 애니메이션
  */
 export function StreakCounter({ streakDays, bonusXP = 0 }: StreakCounterProps) {
-  const flameIcon = getFlameIcon(streakDays)
+  const flameSize = getFlameSize(streakDays)
+  const flameColor = getFlameColor(streakDays)
   const streakColor = getStreakColor(streakDays)
   const glowColor = getGlowColor(streakDays)
-  const iconSize = getIconSize(streakDays)
   const showBonus = streakDays >= 3 && bonusXP > 0
 
   return (
@@ -74,9 +75,9 @@ export function StreakCounter({ streakDays, bonusXP = 0 }: StreakCounterProps) {
       >
         {/* 불꽃 아이콘 */}
         <motion.span
-          className={iconSize}
           style={{
             filter: `drop-shadow(0 0 6px ${glowColor})`,
+            display: 'inline-flex',
           }}
           animate={
             streakDays >= 7
@@ -96,7 +97,7 @@ export function StreakCounter({ streakDays, bonusXP = 0 }: StreakCounterProps) {
               : {}
           }
         >
-          {flameIcon}
+          <FlameIcon size={flameSize} color={flameColor} glow />
         </motion.span>
 
         {/* 연속 일수 텍스트 */}

@@ -4,6 +4,7 @@
 
 import { useEffect, useState } from 'react'
 import { FadeIn } from '@/components/motion/FadeIn'
+import { CrownIcon, TrophyIcon, FlameIcon } from '@/components/game/icons'
 import {
   getClassLeaderboard,
   type LeaderboardEntry,
@@ -17,11 +18,11 @@ interface LeaderboardProps {
   currentStudentId: string
 }
 
-/** 순위별 메달 이모지 */
-const MEDAL: Record<number, string> = {
-  1: '🥇',
-  2: '🥈',
-  3: '🥉',
+/** 순위별 메달 색상 (SVG 아이콘용) */
+const MEDAL_COLOR: Record<number, string> = {
+  1: '#facc15',  // 금
+  2: '#9ca3af',  // 은
+  3: '#d97706',  // 동
 }
 
 /** 순위별 배경 스타일 */
@@ -52,7 +53,7 @@ function LeaderboardRow({
 }) {
   const rankStyle = RANK_BG[entry.rank] ?? ''
   const rankTextStyle = RANK_TEXT[entry.rank] ?? 'text-gray-400'
-  const medal = MEDAL[entry.rank]
+  const medalColor = MEDAL_COLOR[entry.rank]
 
   return (
     <div
@@ -63,8 +64,8 @@ function LeaderboardRow({
       } ${compact ? '' : 'mb-1.5'}`}
     >
       {/* 순위 */}
-      <div className={`w-8 text-center font-bold text-sm ${rankTextStyle}`}>
-        {medal ?? `#${entry.rank}`}
+      <div className={`w-8 text-center font-bold text-sm ${rankTextStyle} flex items-center justify-center`}>
+        {medalColor ? <CrownIcon size={18} color={medalColor} glow /> : `#${entry.rank}`}
       </div>
 
       {/* 아바타 + 이름 */}
@@ -90,7 +91,7 @@ function LeaderboardRow({
       {/* 스트릭 */}
       {entry.streakDays > 0 && (
         <div className="shrink-0 flex items-center gap-0.5 text-xs text-orange-400 font-semibold">
-          <span>🔥</span>
+          <FlameIcon size={14} color="#fb923c" />
           <span>{entry.streakDays}</span>
         </div>
       )}
@@ -170,7 +171,7 @@ export function Leaderboard({ groupId, currentStudentId }: LeaderboardProps) {
     return (
       <FadeIn>
         <div className="rounded-2xl bg-gray-800/60 p-6 border border-gray-700/50 text-center">
-          <div className="text-4xl mb-3">🏆</div>
+          <div className="mb-3"><TrophyIcon size={40} color="#facc15" glow /></div>
           <p className="text-sm font-semibold text-gray-200 mb-1">
             첫 번째 참가자입니다!
           </p>
@@ -200,7 +201,7 @@ export function Leaderboard({ groupId, currentStudentId }: LeaderboardProps) {
         {/* 헤더 */}
         <div className="px-4 pt-4 pb-2 border-b border-gray-700/50">
           <h3 className="text-sm font-bold text-gray-100 flex items-center gap-1.5">
-            <span>🏆</span>
+            <TrophyIcon size={16} color="#facc15" />
             <span>반 리더보드</span>
           </h3>
         </div>
