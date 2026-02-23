@@ -7,6 +7,10 @@ import BottomNav from './BottomNav'
 import Sidebar from './Sidebar'
 import type { NavItem } from './BottomNav'
 import { FunModeToggleButton } from './FunModeToggleButton'
+import { useFunMode } from '@/hooks/useFunMode'
+import { useGamification } from '@/hooks/useGamification'
+import { useAuth } from '@/contexts/AuthContext'
+import { XPBar } from '@/components/gamification'
 
 interface AppShellProps {
   children?: ReactNode
@@ -18,6 +22,9 @@ interface AppShellProps {
 export default function AppShell({ children, navItems, onLogout, profilePath }: AppShellProps) {
   const location = useLocation()
   const navigate = useNavigate()
+  const { isFunMode } = useFunMode()
+  const { user } = useAuth()
+  const { profile, xpProgress, xpForNextLevel } = useGamification(user?.email)
 
   const isFocusMode = location.pathname.includes('/quiz') || location.pathname.includes('/play') || location.pathname.includes('/problems/')
 
@@ -110,13 +117,36 @@ export default function AppShell({ children, navItems, onLogout, profilePath }: 
         </header>
       )}
 
+      {/* ── FunMode XP 바 — 헤더 바로 아래 (standard mode 전용) ── */}
+      {/* z-39: 헤더(z-40) 바로 아래, 스크롤 시 헤더 밑에 위치 */}
+      {isFunMode && !isFocusMode && profile && (
+        <div className={cn(
+          'fixed z-[39]',
+          'top-14 inset-x-0',
+          // 데스크톱(lg)에서는 사이드바(64) 오른쪽에 배치
+          'lg:top-0 lg:left-64',
+          'px-4 py-1 bg-background/80 backdrop-blur-sm border-b border-border/10',
+        )}>
+          <XPBar
+            progress={xpProgress}
+            level={profile.level}
+            currentXPInLevel={Math.round(xpProgress * xpForNextLevel)}
+            xpForNextLevel={xpForNextLevel}
+          />
+        </div>
+      )}
+
       {/* ── 메인 콘텐츠 ── */}
       {/* flex-1 flex flex-col min-h-0 구조로 스크롤 영역 올바르게 작동 보장 */}
       <main className={cn(
         "flex-1 flex flex-col min-h-0",
         isFocusMode
           ? "pt-14 pb-0 lg:pl-0"
-          : "pt-14 pb-16 lg:pt-0 lg:pb-0 lg:pl-64"
+          : isFunMode
+            // FunMode ON: XPBar 높이(~40px) 만큼 추가 패딩
+            ? "pt-[calc(3.5rem+2.5rem)] pb-16 lg:pt-10 lg:pb-0 lg:pl-64"
+            // FunMode OFF: 기존 패딩 유지
+            : "pt-14 pb-16 lg:pt-0 lg:pb-0 lg:pl-64"
       )}>
         {children ?? <Outlet />}
       </main>
