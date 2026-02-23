@@ -9,7 +9,7 @@
  * 5. 위험 영역 — 계정 삭제 Dialog (이메일 입력 확인 후 삭제)
  */
 
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { Trash2, Award, Trophy } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
@@ -38,6 +38,11 @@ import {
 import { useFunMode } from '@/hooks/useFunMode'
 import { useGamification } from '@/hooks/useGamification'
 import { SoundSettingsPanel } from '@/components/sound/SoundSettingsPanel'
+import { GameLoadingSpinner } from '@/components/game/GameLoadingSpinner'
+
+const CharacterProfile = lazy(() =>
+  import('@/components/profile/CharacterProfile').then(m => ({ default: m.CharacterProfile }))
+)
 import { BADGE_DEFINITIONS } from '@/lib/gamification/badge-definitions'
 import { cn } from '@/lib/utils'
 import type { User } from '@/lib/auth'
@@ -69,6 +74,15 @@ export default function StudentProfilePage() {
     study: '학습',
     streak: '연속',
     achievement: '성취',
+  }
+
+  // 반전 모드: 캐릭터 프로필
+  if (isFunMode) {
+    return (
+      <Suspense fallback={<GameLoadingSpinner />}>
+        <CharacterProfile />
+      </Suspense>
+    )
   }
 
   /**
