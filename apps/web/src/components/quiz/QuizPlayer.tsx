@@ -16,6 +16,7 @@ import { useTimer } from '@/hooks/useTimer'
 import { submitQuizAttempt } from '@/services/quiz.service'
 import { useCombo } from '@/hooks/useCombo'
 import { useFunMode } from '@/hooks/useFunMode'
+import { useSfx } from '@/hooks/useSfx'
 import { awardXP, updateStreak } from '@/lib/gamification/gamification.service'
 import { getBaseXP } from '@/lib/gamification/xp-formula'
 import { XPFloatingText, ComboCounter } from '@/components/gamification'
@@ -103,6 +104,7 @@ export function QuizPlayer({
 
   const timer = useTimer()
   const { isFunMode } = useFunMode()
+  const { playSfx } = useSfx()
   const { comboCount, multiplier, onCorrect: comboOnCorrect, onWrong: comboOnWrong, resetCombo } = useCombo()
 
   // XP 플로팅 텍스트 상태 — key로 매번 새 애니메이션 트리거
@@ -135,6 +137,24 @@ export function QuizPlayer({
         const result = await awardXP(studentId, baseXP, 'quiz_correct', comboMult)
         await updateStreak(studentId)
         setXpFloat({ amount: result.xpAwarded, key: Date.now() })
+
+        // SFX: 정답음 (fire-and-forget)
+        playSfx('correct')
+        // SFX: 콤보 2연속 이상 시 추가 콤보음
+        if (comboMult >= 1.5) {
+          // multiplier → comboStep 역산: 1.5→2, 2→3, 2.5→4, 3→5
+          const comboStep = comboMult >= 3 ? 5 : comboMult >= 2.5 ? 4 : comboMult >= 2 ? 3 : 2
+          playSfx('combo', { comboStep })
+        }
+        // SFX: 레벨업
+        if (result.leveledUp) {
+          playSfx('levelUp')
+        }
+        // SFX: 뱃지 획득
+        if (result.unlockedBadges.length > 0) {
+          playSfx('badge')
+        }
+
         onGamificationResult?.({
           xpAwarded: result.xpAwarded,
           leveledUp: result.leveledUp,
@@ -143,6 +163,8 @@ export function QuizPlayer({
         })
       } else {
         comboOnWrong()
+        // SFX: 오답음
+        playSfx('wrong')
       }
     }
 
