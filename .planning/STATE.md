@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-23)
 ## Current Position
 
 Phase: 16 (보상 시스템) — 진행 중
-Plan: 1/3 plans 완료
-Status: Phase 16 Plan 01 완료, Plan 02 (XP 바 + 콤보 UI) 대기
-Last activity: 2026-02-23 — Plan 01 완료 (XP 수식 + GamificationService + 뱃지 정의 + 챌린지 서비스 + React 훅)
+Plan: 2/3 plans 완료
+Status: Phase 16 Plan 02 완료, Plan 03 (리더보드/챌린지/뱃지 패널) 대기
+Last activity: 2026-02-23 — Plan 02 완료 (XP 바 + 플로팅 텍스트 + 콤보 카운터 + 레벨업/뱃지 오버레이 + 스트릭 카운터)
 
-진행 상황: [Phase 16 ███░░░░░░░] 33% (1/3 plans) | v3.0 전체 [██░░░░░░░░] 2/6 phases
+진행 상황: [Phase 16 ██████░░░░] 67% (2/3 plans) | v3.0 전체 [██░░░░░░░░] 2/6 phases
 
 ## Performance Metrics
 
@@ -27,6 +27,7 @@ Last activity: 2026-02-23 — Plan 01 완료 (XP 수식 + GamificationService + 
 | Phase 15 P01 | 2 | 2 tasks | 6 files |
 | Phase 15 P03 | 2 | 2 tasks | 4 files |
 | Phase 16 P01 | 5 min | 2 tasks | 9 files |
+| Phase 16 P02 | 3 | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -51,6 +52,9 @@ Last activity: 2026-02-23 — Plan 01 완료 (XP 수식 + GamificationService + 
 - [Phase 16-01]: 뱃지 17개: 학습 5개(study) + 연속 5개(streak) + 성취 7개(achievement), 첫날 2개 획득 가능
 - [Phase 16-01]: 데일리 챌린지 난이도: 평일 3문제(월화=2, 수목=3, 금=4), 주말 5문제(난이도3)
 - [Phase 16-01]: 주간 챌린지 목표: 50문제
+- [Phase 16-02]: XPBar 그라데이션 + 반짝임 하이라이트 오버레이로 게임 UI 질감 구현
+- [Phase 16-02]: BadgeUnlockOverlay epic 전용 pulse glow — scale/opacity 루프로 희귀도 3단계 차별화
+- [Phase 16-02]: ComboCounter fixed inset-0 화면 정중앙 — 콤보 놓치지 않도록 강제 시선 유도
 
 ### Critical Pitfalls (Phase 15에서 먼저 검증 필수)
 
@@ -77,7 +81,7 @@ Last activity: 2026-02-23 — Plan 01 완료 (XP 수식 + GamificationService + 
 
 ## Session Continuity
 
-Last activity: 2026-02-23 — Phase 16 Plan 01 완료 (XP 수식 + GamificationService + 뱃지 + 챌린지 + React 훅)
-Stopped at: Completed 16-reward-system-01-PLAN.md
+Last activity: 2026-02-23 — Phase 16 Plan 02 완료 (XP 바 + 플로팅 텍스트 + 콤보 카운터 + 레벨업/뱃지 오버레이 + 스트릭 카운터 UI 컴포넌트 6종)
+Stopped at: Completed 16-reward-system-02-PLAN.md
 Resume file: None
-Next command: `/gsd:execute-phase 16` (Phase 16 Plan 02: XP 바 + 콤보 UI 컴포넌트)
+Next command: `/gsd:execute-phase 16` (Phase 16 Plan 03: 리더보드/챌린지/뱃지 패널)
