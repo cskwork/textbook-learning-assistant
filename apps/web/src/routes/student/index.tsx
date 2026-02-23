@@ -21,7 +21,7 @@ import { Button } from '@/components/ui/button'
 import { useAuth } from '@/contexts/AuthContext'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '@/lib/db'
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { getOverallStats, getRecommendedQuestions } from '@/services/analytics.service'
 import { getStreak } from '@/services/streak.service'
 import AIRecommendations from '@/components/analytics/AIRecommendations'
@@ -34,7 +34,12 @@ import { useFunMode } from '@/hooks/useFunMode'
 import { useGamification } from '@/hooks/useGamification'
 import { StreakCounter, DailyChallenge, WeeklyChallenge, Leaderboard } from '@/components/gamification'
 import { StreakFlame } from '@/components/game/effects/StreakFlame'
+import { GameLoadingSpinner } from '@/components/game/GameLoadingSpinner'
 import type { Question } from '@/lib/db'
+
+const FunModeHome = lazy(() =>
+  import('@/components/home/FunModeHome').then(m => ({ default: m.FunModeHome }))
+)
 
 /** 시간대별 인사말 */
 function getGreeting(): { text: string; emoji: string } {
@@ -162,6 +167,15 @@ export default function StudentHomePage() {
   }
 
   const userName = user?.email?.split('@')[0] ?? '학생'
+
+  // ── 반전 모드: 게임 대시보드 홈 ──
+  if (isFunMode) {
+    return (
+      <Suspense fallback={<GameLoadingSpinner />}>
+        <FunModeHome />
+      </Suspense>
+    )
+  }
 
   // ── Empty State: 한 번도 문제를 풀지 않은 신규 학생 ──
   if (attemptCount === 0) {
