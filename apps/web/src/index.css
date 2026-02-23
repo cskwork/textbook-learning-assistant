@@ -213,6 +213,36 @@ body {
     font-size: 0.75rem; /* text-xs */
     line-height: 1.5;
   }
+
+  /* 반전 모드 (v3.0) — 게임 테마 CSS 변수 오버라이드 */
+  [data-fun-mode="true"] {
+    /* 배경 — 다크 퍼플/인디고 계열 */
+    --background: oklch(0.12 0.04 280);
+    --foreground: oklch(0.98 0.01 280);
+
+    /* 주 강조색 — 네온 그린 */
+    --primary: oklch(0.70 0.28 150);
+    --primary-foreground: oklch(0.10 0.02 150);
+
+    /* 카드/패널 */
+    --card: oklch(0.16 0.04 280);
+    --card-foreground: oklch(0.95 0.01 280);
+
+    /* 보조색 — 일렉트릭 퍼플 */
+    --accent: oklch(0.60 0.25 300);
+    --accent-foreground: oklch(0.98 0.01 280);
+
+    /* 보더, 인풋 */
+    --border: oklch(0.25 0.05 280);
+    --input: oklch(0.20 0.04 280);
+
+    /* 뮤트 */
+    --muted: oklch(0.20 0.03 280);
+    --muted-foreground: oklch(0.65 0.02 280);
+
+    /* 폰트 weight 강화 — 게임 UI 느낌 */
+    --font-weight-normal: 500;
+  }
 }
 
 /* ─── Dashboard 디자인 시스템 ─── */

@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils'
 import BottomNav from './BottomNav'
 import Sidebar from './Sidebar'
 import type { NavItem } from './BottomNav'
+import { FunModeToggleButton } from './FunModeToggleButton'
 
 interface AppShellProps {
   children?: ReactNode
@@ -71,6 +72,8 @@ export default function AppShell({ children, navItems, onLogout, profilePath }: 
 
           {/* 우측 아이콘 버튼 — w-10 h-10으로 터치 타겟 확보 (LYOT-02) */}
           <div className="flex items-center gap-1">
+            {/* 반전 모드 토글 버튼 (v3.0) */}
+            <FunModeToggleButton />
             {profilePath && (
               <button
                 onClick={() => navigate(profilePath)}
