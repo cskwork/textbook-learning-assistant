@@ -9,12 +9,12 @@ See: .planning/PROJECT.md (updated 2026-02-23)
 
 ## Current Position
 
-Phase: 17 (사운드 시스템) — 진행 중
-Plan: 1/2 plans 완료
-Status: Phase 17 Plan 01 완료, Plan 02 진행 중
-Last activity: 2026-02-23 — Plan 01 완료 (SoundManager + SfxEngine + Dexie 설정 + React 훅)
+Phase: 17 (사운드 시스템) — 완료
+Plan: 2/2 plans 완료
+Status: Phase 17 완료, Phase 18 (Three.js 시각 효과) 대기
+Last activity: 2026-02-23 — Plan 02 완료 (BGM 토글 UI + SoundSettings + QuizPlayer SFX + iOS 잠금 해제)
 
-진행 상황: [Phase 17 █████░░░░░] 50% (1/2 plans) | v3.0 전체 [███░░░░░░░] 3/6 phases
+진행 상황: [Phase 17 ██████████] 100% (2/2 plans) | v3.0 전체 [████░░░░░░] 4/6 phases
 
 ## Performance Metrics
 
@@ -32,6 +32,7 @@ Last activity: 2026-02-23 — Plan 01 완료 (SoundManager + SfxEngine + Dexie �
 | Phase 16 P04 | 2 min | 2 tasks | 3 files |
 | Phase 16 P05 | 3 min | 2 tasks | 2 files |
 | Phase 17 P01 | 5 min | 2 tasks | 7 files |
+| Phase 17 P02 | 4 min | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -71,6 +72,9 @@ Last activity: 2026-02-23 — Plan 01 완료 (SoundManager + SfxEngine + Dexie �
 - [Phase 17-01]: SoundManager subscribe/getSnapshot 패턴 — useSyncExternalStore 호환으로 React 외부 싱글턴 상태 구독
 - [Phase 17-01]: SfxEngine이 Howler.ctx AudioContext 공유 — 별도 AudioContext 생성 금지
 - [Phase 17-01]: saveSoundSettings upsert 패턴 — 기존 settings.service.ts와 동일한 where→first→update/put 방식
+- [Phase 17-02]: 동적 import('howler') iOS AudioContext unlock — FunMode 토글 클릭 시에만 howler 로드, 일반 모드 번들 영향 0
+- [Phase 17-02]: 콤보 SFX multiplier→comboStep 역산 — 1.5→2, 2→3, 2.5→4, 3→5 매핑
+- [Phase 17-02]: game-howler 청크 36.72KB 독립 분리 — Vite manualChunks 정상 동작 확인
 
 ### Critical Pitfalls (Phase 15에서 먼저 검증 필수)
 
@@ -97,7 +101,7 @@ Last activity: 2026-02-23 — Plan 01 완료 (SoundManager + SfxEngine + Dexie �
 
 ## Session Continuity
 
-Last activity: 2026-02-23 — Phase 17 Plan 01 완료 (SoundManager + SfxEngine + Dexie 사운드 설정 + React 훅)
-Stopped at: Completed 17-sound-system-01-PLAN.md
+Last activity: 2026-02-23 — Phase 17 Plan 02 완료 (BGM 토글 UI + SoundSettings + QuizPlayer SFX + iOS 잠금 해제)
+Stopped at: Completed 17-sound-system-02-PLAN.md
 Resume file: None
-Next command: Plan 02 자동 실행 중 (Wave 2)
+Next command: `/gsd:discuss-phase 18` (Phase 18: Three.js 시각 효과)

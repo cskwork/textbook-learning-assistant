@@ -28,11 +28,11 @@ v3.0 반전 모드 — 게이미피케이션 학습 혁명. 커스터마이즈 �
 
 ### 사운드 시스템 (SND)
 
-- [ ] **SND-01**: 반전 모드에서 화면별 BGM이 재생되며 사용자가 ON/OFF 토글할 수 있다
-- [ ] **SND-02**: 정답/오답/콤보/레벨업 등 각 이벤트별 효과음이 재생된다
-- [ ] **SND-03**: BGM은 기본 OFF 상태이며 사용자가 직접 켜야 재생된다 (학습 환경 배려)
-- [ ] **SND-04**: 사용자가 효과음 볼륨과 BGM 볼륨을 각각 조절할 수 있다
-- [ ] **SND-05**: iOS/모바일에서 첫 사용자 제스처 후 사운드가 정상 활성화된다
+- [x] **SND-01**: 반전 모드에서 화면별 BGM이 재생되며 사용자가 ON/OFF 토글할 수 있다
+- [x] **SND-02**: 정답/오답/콤보/레벨업 등 각 이벤트별 효과음이 재생된다
+- [x] **SND-03**: BGM은 기본 OFF 상태이며 사용자가 직접 켜야 재생된다 (학습 환경 배려)
+- [x] **SND-04**: 사용자가 효과음 볼륨과 BGM 볼륨을 각각 조절할 수 있다
+- [x] **SND-05**: iOS/모바일에서 첫 사용자 제스처 후 사운드가 정상 활성화된다
 
 ### 시각 효과 (VFX)
 
@@ -102,11 +102,11 @@ v3.0 반전 모드 — 게이미피케이션 학습 혁명. 커스터마이즈 �
 | RWRD-06 | Phase 16 | Complete |
 | RWRD-07 | Phase 16 | Complete |
 | RWRD-08 | Phase 16 | Complete |
-| SND-01 | Phase 17 | Pending |
-| SND-02 | Phase 17 | Pending |
-| SND-03 | Phase 17 | Pending |
-| SND-04 | Phase 17 | Pending |
-| SND-05 | Phase 17 | Pending |
+| SND-01 | Phase 17 | Complete |
+| SND-02 | Phase 17 | Complete |
+| SND-03 | Phase 17 | Complete |
+| SND-04 | Phase 17 | Complete |
+| SND-05 | Phase 17 | Complete |
 | VFX-01 | Phase 18 | Pending |
 | VFX-02 | Phase 18 | Pending |
 | VFX-03 | Phase 18 | Pending |
