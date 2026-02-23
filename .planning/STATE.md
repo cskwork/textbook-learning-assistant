@@ -9,12 +9,12 @@ See: .planning/PROJECT.md (updated 2026-02-23)
 
 ## Current Position
 
-Phase: 16 (보상 시스템) — 완료
-Plan: 3/3 plans 완료
-Status: Phase 16 완료, Phase 17 (사운드 시스템) 대기
-Last activity: 2026-02-23 — Plan 03 완료 (리더보드 + 데일리/주간 챌린지 UI 컴포넌트)
+Phase: 16 (보상 시스템) — gap closure 진행 중
+Plan: 4/5 plans 완료 (gap closure: 16-04 완료, 16-05 완료)
+Status: Phase 16 gap closure 완료, Phase 17 (사운드 시스템) 대기
+Last activity: 2026-02-23 — Plan 04 완료 (퀴즈 플로우 게이미피케이션 연동 + AppShell XPBar)
 
-진행 상황: [Phase 16 ██████████] 100% (3/3 plans) | v3.0 전체 [███░░░░░░░] 3/6 phases
+진행 상황: [Phase 16 ████████░░] 80% (4/5 plans) | v3.0 전체 [███░░░░░░░] 3/6 phases
 
 ## Performance Metrics
 
@@ -29,6 +29,7 @@ Last activity: 2026-02-23 — Plan 03 완료 (리더보드 + 데일리/주간 �
 | Phase 16 P01 | 5 min | 2 tasks | 9 files |
 | Phase 16 P02 | 3 | 2 tasks | 7 files |
 | Phase 16 P03 | 4 min | 2 tasks | 5 files |
+| Phase 16 P04 | 2 min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -59,6 +60,8 @@ Last activity: 2026-02-23 — Plan 03 완료 (리더보드 + 데일리/주간 �
 - [Phase 16-03]: 리더보드 surrounding 중복 제거 — top3 studentId Set으로 필터, TOP3 안에 드는 학생은 내 주변에 중복 표시 안 함
 - [Phase 16-03]: displayName fallback: userSettings.displayName 없으면 email @ 앞부분 사용 (POC 환경 대비)
 - [Phase 16-03]: 주간 챌린지 완료 보너스 1000 XP — 데일리(500 XP)의 2배, 주간 목표가 약 16.7일 데일리 분량이므로 합리적
+- [Phase 16-04]: onGamificationResult 콜백 패턴 — QuizPlayer → QuizPage 레벨업/뱃지 이벤트 전달, 오버레이는 페이지 레벨에서 렌더링
+- [Phase 16-04]: XPBar FocusMode 숨김 — 퀴즈 풀기 중 집중 방해 방지, isFocusMode 기반 조건부 렌더링
 
 ### Critical Pitfalls (Phase 15에서 먼저 검증 필수)
 
@@ -85,7 +88,7 @@ Last activity: 2026-02-23 — Plan 03 완료 (리더보드 + 데일리/주간 �
 
 ## Session Continuity
 
-Last activity: 2026-02-23 — Phase 16 Plan 03 완료 (리더보드 + 데일리/주간 챌린지 UI 컴포넌트 3종 + barrel export 9개)
-Stopped at: Completed 16-reward-system-03-PLAN.md
+Last activity: 2026-02-23 — Phase 16 Plan 04 완료 (퀴즈 플로우 게이미피케이션 연동 + AppShell XPBar 배치)
+Stopped at: Completed 16-reward-system-04-PLAN.md
 Resume file: None
 Next command: `/gsd:discuss-phase 17` (Phase 17: 사운드 시스템 — Howler.js BGM + SFX)
