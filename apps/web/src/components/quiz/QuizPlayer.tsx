@@ -105,7 +105,7 @@ export function QuizPlayer({
   const timer = useTimer()
   const { isFunMode } = useFunMode()
   const { playSfx } = useSfx()
-  const { comboCount, multiplier, onCorrect: comboOnCorrect, onWrong: comboOnWrong, resetCombo } = useCombo()
+  const { comboCount, multiplier, onCorrect: comboOnCorrect, onWrong: comboOnWrong, resetCombo: _resetCombo } = useCombo()
 
   // XP 플로팅 텍스트 상태 — key로 매번 새 애니메이션 트리거
   const [xpFloat, setXpFloat] = useState<{ amount: number; key: number } | null>(null)

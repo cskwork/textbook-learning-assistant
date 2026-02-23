@@ -9,8 +9,8 @@ import { soundManager } from '@/lib/sound/SoundManager'
 import {
   saveSoundSettings,
   DEFAULT_SOUND_SETTINGS,
-  type SoundSettings,
 } from '@/lib/sound/sound-settings'
+export type { SoundSettings } from '@/lib/sound/sound-settings'
 
 export interface UseSoundSettingsReturn {
   bgmVolume: number

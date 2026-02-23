@@ -434,3 +434,29 @@ body {
 .dark .card-shadow-lg {
   box-shadow: 0 8px 24px oklch(0 0 0 / 0.4), 0 4px 8px oklch(0 0 0 / 0.25);
 }
+
+/* ─── Phase 18: Three.js VFX 키프레임 ─── */
+
+/* CSS fallback 배경 — 미세 opacity 펄스 */
+@keyframes css-fallback-pulse {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 1; }
+}
+
+/* 오답 플래시 (빨간색 번쩍임, 0.2초) */
+@keyframes wrong-flash {
+  0%, 100% { background: transparent; }
+  50% { background: rgba(239, 68, 68, 0.3); }
+}
+
+/* 오답 흔들림 (좌우 shake, 0.3초) */
+@keyframes wrong-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+.animate-wrong-flash { animation: wrong-flash 0.2s ease-out; }
+.animate-wrong-shake { animation: wrong-shake 0.3s ease-out; }
