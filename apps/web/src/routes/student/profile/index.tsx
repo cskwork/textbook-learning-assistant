@@ -3,14 +3,15 @@
  *
  * 섹션:
  * 1. 프로필 — AvatarDisplay + ProfileEditForm (이름/이모지 편집)
- * 2. 앱 설정 — 다크모드 Switch + 수식 글꼴 크기 Slider + KaTeX 미리보기
- * 3. 보안 — PasswordChangeForm (비밀번호 변경)
- * 4. 위험 영역 — 계정 삭제 Dialog (이메일 입력 확인 후 삭제)
+ * 2. [FunMode] 획득 뱃지 — 레벨/XP/스트릭 요약 + 카테고리별 뱃지 그리드
+ * 3. 앱 설정 — 다크모드 Switch + 수식 글꼴 크기 Slider + KaTeX 미리보기
+ * 4. 보안 — PasswordChangeForm (비밀번호 변경)
+ * 5. 위험 영역 — 계정 삭제 Dialog (이메일 입력 확인 후 삭제)
  */
 
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
-import { Trash2 } from 'lucide-react'
+import { Trash2, Award, Trophy } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useSettings } from '@/contexts/SettingsContext'
 import { deleteAccount } from '@/lib/auth'
@@ -34,18 +35,40 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import { useFunMode } from '@/hooks/useFunMode'
+import { useGamification } from '@/hooks/useGamification'
+import { BADGE_DEFINITIONS } from '@/lib/gamification/badge-definitions'
+import { cn } from '@/lib/utils'
 import type { User } from '@/lib/auth'
 
 export default function StudentProfilePage() {
   const { user, updateProfile, logout } = useAuth()
   const { isDarkMode, katexFontSize, toggleDarkMode, setKatexFontSize } = useSettings()
   const navigate = useNavigate()
+  const { isFunMode } = useFunMode()
+  const { profile, allBadges } = useGamification(user?.email)
 
   // 계정 삭제 Dialog 상태
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [deleteEmailInput, setDeleteEmailInput] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
   const [deleteError, setDeleteError] = useState<string | null>(null)
+
+  // 획득한 뱃지 ID Set
+  const earnedBadgeIds = new Set(allBadges.map(b => b.badgeId))
+
+  // 카테고리별 뱃지 그룹
+  const badgesByCategory = {
+    study: BADGE_DEFINITIONS.filter(b => b.category === 'study'),
+    streak: BADGE_DEFINITIONS.filter(b => b.category === 'streak'),
+    achievement: BADGE_DEFINITIONS.filter(b => b.category === 'achievement'),
+  }
+
+  const categoryLabels: Record<string, string> = {
+    study: '학습',
+    streak: '연속',
+    achievement: '성취',
+  }
 
   /**
    * 프로필 저장 — AuthContext.updateProfile + Dexie 백업
@@ -105,6 +128,80 @@ export default function StudentProfilePage() {
           <ProfileEditForm user={user} onSave={handleProfileSave} />
         </CardContent>
       </Card>
+
+      {/* 게이미피케이션 뱃지 섹션 — FunMode 전용 */}
+      {isFunMode && profile && (
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <Trophy className="w-5 h-5 text-yellow-500" />
+              <CardTitle>획득 뱃지</CardTitle>
+            </div>
+            <CardDescription>
+              {allBadges.length}개 획득 / {BADGE_DEFINITIONS.length}개 중
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-5">
+            {/* 레벨/XP/스트릭 요약 */}
+            <div className="flex items-center gap-4 p-3 rounded-xl bg-muted/30">
+              <div className="text-center">
+                <p className="text-2xl font-black text-primary">Lv.{profile.level}</p>
+                <p className="text-[11px] text-muted-foreground">현재 레벨</p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl font-black text-foreground">{profile.totalXP.toLocaleString()}</p>
+                <p className="text-[11px] text-muted-foreground">총 XP</p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl font-black text-orange-500">{profile.streakDays}일</p>
+                <p className="text-[11px] text-muted-foreground">연속 학습</p>
+              </div>
+            </div>
+
+            {/* 카테고리별 뱃지 그리드 */}
+            {Object.entries(badgesByCategory).map(([category, badges]) => (
+              <div key={category} className="space-y-2">
+                <h4 className="text-sm font-bold text-foreground flex items-center gap-1.5">
+                  <Award className="w-3.5 h-3.5 text-muted-foreground" />
+                  {categoryLabels[category]}
+                  <span className="text-xs text-muted-foreground font-normal ml-1">
+                    ({badges.filter(b => earnedBadgeIds.has(b.id)).length}/{badges.length})
+                  </span>
+                </h4>
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
+                  {badges.map((badge) => {
+                    const isEarned = earnedBadgeIds.has(badge.id)
+                    return (
+                      <div
+                        key={badge.id}
+                        className={cn(
+                          'flex flex-col items-center gap-1 p-2.5 rounded-xl text-center transition-all',
+                          isEarned
+                            ? 'bg-white dark:bg-card shadow-sm border border-border/30'
+                            : 'bg-muted/20 opacity-40 grayscale',
+                        )}
+                      >
+                        <span className="text-2xl">{badge.icon}</span>
+                        <p className="text-[10px] font-semibold leading-tight">{badge.name}</p>
+                        {isEarned && (
+                          <span className={cn(
+                            'text-[9px] font-bold px-1.5 py-0.5 rounded-full',
+                            badge.rarity === 'epic' && 'bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-300',
+                            badge.rarity === 'rare' && 'bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300',
+                            badge.rarity === 'common' && 'bg-gray-100 text-gray-600 dark:bg-gray-500/20 dark:text-gray-300',
+                          )}>
+                            {badge.rarity}
+                          </span>
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      )}
 
       {/* 앱 설정 섹션 */}
       <Card>
