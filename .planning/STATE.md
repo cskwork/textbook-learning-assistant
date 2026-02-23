@@ -9,12 +9,12 @@ See: .planning/PROJECT.md (updated 2026-02-23)
 
 ## Current Position
 
-Phase: 16 (보상 시스템) — 완료
-Plan: 5/5 plans 완료
-Status: Phase 16 완료, Phase 17 (사운드 시스템) 대기
-Last activity: 2026-02-23 — Plan 05 완료 (홈 화면 게이미피케이션 위젯 + 프로필 뱃지 패널)
+Phase: 17 (사운드 시스템) — 진행 중
+Plan: 1/2 plans 완료
+Status: Phase 17 Plan 01 완료, Plan 02 진행 중
+Last activity: 2026-02-23 — Plan 01 완료 (SoundManager + SfxEngine + Dexie 설정 + React 훅)
 
-진행 상황: [Phase 16 ██████████] 100% (5/5 plans) | v3.0 전체 [███░░░░░░░] 3/6 phases
+진행 상황: [Phase 17 █████░░░░░] 50% (1/2 plans) | v3.0 전체 [███░░░░░░░] 3/6 phases
 
 ## Performance Metrics
 
@@ -31,6 +31,7 @@ Last activity: 2026-02-23 — Plan 05 완료 (홈 화면 게이미피케이션 �
 | Phase 16 P03 | 4 min | 2 tasks | 5 files |
 | Phase 16 P04 | 2 min | 2 tasks | 3 files |
 | Phase 16 P05 | 3 min | 2 tasks | 2 files |
+| Phase 17 P01 | 5 min | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -67,6 +68,9 @@ Last activity: 2026-02-23 — Plan 05 완료 (홈 화면 게이미피케이션 �
 - [Phase 16-05]: studentGroupId useLiveQuery undefined → ?? null 처리로 Leaderboard groupId 타입 안전하게 전달
 - [Phase 16-05]: StreakCounter bonusXP=0 홈 고정 — 실시간 보너스는 Phase 19 퀴즈 세션에서 담당
 - [Phase 16-05]: handleStartDailyChallenge 임시 구현 — /student/problems 리디렉션, Phase 19에서 실제 챌린지 모드로 교체 예정
+- [Phase 17-01]: SoundManager subscribe/getSnapshot 패턴 — useSyncExternalStore 호환으로 React 외부 싱글턴 상태 구독
+- [Phase 17-01]: SfxEngine이 Howler.ctx AudioContext 공유 — 별도 AudioContext 생성 금지
+- [Phase 17-01]: saveSoundSettings upsert 패턴 — 기존 settings.service.ts와 동일한 where→first→update/put 방식
 
 ### Critical Pitfalls (Phase 15에서 먼저 검증 필수)
 
@@ -93,7 +97,7 @@ Last activity: 2026-02-23 — Plan 05 완료 (홈 화면 게이미피케이션 �
 
 ## Session Continuity
 
-Last activity: 2026-02-23 — Phase 16 Plan 05 완료 (홈 화면 게이미피케이션 위젯 + 프로필 뱃지 패널)
-Stopped at: Completed 16-reward-system-05-PLAN.md
+Last activity: 2026-02-23 — Phase 17 Plan 01 완료 (SoundManager + SfxEngine + Dexie 사운드 설정 + React 훅)
+Stopped at: Completed 17-sound-system-01-PLAN.md
 Resume file: None
-Next command: `/gsd:discuss-phase 17` (Phase 17: 사운드 시스템 — Howler.js BGM + SFX)
+Next command: Plan 02 자동 실행 중 (Wave 2)
