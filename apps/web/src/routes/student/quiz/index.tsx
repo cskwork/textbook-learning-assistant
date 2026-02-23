@@ -1,7 +1,7 @@
 // apps/web/src/routes/student/quiz/index.tsx
 // 퀴즈 플레이어 페이지 — useParams(:id) + QuizPlayer + 북마크 + 기출탭탭 스타일
 // Phase 16: 게이미피케이션 오버레이 (FunMode 시 LevelUpOverlay + BadgeUnlockOverlay)
-import { useState, useEffect } from 'react'
+import { lazy, Suspense, useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router'
 import { Bookmark, ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -16,7 +16,11 @@ import { db, type Question } from '@/lib/db'
 import { getWrongNote, toggleBookmark } from '@/services/wrongNote.service'
 import { LevelUpOverlay, BadgeUnlockOverlay } from '@/components/gamification'
 import { BADGE_DEFINITIONS, type BadgeDefinition } from '@/lib/gamification/badge-definitions'
+import { EventBus } from '@/game/EventBus'
 import type { GamificationResult } from '@/components/quiz/QuizPlayer'
+
+// Phase 18: 퀴즈 완료 컨페티 (lazy load → game-confetti 청크)
+const ConfettiEffect = lazy(() => import('@/components/game/effects/ConfettiEffect'))
 
 export default function QuizPage() {
   const { id } = useParams<{ id: string }>()
@@ -30,6 +34,9 @@ export default function QuizPage() {
   // 게이미피케이션 오버레이 상태
   const [levelUpInfo, setLevelUpInfo] = useState<{ newLevel: number } | null>(null)
   const [unlockedBadge, setUnlockedBadge] = useState<BadgeDefinition | null>(null)
+
+  // Phase 18: 퀴즈 정답 시 컨페티 트리거 상태
+  const [showConfetti, setShowConfetti] = useState(false)
 
   // 문제 로드
   useEffect(() => {
@@ -60,8 +67,14 @@ export default function QuizPage() {
     setIsBookmarked(newBookmarked)
   }
 
-  // 게이미피케이션 결과 핸들러 — LevelUpOverlay/BadgeUnlockOverlay 트리거
+  // 게이미피케이션 결과 핸들러 — LevelUpOverlay/BadgeUnlockOverlay + 컨페티 트리거
   function handleGamificationResult(result: GamificationResult) {
+    // Phase 18: 정답 시 컨페티 + quiz-complete VFX 이벤트
+    if (result.xpAwarded > 0) {
+      setShowConfetti(true)
+      EventBus.emit('vfx:quiz-complete')
+    }
+
     if (result.leveledUp) {
       setLevelUpInfo({ newLevel: result.newLevel })
     }
@@ -157,6 +170,11 @@ export default function QuizPage() {
       {/* FunMode 게이미피케이션 오버레이 */}
       {isFunMode && (
         <>
+          {/* Phase 18: 퀴즈 정답 컨페티 — z-50 (LevelUpOverlay z-100 아래) */}
+          <Suspense fallback={null}>
+            <ConfettiEffect fire={showConfetti} />
+          </Suspense>
+
           <LevelUpOverlay
             newLevel={levelUpInfo?.newLevel ?? 1}
             visible={levelUpInfo !== null}

@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { lazy, Suspense, type ReactNode } from 'react'
 import { Outlet, useLocation } from 'react-router'
 import { LogOut, GraduationCap, ArrowLeft, User } from 'lucide-react'
 import { useNavigate } from 'react-router'
@@ -12,6 +12,17 @@ import { useFunMode } from '@/hooks/useFunMode'
 import { useGamification } from '@/hooks/useGamification'
 import { useAuth } from '@/contexts/AuthContext'
 import { XPBar } from '@/components/gamification'
+
+// Phase 18: ThreeBackground lazy import — 레이아웃 수준 배치로 라우트 전환 시 Canvas 재생성 방지
+const ThreeBackground = lazy(() => import('@/components/game/ThreeBackground'))
+
+/** 현재 라우트 경로 → 3D 배경 씬 타입 매핑 */
+function getSceneForRoute(pathname: string): 'space' | 'neon' | 'wave' | 'mountain' {
+  if (pathname.startsWith('/student/quiz')) return 'neon'
+  if (pathname.startsWith('/student/analytics')) return 'wave'
+  if (pathname.startsWith('/student/profile')) return 'mountain'
+  return 'space' // /student (홈) + 기타 기본값
+}
 
 interface AppShellProps {
   children?: ReactNode
@@ -29,8 +40,18 @@ export default function AppShell({ children, navItems, onLogout, profilePath }: 
 
   const isFocusMode = location.pathname.includes('/quiz') || location.pathname.includes('/play') || location.pathname.includes('/problems/')
 
+  // Phase 18: 현재 라우트 기반 3D 배경 씬 결정
+  const currentScene = getSceneForRoute(location.pathname)
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      {/* Phase 18: ThreeBackground — FunMode 전용, 레이아웃 수준 배치 */}
+      {isFunMode && (
+        <Suspense fallback={null}>
+          <ThreeBackground scene={currentScene} />
+        </Suspense>
+      )}
+
       {/* ── FOCUS MODE 헤더 ── */}
       {isFocusMode && (
         <header className={cn(
