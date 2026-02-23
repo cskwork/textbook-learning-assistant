@@ -1,9 +1,13 @@
 // LevelUpOverlay.tsx
 // 풀스크린 레벨업 시네마틱 오버레이 컴포넌트
-// Phase 16 보상 시스템
+// Phase 16 보상 시스템 + Phase 18 Three.js 파티클 배경
 
-import { useEffect, useRef } from 'react'
+import { lazy, Suspense, useEffect, useRef } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useFunMode } from '@/contexts/FunModeContext'
+
+// Phase 18: 레벨업 파티클 VFX (FunMode only, lazy load)
+const LevelUpVfx = lazy(() => import('@/components/game/effects/LevelUpVfx'))
 
 interface LevelUpOverlayProps {
   /** 새로 달성한 레벨 */
@@ -25,6 +29,7 @@ interface LevelUpOverlayProps {
  * - 2초 후 자동 닫힘, 클릭으로도 닫기 가능
  */
 export function LevelUpOverlay({ newLevel, visible, onDone }: LevelUpOverlayProps) {
+  const { isFunMode } = useFunMode()
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // visible이 true가 되면 2초 후 자동 닫기
@@ -55,6 +60,13 @@ export function LevelUpOverlay({ newLevel, visible, onDone }: LevelUpOverlayProp
         >
           {/* 배경: 블랙 반투명 */}
           <div className="absolute inset-0 bg-black/80" />
+
+          {/* Three.js 파티클 배경 — FunMode only */}
+          {isFunMode && (
+            <Suspense fallback={null}>
+              <LevelUpVfx visible={visible} />
+            </Suspense>
+          )}
 
           {/* 방사형 빛 효과 */}
           <div

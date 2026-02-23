@@ -33,6 +33,7 @@ import { RecentActivityList } from '@/components/home/RecentActivityList'
 import { useFunMode } from '@/hooks/useFunMode'
 import { useGamification } from '@/hooks/useGamification'
 import { StreakCounter, DailyChallenge, WeeklyChallenge, Leaderboard } from '@/components/gamification'
+import { StreakFlame } from '@/components/game/effects/StreakFlame'
 import type { Question } from '@/lib/db'
 
 /** 시간대별 인사말 */
@@ -424,10 +425,19 @@ export default function StudentHomePage() {
             {/* 스트릭 + 데일리 챌린지 한 줄 */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <AnimatedCard className="border-none shadow-sm bg-white dark:bg-card p-4">
-                <StreakCounter
-                  streakDays={profile.streakDays}
-                  bonusXP={0}
-                />
+                <div className="relative">
+                  {/* Phase 18: 스트릭 불꽃 — FunMode에서 StreakCounter 아이콘 뒤 배치 */}
+                  {isFunMode && (
+                    <StreakFlame
+                      streakDays={profile.streakDays}
+                      className="-top-3 -left-1"
+                    />
+                  )}
+                  <StreakCounter
+                    streakDays={profile.streakDays}
+                    bonusXP={0}
+                  />
+                </div>
               </AnimatedCard>
               <AnimatedCard className="border-none shadow-sm bg-white dark:bg-card">
                 <DailyChallenge
