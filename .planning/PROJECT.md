@@ -64,7 +64,15 @@
 
 ### Active
 
-- [ ] PDF 문제 풀이 (deferred from v2.1)
+#### Current Milestone: v4.0 PDF 2-Way 학습 시스템
+
+**Goal:** PDF ↔ 앱 양방향 연동 — PDF 업로드 시 AI 자동 파싱, 앱 내 PDF 뷰어에서 풀이 오버레이, 강사용 PDF→DB 자동 등록, 시험지/학습지 PDF 내보내기
+
+**Target features:**
+- PDF 업로드 & Gemini Vision AI 문제 자동 추출 (사용자 검수/수정)
+- PDF 뷰어 + 풀이 오버레이 (iPad 시험지 느낌)
+- 강사용 PDF → DB 자동 등록
+- 앱 → PDF 내보내기 (시험지 스타일 + 학습지 스타일)
 
 ### Out of Scope
 
@@ -123,7 +131,8 @@
 | FunModeContext 단일 게이트 패턴 | CSS 변수 오버라이드로 즉시 테마 전환, 각 페이지는 훅 하나로 분기 | ✓ Good |
 | SDT 기반 보상 설계 | 학습 성취 기반 보상만, 외재적 동기 과부하 방지 | ✓ Good |
 | Phaser CANVAS 모드 | Three.js WebGL 컨텍스트와 충돌 방지 | ✓ Good |
-| PDF 문제 풀이 v2.1 연기 → v4.0 | 디자인 + 게이미피케이션 우선, PDF는 다음 milestone | — Active |
+| PDF 문제 풀이 v2.1 연기 → v4.0 | 디자인 + 게이미피케이션 우선, PDF는 다음 milestone | ✓ Good (v4.0 시작) |
+| PDF 2-Way 시스템 (v4.0) | 업로드/파싱/뷰어/내보내기 양방향 PDF 연동 | — Pending |
 
 ---
-*Last updated: 2026-02-24 after v3.0 milestone completion*
+*Last updated: 2026-02-24 after v4.0 milestone start*
