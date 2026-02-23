@@ -6,7 +6,6 @@ import { ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import QuizSwiperPage from '@/components/quiz/QuizSwiperPage'
-import { QuizPlayer } from '@/components/quiz/QuizPlayer'
 import { FadeIn } from '@/components/motion/FadeIn'
 import { AnimatedCard } from '@/components/motion/AnimatedCard'
 import { useAuth } from '@/contexts/AuthContext'
@@ -104,23 +103,13 @@ export default function WorkbookPlayPage() {
         <div className="w-9" /> {/* 오른쪽 여백 균형 */}
       </div>
 
-      {/* 문제 풀기 — 2개 이상이면 QuizSwiperPage, 1개면 QuizPlayer */}
-      {questions.length >= 2 ? (
-        <QuizSwiperPage
-          questions={questions}
-          studentId={user?.email ?? ''}
-          title={workbook.title}
-          onBack={() => navigate('/student/workbooks')}
-        />
-      ) : (
-        <QuizPlayer
-          key={questions[0].id}
-          question={questions[0]}
-          studentId={user?.email ?? ''}
-          onNext={() => navigate('/student/workbooks')}
-          onBack={() => navigate('/student/workbooks')}
-        />
-      )}
+      {/* 문제 풀기 — 단일/다중 모두 동일하게 Swiper 흐름 사용 */}
+      <QuizSwiperPage
+        questions={questions}
+        studentId={user?.email ?? ''}
+        title={workbook.title}
+        onBack={() => navigate('/student/workbooks')}
+      />
     </div>
   )
 }

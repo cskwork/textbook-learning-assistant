@@ -47,3 +47,12 @@
   - `apps/web/src/components/questions/QuestionCard.tsx` FunMode 카드 배경을 `!bg-black/45`로 강제해 흰 배경이 남지 않도록 수정했습니다.
   - `apps/web/src/routes/student/planner/index.tsx`와 `apps/web/src/components/planner/TaskChecklist.tsx`에서 플래너 카드 배경을 FunMode 다크 톤으로 강제했습니다.
   - `apps/web/src/components/planner/WeeklySettingsCard.tsx`, `apps/web/src/components/planner/NotificationToggle.tsx`에 `isFunMode`를 추가해 내부 설정 카드(주간 목표/알림)도 다크 + 네온 스타일로 통일했습니다.
+- FunMode `오늘의 목표` 카드(`DailyGoalProgress`)도 다크 테마로 통일했습니다.
+  - `apps/web/src/components/analytics/DailyGoalProgress.tsx`에서 FunMode일 때 카드/프로그레스/입력 UI를 네온 다크 스타일로 렌더링하도록 변경했습니다.
+- 미니게임 인터랙션 SFX를 강화했습니다.
+  - `apps/web/src/lib/sound/SfxEngine.ts`에 `tap` 효과음을 추가했습니다.
+  - `apps/web/src/components/game/minigame/scenes/FormulaComboScene.ts`에서 아이템 클릭 시 `minigame-item-tap` 이벤트를 발행하도록 수정했습니다.
+  - `apps/web/src/components/game/quiz/MiniGameMode.tsx`에서 `minigame-item-tap` 이벤트 수신 시 탭 효과음을 재생하고, 캔버스 상호작용 시 AudioContext resume를 보장하도록 수정했습니다.
+  - `apps/web/src/components/game/minigame/MiniGameBridge.tsx`에 `onUserInteraction` 콜백을 추가해 캔버스 터치/클릭을 상위에서 감지할 수 있게 했습니다.
+- 문제집 플레이의 `다음 문제` 흐름을 통일했습니다.
+  - `apps/web/src/routes/student/workbooks/play.tsx`에서 단일 문제집일 때만 별도 `QuizPlayer`를 쓰던 분기를 제거하고, 단일/다중 모두 `QuizSwiperPage`를 사용하도록 변경했습니다.

@@ -7,7 +7,7 @@ import { Howler } from 'howler'
 import { soundManager } from './SoundManager'
 
 /** SFX 타입 — 학습 이벤트별 효과음 */
-export type SfxType = 'correct' | 'wrong' | 'combo' | 'levelUp' | 'badge' | 'streak'
+export type SfxType = 'correct' | 'wrong' | 'combo' | 'levelUp' | 'badge' | 'streak' | 'tap'
 
 export interface SfxPlayOptions {
   /** 콤보 단계 (combo SFX 전용) — 2=기본, 3-4=중간, 5+=최고 */
@@ -83,6 +83,9 @@ export class SfxEngine {
         break
       case 'streak':
         this.playStreak(ctx, volume)
+        break
+      case 'tap':
+        this.playTap(ctx, volume)
         break
     }
   }
@@ -180,6 +183,28 @@ export class SfxEngine {
 
     this.createOscNode(ctx, 'square', 1046.5, now, 0.15, volume * 0.3)
     this.createOscNode(ctx, 'sine', 1318.5, now + 0.1, 0.2, volume * 0.3)
+  }
+
+  /** 탭 클릭 — 매우 짧은 UI 피드백음 */
+  private playTap(ctx: AudioContext, volume: number): void {
+    const now = ctx.currentTime
+    const duration = 0.06
+
+    const osc = ctx.createOscillator()
+    const gain = ctx.createGain()
+
+    osc.type = 'triangle'
+    osc.frequency.setValueAtTime(900, now)
+    osc.frequency.exponentialRampToValueAtTime(700, now + duration)
+
+    gain.gain.setValueAtTime(volume * 0.18, now)
+    gain.gain.exponentialRampToValueAtTime(0.001, now + duration)
+
+    osc.connect(gain)
+    gain.connect(ctx.destination)
+
+    osc.start(now)
+    osc.stop(now + duration + 0.01)
   }
 
   /** OscillatorNode 생성 헬퍼 — 중복 코드 방지 */

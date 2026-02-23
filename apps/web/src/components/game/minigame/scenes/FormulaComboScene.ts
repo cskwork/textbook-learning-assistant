@@ -224,6 +224,7 @@ export default class FormulaComboScene extends Phaser.Scene {
 
   private onItemClick(item: FallingItem): void {
     if (!item.alive) return
+    EventBus.emit('minigame-item-tap')
 
     // 빈 슬롯 찾기
     let slotIndex = -1

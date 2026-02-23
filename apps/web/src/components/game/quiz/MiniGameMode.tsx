@@ -39,6 +39,10 @@ export default function MiniGameMode({ studentId, onComplete, onBack }: MiniGame
 
   // 미니게임 씬 이벤트 → SFX 재생 연결
   useEffect(() => {
+    const onTap = () => {
+      ensureAudioReady()
+      playSfx('tap')
+    }
     const onCorrect = () => {
       ensureAudioReady()
       playSfx('correct')
@@ -52,11 +56,13 @@ export default function MiniGameMode({ studentId, onComplete, onBack }: MiniGame
       playSfx('levelUp')
     }
 
+    EventBus.on('minigame-item-tap', onTap)
     EventBus.on('minigame-correct', onCorrect)
     EventBus.on('minigame-wrong', onWrong)
     EventBus.on('minigame-success', onSuccess)
 
     return () => {
+      EventBus.off('minigame-item-tap', onTap)
       EventBus.off('minigame-correct', onCorrect)
       EventBus.off('minigame-wrong', onWrong)
       EventBus.off('minigame-success', onSuccess)
