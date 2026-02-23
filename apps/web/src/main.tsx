@@ -17,6 +17,7 @@ import './index.css'
 
 import { AuthProvider } from './contexts/AuthContext'
 import { SettingsProvider } from './contexts/SettingsContext'
+import { FunModeProvider } from './contexts/FunModeContext'
 // import { PWAInstallBanner } from './components/pwa/PWAInstallBanner'
 import PublicRoute from './routes/public-route'
 import Layout from './routes/_layout'
@@ -54,9 +55,10 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <SettingsProvider>
-        <AuthProvider>
-          {/* PWAInstallBanner 비활성화 — 릴리즈 준비 후 재활성화 */}
-          <Routes>
+        <FunModeProvider>
+          <AuthProvider>
+            {/* PWAInstallBanner 비활성화 — 릴리즈 준비 후 재활성화 */}
+            <Routes>
           {/* 공개 라우트: 비인증 사용자만 접근 */}
           <Route element={<PublicRoute />}>
             <Route path="/login" element={<LoginPage />} />
@@ -106,6 +108,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </AuthProvider>
+        </FunModeProvider>
       </SettingsProvider>
     </BrowserRouter>
   </StrictMode>,
