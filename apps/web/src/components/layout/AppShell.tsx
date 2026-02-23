@@ -7,6 +7,7 @@ import BottomNav from './BottomNav'
 import Sidebar from './Sidebar'
 import type { NavItem } from './BottomNav'
 import { FunModeToggleButton } from './FunModeToggleButton'
+import { BgmToggleButton } from '@/components/sound/BgmToggleButton'
 import { useFunMode } from '@/hooks/useFunMode'
 import { useGamification } from '@/hooks/useGamification'
 import { useAuth } from '@/contexts/AuthContext'
@@ -81,6 +82,8 @@ export default function AppShell({ children, navItems, onLogout, profilePath }: 
           <div className="flex items-center gap-1">
             {/* 반전 모드 토글 버튼 (v3.0) */}
             <FunModeToggleButton />
+            {/* BGM 토글 버튼 — FunMode 전용 (Phase 17) */}
+            <BgmToggleButton />
             {profilePath && (
               <button
                 onClick={() => navigate(profilePath)}

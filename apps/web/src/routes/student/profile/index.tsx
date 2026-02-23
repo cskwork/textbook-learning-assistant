@@ -37,6 +37,7 @@ import {
 } from '@/components/ui/dialog'
 import { useFunMode } from '@/hooks/useFunMode'
 import { useGamification } from '@/hooks/useGamification'
+import { SoundSettingsPanel } from '@/components/sound/SoundSettingsPanel'
 import { BADGE_DEFINITIONS } from '@/lib/gamification/badge-definitions'
 import { cn } from '@/lib/utils'
 import type { User } from '@/lib/auth'
@@ -257,6 +258,9 @@ export default function StudentProfilePage() {
           </div>
         </CardContent>
       </Card>
+
+      {/* 사운드 설정 섹션 — FunMode 전용 (Phase 17) */}
+      {isFunMode && <SoundSettingsPanel userId={user.email} />}
 
       {/* 보안 섹션 */}
       <Card>
