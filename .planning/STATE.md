@@ -62,6 +62,7 @@ Last activity: 2026-02-23 — Plan 05 완료 (홈 화면 게이미피케이션 �
 - [Phase 16-03]: displayName fallback: userSettings.displayName 없으면 email @ 앞부분 사용 (POC 환경 대비)
 - [Phase 16-03]: 주간 챌린지 완료 보너스 1000 XP — 데일리(500 XP)의 2배, 주간 목표가 약 16.7일 데일리 분량이므로 합리적
 - [Phase 16-04]: onGamificationResult 콜백 패턴 — QuizPlayer → QuizPage 레벨업/뱃지 이벤트 전달, 오버레이는 페이지 레벨에서 렌더링
+- [Phase 20 사전 피드백]: 게임모드 가독성 — 어두운 배경에 밝은 글자, 일관된 디자인. 더 화려하고 레이저 효과. 이모지 대신 SVG 아이콘 사용 (고퀄리티)
 - [Phase 16-04]: XPBar FocusMode 숨김 — 퀴즈 풀기 중 집중 방해 방지, isFocusMode 기반 조건부 렌더링
 - [Phase 16-05]: studentGroupId useLiveQuery undefined → ?? null 처리로 Leaderboard groupId 타입 안전하게 전달
 - [Phase 16-05]: StreakCounter bonusXP=0 홈 고정 — 실시간 보너스는 Phase 19 퀴즈 세션에서 담당

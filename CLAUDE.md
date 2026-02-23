@@ -2,20 +2,21 @@
 
 ## 현재 상태
 
-- **현재 Milestone:** v2.0 기출탭탭 스타일 디자인 리뉴얼
-- **현재 Phase:** 10 (디자인 시스템)
-- **진행 상황:** Phase 10 계획 대기 중
-- **다음 명령어:** `/gsd:plan-phase 10`
+- **현재 Milestone:** v3.0 반전 모드 — 게이미피케이션 학습 혁명
+- **현재 Phase:** 17 (사운드 시스템)
+- **진행 상황:** Phase 16 완료, Phase 17 대기
+- **다음 명령어:** `/gsd:discuss-phase 17`
 - **참고:** `/clear` 먼저 실행 후 위 명령어 실행 권장 (fresh context)
 
-## v2.0 로드맵 요약
+## v3.0 로드맵 요약
 
-5개 phase (10-14):
-- Phase 10: 디자인 시스템 (색상·타이포·컴포넌트·다크모드)
-- Phase 11: 공통 레이아웃 + 애니메이션 (네비게이션·Framer Motion·온보딩)
-- Phase 12: 학생 홈 + 문제 풀이 UX (Swiper·퀴즈·채점 애니메이션)
-- Phase 13: 분석 대시보드 + 학습 플래너 (차트·타임라인·리마인더)
-- Phase 14: 강사 포털 리뉴얼 (홈·문제관리·분석·그룹)
+6개 phase (15-20):
+- Phase 15: 반전 모드 기반 인프라 + 번들 전략 (FunModeContext, 코드 스플리팅, Phaser POC)
+- Phase 16: 보상 시스템 (XP/레벨/스트릭/콤보/뱃지/리더보드/챌린지)
+- Phase 17: 사운드 시스템 (Howler.js BGM + SFX, iOS 잠금 해제)
+- Phase 18: Three.js 시각 효과 (3D 배경, 파티클, 레벨업 시네마틱)
+- Phase 19: 게임화 퀴즈 엔진 (타임어택/서바이벌/보스배틀/미니게임)
+- Phase 20: 전체 화면 반전 디자인 (모든 화면 게임 테마 적용)
 
 ## 핵심 결정사항
 
@@ -31,4 +32,5 @@
 - Frontend: React 19 + Vite 7 + Tailwind v4 + shadcn/ui
 - Backend: Express 5 + Drizzle ORM + PostgreSQL (POC: localStorage mock)
 - Auth: JWT (jsonwebtoken) + bcrypt (POC: localStorage mock)
-- New in v2.0: Swiper, Framer Motion, Pretendard 폰트
+- v2.0: Swiper, Framer Motion, Pretendard 폰트
+- v3.0 (예정): Phaser, Three.js, Howler.js, Dexie v8
