@@ -20,6 +20,7 @@ import { useSfx } from '@/hooks/useSfx'
 import { awardXP, updateStreak } from '@/lib/gamification/gamification.service'
 import { getBaseXP } from '@/lib/gamification/xp-formula'
 import { XPFloatingText, ComboCounter } from '@/components/gamification'
+import { EventBus } from '@/game/EventBus'
 import type { Question } from '@/lib/db'
 
 // ─── 상태 머신 타입 ────────────────────────────────────────────────────────────
@@ -140,15 +141,20 @@ export function QuizPlayer({
 
         // SFX: 정답음 (fire-and-forget)
         playSfx('correct')
-        // SFX: 콤보 2연속 이상 시 추가 콤보음
+
+        // VFX: 정답 파티클 이벤트
+        const comboStep = comboMult >= 3 ? 5 : comboMult >= 2.5 ? 4 : comboMult >= 2 ? 3 : 2
+        EventBus.emit('vfx:correct', { comboStep })
+
+        // SFX: 콤보 2연속 이상 시 추가 콤보음 + VFX
         if (comboMult >= 1.5) {
-          // multiplier → comboStep 역산: 1.5→2, 2→3, 2.5→4, 3→5
-          const comboStep = comboMult >= 3 ? 5 : comboMult >= 2.5 ? 4 : comboMult >= 2 ? 3 : 2
           playSfx('combo', { comboStep })
+          EventBus.emit('vfx:combo', { comboStep })
         }
-        // SFX: 레벨업
+        // SFX + VFX: 레벨업
         if (result.leveledUp) {
           playSfx('levelUp')
+          EventBus.emit('vfx:levelup', { newLevel: result.newLevel })
         }
         // SFX: 뱃지 획득
         if (result.unlockedBadges.length > 0) {
@@ -165,6 +171,8 @@ export function QuizPlayer({
         comboOnWrong()
         // SFX: 오답음
         playSfx('wrong')
+        // VFX: 오답 플래시 + shake
+        EventBus.emit('vfx:wrong')
       }
     }
 
