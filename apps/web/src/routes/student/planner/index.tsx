@@ -18,6 +18,8 @@ import { useState, useEffect, useCallback } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { CalendarDays } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
+import { useFunMode } from '@/hooks/useFunMode'
+import { SwordIcon } from '@/components/game/icons'
 import { db } from '@/lib/db'
 import {
   createDailyPlan,
@@ -49,6 +51,7 @@ function todayStartTs(): number {
 
 export default function PlannerPage() {
   const { user } = useAuth()
+  const { isFunMode } = useFunMode()
 
   // 선택 날짜 state (기본: 오늘)
   const [selectedDate, setSelectedDate] = useState(() => toLocalKey(new Date()))
@@ -186,15 +189,41 @@ export default function PlannerPage() {
 
   if (!user) return null
 
+  const funStyle = isFunMode
+    ? {
+        background: 'var(--fun-bg-primary)',
+        color: 'var(--fun-text-primary)',
+        minHeight: '100%',
+      } as const
+    : undefined
+
+  const plannerCardClass = isFunMode
+    ? 'border border-cyan-400/30 !bg-black/45 backdrop-blur-xl'
+    : ''
+
   return (
-    <div className="max-w-4xl mx-auto px-4 py-4 space-y-4">
+    <div className="max-w-4xl mx-auto px-4 py-4 space-y-4" style={funStyle}>
       {/* 헤더 */}
       <FadeIn delay={0}>
         <div className="flex items-center gap-2">
-          <CalendarDays className="h-6 w-6 text-primary" />
+          {isFunMode ? (
+            <SwordIcon size={24} color="var(--fun-neon-cyan)" glow />
+          ) : (
+            <CalendarDays className="h-6 w-6 text-primary" />
+          )}
           <div>
-            <h1 className="text-xl font-bold text-foreground">학습 플래너</h1>
-            <p className="text-xs text-muted-foreground">날짜를 선택하여 학습 계획을 확인하세요</p>
+            <h1
+              className="text-xl font-bold"
+              style={isFunMode ? { color: 'var(--fun-neon-cyan)' } : undefined}
+            >
+              {isFunMode ? '전략 플래너' : '학습 플래너'}
+            </h1>
+            <p
+              className="text-xs"
+              style={isFunMode ? { color: 'var(--fun-text-secondary)' } : undefined}
+            >
+              날짜를 선택하여 학습 계획을 확인하세요
+            </p>
           </div>
         </div>
       </FadeIn>
@@ -208,18 +237,22 @@ export default function PlannerPage() {
       <FadeIn delay={0.1}>
         <div className="flex flex-col lg:flex-row gap-4">
           {/* 캘린더 (lg: 1/3) */}
-          <AnimatedCard className="lg:w-1/3 p-4">
+          <AnimatedCard className={`lg:w-1/3 p-4 ${plannerCardClass}`}>
             <PlannerCalendar
               selectedDate={selectedDate}
               onDateChange={setSelectedDate}
               markedDates={markedDates}
+              isFunMode={isFunMode}
             />
           </AnimatedCard>
 
           {/* 체크리스트 (lg: 2/3) */}
-          <AnimatedCard className="lg:flex-1 p-4">
+          <AnimatedCard className={`lg:flex-1 p-4 ${plannerCardClass}`}>
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-semibold text-foreground">
+              <h2
+                className="text-sm font-semibold"
+                style={isFunMode ? { color: 'var(--fun-text-primary)' } : undefined}
+              >
                 {selectedDate === toLocalKey(new Date()) ? '오늘의 할 일' : `${selectedDate} 할 일`}
               </h2>
               {/* 플랜 없고 오늘 날짜일 때 CTA */}
@@ -228,6 +261,11 @@ export default function PlannerPage() {
                   variant="outline"
                   size="sm"
                   className="h-7 text-xs"
+                  style={isFunMode ? {
+                    borderColor: 'rgba(0, 212, 255, 0.35)',
+                    color: 'var(--fun-neon-cyan)',
+                    background: 'rgba(0, 212, 255, 0.08)',
+                  } : undefined}
                   onClick={handleStartTodayPlan}
                 >
                   오늘 계획 시작하기
@@ -238,6 +276,7 @@ export default function PlannerPage() {
               tasks={tasks}
               onToggle={handleToggle}
               onAddTask={handleAddTask}
+              isFunMode={isFunMode}
             />
           </AnimatedCard>
         </div>
@@ -246,8 +285,8 @@ export default function PlannerPage() {
       {/* 주간 설정 + 알림 */}
       <FadeIn delay={0.15}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <WeeklySettingsCard userId={user.email} />
-          <NotificationToggle userId={user.email} />
+          <WeeklySettingsCard userId={user.email} isFunMode={isFunMode} />
+          <NotificationToggle userId={user.email} isFunMode={isFunMode} />
         </div>
       </FadeIn>
     </div>

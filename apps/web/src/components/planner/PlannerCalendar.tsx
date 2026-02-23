@@ -23,6 +23,7 @@ interface PlannerCalendarProps {
   selectedDate: string
   onDateChange: (date: string) => void
   markedDates?: Set<string>
+  isFunMode?: boolean
 }
 
 /** 로컬 타임존 기준 날짜 키 YYYY-MM-DD 반환 */
@@ -62,7 +63,12 @@ function buildCalendarGrid(year: number, month: number): Date[] {
 const WEEK_DAYS = ['일', '월', '화', '수', '목', '금', '토']
 const KOREAN_MONTHS = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월']
 
-export function PlannerCalendar({ selectedDate, onDateChange, markedDates }: PlannerCalendarProps) {
+export function PlannerCalendar({
+  selectedDate,
+  onDateChange,
+  markedDates,
+  isFunMode = false,
+}: PlannerCalendarProps) {
   // 뷰 기준 연/월 (selectedDate 초기값)
   const initDate = new Date(selectedDate + 'T00:00:00')
   const [viewYear, setViewYear] = useState(initDate.getFullYear())
@@ -103,10 +109,14 @@ export function PlannerCalendar({ selectedDate, onDateChange, markedDates }: Pla
           className="h-8 w-8"
           onClick={goToPrevMonth}
           aria-label="이전 달"
+          style={isFunMode ? { color: 'var(--fun-text-secondary)' } : undefined}
         >
           <ChevronLeft className="h-4 w-4" />
         </Button>
-        <span className="text-sm font-semibold text-foreground">
+        <span
+          className="text-sm font-semibold"
+          style={isFunMode ? { color: 'var(--fun-text-primary)' } : undefined}
+        >
           {viewYear}년 {KOREAN_MONTHS[viewMonth]}
         </span>
         <Button
@@ -115,6 +125,7 @@ export function PlannerCalendar({ selectedDate, onDateChange, markedDates }: Pla
           className="h-8 w-8"
           onClick={goToNextMonth}
           aria-label="다음 달"
+          style={isFunMode ? { color: 'var(--fun-text-secondary)' } : undefined}
         >
           <ChevronRight className="h-4 w-4" />
         </Button>
@@ -125,7 +136,8 @@ export function PlannerCalendar({ selectedDate, onDateChange, markedDates }: Pla
         {WEEK_DAYS.map((day) => (
           <div
             key={day}
-            className="text-center text-xs font-medium text-muted-foreground py-1"
+            className="text-center text-xs font-medium py-1"
+            style={isFunMode ? { color: 'var(--fun-text-secondary)' } : undefined}
           >
             {day}
           </div>
@@ -151,19 +163,49 @@ export function PlannerCalendar({ selectedDate, onDateChange, markedDates }: Pla
                 className={[
                   'flex items-center justify-center min-w-[36px] min-h-[36px] rounded-full text-sm transition-colors',
                   isSelected
-                    ? 'bg-primary text-primary-foreground font-semibold'
+                    ? isFunMode
+                      ? 'font-semibold'
+                      : 'bg-primary text-primary-foreground font-semibold'
                     : isToday
-                      ? 'border-2 border-primary text-foreground font-semibold hover:bg-primary/10'
+                      ? isFunMode
+                        ? 'font-semibold'
+                        : 'border-2 border-primary text-foreground font-semibold hover:bg-primary/10'
                       : isCurrentMonth
-                        ? 'text-foreground hover:bg-muted'
-                        : 'text-muted-foreground/30 hover:bg-muted',
+                        ? isFunMode
+                          ? 'hover:bg-cyan-500/10'
+                          : 'text-foreground hover:bg-muted'
+                        : isFunMode
+                          ? 'opacity-35 hover:bg-cyan-500/10'
+                          : 'text-muted-foreground/30 hover:bg-muted',
                 ].join(' ')}
+                style={
+                  isFunMode
+                    ? isSelected
+                      ? {
+                          background: 'var(--fun-neon-cyan)',
+                          color: '#04151f',
+                          boxShadow: '0 0 10px rgba(0, 212, 255, 0.4)',
+                        }
+                      : isToday
+                        ? {
+                            border: '2px solid var(--fun-neon-cyan)',
+                            color: 'var(--fun-text-primary)',
+                          }
+                        : isCurrentMonth
+                          ? { color: 'var(--fun-text-primary)' }
+                          : { color: 'var(--fun-text-secondary)' }
+                    : undefined
+                }
               >
                 {date.getDate()}
               </button>
               {/* 학습 도트 — 선택된 날은 도트 숨김 (배경이 채워지므로) */}
               {isMarked && !isSelected ? (
-                <span className="w-1 h-1 rounded-full bg-primary mt-0.5" aria-hidden />
+                <span
+                  className="w-1 h-1 rounded-full mt-0.5"
+                  style={isFunMode ? { background: 'var(--fun-neon-cyan)' } : undefined}
+                  aria-hidden
+                />
               ) : (
                 <span className="w-1 h-1 mt-0.5" aria-hidden />
               )}

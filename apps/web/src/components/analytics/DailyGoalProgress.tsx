@@ -20,6 +20,7 @@ import { useState } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { Pencil, Check } from 'lucide-react'
 import { db } from '@/lib/db'
+import { useFunMode } from '@/hooks/useFunMode'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
@@ -32,6 +33,7 @@ interface DailyGoalProgressProps {
 export default function DailyGoalProgress({ userId, todayCount }: DailyGoalProgressProps) {
   const [isEditing, setIsEditing] = useState(false)
   const [editValue, setEditValue] = useState<number>(10)
+  const { isFunMode } = useFunMode()
 
   // db.userSettings에서 dailyGoal 읽기 (실시간 구독)
   const userSetting = useLiveQuery(
@@ -41,6 +43,9 @@ export default function DailyGoalProgress({ userId, todayCount }: DailyGoalProgr
 
   const dailyGoal = userSetting?.dailyGoal ?? 10
   const progress = Math.min(Math.round((todayCount / dailyGoal) * 100), 100)
+  const progressColor = isFunMode
+    ? (progress >= 100 ? 'var(--fun-neon-gold)' : 'var(--fun-neon-cyan)')
+    : (progress >= 100 ? 'hsl(var(--primary))' : 'hsl(var(--primary) / 0.7)')
 
   function handleEditStart() {
     setEditValue(dailyGoal)
@@ -64,11 +69,17 @@ export default function DailyGoalProgress({ userId, todayCount }: DailyGoalProgr
   }
 
   return (
-    <Card>
+    <Card
+      className={isFunMode ? 'border border-cyan-400/30 !bg-black/45 backdrop-blur-xl' : undefined}
+      style={isFunMode ? { color: 'var(--fun-text-primary)' } : undefined}
+    >
       <CardContent className="p-4">
         {/* 헤더 */}
         <div className="flex items-center justify-between mb-3">
-          <span className="text-sm font-medium text-foreground">
+          <span
+            className="text-sm font-medium"
+            style={isFunMode ? { color: 'var(--fun-neon-cyan)' } : undefined}
+          >
             오늘의 목표: {dailyGoal}문제
           </span>
           {!isEditing ? (
@@ -78,6 +89,7 @@ export default function DailyGoalProgress({ userId, todayCount }: DailyGoalProgr
               className="h-7 w-7"
               onClick={handleEditStart}
               aria-label="목표 편집"
+              style={isFunMode ? { color: 'var(--fun-text-secondary)' } : undefined}
             >
               <Pencil className="h-3.5 w-3.5" />
             </Button>
@@ -88,6 +100,7 @@ export default function DailyGoalProgress({ userId, todayCount }: DailyGoalProgr
               className="h-7 w-7 text-primary"
               onClick={handleSave}
               aria-label="목표 저장"
+              style={isFunMode ? { color: 'var(--fun-neon-cyan)' } : undefined}
             >
               <Check className="h-3.5 w-3.5" />
             </Button>
@@ -105,30 +118,51 @@ export default function DailyGoalProgress({ userId, todayCount }: DailyGoalProgr
               value={editValue}
               onChange={(e) => setEditValue(Number(e.target.value))}
               className="h-8 w-24 text-sm"
+              style={isFunMode ? {
+                borderColor: 'rgba(0, 212, 255, 0.3)',
+                color: 'var(--fun-text-primary)',
+                background: 'rgba(255, 255, 255, 0.04)',
+              } : undefined}
             />
-            <span className="text-sm text-muted-foreground">문제 (5~50)</span>
+            <span
+              className="text-sm text-muted-foreground"
+              style={isFunMode ? { color: 'var(--fun-text-secondary)' } : undefined}
+            >
+              문제 (5~50)
+            </span>
           </div>
         )}
 
         {/* 진행률 바 */}
-        <div className="w-full bg-muted rounded-full h-3 mb-2 overflow-hidden">
+        <div
+          className="w-full rounded-full h-3 mb-2 overflow-hidden"
+          style={isFunMode ? { background: 'rgba(255, 255, 255, 0.12)' } : undefined}
+        >
           <div
             className="h-3 rounded-full transition-all duration-300"
             style={{
               width: `${progress}%`,
-              backgroundColor: progress >= 100 ? 'hsl(var(--primary))' : 'hsl(var(--primary) / 0.7)',
+              backgroundColor: progressColor,
+              boxShadow: isFunMode ? '0 0 10px rgba(0, 212, 255, 0.4)' : undefined,
             }}
           />
         </div>
 
         {/* 텍스트 */}
         <div className="flex items-center justify-between">
-          <span className="text-sm text-muted-foreground">
+          <span
+            className="text-sm text-muted-foreground"
+            style={isFunMode ? { color: 'var(--fun-text-secondary)' } : undefined}
+          >
             {todayCount} / {dailyGoal}문제
           </span>
           <span
             className="text-xs font-medium"
-            style={{ color: progress >= 100 ? 'hsl(var(--primary))' : 'hsl(var(--muted-foreground))' }}
+            style={{
+              color: isFunMode
+                ? (progress >= 100 ? 'var(--fun-neon-gold)' : 'var(--fun-neon-cyan)')
+                : (progress >= 100 ? 'hsl(var(--primary))' : 'hsl(var(--muted-foreground))'),
+            }}
           >
             {progress >= 100 ? '목표 달성!' : `${progress}%`}
           </span>

@@ -29,9 +29,10 @@ type Subject = (typeof SUBJECTS)[number]
 
 interface WeeklySettingsCardProps {
   userId: string
+  isFunMode?: boolean
 }
 
-export function WeeklySettingsCard({ userId }: WeeklySettingsCardProps) {
+export function WeeklySettingsCard({ userId, isFunMode = false }: WeeklySettingsCardProps) {
   const userSetting = useLiveQuery(
     () => db.userSettings.where('userId').equals(userId).first().then((r) => r ?? null),
     [userId],
@@ -83,6 +84,13 @@ export function WeeklySettingsCard({ userId }: WeeklySettingsCardProps) {
 
   // 합계 계산 (유효성 표시용)
   const totalAlloc = SUBJECTS.reduce((sum, s) => sum + (allocation[s] ?? 0), 0)
+  const funInputStyle = isFunMode
+    ? {
+        borderColor: 'rgba(0, 212, 255, 0.3)',
+        color: 'var(--fun-text-primary)',
+        background: 'rgba(255, 255, 255, 0.04)',
+      } as const
+    : undefined
 
   async function handleSave() {
     setIsSaving(true)
@@ -100,14 +108,30 @@ export function WeeklySettingsCard({ userId }: WeeklySettingsCardProps) {
 
   return (
     <FadeIn delay={0.15}>
-      <AnimatedCard className="h-full">
+      <AnimatedCard
+        className={[
+          'h-full',
+          isFunMode ? '!bg-black/45 border border-cyan-400/30 backdrop-blur-xl' : '',
+        ].join(' ')}
+      >
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-semibold">주간 목표 설정</CardTitle>
+          <CardTitle
+            className="text-sm font-semibold"
+            style={isFunMode ? { color: 'var(--fun-neon-cyan)' } : undefined}
+          >
+            주간 목표 설정
+          </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {/* 주간 목표 문제 수 */}
           <div className="flex items-center gap-2">
-            <label className="text-xs text-muted-foreground whitespace-nowrap w-24 shrink-0">
+            <label
+              className={[
+                'text-xs whitespace-nowrap w-24 shrink-0',
+                isFunMode ? '' : 'text-muted-foreground',
+              ].join(' ')}
+              style={isFunMode ? { color: 'var(--fun-text-secondary)' } : undefined}
+            >
               주간 목표 문제
             </label>
             <Input
@@ -118,14 +142,25 @@ export function WeeklySettingsCard({ userId }: WeeklySettingsCardProps) {
               value={weeklyGoal}
               onChange={(e) => setWeeklyGoal(Number(e.target.value))}
               className="h-8 w-20 text-sm"
+              style={funInputStyle}
             />
-            <span className="text-xs text-muted-foreground">문제 (10~200)</span>
+            <span
+              className={['text-xs', isFunMode ? '' : 'text-muted-foreground'].join(' ')}
+              style={isFunMode ? { color: 'var(--fun-text-secondary)' } : undefined}
+            >
+              문제 (10~200)
+            </span>
           </div>
 
           {/* 과목별 시간 배분 */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <p className="text-xs text-muted-foreground">과목별 시간 배분</p>
+              <p
+                className={['text-xs', isFunMode ? '' : 'text-muted-foreground'].join(' ')}
+                style={isFunMode ? { color: 'var(--fun-text-secondary)' } : undefined}
+              >
+                과목별 시간 배분
+              </p>
               <span
                 className={[
                   'text-xs font-medium',
@@ -140,7 +175,15 @@ export function WeeklySettingsCard({ userId }: WeeklySettingsCardProps) {
                 const isLast = idx === SUBJECTS.length - 1
                 return (
                   <div key={subject} className="flex items-center gap-2">
-                    <span className="text-xs text-foreground w-20 shrink-0">{subject}</span>
+                    <span
+                      className={[
+                        'text-xs w-20 shrink-0',
+                        isFunMode ? '' : 'text-foreground',
+                      ].join(' ')}
+                      style={isFunMode ? { color: 'var(--fun-text-primary)' } : undefined}
+                    >
+                      {subject}
+                    </span>
                     <Input
                       type="number"
                       min={0}
@@ -150,8 +193,14 @@ export function WeeklySettingsCard({ userId }: WeeklySettingsCardProps) {
                       className="h-7 w-16 text-xs"
                       readOnly={isLast}
                       aria-label={`${subject} 시간 배분`}
+                      style={funInputStyle}
                     />
-                    <span className="text-xs text-muted-foreground">%{isLast ? ' (자동)' : ''}</span>
+                    <span
+                      className={['text-xs', isFunMode ? '' : 'text-muted-foreground'].join(' ')}
+                      style={isFunMode ? { color: 'var(--fun-text-secondary)' } : undefined}
+                    >
+                      %{isLast ? ' (자동)' : ''}
+                    </span>
                   </div>
                 )
               })}
@@ -164,6 +213,11 @@ export function WeeklySettingsCard({ userId }: WeeklySettingsCardProps) {
             className="w-full h-8 text-xs gap-1.5"
             onClick={handleSave}
             disabled={isSaving || totalAlloc !== 100}
+            style={isFunMode ? {
+              background: 'var(--fun-neon-cyan)',
+              color: '#04151f',
+              boxShadow: '0 0 12px rgba(0, 212, 255, 0.35)',
+            } : undefined}
           >
             <Save className="h-3.5 w-3.5" />
             {isSaving ? '저장 중...' : savedMsg ? '저장됨!' : '설정 저장'}

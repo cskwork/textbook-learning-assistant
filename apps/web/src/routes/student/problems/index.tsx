@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { QuestionList } from '@/components/questions/QuestionList'
 import { FadeIn } from '@/components/motion/FadeIn'
+import { SwordIcon } from '@/components/game/icons'
+import { useFunMode } from '@/hooks/useFunMode'
 import { db } from '@/lib/db'
 import type { Question } from '@/lib/db'
 
@@ -28,6 +30,7 @@ const DIFFICULTY_CHIPS: Array<{ value: number | undefined; label: string }> = [
 ]
 
 export default function StudentProblemsPage() {
+  const { isFunMode } = useFunMode()
   const [filterSubject, setFilterSubject] = useState<Question['subject'] | undefined>(undefined)
   const [filterDifficulty, setFilterDifficulty] = useState<number | undefined>(undefined)
 
@@ -44,24 +47,68 @@ export default function StudentProblemsPage() {
     setFilterDifficulty(filterDifficulty === value ? undefined : value)
   }
 
+  const funStyle = isFunMode
+    ? {
+        background: 'var(--fun-bg-primary)',
+        color: 'var(--fun-text-primary)',
+        minHeight: '100%',
+      } as const
+    : undefined
+
+  function getChipStyle(isActive: boolean) {
+    if (!isFunMode) return undefined
+    if (isActive) {
+      return {
+        background: 'var(--fun-neon-cyan)',
+        color: '#04151f',
+        boxShadow: '0 0 14px rgba(0, 212, 255, 0.35)',
+      } as const
+    }
+    return {
+      background: 'rgba(255, 255, 255, 0.04)',
+      color: 'var(--fun-text-secondary)',
+      border: '1px solid rgba(0, 212, 255, 0.2)',
+    } as const
+  }
+
   return (
     <FadeIn>
-      <div className="p-4 md:p-6 max-w-6xl mx-auto space-y-5">
+      <div className="p-4 md:p-6 max-w-6xl mx-auto space-y-5" style={funStyle}>
         {/* 페이지 헤더 */}
-        <div className="flex items-baseline gap-3">
-          <h1 className="text-2xl font-bold">문제 목록</h1>
+        <div className="flex items-center gap-3">
+          {isFunMode && <SwordIcon size={24} color="var(--fun-neon-cyan)" glow />}
+          <h1
+            className="text-2xl font-bold"
+            style={isFunMode ? { color: 'var(--fun-neon-cyan)' } : undefined}
+          >
+            {isFunMode ? '문제 던전' : '문제 목록'}
+          </h1>
           {totalCount !== undefined && (
-            <span className="text-sm text-muted-foreground font-medium">
+            <span
+              className="text-sm font-medium"
+              style={isFunMode ? { color: 'var(--fun-text-secondary)' } : undefined}
+            >
               전체 {totalCount}문제
             </span>
           )}
         </div>
 
         {/* 필터 영역 */}
-        <div className="space-y-3">
+        <div
+          className="space-y-3 rounded-2xl p-4"
+          style={isFunMode ? {
+            background: 'rgba(255, 255, 255, 0.02)',
+            border: '1px solid rgba(0, 212, 255, 0.2)',
+          } : undefined}
+        >
           {/* 과목 칩 필터 */}
           <div className="space-y-1.5">
-            <span className="text-xs text-muted-foreground font-semibold">과목</span>
+            <span
+              className="text-xs font-semibold"
+              style={isFunMode ? { color: 'var(--fun-text-secondary)' } : undefined}
+            >
+              과목
+            </span>
             <div className="flex flex-wrap gap-2">
               {SUBJECT_CHIPS.map((chip) => {
                 const isActive = filterSubject === chip.value
@@ -73,8 +120,11 @@ export default function StudentProblemsPage() {
                     className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 ${
                       isActive
                         ? 'bg-primary text-primary-foreground shadow-sm'
-                        : 'bg-muted/50 text-muted-foreground hover:bg-muted'
+                        : isFunMode
+                          ? 'hover:bg-cyan-500/10'
+                          : 'bg-muted/50 text-muted-foreground hover:bg-muted'
                     }`}
+                    style={getChipStyle(isActive)}
                   >
                     {chip.label}
                   </button>
@@ -85,7 +135,12 @@ export default function StudentProblemsPage() {
 
           {/* 난이도 칩 필터 */}
           <div className="space-y-1.5">
-            <span className="text-xs text-muted-foreground font-semibold">난이도</span>
+            <span
+              className="text-xs font-semibold"
+              style={isFunMode ? { color: 'var(--fun-text-secondary)' } : undefined}
+            >
+              난이도
+            </span>
             <div className="flex flex-wrap gap-2">
               {DIFFICULTY_CHIPS.map((chip) => {
                 const isActive = filterDifficulty === chip.value
@@ -97,8 +152,11 @@ export default function StudentProblemsPage() {
                     className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 ${
                       isActive
                         ? 'bg-primary text-primary-foreground shadow-sm'
-                        : 'bg-muted/50 text-muted-foreground hover:bg-muted'
+                        : isFunMode
+                          ? 'hover:bg-cyan-500/10'
+                          : 'bg-muted/50 text-muted-foreground hover:bg-muted'
                     }`}
+                    style={getChipStyle(isActive)}
                   >
                     {chip.label}
                   </button>
@@ -113,6 +171,7 @@ export default function StudentProblemsPage() {
           filterSubject={filterSubject}
           filterDifficulty={filterDifficulty}
           basePath="/student/quiz"
+          isFunMode={isFunMode}
         />
       </div>
     </FadeIn>

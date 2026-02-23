@@ -25,9 +25,15 @@ interface TaskChecklistProps {
   tasks: StudyTask[]
   onToggle: (taskId: number) => void
   onAddTask: (title: string, subject?: string, targetCount?: number) => void
+  isFunMode?: boolean
 }
 
-export function TaskChecklist({ tasks, onToggle, onAddTask }: TaskChecklistProps) {
+export function TaskChecklist({
+  tasks,
+  onToggle,
+  onAddTask,
+  isFunMode = false,
+}: TaskChecklistProps) {
   const [newTitle, setNewTitle] = useState('')
 
   function handleAdd() {
@@ -51,7 +57,10 @@ export function TaskChecklist({ tasks, onToggle, onAddTask }: TaskChecklistProps
     <div className="flex flex-col gap-2">
       {/* 빈 상태 */}
       {tasks.length === 0 && (
-        <div className="flex flex-col items-center justify-center py-10 text-center text-muted-foreground gap-2">
+        <div
+          className="flex flex-col items-center justify-center py-10 text-center gap-2"
+          style={isFunMode ? { color: 'var(--fun-text-secondary)' } : undefined}
+        >
           <CalendarPlus className="h-10 w-10 opacity-40" />
           <p className="text-sm">오늘의 학습 계획을 추가해보세요!</p>
         </div>
@@ -63,7 +72,10 @@ export function TaskChecklist({ tasks, onToggle, onAddTask }: TaskChecklistProps
         return (
           <AnimatedCard
             key={task.id}
-            className="px-3 py-2.5"
+            className={[
+              'px-3 py-2.5',
+              isFunMode ? 'border border-cyan-400/25 !bg-white/[0.03]' : '',
+            ].join(' ')}
           >
             <div className="flex items-center gap-2">
               {/* 체크박스 */}
@@ -76,13 +88,25 @@ export function TaskChecklist({ tasks, onToggle, onAddTask }: TaskChecklistProps
                 className={[
                   'flex-shrink-0 w-5 h-5 rounded border-2 transition-colors flex items-center justify-center',
                   task.isCompleted
-                    ? 'bg-primary border-primary'
-                    : 'border-muted-foreground/40 hover:border-primary',
+                    ? isFunMode
+                      ? ''
+                      : 'bg-primary border-primary'
+                    : isFunMode
+                      ? 'hover:border-cyan-300'
+                      : 'border-muted-foreground/40 hover:border-primary',
                 ].join(' ')}
+                style={
+                  isFunMode
+                    ? task.isCompleted
+                      ? { background: 'var(--fun-neon-cyan)', borderColor: 'var(--fun-neon-cyan)' }
+                      : { borderColor: 'rgba(0, 212, 255, 0.45)' }
+                    : undefined
+                }
               >
                 {task.isCompleted && (
                   <svg
-                    className="w-3 h-3 text-primary-foreground"
+                    className="w-3 h-3"
+                    style={isFunMode ? { color: '#04151f' } : undefined}
                     viewBox="0 0 12 12"
                     fill="none"
                     stroke="currentColor"
@@ -102,7 +126,11 @@ export function TaskChecklist({ tasks, onToggle, onAddTask }: TaskChecklistProps
                   <span
                     className={[
                       'text-sm font-medium truncate',
-                      task.isCompleted ? 'line-through text-muted-foreground' : 'text-foreground',
+                      task.isCompleted
+                        ? 'line-through text-muted-foreground'
+                        : isFunMode
+                          ? 'text-white'
+                          : 'text-foreground',
                     ].join(' ')}
                   >
                     {task.title}
@@ -119,11 +147,17 @@ export function TaskChecklist({ tasks, onToggle, onAddTask }: TaskChecklistProps
                   <div className="flex items-center gap-1.5 mt-1">
                     <div className="flex-1 h-1 bg-muted rounded-full overflow-hidden">
                       <div
-                        className="h-1 rounded-full bg-primary transition-all duration-300"
-                        style={{ width: `${progress}%` }}
+                        className="h-1 rounded-full transition-all duration-300"
+                        style={{
+                          width: `${progress}%`,
+                          ...(isFunMode ? { background: 'var(--fun-neon-cyan)' } : {}),
+                        }}
                       />
                     </div>
-                    <span className="text-xs text-muted-foreground whitespace-nowrap">
+                    <span
+                      className="text-xs whitespace-nowrap"
+                      style={isFunMode ? { color: 'var(--fun-text-secondary)' } : undefined}
+                    >
                       {task.completedCount}/{task.targetCount}
                     </span>
                   </div>
@@ -156,6 +190,11 @@ export function TaskChecklist({ tasks, onToggle, onAddTask }: TaskChecklistProps
           onChange={(e) => setNewTitle(e.target.value)}
           onKeyDown={handleKeyDown}
           className="flex-1 h-9 text-sm"
+          style={isFunMode ? {
+            borderColor: 'rgba(0, 212, 255, 0.3)',
+            color: 'var(--fun-text-primary)',
+            background: 'rgba(0, 0, 0, 0.25)',
+          } : undefined}
         />
         <Button
           type="button"
@@ -163,6 +202,11 @@ export function TaskChecklist({ tasks, onToggle, onAddTask }: TaskChecklistProps
           onClick={handleAdd}
           disabled={!newTitle.trim()}
           className="h-9 px-3"
+          style={isFunMode ? {
+            background: 'var(--fun-neon-cyan)',
+            color: '#04151f',
+            boxShadow: '0 0 12px rgba(0, 212, 255, 0.35)',
+          } : undefined}
         >
           추가
         </Button>

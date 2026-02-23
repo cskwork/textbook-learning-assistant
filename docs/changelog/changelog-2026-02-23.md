@@ -23,6 +23,7 @@
 - 홈 게임 런처/모드 진입 UX를 수정했습니다.
   - `apps/web/src/components/home/GameModeLauncher.tsx`를 `/student/quiz/:id?mode=...` 형태의 유효 경로로 변경하여, 클릭 시 리다이렉트처럼 보이던 문제를 해결했습니다.
   - `apps/web/src/routes/student/quiz/index.tsx`에서 `mode` 쿼리를 읽어 모드 선택 화면을 건너뛰고 즉시 해당 모드로 진입하도록 변경했습니다.
+  - `apps/web/src/routes/student/quiz/index.tsx`에서 자동 모드 진입 중에는 `GameModeSelector`를 숨기고 로딩 상태만 표시하도록 조정해, 홈 런처 클릭 시 중간 메뉴가 다시 보이지 않도록 개선했습니다.
 - 보스배틀/타임어택/서바이벌 입력 잠금 버그를 수정했습니다.
   - `apps/web/src/components/game/quiz/BossBattleMode.tsx`, `SurvivalMode.tsx`, `TimeAttackMode.tsx`에서 답안 잠금 상태를 `ref`만으로 관리하던 로직을 `state` 기반으로 보강해, 2번째 문제부터 입력이 먹지 않던 현상을 수정했습니다.
 - 미니게임 로드/사운드 동작을 보완했습니다.
@@ -34,3 +35,15 @@
 - 게임 문제 세트 안정성을 강화했습니다.
   - `apps/web/src/lib/game/question-pool.ts`를 추가해 모드 문제 풀 생성(보강/중복 확장)을 공통화했습니다.
   - `apps/web/src/routes/student/quiz/index.tsx`에서 해당 유틸을 사용하도록 변경했습니다.
+- 게임 모드 토글 위치를 데스크톱 사이드바 하단으로 이동했습니다.
+  - `apps/web/src/components/layout/FunModeToggleButton.tsx`에 `sidebar` 변형(라벨 포함)을 추가했습니다.
+  - `apps/web/src/components/layout/Sidebar.tsx`에서 `데스크톱 앱` 버튼 바로 위에 게임 모드 전환 버튼을 배치했습니다.
+- 학생 `문제 목록`과 `학습 플래너`에 FunMode 테마를 적용했습니다.
+  - `apps/web/src/routes/student/problems/index.tsx`에서 헤더/필터 칩/컨테이너를 게임 테마로 렌더링하도록 변경했습니다.
+  - `apps/web/src/components/questions/QuestionList.tsx`, `apps/web/src/components/questions/QuestionCard.tsx`에 `isFunMode` 스타일 분기를 추가해 문제 카드도 게임 테마에 맞춰 표시되도록 수정했습니다.
+  - `apps/web/src/routes/student/planner/index.tsx`에서 헤더/카드/CTA를 게임 테마로 조정하고, `PlannerCalendar`/`TaskChecklist`에 FunMode 스타일 전달을 추가했습니다.
+  - `apps/web/src/components/planner/PlannerCalendar.tsx`, `apps/web/src/components/planner/TaskChecklist.tsx`에 FunMode 전용 색상/강조 스타일을 추가했습니다.
+- FunMode 가독성 개선을 위해 문제/플래너 카드의 밝은 배경을 제거했습니다.
+  - `apps/web/src/components/questions/QuestionCard.tsx` FunMode 카드 배경을 `!bg-black/45`로 강제해 흰 배경이 남지 않도록 수정했습니다.
+  - `apps/web/src/routes/student/planner/index.tsx`와 `apps/web/src/components/planner/TaskChecklist.tsx`에서 플래너 카드 배경을 FunMode 다크 톤으로 강제했습니다.
+  - `apps/web/src/components/planner/WeeklySettingsCard.tsx`, `apps/web/src/components/planner/NotificationToggle.tsx`에 `isFunMode`를 추가해 내부 설정 카드(주간 목표/알림)도 다크 + 네온 스타일로 통일했습니다.

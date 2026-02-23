@@ -4,6 +4,7 @@ import { Home, BookOpen, BarChart2, User, LogOut, GraduationCap, Monitor } from 
 import { cn } from '@/lib/utils'
 import { isDesktopApp } from '@/lib/platform'
 import { DesktopDownloadDialog } from '@/components/desktop/DesktopDownloadDialog'
+import { FunModeToggleButton } from './FunModeToggleButton'
 import type { NavItem } from './BottomNav'
 
 const defaultNavItems: NavItem[] = [
@@ -103,6 +104,9 @@ export default function Sidebar({
 
       {/* ── 하단 액션 ── */}
       <div className="px-3 py-4 border-t border-border/40 space-y-1">
+        {/* 게임 모드 토글 — 데스크톱 앱 버튼 바로 위 고정 */}
+        <FunModeToggleButton variant="sidebar" />
+
         {/* 데스크톱 앱 다운로드 버튼 (웹에서만 표시) */}
         {showDesktopButton && (
           <button

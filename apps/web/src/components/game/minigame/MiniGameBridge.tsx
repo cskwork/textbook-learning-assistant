@@ -13,6 +13,8 @@ interface MiniGameBridgeProps {
   width?: number
   /** 캔버스 높이 (px, 기본 500) */
   height?: number
+  /** 캔버스 사용자 상호작용 콜백 (오디오 unlock 등) */
+  onUserInteraction?: () => void
   /** 게임 완료 콜백 */
   onComplete: (result: { score: number; xp: number; success: boolean }) => void
 }
@@ -21,6 +23,7 @@ export function MiniGameBridge({
   miniGameKey,
   width = 400,
   height = 500,
+  onUserInteraction,
   onComplete,
 }: MiniGameBridgeProps) {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -99,7 +102,11 @@ export function MiniGameBridge({
   }
 
   return (
-    <div className="relative">
+    <div
+      className="relative"
+      onPointerDown={onUserInteraction}
+      onTouchStart={onUserInteraction}
+    >
       {/* 로딩 스피너 */}
       {loading && (
         <div

@@ -9,6 +9,7 @@ import { awardXP } from '@/lib/gamification/gamification.service'
 import type { GameSessionResult } from '@/hooks/useGameSession'
 import { useSfx } from '@/hooks/useSfx'
 import { EventBus } from '@/game/EventBus'
+import { Howler } from 'howler'
 
 interface MiniGameModeProps {
   /** 학생 ID */
@@ -30,11 +31,26 @@ export default function MiniGameMode({ studentId, onComplete, onBack }: MiniGame
   const completedRef = useRef(false)
   const { playSfx } = useSfx()
 
+  const ensureAudioReady = useCallback(() => {
+    const ctx = Howler.ctx as AudioContext | undefined
+    if (!ctx || ctx.state !== 'suspended') return
+    void ctx.resume()
+  }, [])
+
   // 미니게임 씬 이벤트 → SFX 재생 연결
   useEffect(() => {
-    const onCorrect = () => playSfx('correct')
-    const onWrong = () => playSfx('wrong')
-    const onSuccess = () => playSfx('levelUp')
+    const onCorrect = () => {
+      ensureAudioReady()
+      playSfx('correct')
+    }
+    const onWrong = () => {
+      ensureAudioReady()
+      playSfx('wrong')
+    }
+    const onSuccess = () => {
+      ensureAudioReady()
+      playSfx('levelUp')
+    }
 
     EventBus.on('minigame-correct', onCorrect)
     EventBus.on('minigame-wrong', onWrong)
@@ -45,7 +61,11 @@ export default function MiniGameMode({ studentId, onComplete, onBack }: MiniGame
       EventBus.off('minigame-wrong', onWrong)
       EventBus.off('minigame-success', onSuccess)
     }
-  }, [playSfx])
+  }, [ensureAudioReady, playSfx])
+
+  useEffect(() => {
+    ensureAudioReady()
+  }, [ensureAudioReady])
 
   const handleGameComplete = useCallback(async (result: MiniGameResult) => {
     if (completedRef.current) return
@@ -84,6 +104,7 @@ export default function MiniGameMode({ studentId, onComplete, onBack }: MiniGame
           miniGameKey="formulaCombo"
           width={Math.min(400, window.innerWidth - 32)}
           height={500}
+          onUserInteraction={ensureAudioReady}
           onComplete={handleGameComplete}
         />
       </div>

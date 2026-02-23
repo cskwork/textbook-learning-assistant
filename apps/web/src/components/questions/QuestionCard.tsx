@@ -8,6 +8,7 @@ import type { Question } from '@/lib/db'
 interface QuestionCardProps {
   question: Question
   basePath?: string  // 기본값: '/instructor/problems' — 강사/학생 양쪽에서 재사용
+  isFunMode?: boolean
 }
 
 const DIFFICULTY_LABELS: Record<number, string> = {
@@ -27,27 +28,61 @@ const DIFFICULTY_COLORS: Record<number, string> = {
   5: 'bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-400',
 }
 
-export function QuestionCard({ question, basePath = '/instructor/problems' }: QuestionCardProps) {
+export function QuestionCard({
+  question,
+  basePath = '/instructor/problems',
+  isFunMode = false,
+}: QuestionCardProps) {
   const sourceLabel = question.source.year
     ? `${question.source.type} ${question.source.year}년${question.source.number ? ` ${question.source.number}번` : ''}`
     : question.source.type
 
   return (
     <Link to={`${basePath}/${question.id}`} className="block">
-      <AnimatedCard className="border border-border/50 shadow-sm hover:shadow-md hover:border-border bg-white/80 dark:bg-card/60 backdrop-blur-sm overflow-hidden">
+      <AnimatedCard
+        className={[
+          'border border-border/50 shadow-sm hover:shadow-md hover:border-border backdrop-blur-sm overflow-hidden',
+          isFunMode ? '!bg-black/45 border-cyan-400/30 hover:border-cyan-300/60' : 'bg-white/80 dark:bg-card/60',
+        ].join(' ')}
+      >
         <div className="p-4 md:p-5 space-y-3">
           {/* 상단 영역: 과목 뱃지 + 문제유형 뱃지 */}
           <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary">
+            <span
+              className={[
+                'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold',
+                isFunMode ? '' : 'bg-primary/10 text-primary',
+              ].join(' ')}
+              style={isFunMode ? {
+                background: 'rgba(0, 212, 255, 0.15)',
+                color: 'var(--fun-neon-cyan)',
+              } : undefined}
+            >
               {question.subject}
             </span>
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-muted/60 text-muted-foreground border border-border/40">
+            <span
+              className={[
+                'inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium border',
+                isFunMode ? '' : 'bg-muted/60 text-muted-foreground border-border/40',
+              ].join(' ')}
+              style={isFunMode ? {
+                background: 'rgba(255, 255, 255, 0.03)',
+                color: 'var(--fun-text-secondary)',
+                borderColor: 'rgba(0, 212, 255, 0.2)',
+              } : undefined}
+            >
               {question.questionType === 'multiple' ? '객관식' : '단답형'}
             </span>
           </div>
 
           {/* 본문 영역: 문제 미리보기 */}
-          <div className="text-sm leading-relaxed text-foreground/80 line-clamp-2">
+          <div
+            className={[
+              'text-sm leading-relaxed line-clamp-2',
+              isFunMode ? '' : 'text-foreground/80',
+            ].join(' ')}
+            style={isFunMode ? { color: 'var(--fun-text-primary)' } : undefined}
+          >
             <LatexPreview content={question.content} />
           </div>
 
@@ -55,10 +90,22 @@ export function QuestionCard({ question, basePath = '/instructor/problems' }: Qu
           <div className="flex items-center justify-between gap-2">
             {/* 좌측: 단원 + 출처 */}
             <div className="flex items-center gap-2 min-w-0">
-              <span className="text-xs text-muted-foreground truncate">
+              <span
+                className={[
+                  'text-xs truncate',
+                  isFunMode ? '' : 'text-muted-foreground',
+                ].join(' ')}
+                style={isFunMode ? { color: 'var(--fun-text-secondary)' } : undefined}
+              >
                 {question.unit}
               </span>
-              <span className="text-xs text-muted-foreground/60 shrink-0">
+              <span
+                className={[
+                  'text-xs shrink-0',
+                  isFunMode ? '' : 'text-muted-foreground/60',
+                ].join(' ')}
+                style={isFunMode ? { color: 'var(--fun-text-secondary)' } : undefined}
+              >
                 {sourceLabel}
               </span>
             </div>
@@ -72,7 +119,16 @@ export function QuestionCard({ question, basePath = '/instructor/problems' }: Qu
           {/* 이미지 있음 표시 */}
           {question.imageDataUrl && (
             <div className="flex items-center gap-1.5">
-              <span className="flex items-center gap-1 text-[11px] font-medium text-muted-foreground/80 bg-muted/50 px-2 py-1 rounded">
+              <span
+                className={[
+                  'flex items-center gap-1 text-[11px] font-medium px-2 py-1 rounded',
+                  isFunMode ? '' : 'text-muted-foreground/80 bg-muted/50',
+                ].join(' ')}
+                style={isFunMode ? {
+                  color: 'var(--fun-text-secondary)',
+                  background: 'rgba(255, 255, 255, 0.04)',
+                } : undefined}
+              >
                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>

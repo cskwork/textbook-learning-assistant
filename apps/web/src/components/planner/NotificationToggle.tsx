@@ -29,9 +29,10 @@ import { CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 
 interface NotificationToggleProps {
   userId: string
+  isFunMode?: boolean
 }
 
-export function NotificationToggle({ userId }: NotificationToggleProps) {
+export function NotificationToggle({ userId, isFunMode = false }: NotificationToggleProps) {
   const userSetting = useLiveQuery(
     () => db.userSettings.where('userId').equals(userId).first().then((r) => r ?? null),
     [userId],
@@ -112,23 +113,59 @@ export function NotificationToggle({ userId }: NotificationToggleProps) {
     }
   }
 
+  const funInputStyle = isFunMode
+    ? {
+        borderColor: 'rgba(0, 212, 255, 0.3)',
+        color: 'var(--fun-text-primary)',
+        background: 'rgba(255, 255, 255, 0.04)',
+      } as const
+    : undefined
+
   return (
     <FadeIn delay={0.15}>
-      <AnimatedCard className="h-full">
+      <AnimatedCard
+        className={[
+          'h-full',
+          isFunMode ? '!bg-black/45 border border-cyan-400/30 backdrop-blur-xl' : '',
+        ].join(' ')}
+      >
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-semibold">학습 알림 설정</CardTitle>
+          <CardTitle
+            className="text-sm font-semibold"
+            style={isFunMode ? { color: 'var(--fun-neon-cyan)' } : undefined}
+          >
+            학습 알림 설정
+          </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {/* 브라우저 미지원 안내 */}
           {permissionState === 'unsupported' && (
-            <p className="text-xs text-muted-foreground bg-muted/50 rounded-lg px-3 py-2">
+            <p
+              className={[
+                'text-xs rounded-lg px-3 py-2',
+                isFunMode ? '' : 'text-muted-foreground bg-muted/50',
+              ].join(' ')}
+              style={isFunMode ? {
+                color: 'var(--fun-text-secondary)',
+                background: 'rgba(255, 255, 255, 0.06)',
+              } : undefined}
+            >
               이 브라우저는 알림을 지원하지 않습니다.
             </p>
           )}
 
           {/* 권한 거부 안내 */}
           {permissionState === 'denied' && (
-            <p className="text-xs text-destructive bg-destructive/10 rounded-lg px-3 py-2">
+            <p
+              className={[
+                'text-xs rounded-lg px-3 py-2',
+                isFunMode ? '' : 'text-destructive bg-destructive/10',
+              ].join(' ')}
+              style={isFunMode ? {
+                color: '#ff6b6b',
+                background: 'rgba(255, 90, 90, 0.15)',
+              } : undefined}
+            >
               브라우저 설정에서 알림을 허용해주세요.
             </p>
           )}
@@ -143,7 +180,10 @@ export function NotificationToggle({ userId }: NotificationToggleProps) {
                   ) : (
                     <BellOff className="h-4 w-4 text-muted-foreground" />
                   )}
-                  <span className="text-sm text-foreground">
+                  <span
+                    className={['text-sm', isFunMode ? '' : 'text-foreground'].join(' ')}
+                    style={isFunMode ? { color: 'var(--fun-text-primary)' } : undefined}
+                  >
                     {isEnabled ? '알림 켜짐' : '알림 꺼짐'}
                   </span>
                 </div>
@@ -157,7 +197,10 @@ export function NotificationToggle({ userId }: NotificationToggleProps) {
 
               {/* 알림 시간 */}
               <div className={['flex items-center gap-2', !isEnabled ? 'opacity-50 pointer-events-none' : ''].join(' ')}>
-                <label className="text-xs text-muted-foreground whitespace-nowrap">
+                <label
+                  className={['text-xs whitespace-nowrap', isFunMode ? '' : 'text-muted-foreground'].join(' ')}
+                  style={isFunMode ? { color: 'var(--fun-text-secondary)' } : undefined}
+                >
                   알림 시간
                 </label>
                 <Input
@@ -166,12 +209,22 @@ export function NotificationToggle({ userId }: NotificationToggleProps) {
                   onChange={(e) => handleTimeChange(e.target.value)}
                   className="h-8 w-32 text-sm"
                   disabled={!isEnabled}
+                  style={funInputStyle}
                 />
               </div>
 
               {/* 활성 안내 */}
               {isEnabled && permissionState === 'granted' && (
-                <p className="text-xs text-primary bg-primary/10 rounded-lg px-3 py-2">
+                <p
+                  className={[
+                    'text-xs rounded-lg px-3 py-2',
+                    isFunMode ? '' : 'text-primary bg-primary/10',
+                  ].join(' ')}
+                  style={isFunMode ? {
+                    color: 'var(--fun-neon-cyan)',
+                    background: 'rgba(0, 212, 255, 0.12)',
+                  } : undefined}
+                >
                   매일 {notifTime}에 미완료 학습 알림을 발송합니다.
                 </p>
               )}
