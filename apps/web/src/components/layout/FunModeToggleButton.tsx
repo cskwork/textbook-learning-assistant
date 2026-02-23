@@ -5,10 +5,13 @@
  * FunModeProvider 내부에서만 사용 가능
  *
  * Phase 17: iOS AudioContext 잠금 해제 + BGM lazy load 추가
+ * Phase 20: 이모지 제거 → SwordIcon SVG + 네온 글로우 + Framer Motion 전환 애니메이션
  */
 
 import { useFunMode } from '@/contexts/FunModeContext'
 import { Button } from '@/components/ui/button'
+import { SwordIcon, StarIcon } from '@/components/game/icons'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export function FunModeToggleButton() {
   const { isFunMode, toggleFunMode } = useFunMode()
@@ -45,9 +48,36 @@ export function FunModeToggleButton() {
       onClick={handleToggle}
       title={isFunMode ? '일반 모드로 전환' : '반전 모드로 전환'}
       aria-label={isFunMode ? '일반 모드로 전환' : '반전 모드로 전환'}
-      className={isFunMode ? 'text-primary animate-pulse' : 'text-muted-foreground'}
+      className="relative overflow-hidden"
+      style={isFunMode ? {
+        boxShadow: '0 0 12px var(--fun-neon-cyan), 0 0 24px rgba(0, 212, 255, 0.3)',
+        border: '1px solid var(--fun-neon-cyan)',
+        background: 'rgba(0, 212, 255, 0.1)',
+      } : undefined}
     >
-      {isFunMode ? '🎮' : '🎯'}
+      <AnimatePresence mode="wait">
+        {isFunMode ? (
+          <motion.div
+            key="fun"
+            initial={{ rotate: -180, scale: 0 }}
+            animate={{ rotate: 0, scale: 1 }}
+            exit={{ rotate: 180, scale: 0 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+          >
+            <SwordIcon size={20} color="var(--fun-neon-cyan)" glow />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="normal"
+            initial={{ rotate: 180, scale: 0 }}
+            animate={{ rotate: 0, scale: 1 }}
+            exit={{ rotate: -180, scale: 0 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+          >
+            <StarIcon size={20} color="currentColor" />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Button>
   )
 }

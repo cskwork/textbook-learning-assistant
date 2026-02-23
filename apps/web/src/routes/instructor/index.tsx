@@ -10,6 +10,7 @@
  * INST-01: 학생 현황 카드 + 최근 과제 + 반별 성적 요약
  */
 
+import { useFunMode } from '@/contexts/FunModeContext'
 import { useLiveQuery } from 'dexie-react-hooks'
 import {
   Users, BookOpen, PlusCircle, ClipboardList,
@@ -44,6 +45,7 @@ interface GroupSummary {
 }
 
 export default function InstructorHomePage() {
+  const { isFunMode } = useFunMode()
   const { user } = useAuth()
   const greeting = getGreeting()
 
@@ -129,18 +131,26 @@ export default function InstructorHomePage() {
   )
   const groupNameMap = new Map((allGroupsQuery ?? []).map(g => [g.id!, g.name]))
 
+  // 반전 모드: 길드 마스터 다크 테마 인라인 스타일
+  const funStyle = isFunMode
+    ? { background: 'var(--fun-bg-tertiary)', color: 'var(--fun-text-primary)', minHeight: '100vh' } as const
+    : undefined
+
   return (
-    <div className="p-4 md:p-6 lg:p-8 max-w-6xl mx-auto space-y-5">
+    <div className="p-4 md:p-6 lg:p-8 max-w-6xl mx-auto space-y-5" style={funStyle}>
 
       {/* ── a. 인사 영역 + 문제 출제 CTA ── */}
       <FadeIn delay={0}>
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="text-sm font-medium text-muted-foreground tracking-wide">
-              {greeting.emoji} {greeting.text}
+            <p className="text-sm font-medium tracking-wide" style={isFunMode ? { color: 'var(--fun-text-secondary)' } : undefined}>
+              {isFunMode ? greeting.text : `${greeting.emoji} ${greeting.text}`}
             </p>
-            <h1 className="text-[1.65rem] font-extrabold tracking-tight text-foreground mt-0.5 leading-tight">
-              {userName}님의 대시보드
+            <h1
+              className="text-[1.65rem] font-extrabold tracking-tight mt-0.5 leading-tight"
+              style={isFunMode ? { color: 'var(--fun-neon-cyan)' } : undefined}
+            >
+              {isFunMode ? `${userName} 길드 마스터` : `${userName}님의 대시보드`}
             </h1>
           </div>
           <Button

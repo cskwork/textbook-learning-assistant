@@ -9,6 +9,8 @@ import { motion } from 'framer-motion'
 interface StatHexagonProps {
   /** 6축 값 (0~100 배열, 순서: 정확도/속도/스트릭/문제수/난이도/콤보) */
   stats: number[]
+  /** 커스텀 라벨 (6개). 미지정 시 기본 라벨 사용 */
+  labels?: string[]
   size?: number
   className?: string
 }
@@ -35,7 +37,7 @@ function dataPoints(stats: number[]): string {
     .join(' ')
 }
 
-export function StatHexagon({ stats, size = 220, className = '' }: StatHexagonProps) {
+export function StatHexagon({ stats, labels: customLabels, size = 220, className = '' }: StatHexagonProps) {
   const s = stats.length >= 6 ? stats.slice(0, 6) : [...stats, ...Array(6 - stats.length).fill(0)]
 
   return (
@@ -104,7 +106,7 @@ export function StatHexagon({ stats, size = 220, className = '' }: StatHexagonPr
       })}
 
       {/* Labels */}
-      {LABELS.map((label, i) => {
+      {(customLabels ?? LABELS).map((label, i) => {
         const [x, y] = polarToCart(i * 60, RADIUS + 16)
         return (
           <text

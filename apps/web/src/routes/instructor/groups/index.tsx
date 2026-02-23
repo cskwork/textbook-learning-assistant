@@ -2,6 +2,7 @@
  * 강사 반 목록 페이지 (/instructor/groups)
  */
 import { useNavigate } from 'react-router'
+import { useFunMode } from '@/contexts/FunModeContext'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { Plus, Users, ChevronRight, CalendarDays } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -13,6 +14,7 @@ import { AnimatedCard } from '@/components/motion/AnimatedCard'
 import { FadeIn } from '@/components/motion/FadeIn'
 
 export default function GroupListPage() {
+  const { isFunMode } = useFunMode()
   const { user } = useAuth()
   const navigate = useNavigate()
 
@@ -22,15 +24,24 @@ export default function GroupListPage() {
     [user?.email],
   )
 
+  const funStyle = isFunMode
+    ? { background: 'var(--fun-bg-tertiary)', color: 'var(--fun-text-primary)', minHeight: '100vh' } as const
+    : undefined
+
   return (
-    <div className="p-4 md:p-6 lg:p-8 max-w-6xl mx-auto space-y-5">
+    <div className="p-4 md:p-6 lg:p-8 max-w-6xl mx-auto space-y-5" style={funStyle}>
       {/* 헤더 */}
       <FadeIn delay={0}>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-[1.65rem] font-extrabold tracking-tight text-foreground">반 관리</h1>
-            <p className="text-sm text-muted-foreground mt-0.5">
-              {groups ? `${groups.length}개의 반을 관리하고 있어요` : '로딩 중...'}
+            <h1
+              className="text-[1.65rem] font-extrabold tracking-tight"
+              style={isFunMode ? { color: 'var(--fun-neon-cyan)' } : undefined}
+            >
+              {isFunMode ? '길드 관리' : '반 관리'}
+            </h1>
+            <p className="text-sm mt-0.5" style={isFunMode ? { color: 'var(--fun-text-secondary)' } : undefined}>
+              {groups ? `${groups.length}개의 ${isFunMode ? '길드' : '반'}을 관리하고 있어요` : '로딩 중...'}
             </p>
           </div>
           <Button className="rounded-xl shadow-sm font-semibold h-9 px-4" onClick={() => navigate('/instructor/groups/new')}>

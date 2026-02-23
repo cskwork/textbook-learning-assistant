@@ -1,5 +1,11 @@
 // 학생 문제집 목록 페이지 — 카드 그리드 + 정렬 UI
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
+import { useFunMode } from '@/contexts/FunModeContext'
+import { GameLoadingSpinner } from '@/components/game/GameLoadingSpinner'
+
+const FunModeWorkbooks = lazy(() =>
+  import('@/components/workbook/FunModeWorkbooks').then(m => ({ default: m.FunModeWorkbooks }))
+)
 import { useNavigate } from 'react-router'
 import { Plus } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -9,9 +15,18 @@ import { WorkbookList } from '@/components/workbook/WorkbookList'
 import { useAuth } from '@/contexts/AuthContext'
 
 export default function WorkbooksPage() {
+  const { isFunMode } = useFunMode()
   const navigate = useNavigate()
   const { user } = useAuth()
   const [sortBy, setSortBy] = useState<'recent' | 'name'>('recent')
+
+  if (isFunMode) {
+    return (
+      <Suspense fallback={<GameLoadingSpinner />}>
+        <FunModeWorkbooks />
+      </Suspense>
+    )
+  }
 
   // 칩 스타일 공통 클래스
   const chipBase =

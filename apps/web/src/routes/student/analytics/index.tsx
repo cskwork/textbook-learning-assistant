@@ -10,7 +10,13 @@
  * 요건: AIAN-03, AIAN-04, REPT-01, REPT-02, REPT-03, REPT-04, PLAN-02, PLAN-03, ANLZ-01, ANLZ-02, ANLZ-03
  */
 
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
+import { useFunMode } from '@/contexts/FunModeContext'
+import { GameLoadingSpinner } from '@/components/game/GameLoadingSpinner'
+
+const FunModeAnalytics = lazy(() =>
+  import('@/components/analytics/FunModeAnalytics').then(m => ({ default: m.FunModeAnalytics }))
+)
 import { useLiveQuery } from 'dexie-react-hooks'
 import { useNavigate } from 'react-router'
 import { useAuth } from '@/contexts/AuthContext'
@@ -55,6 +61,7 @@ type MasteryData = {
 }
 
 export default function AnalyticsPage() {
+  const { isFunMode } = useFunMode()
   const { user } = useAuth()
   const navigate = useNavigate()
 
@@ -169,6 +176,14 @@ export default function AnalyticsPage() {
   }, [user, attemptCount, days])
 
   if (!user) return null
+
+  if (isFunMode) {
+    return (
+      <Suspense fallback={<GameLoadingSpinner />}>
+        <FunModeAnalytics />
+      </Suspense>
+    )
+  }
 
   return (
     <FadeIn>
