@@ -1,10 +1,33 @@
 // gamification.service.ts
-// 게이미피케이션 비즈니스 로직 — XP 지급, 스트릭 관리, 뱃지 체크
+// 게이미피케이션 비즈니스 로직 — XP 지급, 스트릭 관리, 뱃지 체크, 리더보드
 // Phase 16 보상 시스템
 
 import { db } from '@/lib/db'
 import { calculateLevel } from './xp-formula'
 import { BADGE_DEFINITIONS, type BadgeCheckContext } from './badge-definitions'
+
+/** 리더보드 항목 */
+export interface LeaderboardEntry {
+  studentId: string
+  displayName: string
+  avatarEmoji: string
+  totalXP: number
+  level: number
+  streakDays: number
+  rank: number
+}
+
+/** getClassLeaderboard 반환 타입 */
+export interface ClassLeaderboardResult {
+  /** 상위 3명 (1~3등) */
+  top3: LeaderboardEntry[]
+  /** 현재 사용자 주변 ±2명 (top3와 겹칠 수 있음) */
+  surrounding: LeaderboardEntry[]
+  /** 현재 사용자 순위 */
+  myRank: number
+  /** 반 전체 인원 수 */
+  total: number
+}
 
 /** awardXP 반환 타입 */
 export interface AwardXPResult {
@@ -260,4 +283,92 @@ export async function checkAndAwardBadges(
   }
 
   return newlyUnlocked
+}
+
+/**
+ * 반 내 XP 리더보드 조회
+ * - groupId 기반으로 GroupMember 필터링
+ * - 각 반원의 gamificationProfiles 조회 후 XP 내림차순 정렬
+ * - currentStudentId가 없으면 자기 자신만 표시
+ *
+ * @param groupId - 반 ID (GroupMember.groupId)
+ * @param currentStudentId - 현재 사용자 studentId (email)
+ * @returns ClassLeaderboardResult
+ */
+export async function getClassLeaderboard(
+  groupId: number | null | undefined,
+  currentStudentId: string,
+): Promise<ClassLeaderboardResult> {
+  // 반원 목록 조회 (groupId 없으면 본인만)
+  let studentIds: string[] = [currentStudentId]
+
+  if (groupId != null) {
+    const members = await db.groupMembers.where('groupId').equals(groupId).toArray()
+    studentIds = members.map((m) => m.studentId)
+    // 반원이 없거나 본인만 있으면 본인 포함 보장
+    if (!studentIds.includes(currentStudentId)) {
+      studentIds.push(currentStudentId)
+    }
+  }
+
+  // 각 반원의 게이미피케이션 프로필 조회
+  const profiles = await Promise.all(
+    studentIds.map(async (sid) => {
+      const profile = await db.gamificationProfiles.where('studentId').equals(sid).first()
+      // 프로필 없으면 기본값 사용
+      return {
+        studentId: sid,
+        totalXP: profile?.totalXP ?? 0,
+        level: profile?.level ?? 1,
+        streakDays: profile?.streakDays ?? 0,
+      }
+    }),
+  )
+
+  // 유저 설정에서 displayName/avatarEmoji 조회
+  const settingsList = await Promise.all(
+    studentIds.map((sid) => db.userSettings.where('userId').equals(sid).first()),
+  )
+  const settingsMap = new Map(
+    settingsList.map((s, i) => [studentIds[i], s]),
+  )
+
+  // XP 내림차순 정렬
+  const sorted = [...profiles].sort((a, b) => b.totalXP - a.totalXP)
+
+  // 순위 부여 (동점 처리: 동일 XP면 같은 순위)
+  const ranked: LeaderboardEntry[] = sorted.map((p, idx) => {
+    const settings = settingsMap.get(p.studentId)
+    // displayName 없으면 email 앞부분 사용
+    const emailPrefix = p.studentId.split('@')[0] ?? p.studentId
+    return {
+      studentId: p.studentId,
+      displayName: settings?.displayName ?? emailPrefix,
+      avatarEmoji: settings?.avatarEmoji ?? '🧑‍🎓',
+      totalXP: p.totalXP,
+      level: p.level,
+      streakDays: p.streakDays,
+      rank: idx + 1,
+    }
+  })
+
+  // 현재 사용자 순위 탐색
+  const myEntry = ranked.find((e) => e.studentId === currentStudentId)
+  const myRank = myEntry?.rank ?? ranked.length
+
+  // TOP 3
+  const top3 = ranked.slice(0, 3)
+
+  // 내 주변 ±2명 (top3와 겹칠 수 있음)
+  const myIdx = ranked.findIndex((e) => e.studentId === currentStudentId)
+  const surroundStart = Math.max(0, myIdx - 2)
+  const surroundEnd = Math.min(ranked.length, myIdx + 3)
+  const surrounding = ranked.slice(surroundStart, surroundEnd)
+
+  return {
+    top3,
+    surrounding,
+    myRank,
+    total: ranked.length,
+  }
 }
