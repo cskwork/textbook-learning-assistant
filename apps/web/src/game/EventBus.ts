@@ -1,6 +1,10 @@
 // Phaser-React 통신 싱글턴 (EventBus 패턴)
 // 참고: phaserjs/template-react-ts 공식 패턴을 기반으로 한 경량 구현
-// Phase 19에서 Phaser.Events.EventEmitter로 교체 예정
+//
+// 미니게임 이벤트 명세 (Phase 19):
+//   'minigame-score-update': { score: number }
+//   'minigame-complete': { score: number, xp: number, success: boolean }
+//   'minigame-ready': null
 
 type Listener = (...args: unknown[]) => void
 
