@@ -9,12 +9,12 @@ See: .planning/PROJECT.md (updated 2026-02-23)
 
 ## Current Position
 
-Phase: 16 (보상 시스템) — 진행 중
-Plan: 2/3 plans 완료
-Status: Phase 16 Plan 02 완료, Plan 03 (리더보드/챌린지/뱃지 패널) 대기
-Last activity: 2026-02-23 — Plan 02 완료 (XP 바 + 플로팅 텍스트 + 콤보 카운터 + 레벨업/뱃지 오버레이 + 스트릭 카운터)
+Phase: 16 (보상 시스템) — 완료
+Plan: 3/3 plans 완료
+Status: Phase 16 완료, Phase 17 (사운드 시스템) 대기
+Last activity: 2026-02-23 — Plan 03 완료 (리더보드 + 데일리/주간 챌린지 UI 컴포넌트)
 
-진행 상황: [Phase 16 ██████░░░░] 67% (2/3 plans) | v3.0 전체 [██░░░░░░░░] 2/6 phases
+진행 상황: [Phase 16 ██████████] 100% (3/3 plans) | v3.0 전체 [███░░░░░░░] 3/6 phases
 
 ## Performance Metrics
 
@@ -28,6 +28,7 @@ Last activity: 2026-02-23 — Plan 02 완료 (XP 바 + 플로팅 텍스트 + 콤
 | Phase 15 P03 | 2 | 2 tasks | 4 files |
 | Phase 16 P01 | 5 min | 2 tasks | 9 files |
 | Phase 16 P02 | 3 | 2 tasks | 7 files |
+| Phase 16 P03 | 4 min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -55,6 +56,9 @@ Last activity: 2026-02-23 — Plan 02 완료 (XP 바 + 플로팅 텍스트 + 콤
 - [Phase 16-02]: XPBar 그라데이션 + 반짝임 하이라이트 오버레이로 게임 UI 질감 구현
 - [Phase 16-02]: BadgeUnlockOverlay epic 전용 pulse glow — scale/opacity 루프로 희귀도 3단계 차별화
 - [Phase 16-02]: ComboCounter fixed inset-0 화면 정중앙 — 콤보 놓치지 않도록 강제 시선 유도
+- [Phase 16-03]: 리더보드 surrounding 중복 제거 — top3 studentId Set으로 필터, TOP3 안에 드는 학생은 내 주변에 중복 표시 안 함
+- [Phase 16-03]: displayName fallback: userSettings.displayName 없으면 email @ 앞부분 사용 (POC 환경 대비)
+- [Phase 16-03]: 주간 챌린지 완료 보너스 1000 XP — 데일리(500 XP)의 2배, 주간 목표가 약 16.7일 데일리 분량이므로 합리적
 
 ### Critical Pitfalls (Phase 15에서 먼저 검증 필수)
 
@@ -81,7 +85,7 @@ Last activity: 2026-02-23 — Plan 02 완료 (XP 바 + 플로팅 텍스트 + 콤
 
 ## Session Continuity
 
-Last activity: 2026-02-23 — Phase 16 Plan 02 완료 (XP 바 + 플로팅 텍스트 + 콤보 카운터 + 레벨업/뱃지 오버레이 + 스트릭 카운터 UI 컴포넌트 6종)
-Stopped at: Completed 16-reward-system-02-PLAN.md
+Last activity: 2026-02-23 — Phase 16 Plan 03 완료 (리더보드 + 데일리/주간 챌린지 UI 컴포넌트 3종 + barrel export 9개)
+Stopped at: Completed 16-reward-system-03-PLAN.md
 Resume file: None
-Next command: `/gsd:execute-phase 16` (Phase 16 Plan 03: 리더보드/챌린지/뱃지 패널)
+Next command: `/gsd:discuss-phase 17` (Phase 17: 사운드 시스템 — Howler.js BGM + SFX)
