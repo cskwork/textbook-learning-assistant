@@ -20,6 +20,7 @@
     "dexie": "^4.3.0",
     "dexie-react-hooks": "^4.2.0",
     "framer-motion": "^12.34.3",
+    "howler": "^2.2.4",
     "katex": "^0.16.28",
     "lucide-react": "^0.511.0",
     "mathlive": "^0.108.3",
@@ -38,6 +39,7 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.10",
+    "@types/howler": "^2.2.12",
     "@types/node": "^22.15.30",
     "@types/react": "^19.1.6",
     "@types/react-dom": "^19.1.5",
