@@ -41,7 +41,7 @@
 - [x] **Phase 17: 사운드 시스템** — Howler.js BGM + SFX, iOS 잠금 해제 (completed 2026-02-23)
 - [x] **Phase 18: Three.js 시각 효과** — 3D 배경, 파티클, 레벨업 시네마틱 (completed 2026-02-24)
 - [x] **Phase 19: 게임화 퀴즈 엔진** — 타임어택/서바이벌/보스배틀/미니게임 (Phaser) (completed 2026-02-24)
-- [ ] **Phase 20: 전체 화면 반전 디자인** — 모든 화면 게임 테마 적용
+- [x] **Phase 20: 전체 화면 반전 디자인** — 모든 화면 게임 테마 적용 (completed 2026-02-24)
 
 ## Phase Details
 
@@ -148,7 +148,13 @@ Plans:
   3. 반전 모드 오답노트 화면에서 틀린 문제가 "잡아야 할 몬스터"로 표시되며 몬스터 도감 스타일 UI로 볼 수 있다
   4. 반전 모드 마이페이지에서 캐릭터 프로필 스타일로 레벨, 획득 뱃지 목록, 업적 현황을 확인할 수 있다
   5. 반전 모드를 끄면 모든 화면이 즉시 기존 일반 모드 디자인으로 복원된다
-**계획**: 미정
+**계획**: 4 plans (2 waves)
+
+Plans:
+- [x] 20-01-PLAN.md — SVG 아이콘 12종 + CSS 변수 확장 + GlassCard/NeonBorder/NeonText/LaserButton UI 컴포넌트
+- [x] 20-02-PLAN.md — FunModeHome 게임 대시보드 + GameQuizHud 퀴즈 HUD + FunQuizCard
+- [x] 20-03-PLAN.md — MonsterCodex 오답노트 몬스터 도감 + CharacterProfile RPG 캐릭터 프로필
+- [x] 20-04-PLAN.md — FunModeAnalytics + FunModeWorkbooks + 강사 포털 테마 + 이모지 전수 제거 + 빌드 검증
 
 ## Progress
 
@@ -173,4 +179,4 @@ Plans:
 | 17. 사운드 시스템 | 2/2 | Complete    | 2026-02-23 | - |
 | 18. Three.js 시각 효과 | 4/4 | Complete    | 2026-02-23 | - |
 | 19. 게임화 퀴즈 엔진 | 4/4 | Complete    | 2026-02-23 | - |
-| 20. 전체 화면 반전 디자인 | 3/4 | In Progress|  | - |
+| 20. 전체 화면 반전 디자인 | 4/4 | Complete    | 2026-02-24 | - |

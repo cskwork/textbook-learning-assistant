@@ -9,13 +9,13 @@ See: .planning/PROJECT.md (updated 2026-02-23)
 
 ## Current Position
 
-Phase: 20 (전체 화면 반전 디자인) — 실행 중
-Plan: 2/4 plans 완료 (Plan 01-02 완료, Plan 03-04 대기)
-Status: Wave 1 완료 — 디자인 시스템 + 홈/퀴즈 반전 디자인. Wave 2 (오답노트/마이페이지/분석/문제집/강사/복원) 대기
-Last activity: 2026-02-24 — Plan 20-01, 20-02 실행 완료 (Wave 1)
-Next: /gsd:execute-phase 20 재실행 (Plan 03-04 남음, fresh context 필요)
+Phase: 20 (전체 화면 반전 디자인) — 완료
+Plan: 4/4 plans 완료
+Status: v3.0 전체 6개 Phase (15-20) 모두 완료
+Last activity: 2026-02-24 — Phase 20 전체 완료 (4 plans: SVG+CSS / 홈+퀴즈 / 몬스터도감+캐릭터 / 분석+문제집+강사+이모지제거)
+Next: /gsd:complete-milestone (v3.0 완료 아카이브)
 
-진행 상황: [Phase 20 █████░░░░░] 50% (2/4 plans) | v3.0 전체 [█████████░] 5.5/6 phases
+진행 상황: [Phase 20 ██████████] 100% (4/4 plans) | v3.0 전체 [██████████] 6/6 phases
 
 ## Performance Metrics
 
@@ -23,7 +23,7 @@ Next: /gsd:execute-phase 20 재실행 (Plan 03-04 남음, fresh context 필요)
 |---------|--------|-------|------|
 | v1.0 MVP | 9 | 38 | 완료 |
 | v2.0 디자인 리뉴얼 | 5 | 21 | 완료 |
-| v3.0 반전 모드 | 6 | 미정 | 진행 중 |
+| v3.0 반전 모드 | 6 | 22 | 완료 |
 | Phase 15-infra-fun-mode P02 | 3 | 2 tasks | 5 files |
 | Phase 15 P01 | 2 | 2 tasks | 6 files |
 | Phase 15 P03 | 2 | 2 tasks | 4 files |
@@ -42,6 +42,10 @@ Next: /gsd:execute-phase 20 재실행 (Plan 03-04 남음, fresh context 필요)
 | Phase 19 P02 | 6 min | 2 tasks | 4 files |
 | Phase 19 P03 | 10 min | 2 tasks | 4 files |
 | Phase 19 P04 | 12 min | 2 tasks | 6 files |
+| Phase 20 P01 | 8 min | 2 tasks | 18 files |
+| Phase 20 P02 | 8 min | 2 tasks | 7 files |
+| Phase 20 P03 | 8 min | 2 tasks | 10 files |
+| Phase 20 P04 | 12 min | 2 tasks | 19 files |
 
 ## Accumulated Context
 
@@ -97,6 +101,14 @@ Next: /gsd:execute-phase 20 재실행 (Plan 03-04 남음, fresh context 필요)
 - [Phase 19-04]: MiniGameMode 결과 화면 자체 렌더링 안 함 — 퀴즈 페이지 통합 GameResult 사용
 - [Phase 19-04]: 퀴즈 페이지 FunMode OFF 시 기존 QuizPlayer 완전 보존 (변경 없음)
 - [Phase 19-04]: React.lazy 6개 동적 임포트 — 게임 모드별 별도 청크 (2~6KB 각)
+- [Phase 20-01]: SVG 아이콘 12종 stroke-based 라인 아트 + glow SVG filter — GameIconProps 통합 인터페이스
+- [Phase 20-01]: NeonColor 3색 시스템: cyan/magenta/gold + green/red 보조색
+- [Phase 20-01]: GlassCard 글라스모피즘 + NeonBorder 그라데이션 보더 + LaserButton 레이저 스캔 호버
+- [Phase 20-02]: FunModeHome 독립 레이아웃 — 기존 홈 로직 재사용하지 않고 게이미피케이션 데이터만 사용
+- [Phase 20-03]: MonsterSvg 6종 수학 유형→기하학적 몬스터 실루엣 매핑
+- [Phase 20-03]: AchievementTracker: BadgeDefinition에 threshold 없어 이진 표시
+- [Phase 20-04]: 강사 포털 최소 다크 테마 — 배경/텍스트 색상 + 라벨 변경만 (GlassCard 미사용)
+- [Phase 20-04]: badge-definitions.ts icon 필드는 데이터 정의 레벨이므로 이모지 유지
 
 ### Critical Pitfalls (Phase 15에서 먼저 검증 필수)
 
@@ -123,7 +135,7 @@ Next: /gsd:execute-phase 20 재실행 (Plan 03-04 남음, fresh context 필요)
 
 ## Session Continuity
 
-Last activity: 2026-02-24 — Phase 19 전체 완료 (4 plans: 인프라+UI / 타임어택+서바이벌 / 보스배틀+결과 / 미니게임+통합)
-Stopped at: Phase 19 완료
+Last activity: 2026-02-24 — Phase 20 전체 완료 (4 plans: SVG+CSS / 홈+퀴즈 / 몬스터도감+캐릭터 / 분석+문제집+강사+이모지제거)
+Stopped at: Phase 20 완료 — v3.0 전체 완료
 Resume file: None
-Next command: `/gsd:discuss-phase 20` (Phase 20: 전체 화면 반전 디자인)
+Next command: `/gsd:complete-milestone` (v3.0 완료 아카이브)
