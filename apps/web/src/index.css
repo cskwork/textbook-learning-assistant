@@ -242,6 +242,44 @@ body {
 
     /* 폰트 weight 강화 — 게임 UI 느낌 */
     --font-weight-normal: 500;
+
+    /* ─── Phase 20: 전체 화면 반전 디자인 토큰 ─── */
+
+    /* 다크 배경 팔레트 */
+    --fun-bg-primary: #0a0a1a;
+    --fun-bg-secondary: #111128;
+    --fun-bg-tertiary: #1a1a2e;
+    --fun-bg-card: rgba(255, 255, 255, 0.05);
+    --fun-bg-card-hover: rgba(255, 255, 255, 0.08);
+
+    /* 네온 악센트 */
+    --fun-neon-cyan: #00d4ff;
+    --fun-neon-magenta: #ff00ff;
+    --fun-neon-gold: #ffd700;
+    --fun-neon-green: #00ff88;
+    --fun-neon-red: #ff3366;
+
+    /* 텍스트 (밝은 글자 — 가독성 최우선) */
+    --fun-text-primary: #f0f0ff;
+    --fun-text-secondary: #a0a0c0;
+    --fun-text-accent: var(--fun-neon-cyan);
+    --fun-text-muted: #606080;
+
+    /* 글래스모피즘 */
+    --fun-glass-bg: rgba(255, 255, 255, 0.05);
+    --fun-glass-border: rgba(255, 255, 255, 0.1);
+    --fun-glass-blur: 12px;
+
+    /* 네온 글로우 */
+    --fun-glow-cyan: 0 0 10px rgba(0, 212, 255, 0.5), 0 0 20px rgba(0, 212, 255, 0.2);
+    --fun-glow-magenta: 0 0 10px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.2);
+    --fun-glow-gold: 0 0 10px rgba(255, 215, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.2);
+
+    /* 보더 그라데이션 */
+    --fun-border-gradient: linear-gradient(135deg, var(--fun-neon-cyan), var(--fun-neon-magenta));
+
+    /* 전환 */
+    --fun-transition-theme: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
   }
 }
 
@@ -460,3 +498,27 @@ body {
 
 .animate-wrong-flash { animation: wrong-flash 0.2s ease-out; }
 .animate-wrong-shake { animation: wrong-shake 0.3s ease-out; }
+
+/* ─── Phase 20: 게임 테마 키프레임 ─── */
+
+/* 네온 보더 글로우 펄스 */
+@keyframes border-glow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* 레이저 스캔 (좌→우) */
+@keyframes laser-scan {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* 네온 텍스트 펄스 */
+@keyframes neon-pulse {
+  0%, 100% { opacity: 0.9; }
+  50% { opacity: 1; }
+}
+
+.animate-border-glow { animation: border-glow 2s ease-in-out infinite; }
+.animate-laser-scan { animation: laser-scan 1.5s ease-in-out; }
+.animate-neon-pulse { animation: neon-pulse 2s ease-in-out infinite; }
