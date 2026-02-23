@@ -106,6 +106,16 @@ None - no external service configuration required.
 - Phase 16-20의 모든 반전 기능은 `useFunMode()` 훅 하나로 UI 분기 가능
 - 다음: 15-02 Vite 번들 전략 (manualChunks + lazy loading) 실행
 
+## Self-Check: PASSED
+
+- FOUND: apps/web/src/contexts/FunModeContext.tsx
+- FOUND: apps/web/src/hooks/useFunMode.ts
+- FOUND: apps/web/src/components/layout/FunModeToggleButton.tsx
+- FOUND: .planning/phases/15-infra-fun-mode/15-01-SUMMARY.md
+- FOUND commit: e97aa02 (Task 1)
+- FOUND commit: e2f2bfc (Task 2)
+- TypeScript 컴파일: 오류 없음
+
 ---
 *Phase: 15-infra-fun-mode*
 *Completed: 2026-02-23*
