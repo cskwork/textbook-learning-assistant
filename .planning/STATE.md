@@ -9,12 +9,12 @@ See: .planning/PROJECT.md (updated 2026-02-23)
 
 ## Current Position
 
-Phase: 15 (반전 모드 기반 인프라 + 번들 전략) — 완료
-Plan: 전체 완료 (3/3 plans)
-Status: Phase 15 완료, Phase 16 준비 중
-Last activity: 2026-02-23 — Plan 03 완료 (Dexie v8 마이그레이션 + Phaser POC PhaserBridge)
+Phase: 16 (보상 시스템) — 진행 중
+Plan: 1/3 plans 완료
+Status: Phase 16 Plan 01 완료, Plan 02 (XP 바 + 콤보 UI) 대기
+Last activity: 2026-02-23 — Plan 01 완료 (XP 수식 + GamificationService + 뱃지 정의 + 챌린지 서비스 + React 훅)
 
-진행 상황: [Phase 15 ██████████] 100% (3/3 plans) | v3.0 전체 [█░░░░░░░░░] 1/6 phases
+진행 상황: [Phase 16 ███░░░░░░░] 33% (1/3 plans) | v3.0 전체 [██░░░░░░░░] 2/6 phases
 
 ## Performance Metrics
 
@@ -26,6 +26,7 @@ Last activity: 2026-02-23 — Plan 03 완료 (Dexie v8 마이그레이션 + Phas
 | Phase 15-infra-fun-mode P02 | 3 | 2 tasks | 5 files |
 | Phase 15 P01 | 2 | 2 tasks | 6 files |
 | Phase 15 P03 | 2 | 2 tasks | 4 files |
+| Phase 16 P01 | 5 min | 2 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -44,6 +45,12 @@ Last activity: 2026-02-23 — Plan 03 완료 (Dexie v8 마이그레이션 + Phas
 - [Phase 15]: CSS 변수 오버라이드 방식: [data-fun-mode='true'] 선택자를 @layer base 내부에 배치해 :root 변수보다 높은 우선순위 적용
 - [Phase 15-infra-fun-mode]: Dexie version(8) 신규 테이블만 정의 — 기존 테이블 자동 상속, gamificationProfiles/xpEvents/badges Phase 16 준비
 - [Phase 15-infra-fun-mode]: PhaserBridge POC 패턴 확립 — useRef 가드 + dynamic import + cleanup(destroy(true)) 3단계로 G1/G2/G3 pitfall 방지
+- [Phase 16-01]: XP 레벨 곡선: Lv1→2=100XP, 매 레벨 1.15배 증가, 최대 50레벨 (초반 빠른 레벨업)
+- [Phase 16-01]: 콤보 배수: 2=1.5x, 3=2x, 4=2.5x, 5+=3x(max) | 난이도 XP: 쉬움=100, 보통=200, 어려움=300
+- [Phase 16-01]: 스트릭 보너스: 3일=50XP, 7일=150XP, 14일=300XP, 30일=500XP
+- [Phase 16-01]: 뱃지 17개: 학습 5개(study) + 연속 5개(streak) + 성취 7개(achievement), 첫날 2개 획득 가능
+- [Phase 16-01]: 데일리 챌린지 난이도: 평일 3문제(월화=2, 수목=3, 금=4), 주말 5문제(난이도3)
+- [Phase 16-01]: 주간 챌린지 목표: 50문제
 
 ### Critical Pitfalls (Phase 15에서 먼저 검증 필수)
 
@@ -70,7 +77,7 @@ Last activity: 2026-02-23 — Plan 03 완료 (Dexie v8 마이그레이션 + Phas
 
 ## Session Continuity
 
-Last activity: 2026-02-23 — Plan 03 완료 (Dexie v8 + PhaserBridge POC)
-Stopped at: Completed 15-infra-fun-mode-03-PLAN.md
+Last activity: 2026-02-23 — Phase 16 Plan 01 완료 (XP 수식 + GamificationService + 뱃지 + 챌린지 + React 훅)
+Stopped at: Completed 16-reward-system-01-PLAN.md
 Resume file: None
-Next command: `/gsd:discuss-phase 16` (Phase 16: 보상 시스템 — XP/레벨/스트릭/콤보/배지)
+Next command: `/gsd:execute-phase 16` (Phase 16 Plan 02: XP 바 + 콤보 UI 컴포넌트)

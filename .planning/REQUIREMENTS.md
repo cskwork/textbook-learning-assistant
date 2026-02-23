@@ -17,14 +17,14 @@ v3.0 반전 모드 — 게이미피케이션 학습 혁명. 커스터마이즈 �
 
 ### 보상 시스템 (RWRD)
 
-- [ ] **RWRD-01**: 사용자가 문제를 풀 때마다 XP를 획득하고 실시간으로 XP 바에 반영된다
-- [ ] **RWRD-02**: 사용자가 누적 XP에 따라 레벨업하며 레벨업 애니메이션과 사운드가 재생된다
-- [ ] **RWRD-03**: 사용자가 연속 정답 시 콤보 카운터가 올라가며 콤보 배수에 따라 XP 보너스를 받는다
-- [ ] **RWRD-04**: 사용자가 매일 학습하면 스트릭 카운터가 증가하고 스트릭 보너스 XP를 받는다
-- [ ] **RWRD-05**: 사용자가 데일리 챌린지(매일 새로운 3~5문제)를 완료하면 특별 보상을 받는다
-- [ ] **RWRD-06**: 사용자가 특정 업적 달성 시 뱃지를 획득하고 프로필에 표시할 수 있다
+- [x] **RWRD-01**: 사용자가 문제를 풀 때마다 XP를 획득하고 실시간으로 XP 바에 반영된다
+- [x] **RWRD-02**: 사용자가 누적 XP에 따라 레벨업하며 레벨업 애니메이션과 사운드가 재생된다
+- [x] **RWRD-03**: 사용자가 연속 정답 시 콤보 카운터가 올라가며 콤보 배수에 따라 XP 보너스를 받는다
+- [x] **RWRD-04**: 사용자가 매일 학습하면 스트릭 카운터가 증가하고 스트릭 보너스 XP를 받는다
+- [x] **RWRD-05**: 사용자가 데일리 챌린지(매일 새로운 3~5문제)를 완료하면 특별 보상을 받는다
+- [x] **RWRD-06**: 사용자가 특정 업적 달성 시 뱃지를 획득하고 프로필에 표시할 수 있다
 - [ ] **RWRD-07**: 사용자가 반 내 XP 리더보드에서 자신의 순위를 확인할 수 있다
-- [ ] **RWRD-08**: 사용자가 주간 챌린지에 참여하여 보너스 보상을 받을 수 있다
+- [x] **RWRD-08**: 사용자가 주간 챌린지에 참여하여 보너스 보상을 받을 수 있다
 
 ### 사운드 시스템 (SND)
 
@@ -94,14 +94,14 @@ v3.0 반전 모드 — 게이미피케이션 학습 혁명. 커스터마이즈 �
 | INFRA-03 | Phase 15 | Complete |
 | INFRA-04 | Phase 15 | Complete |
 | INFRA-05 | Phase 15 | Complete |
-| RWRD-01 | Phase 16 | Pending |
-| RWRD-02 | Phase 16 | Pending |
-| RWRD-03 | Phase 16 | Pending |
-| RWRD-04 | Phase 16 | Pending |
-| RWRD-05 | Phase 16 | Pending |
-| RWRD-06 | Phase 16 | Pending |
+| RWRD-01 | Phase 16 | Complete |
+| RWRD-02 | Phase 16 | Complete |
+| RWRD-03 | Phase 16 | Complete |
+| RWRD-04 | Phase 16 | Complete |
+| RWRD-05 | Phase 16 | Complete |
+| RWRD-06 | Phase 16 | Complete |
 | RWRD-07 | Phase 16 | Pending |
-| RWRD-08 | Phase 16 | Pending |
+| RWRD-08 | Phase 16 | Complete |
 | SND-01 | Phase 17 | Pending |
 | SND-02 | Phase 17 | Pending |
 | SND-03 | Phase 17 | Pending |
