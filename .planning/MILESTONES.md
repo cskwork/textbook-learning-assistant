@@ -34,3 +34,25 @@
 
 ---
 
+
+## v3.0 — 반전 모드 게이미피케이션 (2026-02-23 ~ 2026-02-24)
+
+**Goal:** 커스터마이즈 버튼 클릭 시 전체 앱이 초재미 게이미피케이션 학습 환경으로 변신하는 "반전 모드" 구현
+
+**Phases:** 15~20 (6 phases, 22 plans)
+**Stats:** 198 files changed, +24,475 / -245 lines (net +24,230)
+**Total LOC:** 29,182 (TypeScript/TSX/CSS)
+
+**Key accomplishments:**
+- FunModeContext 단일 게이트 + CSS 변수 오버라이드 반전 모드 인프라 구축 (Phaser/Three.js/Howler.js lazy loading 번들 분리)
+- XP/레벨/콤보/스트릭/뱃지/리더보드/챌린지 게이미피케이션 보상 시스템 전체 구현 (SDT 기반 내재 동기 설계)
+- Howler.js SoundManager 싱글턴 + SfxEngine 합성 엔진 사운드 시스템 (iOS AudioContext 잠금 해제 포함)
+- Three.js/R3F 3D 배경 4종 + 파티클/흔들림/시네마틱/컨페티 시각 효과 시스템
+- 타임어택/서바이벌/보스배틀/Phaser 미니게임 4가지 게임화 퀴즈 모드 엔진
+- 전체 화면 반전 디자인 (홈 대시보드/퀴즈 HUD/몬스터 도감/캐릭터 프로필/분석/문제집/강사 포털)
+
+**Requirements:** 38/38 구현 완료 (INFRA×5, RWRD×8, SND×5, VFX×7, GAME×6, SCRN×7)
+**Last phase:** 20 (전체 화면 반전 디자인)
+
+---
+

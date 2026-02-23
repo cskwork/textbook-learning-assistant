@@ -2,7 +2,7 @@
 
 ## What This Is
 
-고등학생을 위한 수학 기출문제 학습 웹앱(PWA). 기출탭탭에서 영감을 받아, 단원별/유형별/난이도별 기출문제를 풀고 AI 기반 취약 유형 분석과 맞춤 추천을 제공하는 서비스. 학생뿐 아니라 강사도 학생 관리와 과제 출제를 할 수 있는 기본 관리 기능을 포함한다. v2.0에서 기출탭탭 스타일 디자인 시스템으로 전면 리뉴얼하여 프로페셔널한 교육 앱 UX를 완성했다.
+고등학생을 위한 수학 기출문제 학습 웹앱(PWA). 기출탭탭에서 영감을 받아, 단원별/유형별/난이도별 기출문제를 풀고 AI 기반 취약 유형 분석과 맞춤 추천을 제공하는 서비스. v2.0에서 기출탭탭 스타일 디자인으로 전면 리뉴얼, v3.0에서 "반전 모드" 게이미피케이션 시스템을 구축하여 학습에 재미 요소를 추가했다. 학생뿐 아니라 강사도 학생 관리와 과제 출제를 할 수 있는 관리 기능을 포함한다.
 
 ## Core Value
 
@@ -51,20 +51,20 @@
 - ✓ 강사 학생 분석 + 반 비교 차트 리디자인 — Phase 14
 - ✓ 강사 그룹/과제 관리 리디자인 — Phase 14
 
+### Validated (v3.0)
+
+- ✓ 반전 모드 토글 시스템 (커스터마이즈 버튼 → 전체 UI 변신) — Phase 15
+- ✓ 반전 모드 게임 에셋 lazy loading + 번들 분리 — Phase 15
+- ✓ XP/레벨/콤보/스트릭 보상 시스템 — Phase 16
+- ✓ 뱃지/리더보드/데일리·주간 챌린지 — Phase 16
+- ✓ Howler.js 사운드 시스템 (BGM + SFX + iOS 잠금 해제) — Phase 17
+- ✓ Three.js 3D 배경 + 파티클/흔들림/시네마틱/컨페티 VFX — Phase 18
+- ✓ 타임어택/서바이벌/보스배틀/Phaser 미니게임 4종 게임 모드 — Phase 19
+- ✓ 전체 화면 반전 디자인 (홈/퀴즈/분석/오답노트/문제집/강사포털/마이페이지) — Phase 20
+
 ### Active
 
-## Current Milestone: v3.0 반전 모드 — 게이미피케이션 학습 혁명
-
-**Goal:** 커스터마이즈 버튼 클릭 시 전체 앱이 초재미 게이미피케이션 학습 환경으로 변신하는 "반전 모드" 구현
-
-**Target features:**
-- 반전 모드 토글 시스템 (커스터마이즈 버튼 → 전체 UI 변신)
-- Phaser 기반 게이미피케이션 퀴즈 엔진 (타임어택, 콤보, 보스전)
-- Three.js 3D 시각 효과 (배경, 파티클, 레벨업 연출)
-- Canvas 인터랙티브 요소 (드로잉, 애니메이션, 미니게임)
-- 사운드/음악 시스템 (BGM, 효과음, 정답/오답 사운드)
-- 리워드/레벨업 시스템 (XP, 뱃지, 스트릭, 리더보드)
-- 전체 화면 반전 디자인 (홈, 퀴즈, 분석, 오답노트, 강사 포털)
+- [ ] PDF 문제 풀이 (deferred from v2.1)
 
 ### Out of Scope
 
@@ -77,6 +77,8 @@
 - OAuth 소셜 로그인 — 이메일 로그인 충분
 - 서술형 AI 채점 — 복잡도 높음
 - 네이티브 앱 (iOS/Android) — PWA + Electrobun으로 대체
+- 가챠/뽑기 시스템 — 미성년자 대상 도박성 요소
+- 전교 공개 리더보드 — 저성취 학생 부정적 영향
 
 ## Context
 
@@ -86,19 +88,21 @@
 - **문제 데이터:** 관리자가 직접 입력/수집 (수능, 모의고사, 교육청 기출 등)
 - **AI 모델:** BKT(Bayesian Knowledge Tracing) 기반 학습자 능력 추적
 - **수식 처리:** LaTeX로 저장, KaTeX로 클라이언트 렌더링
-- **현재 코드베이스:** 17,013 LOC (TypeScript/TSX/CSS), React 19 + Vite 7 + Tailwind v4 + shadcn/ui
-- **v2.0 신규 도입:** Swiper, Framer Motion, Pretendard 폰트, OKLCH 색상 토큰
+- **현재 코드베이스:** 29,182 LOC (TypeScript/TSX/CSS), React 19 + Vite 7 + Tailwind v4 + shadcn/ui
+- **v2.0 도입:** Swiper, Framer Motion, Pretendard 폰트, OKLCH 색상 토큰
+- **v3.0 도입:** Phaser 3.90, Three.js 0.183, R3F 9.5, Howler.js 2.2, Dexie v9, canvas-confetti
 - **아키텍처:** POC (localStorage + Dexie IndexedDB mock), 백엔드 연동은 향후
 
 ## Constraints
 
 - **Tech Stack**: React 19 + Vite 7 + Tailwind v4 + shadcn/ui
 - **Backend**: Express 5 + Drizzle ORM + PostgreSQL (현재 POC: localStorage mock)
-- **DB**: Dexie IndexedDB (클라이언트 사이드 POC)
+- **DB**: Dexie v9 IndexedDB (클라이언트 사이드 POC)
 - **수식**: LaTeX + KaTeX
 - **AI**: BKT 지식 추적 모델
 - **수익**: 완전 무료
 - **과목**: 수학만 (MVP)
+- **게임 엔진**: Phaser 3.90 (4.x RC 불안정), R3F 9.x (React 19 전용)
 
 ## Key Decisions
 
@@ -108,15 +112,18 @@
 | 수학 전용 MVP | 수식 렌더링에 집중, 범위 축소로 빠른 출시 | ✓ Good |
 | BKT 지식 추적 모델 | 교육 AI 분야에서 검증된 접근법 | ✓ Good |
 | LaTeX + KaTeX 수식 렌더링 | 교육 업계 표준, 빠른 클라이언트 렌더링 | ✓ Good |
-| v1/v2 완전 무료 | 사용자 확보 우선, 결제 복잡도 제거 | ✓ Good |
+| v1/v2/v3 완전 무료 | 사용자 확보 우선, 결제 복잡도 제거 | ✓ Good |
 | 강사 기본 기능 v1 포함 | B2B 시장 진입점 확보 | ✓ Good |
 | 객관식 + 단답형만 (서술형 제외) | 자동 채점 가능한 범위로 제한 | ✓ Good |
 | 기출탭탭 스타일 디자인 리뉴얼 (v2.0) | 기존 기능 UI 전면 개선, 사용자 경험 향상 | ✓ Good |
 | OKLCH 색상 + Pretendard 폰트 | 모던 색상 공간 + 한글 최적 가독성 | ✓ Good |
 | Swiper + Framer Motion 도입 | 터치 인터랙션 + 애니메이션 전문 라이브러리 | ✓ Good |
-| POC 아키텍처 유지 (v2.0) | 디자인 리뉴얼에 집중, 백엔드 연동은 v3 | ✓ Good |
-| PDF 문제 풀이 v2.1 연기 | 디자인 리뉴얼 완료 후 진행 | — Deferred |
-| 반전 모드 도입 (v3.0) | Phaser/Three.js/Canvas로 게이미피케이션 학습 혁명 | — Pending |
+| POC 아키텍처 유지 (v3.0까지) | 프론트엔드 기능 완성에 집중, 백엔드 연동은 이후 | ✓ Good |
+| 반전 모드 도입 (v3.0) | Phaser/Three.js/Canvas로 게이미피케이션 학습 혁명 | ✓ Good |
+| FunModeContext 단일 게이트 패턴 | CSS 변수 오버라이드로 즉시 테마 전환, 각 페이지는 훅 하나로 분기 | ✓ Good |
+| SDT 기반 보상 설계 | 학습 성취 기반 보상만, 외재적 동기 과부하 방지 | ✓ Good |
+| Phaser CANVAS 모드 | Three.js WebGL 컨텍스트와 충돌 방지 | ✓ Good |
+| PDF 문제 풀이 v2.1 연기 → v4.0 | 디자인 + 게이미피케이션 우선, PDF는 다음 milestone | — Active |
 
 ---
-*Last updated: 2026-02-23 after v3.0 milestone start*
+*Last updated: 2026-02-24 after v3.0 milestone completion*
