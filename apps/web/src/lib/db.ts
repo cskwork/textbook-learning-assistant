@@ -160,6 +160,23 @@ export interface Assignment {
   dueDate?: number       // 마감일 (ms, 선택)
 }
 
+// v3.0 게임 기록 스키마 (Phase 19 게임화 퀴즈 엔진)
+export type GameMode = 'timeAttack' | 'survival' | 'bossBattle' | 'miniGame'
+
+export interface GameRecord {
+  id?: number
+  studentId: string
+  mode: GameMode
+  score: number
+  correctCount: number
+  totalQuestions: number
+  xpEarned: number
+  timeElapsed: number            // 초 단위
+  isPersonalBest: boolean
+  metadata?: Record<string, unknown>  // 모드별 추가 데이터 (보스이름, 미니게임키 등)
+  playedAt: number               // Date.now()
+}
+
 // v3.0 Gamification 스키마 (Phase 16 사용)
 export interface GamificationProfile {
   id?: number
@@ -188,6 +205,7 @@ export interface BadgeRecord {
 }
 
 const db = new Dexie('mathQuestionDB') as Dexie & {
+  gameRecords: EntityTable<GameRecord, 'id'>
   questions: EntityTable<Question, 'id'>
   quizSessions: EntityTable<QuizSession, 'id'>
   quizAttempts: EntityTable<QuizAttempt, 'id'>
@@ -289,6 +307,13 @@ db.version(8).stores({
   gamificationProfiles: '++id, &studentId',
   xpEvents: '++id, studentId, reason, timestamp',
   badges: '++id, studentId, badgeId, unlockedAt',
+})
+
+// version(9): v3.0 게임 기록 테이블 추가 (Phase 19 게임화 퀴즈 엔진)
+// ⚠️ 기존 version(1)~(8) 절대 수정하지 말 것
+// 기존 테이블은 자동 상속됨. 신규 테이블만 정의.
+db.version(9).stores({
+  gameRecords: '++id, studentId, mode, score, playedAt, [studentId+mode]',
 })
 
 // 앱 시작 시 DB가 비어있으면 시드 데이터 자동 삽입
