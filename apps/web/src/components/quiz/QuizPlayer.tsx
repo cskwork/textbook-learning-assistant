@@ -1,7 +1,8 @@
 // apps/web/src/components/quiz/QuizPlayer.tsx
 // 퀴즈 세션 핵심 컴포넌트 — 문제 표시, 답 입력, 타이머, 제출, 채점 결과
 // useReducer 기반 playing → submitted 상태 머신
-import { useReducer, useEffect } from 'react'
+// Phase 16: 게이미피케이션 연동 (FunMode 활성화 시 XP 지급 + 콤보 + 피드백 UI)
+import { useReducer, useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
@@ -13,6 +14,11 @@ import { QuizResult } from '@/components/quiz/QuizResult'
 import { FadeIn } from '@/components/motion/FadeIn'
 import { useTimer } from '@/hooks/useTimer'
 import { submitQuizAttempt } from '@/services/quiz.service'
+import { useCombo } from '@/hooks/useCombo'
+import { useFunMode } from '@/hooks/useFunMode'
+import { awardXP, updateStreak } from '@/lib/gamification/gamification.service'
+import { getBaseXP } from '@/lib/gamification/xp-formula'
+import { XPFloatingText, ComboCounter } from '@/components/gamification'
 import type { Question } from '@/lib/db'
 
 // ─── 상태 머신 타입 ────────────────────────────────────────────────────────────
@@ -56,6 +62,14 @@ function quizReducer(state: QuizState, action: QuizAction): QuizState {
 
 // ─── Props ──────────────────────────────────────────────────────────────────
 
+/** 게이미피케이션 결과 타입 — 상위 QuizPage에서 LevelUpOverlay/BadgeUnlockOverlay 트리거용 */
+export interface GamificationResult {
+  xpAwarded: number
+  leveledUp: boolean
+  newLevel: number
+  unlockedBadges: string[]
+}
+
 interface QuizPlayerProps {
   question: Question
   studentId: string
@@ -64,6 +78,8 @@ interface QuizPlayerProps {
   onBack?: () => void   // 문제 목록으로 돌아가기 콜백
   questionIndex?: number    // 현재 문제 번호 (0-based, optional)
   totalQuestions?: number   // 전체 문제 수 (optional)
+  /** FunMode 활성화 시 게이미피케이션 결과 콜백 (레벨업/뱃지 오버레이 트리거) */
+  onGamificationResult?: (result: GamificationResult) => void
 }
 
 // ─── 컴포넌트 ────────────────────────────────────────────────────────────────
@@ -76,6 +92,7 @@ export function QuizPlayer({
   onBack,
   questionIndex,
   totalQuestions,
+  onGamificationResult,
 }: QuizPlayerProps) {
   const [state, dispatch] = useReducer(quizReducer, {
     phase: 'playing',
@@ -85,6 +102,11 @@ export function QuizPlayer({
   })
 
   const timer = useTimer()
+  const { isFunMode } = useFunMode()
+  const { comboCount, multiplier, onCorrect: comboOnCorrect, onWrong: comboOnWrong, resetCombo } = useCombo()
+
+  // XP 플로팅 텍스트 상태 — key로 매번 새 애니메이션 트리거
+  const [xpFloat, setXpFloat] = useState<{ amount: number; key: number } | null>(null)
 
   // 마운트 시 타이머 시작, 언마운트 시 정지
   useEffect(() => {
@@ -104,6 +126,25 @@ export function QuizPlayer({
       userAnswer: state.selectedAnswer,
       timeSpent,
     })
+
+    // ── FunMode 게이미피케이션 처리 ──────────────────────────────────────────
+    if (isFunMode && studentId) {
+      if (isCorrect) {
+        const comboMult = comboOnCorrect()
+        const baseXP = getBaseXP(question.difficulty)
+        const result = await awardXP(studentId, baseXP, 'quiz_correct', comboMult)
+        await updateStreak(studentId)
+        setXpFloat({ amount: result.xpAwarded, key: Date.now() })
+        onGamificationResult?.({
+          xpAwarded: result.xpAwarded,
+          leveledUp: result.leveledUp,
+          newLevel: result.newLevel,
+          unlockedBadges: result.unlockedBadges,
+        })
+      } else {
+        comboOnWrong()
+      }
+    }
 
     dispatch({ type: 'SUBMIT', isCorrect, timeSpent })
     onComplete?.(isCorrect)
@@ -133,6 +174,21 @@ export function QuizPlayer({
 
   return (
     <FadeIn className="space-y-4">
+      {/* FunMode 게이미피케이션 UI — 콤보 카운터 (화면 중앙 fixed) */}
+      {isFunMode && <ComboCounter comboCount={comboCount} multiplier={multiplier} />}
+
+      {/* FunMode 게이미피케이션 UI — XP 플로팅 텍스트 */}
+      {isFunMode && (
+        <div className="relative flex justify-center">
+          <XPFloatingText
+            key={xpFloat?.key}
+            amount={xpFloat?.amount ?? 0}
+            visible={xpFloat !== null}
+            onComplete={() => setXpFloat(null)}
+          />
+        </div>
+      )}
+
       {/* 문제 번호 인디케이터 + 타이머 */}
       <div className="flex items-center justify-between">
         {showIndicator ? (

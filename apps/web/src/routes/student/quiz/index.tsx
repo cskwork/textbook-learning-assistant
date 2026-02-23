@@ -1,5 +1,6 @@
 // apps/web/src/routes/student/quiz/index.tsx
 // 퀴즈 플레이어 페이지 — useParams(:id) + QuizPlayer + 북마크 + 기출탭탭 스타일
+// Phase 16: 게이미피케이션 오버레이 (FunMode 시 LevelUpOverlay + BadgeUnlockOverlay)
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router'
 import { Bookmark, ArrowLeft } from 'lucide-react'
@@ -10,16 +11,25 @@ import { QuizPlayer } from '@/components/quiz/QuizPlayer'
 import { FadeIn } from '@/components/motion/FadeIn'
 import { AnimatedCard } from '@/components/motion/AnimatedCard'
 import { useAuth } from '@/contexts/AuthContext'
+import { useFunMode } from '@/hooks/useFunMode'
 import { db, type Question } from '@/lib/db'
 import { getWrongNote, toggleBookmark } from '@/services/wrongNote.service'
+import { LevelUpOverlay, BadgeUnlockOverlay } from '@/components/gamification'
+import { BADGE_DEFINITIONS, type BadgeDefinition } from '@/lib/gamification/badge-definitions'
+import type { GamificationResult } from '@/components/quiz/QuizPlayer'
 
 export default function QuizPage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const { user } = useAuth()
+  const { isFunMode } = useFunMode()
 
   const [question, setQuestion] = useState<Question | null | undefined>(undefined) // undefined=로딩중, null=없음
   const [isBookmarked, setIsBookmarked] = useState(false)
+
+  // 게이미피케이션 오버레이 상태
+  const [levelUpInfo, setLevelUpInfo] = useState<{ newLevel: number } | null>(null)
+  const [unlockedBadge, setUnlockedBadge] = useState<BadgeDefinition | null>(null)
 
   // 문제 로드
   useEffect(() => {
@@ -48,6 +58,24 @@ export default function QuizPage() {
     if (!question || !user?.email) return
     const newBookmarked = await toggleBookmark(question.id, user.email, question)
     setIsBookmarked(newBookmarked)
+  }
+
+  // 게이미피케이션 결과 핸들러 — LevelUpOverlay/BadgeUnlockOverlay 트리거
+  function handleGamificationResult(result: GamificationResult) {
+    if (result.leveledUp) {
+      setLevelUpInfo({ newLevel: result.newLevel })
+    }
+    if (result.unlockedBadges.length > 0) {
+      // 첫 번째 뱃지만 표시 (레벨업이 있으면 레벨업 후에 뱃지 표시 — 3초 딜레이)
+      const badgeDef = BADGE_DEFINITIONS.find(b => b.id === result.unlockedBadges[0])
+      if (badgeDef) {
+        if (result.leveledUp) {
+          setTimeout(() => setUnlockedBadge(badgeDef), 3000)
+        } else {
+          setUnlockedBadge(badgeDef)
+        }
+      }
+    }
   }
 
   // 로딩 중 — Skeleton 카드 형태
@@ -123,7 +151,24 @@ export default function QuizPage() {
         question={question}
         studentId={user?.email ?? ''}
         onBack={() => navigate('/student/problems')}
+        onGamificationResult={handleGamificationResult}
       />
+
+      {/* FunMode 게이미피케이션 오버레이 */}
+      {isFunMode && (
+        <>
+          <LevelUpOverlay
+            newLevel={levelUpInfo?.newLevel ?? 1}
+            visible={levelUpInfo !== null}
+            onDone={() => setLevelUpInfo(null)}
+          />
+          <BadgeUnlockOverlay
+            badge={unlockedBadge}
+            visible={unlockedBadge !== null}
+            onDone={() => setUnlockedBadge(null)}
+          />
+        </>
+      )}
     </div>
   )
 }
