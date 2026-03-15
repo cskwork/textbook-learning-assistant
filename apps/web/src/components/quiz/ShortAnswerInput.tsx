@@ -4,6 +4,7 @@ import { PenLine } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { FadeIn } from '@/components/motion/FadeIn'
 import { cn } from '@/lib/utils'
+import { useFunMode } from '@/hooks/useFunMode'
 
 interface ShortAnswerInputProps {
   value: string
@@ -20,9 +21,11 @@ export function ShortAnswerInput({
   placeholder = '답을 입력하세요',
   className,
 }: ShortAnswerInputProps) {
+  const { isFunMode } = useFunMode()
+
   return (
     <FadeIn className={cn('space-y-1.5', className)}>
-      <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
+      <div className={cn('mb-1 flex items-center gap-2 text-sm text-muted-foreground', isFunMode && 'text-[color:var(--fun-text-secondary)]')}>
         <PenLine className="h-4 w-4" />
         <span>단답형</span>
       </div>
@@ -34,10 +37,11 @@ export function ShortAnswerInput({
         placeholder={placeholder}
         className={cn(
           'rounded-xl h-14 text-lg font-semibold text-center',
+          isFunMode && 'border-[color:var(--fun-glass-border)] bg-[color:var(--fun-bg-card-contrast)] text-[color:var(--fun-text-contrast)] placeholder:text-[color:var(--fun-text-muted)]',
           disabled && 'cursor-not-allowed opacity-70',
         )}
       />
-      <p className="text-muted-foreground text-xs">
+      <p className={cn('text-xs text-muted-foreground', isFunMode && 'text-[color:var(--fun-text-secondary)]')}>
         숫자로 답하는 문제의 경우 숫자만 입력하세요
       </p>
     </FadeIn>

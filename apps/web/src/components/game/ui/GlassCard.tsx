@@ -15,7 +15,9 @@ export function GlassCard({ children, className, onClick, layoutId, ...rest }: G
       layoutId={layoutId}
       onClick={onClick}
       className={cn(
-        'rounded-xl bg-card/90 border border-border transition-all duration-200',
+        'rounded-xl border text-[color:var(--fun-text-primary)] transition-all duration-200',
+        'bg-[color:var(--fun-bg-card)] border-[color:var(--fun-glass-border)]',
+        'shadow-[0_18px_40px_rgba(6,8,20,0.38)]',
         onClick && 'cursor-pointer',
         className,
       )}

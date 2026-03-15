@@ -18,6 +18,8 @@ import { useAuth } from '@/contexts/AuthContext'
 import { QuizPlayer } from '@/components/quiz/QuizPlayer'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { PageContainer } from '@/components/layout/PageContainer'
+import { getDiagnosticProgress } from './progress'
 
 const SUBJECTS: Array<Question['subject']> = ['수학I', '수학II', '미적분', '확률과통계', '기하']
 const MAX_QUESTIONS = 10
@@ -119,67 +121,96 @@ export default function OnboardingQuizPage() {
   // 초기화 중 (문제 로딩 전)
   if (questions === null && !isDone) {
     return (
-      <div className="p-4 md:p-6 max-w-2xl mx-auto">
+      <PageContainer
+        variant="wide"
+        className="py-4 md:py-6 lg:mx-0 lg:max-w-5xl lg:py-8 xl:max-w-6xl"
+      >
         <div className="animate-pulse space-y-4">
           <div className="h-8 bg-muted rounded w-1/3" />
           <div className="h-4 bg-muted rounded w-2/3" />
           <div className="h-48 bg-muted rounded" />
         </div>
-      </div>
+      </PageContainer>
     )
   }
 
   const currentQuestion = questions?.[currentIndex]
+  const questionCount = questions?.length ?? 0
+  const progress = getDiagnosticProgress(currentIndex, questionCount)
 
   return (
-    <div className="p-4 md:p-6 max-w-2xl mx-auto space-y-4">
+    <PageContainer
+      variant="wide"
+      className="space-y-5 py-4 md:space-y-6 md:py-6 lg:mx-0 lg:max-w-5xl lg:py-8 xl:max-w-6xl"
+    >
       {/* 헤더 */}
-      <div>
-        <h1 className="text-2xl font-bold text-foreground">진단 퀴즈</h1>
-        <p className="text-muted-foreground mt-1">
-          내 학습 수준을 파악하여 맞춤 추천을 제공합니다 ({questions?.length ?? 0}문제)
-        </p>
-      </div>
-
-      {/* 진행 상황 표시 */}
-      {questions && questions.length > 0 && (
-        <div className="flex items-center gap-3">
-          <div className="flex-1 bg-muted rounded-full h-2">
-            <div
-              className="bg-primary h-2 rounded-full transition-all"
-              style={{ width: `${((currentIndex) / questions.length) * 100}%` }}
-            />
+      <section className="rounded-[28px] border border-border/60 bg-card/70 px-5 py-5 shadow-sm md:px-6 lg:px-8">
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-2xl space-y-2">
+            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-primary/70">
+              Level Check
+            </p>
+            <div>
+              <h1 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+                진단 퀴즈
+              </h1>
+              <p className="mt-1 text-sm leading-6 text-muted-foreground md:text-[0.95rem]">
+                내 학습 수준을 빠르게 파악해 문제 추천과 학습 흐름을 맞춥니다. 시작 전에
+                현재 실력을 가볍게 확인하세요.
+              </p>
+            </div>
           </div>
-          <span className="text-sm text-muted-foreground tabular-nums">
-            {currentIndex + 1} / {questions.length}
-          </span>
+
+          {questions && questionCount > 0 && (
+            <div className="min-w-[220px] rounded-2xl border border-primary/15 bg-primary/[0.04] px-4 py-3 lg:w-[280px]">
+              <div className="flex items-center justify-between text-sm">
+                <span className="font-semibold text-foreground">진행 상황</span>
+                <span className="tabular-nums text-muted-foreground">
+                  {currentIndex + 1} / {questionCount}
+                </span>
+              </div>
+              <div className="mt-3 h-2.5 overflow-hidden rounded-full bg-primary/10">
+                <div
+                  className="h-full rounded-full bg-primary transition-all duration-300"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+            </div>
+          )}
         </div>
-      )}
+      </section>
 
       {/* 현재 subject 배지 */}
       {currentQuestion && (
-        <Card className="bg-primary/5 border-primary/20">
-          <CardContent className="py-2 px-4">
-            <span className="text-sm font-medium text-primary">{currentQuestion.subject}</span>
+        <Card className="border-primary/15 bg-primary/[0.035] shadow-none">
+          <CardContent className="flex items-center gap-3 px-5 py-3 md:px-6">
+            <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-primary/80">
+              과목
+            </span>
+            <span className="text-sm font-semibold text-primary md:text-base">
+              {currentQuestion.subject}
+            </span>
           </CardContent>
         </Card>
       )}
 
       {/* QuizPlayer — 문제 표시 + 채점 + submitQuizAttempt 내부 처리 */}
       {currentQuestion && user?.email && (
-        <QuizPlayer
-          key={currentQuestion.id}
-          question={currentQuestion}
-          studentId={user.email}
-          onNext={handleNext}
-        />
+        <div className="lg:max-w-[min(100%,64rem)]">
+          <QuizPlayer
+            key={currentQuestion.id}
+            question={currentQuestion}
+            studentId={user.email}
+            onNext={handleNext}
+          />
+        </div>
       )}
 
       {/* 퀴즈 스킵 버튼 */}
-      <div className="pt-2">
+      <div className="flex justify-start pt-1">
         <Button
           variant="ghost"
-          className="w-full text-muted-foreground text-sm"
+          className="w-full text-sm text-muted-foreground sm:w-auto sm:min-w-56"
           onClick={async () => {
             if (user?.email) {
               await db.userSettings.put({
@@ -194,6 +225,6 @@ export default function OnboardingQuizPage() {
           진단 퀴즈 건너뛰기
         </Button>
       </div>
-    </div>
+    </PageContainer>
   )
 }

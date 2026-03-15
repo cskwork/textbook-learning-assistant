@@ -46,6 +46,7 @@ const CharacterProfile = lazy(() =>
 import { BADGE_DEFINITIONS } from '@/lib/gamification/badge-definitions'
 import { cn } from '@/lib/utils'
 import type { User } from '@/lib/auth'
+import { PageContainer } from '@/components/layout/PageContainer'
 
 export default function StudentProfilePage() {
   const { user, updateProfile, logout } = useAuth()
@@ -122,7 +123,11 @@ export default function StudentProfilePage() {
   if (!user) return null
 
   return (
-    <div className="p-4 md:p-6 lg:p-8 max-w-5xl mx-auto space-y-5">
+    <PageContainer
+      variant="wide"
+      align="left"
+      className="space-y-5 py-4 md:space-y-6 md:py-6 lg:max-w-5xl lg:py-8"
+    >
       <div>
         <h1 className="text-2xl font-bold text-foreground">마이페이지</h1>
         <p className="text-sm text-muted-foreground mt-1">프로필과 앱 설정을 관리하세요</p>
@@ -368,6 +373,6 @@ export default function StudentProfilePage() {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </PageContainer>
   )
 }

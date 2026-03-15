@@ -1,9 +1,9 @@
-import { type ReactNode } from 'react'
+import { type HTMLAttributes, type ReactNode } from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 const pageContainerVariants = cva(
-  'mx-auto w-full px-page lg:px-page-lg',
+  'w-full px-page lg:px-page-lg',
   {
     variants: {
       variant: {
@@ -11,21 +11,25 @@ const pageContainerVariants = cva(
         wide: 'max-w-6xl',
         narrow: 'max-w-2xl',
       },
+      align: {
+        center: 'mx-auto',
+        left: 'mx-auto lg:mx-0',
+      },
     },
     defaultVariants: {
       variant: 'default',
+      align: 'center',
     },
   }
 )
 
-interface PageContainerProps extends VariantProps<typeof pageContainerVariants> {
+interface PageContainerProps extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof pageContainerVariants> {
   children: ReactNode
-  className?: string
 }
 
-export function PageContainer({ children, variant, className }: PageContainerProps) {
+export function PageContainer({ children, variant, align, className, ...props }: PageContainerProps) {
   return (
-    <div className={cn(pageContainerVariants({ variant }), className)}>
+    <div className={cn(pageContainerVariants({ variant, align }), className)} {...props}>
       {children}
     </div>
   )

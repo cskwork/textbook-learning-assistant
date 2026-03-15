@@ -9,6 +9,7 @@ import { WrongNoteFilter } from '@/components/wrong-notes/WrongNoteFilter'
 import { WrongNoteList } from '@/components/wrong-notes/WrongNoteList'
 import { useFunMode } from '@/hooks/useFunMode'
 import { GameLoadingSpinner } from '@/components/game/GameLoadingSpinner'
+import { PageContainer } from '@/components/layout/PageContainer'
 
 const MonsterCodex = lazy(() =>
   import('@/components/wrong-notes/MonsterCodex').then(m => ({ default: m.MonsterCodex }))
@@ -37,21 +38,23 @@ export default function WrongNotesPage() {
   }
 
   return (
-    <FadeIn className="p-4 md:p-6 max-w-6xl mx-auto space-y-4">
-      <h1 className="text-2xl font-bold">오답노트</h1>
-      <WrongNoteFilter
-        studentId={studentId}
-        filterUnit={filterUnit}
-        filterCategory={filterCategory}
-        onFilterUnit={setFilterUnit}
-        onFilterCategory={setFilterCategory}
-      />
-      <WrongNoteList
-        studentId={studentId}
-        filterUnit={filterUnit}
-        filterCategory={filterCategory}
-        onRetry={handleRetry}
-      />
+    <FadeIn>
+      <PageContainer variant="wide" align="left" className="space-y-4 py-4 md:space-y-5 md:py-6 lg:py-8">
+        <h1 className="text-2xl font-bold">오답노트</h1>
+        <WrongNoteFilter
+          studentId={studentId}
+          filterUnit={filterUnit}
+          filterCategory={filterCategory}
+          onFilterUnit={setFilterUnit}
+          onFilterCategory={setFilterCategory}
+        />
+        <WrongNoteList
+          studentId={studentId}
+          filterUnit={filterUnit}
+          filterCategory={filterCategory}
+          onRetry={handleRetry}
+        />
+      </PageContainer>
     </FadeIn>
   )
 }

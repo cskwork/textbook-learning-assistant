@@ -36,6 +36,7 @@ import { StreakCounter, DailyChallenge, WeeklyChallenge, Leaderboard } from '@/c
 import { StreakFlame } from '@/components/game/effects/StreakFlame'
 import { GameLoadingSpinner } from '@/components/game/GameLoadingSpinner'
 import type { Question } from '@/lib/db'
+import { PageContainer } from '@/components/layout/PageContainer'
 
 const FunModeHome = lazy(() =>
   import('@/components/home/FunModeHome').then(m => ({ default: m.FunModeHome }))
@@ -146,7 +147,7 @@ export default function StudentHomePage() {
   // ── 로딩 스켈레톤 ──
   if (userSetting === undefined) {
     return (
-      <div className="p-4 md:p-6 lg:p-8 max-w-6xl mx-auto space-y-6">
+      <PageContainer variant="wide" align="left" className="space-y-6 py-4 md:py-6 lg:py-8">
         <div className="space-y-2">
           <div className="h-8 bg-muted rounded-xl w-52 animate-pulse" />
           <div className="h-4 bg-muted/60 rounded-lg w-36 animate-pulse" />
@@ -158,7 +159,7 @@ export default function StudentHomePage() {
           ))}
         </div>
         <div className="h-40 bg-muted/40 rounded-2xl animate-pulse" />
-      </div>
+      </PageContainer>
     )
   }
 
@@ -180,7 +181,7 @@ export default function StudentHomePage() {
   // ── Empty State: 한 번도 문제를 풀지 않은 신규 학생 ──
   if (attemptCount === 0) {
     return (
-      <div className="p-4 md:p-6 lg:p-8 max-w-6xl mx-auto space-y-5">
+      <PageContainer variant="wide" align="left" className="space-y-5 py-4 md:space-y-6 md:py-6 lg:py-8">
 
         {/* 인사 영역 */}
         <FadeIn delay={0}>
@@ -298,12 +299,12 @@ export default function StudentHomePage() {
             </AnimatedCard>
           </div>
         </FadeIn>
-      </div>
+      </PageContainer>
     )
   }
 
   return (
-    <div className="p-4 md:p-6 lg:p-8 max-w-6xl mx-auto space-y-5">
+    <PageContainer variant="wide" align="left" className="space-y-5 py-4 md:space-y-6 md:py-6 lg:py-8">
 
       {/* ── a. 인사 영역 ── */}
       <FadeIn delay={0}>
@@ -573,6 +574,6 @@ export default function StudentHomePage() {
           </div>
         </div>
       </FadeIn>
-    </div>
+    </PageContainer>
   )
 }

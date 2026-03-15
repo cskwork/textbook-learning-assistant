@@ -134,7 +134,11 @@ export default function GameResult({
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4, ease: 'easeOut' }}
-        className="rounded-2xl border-2 border-white/10 bg-gradient-to-b from-gray-900 to-gray-950 p-6 space-y-5"
+        className="rounded-2xl border-2 p-6 space-y-5 shadow-[0_22px_44px_rgba(4,6,16,0.42)]"
+        style={{
+          borderColor: 'color-mix(in oklch, var(--fun-neon-cyan) 14%, var(--fun-glass-border))',
+          background: 'linear-gradient(180deg, var(--fun-bg-card-elevated), var(--fun-bg-card))',
+        }}
       >
         {/* 모드 배지 */}
         <div className="flex items-center justify-center">
@@ -154,7 +158,7 @@ export default function GameResult({
             <motion.span
               animate={{ opacity: [1, 0.6, 1] }}
               transition={{ duration: 1.5, repeat: Infinity }}
-              className="text-2xl font-black text-amber-400"
+              className="text-2xl font-black text-[color:var(--fun-neon-gold)]"
             >
               NEW RECORD!
             </motion.span>
@@ -173,14 +177,14 @@ export default function GameResult({
         >
           {/* 점수 */}
           <ResultItem label="점수" delay={0}>
-            <span className="text-3xl font-black text-white tabular-nums">
+            <span className="text-3xl font-black text-[color:var(--fun-text-primary)] tabular-nums">
               {animatedScore}
             </span>
           </ResultItem>
 
           {/* XP 획득 */}
           <ResultItem label="획득 XP" delay={1}>
-            <span className="text-2xl font-bold text-cyan-400 tabular-nums">
+            <span className="text-2xl font-bold text-[color:var(--fun-neon-cyan)] tabular-nums">
               +{animatedXP} XP
             </span>
           </ResultItem>
@@ -188,16 +192,16 @@ export default function GameResult({
           {/* 정답 비율 */}
           <ResultItem label="정답 비율" delay={2}>
             <div className="flex items-center gap-2">
-              <span className="text-xl font-bold text-white">
+              <span className="text-xl font-bold text-[color:var(--fun-text-primary)]">
                 {correctCount}/{totalQuestions}
               </span>
-              <span className="text-sm text-foreground/60">({accuracy}%)</span>
+              <span className="text-sm text-[color:var(--fun-text-secondary)]">({accuracy}%)</span>
             </div>
           </ResultItem>
 
           {/* 소요 시간 */}
           <ResultItem label="소요 시간" delay={3}>
-            <span className="text-xl font-bold text-white tabular-nums">{timeFormatted}</span>
+            <span className="text-xl font-bold text-[color:var(--fun-text-primary)] tabular-nums">{timeFormatted}</span>
           </ResultItem>
 
           {/* 보스 배틀 추가 정보 */}
@@ -227,8 +231,7 @@ export default function GameResult({
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={onModeSelect}
-          className="w-full rounded-xl h-12 border-2 border-white/20 text-white font-bold text-base
-                     hover:bg-white/5 transition-colors"
+          className="h-12 w-full rounded-xl border-2 border-[color:var(--fun-glass-border)] bg-[color:var(--fun-bg-card-elevated)] text-base font-bold text-[color:var(--fun-text-primary)] transition-colors hover:bg-[color:var(--fun-bg-tertiary)]"
         >
           모드 선택으로
         </motion.button>
@@ -237,8 +240,7 @@ export default function GameResult({
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={onHome}
-          className="w-full rounded-xl h-10 text-foreground/50 font-medium text-sm
-                     hover:text-foreground/80 transition-colors"
+          className="h-10 w-full rounded-xl text-sm font-medium text-[color:var(--fun-text-secondary)] transition-colors hover:text-[color:var(--fun-text-primary)]"
         >
           홈으로
         </motion.button>
@@ -258,7 +260,7 @@ function ResultItem({ label, children }: { label: string; children: React.ReactN
       }}
       className="flex items-center justify-between px-2"
     >
-      <span className="text-sm text-foreground/50 font-medium">{label}</span>
+      <span className="text-sm font-medium text-[color:var(--fun-text-secondary)]">{label}</span>
       {children}
     </motion.div>
   )

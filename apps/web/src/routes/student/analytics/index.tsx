@@ -47,6 +47,7 @@ import type { Question } from '@/lib/db'
 import { CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { FadeIn } from '@/components/motion/FadeIn'
 import { AnimatedCard } from '@/components/motion/AnimatedCard'
+import { PageContainer } from '@/components/layout/PageContainer'
 
 /** WeakTypeRadarChart용 { category, pL }[] 타입 */
 type WeakCategoryData = { category: string; pL: number }
@@ -187,7 +188,7 @@ export default function AnalyticsPage() {
 
   return (
     <FadeIn>
-      <div className="p-4 md:p-6 lg:p-8 max-w-6xl mx-auto space-y-5">
+      <PageContainer variant="wide" align="left" className="space-y-5 py-4 md:space-y-6 md:py-6 lg:py-8">
         {/* 헤더: 제목 + 스트릭 뱃지 + DateRangeSelector */}
         <FadeIn delay={0}>
           <div className="flex items-start justify-between gap-3">
@@ -318,7 +319,7 @@ export default function AnalyticsPage() {
             </CardContent>
           </AnimatedCard>
         </FadeIn>
-      </div>
+      </PageContainer>
     </FadeIn>
   )
 }

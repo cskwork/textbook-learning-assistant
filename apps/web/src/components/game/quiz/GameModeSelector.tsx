@@ -15,8 +15,8 @@ interface ModeCardConfig {
   name: string
   description: string
   icon: React.ReactNode
-  color: string       // 테두리/강조 색상 (Tailwind)
-  bgGradient: string  // 배경 그라데이션
+  borderColor: string
+  accentColor: string
 }
 
 const MODE_CARDS: ModeCardConfig[] = [
@@ -29,8 +29,8 @@ const MODE_CARDS: ModeCardConfig[] = [
         <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
       </svg>
     ),
-    color: 'border-blue-500/50',
-    bgGradient: 'from-blue-950/50 to-blue-900/30',
+    borderColor: 'rgba(78, 125, 255, 0.45)',
+    accentColor: 'rgb(78, 125, 255)',
   },
   {
     mode: 'timeAttack',
@@ -42,8 +42,8 @@ const MODE_CARDS: ModeCardConfig[] = [
         <polyline points="12 6 12 12 16 14" />
       </svg>
     ),
-    color: 'border-amber-500/50',
-    bgGradient: 'from-amber-950/50 to-amber-900/30',
+    borderColor: 'rgba(245, 158, 11, 0.48)',
+    accentColor: 'rgb(245, 158, 11)',
   },
   {
     mode: 'survival',
@@ -59,8 +59,8 @@ const MODE_CARDS: ModeCardConfig[] = [
         />
       </svg>
     ),
-    color: 'border-red-500/50',
-    bgGradient: 'from-red-950/50 to-red-900/30',
+    borderColor: 'rgba(239, 68, 68, 0.5)',
+    accentColor: 'rgb(239, 68, 68)',
   },
   {
     mode: 'bossBattle',
@@ -74,8 +74,8 @@ const MODE_CARDS: ModeCardConfig[] = [
         <path d="M19 21l2-2" />
       </svg>
     ),
-    color: 'border-purple-500/50',
-    bgGradient: 'from-purple-950/50 to-purple-900/30',
+    borderColor: 'rgba(168, 85, 247, 0.48)',
+    accentColor: 'rgb(168, 85, 247)',
   },
   {
     mode: 'miniGame',
@@ -90,8 +90,8 @@ const MODE_CARDS: ModeCardConfig[] = [
         <circle cx="18" cy="13" r="1" />
       </svg>
     ),
-    color: 'border-cyan-500/50',
-    bgGradient: 'from-cyan-950/50 to-cyan-900/30',
+    borderColor: 'rgba(34, 211, 238, 0.48)',
+    accentColor: 'rgb(34, 211, 238)',
   },
 ]
 
@@ -142,8 +142,8 @@ export function GameModeSelector({
         transition={{ duration: 0.4 }}
         className="text-center space-y-2"
       >
-        <h2 className="text-2xl font-bold text-white">게임 모드 선택</h2>
-        <p className="text-sm text-foreground/60">
+        <h2 className="text-2xl font-bold text-[color:var(--fun-text-primary)]">게임 모드 선택</h2>
+        <p className="text-sm text-[color:var(--fun-text-secondary)]">
           {questionCount > 0 ? `${questionCount}문제 준비됨` : '문제를 선택하세요'}
         </p>
       </motion.div>
@@ -169,24 +169,26 @@ export function GameModeSelector({
               whileTap={{ scale: 0.98 }}
               onClick={() => onSelectMode(card.mode)}
               disabled={disabled}
-              className={`
-                relative overflow-hidden rounded-2xl border-2 ${card.color}
-                bg-gradient-to-br ${card.bgGradient}
-                p-5 text-left transition-shadow duration-200
-                hover:shadow-lg hover:shadow-black/20
-                focus:outline-none focus:ring-2 focus:ring-white/20
-                disabled:opacity-45 disabled:cursor-not-allowed disabled:hover:shadow-none
-              `}
+              className="relative overflow-hidden rounded-2xl border-2 p-5 text-left transition-shadow duration-200 hover:shadow-lg hover:shadow-black/30 focus:outline-none focus:ring-2 focus:ring-white/20 disabled:opacity-45 disabled:cursor-not-allowed disabled:hover:shadow-none"
+              style={{
+                borderColor: card.borderColor,
+                background: `linear-gradient(180deg, color-mix(in srgb, ${card.accentColor} 14%, var(--fun-bg-card-elevated)), var(--fun-bg-card))`,
+                boxShadow: `0 18px 38px color-mix(in srgb, ${card.accentColor} 16%, rgba(0,0,0,0.45))`,
+              }}
             >
+              <div
+                className="pointer-events-none absolute inset-x-0 top-0 h-1.5"
+                style={{ background: `linear-gradient(90deg, ${card.accentColor}, transparent)` }}
+              />
               <div className="flex items-start gap-4">
                 {/* 아이콘 */}
-                <div className="text-white/80 shrink-0">{card.icon}</div>
+                <div className="shrink-0 text-[color:var(--fun-text-primary)]">{card.icon}</div>
                 {/* 텍스트 */}
                 <div className="space-y-1 min-w-0">
-                  <h3 className="text-lg font-bold text-white">{card.name}</h3>
-                  <p className="text-sm text-foreground/70">{card.description}</p>
+                  <h3 className="text-lg font-bold text-[color:var(--fun-text-primary)]">{card.name}</h3>
+                  <p className="text-sm text-[color:var(--fun-text-secondary)]">{card.description}</p>
                   {disabled && (
-                    <p className="text-xs text-amber-300/90 mt-1">문제 세트 로딩 중...</p>
+                    <p className="mt-1 text-xs text-[color:var(--fun-neon-gold)]">문제 세트 로딩 중...</p>
                   )}
                 </div>
               </div>

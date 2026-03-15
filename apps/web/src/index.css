@@ -273,17 +273,20 @@ body {
 
     /* 시맨틱 텍스트 색상 — 가독성 보장 */
     --fun-text-primary: oklch(0.95 0.008 275);
-    --fun-text-secondary: oklch(0.80 0.02 275);
-    --fun-text-muted: oklch(0.65 0.02 275);
+    --fun-text-secondary: oklch(0.86 0.018 275);
+    --fun-text-muted: oklch(0.76 0.015 275);
+    --fun-text-contrast: oklch(0.18 0.02 275);
 
     /* 시맨틱 배경 색상 */
     --fun-bg-primary: oklch(0.13 0.035 275);
     --fun-bg-secondary: oklch(0.17 0.03 275);
-    --fun-bg-card: oklch(0.20 0.03 275);
-    --fun-bg-tertiary: oklch(0.23 0.03 275);
+    --fun-bg-card: oklch(0.15 0.025 275);
+    --fun-bg-card-elevated: oklch(0.22 0.03 275);
+    --fun-bg-card-contrast: oklch(0.95 0.008 275);
+    --fun-bg-tertiary: oklch(0.27 0.03 275);
 
     /* 글래스 보더 */
-    --fun-glass-border: oklch(0.30 0.04 275);
+    --fun-glass-border: oklch(0.38 0.05 275);
 
     /* 글로우 (color-mix, 강도 낮춤) */
     --fun-glow-primary: 0 0 8px color-mix(in oklch, var(--primary) 30%, transparent);

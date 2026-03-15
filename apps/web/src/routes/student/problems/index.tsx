@@ -8,6 +8,7 @@ import { SwordIcon } from '@/components/game/icons'
 import { useFunMode } from '@/hooks/useFunMode'
 import { db } from '@/lib/db'
 import type { Question } from '@/lib/db'
+import { PageContainer } from '@/components/layout/PageContainer'
 
 // 과목 칩 필터 옵션
 const SUBJECT_CHIPS: Array<{ value: Question['subject'] | undefined; label: string }> = [
@@ -73,7 +74,12 @@ export default function StudentProblemsPage() {
 
   return (
     <FadeIn>
-      <div className="p-4 md:p-6 max-w-6xl mx-auto space-y-5" style={funStyle}>
+      <PageContainer
+        variant="wide"
+        align="left"
+        className="space-y-5 py-4 md:space-y-6 md:py-6 lg:py-8"
+        style={funStyle}
+      >
         {/* 페이지 헤더 */}
         <div className="flex items-center gap-3">
           {isFunMode && <SwordIcon size={24} color="var(--fun-neon-cyan)" glow />}
@@ -173,7 +179,7 @@ export default function StudentProblemsPage() {
           basePath="/student/quiz"
           isFunMode={isFunMode}
         />
-      </div>
+      </PageContainer>
     </FadeIn>
   )
 }

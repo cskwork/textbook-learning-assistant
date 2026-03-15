@@ -12,7 +12,7 @@
 
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
 import { useNavigate } from 'react-router'
-import { getMe, login as apiLogin, logout as apiLogout, setRole as apiSetRole, updateProfile as apiUpdateProfile } from '@/lib/auth'
+import { ensureDemoSession, getMe, login as apiLogin, logout as apiLogout, setRole as apiSetRole, updateProfile as apiUpdateProfile } from '@/lib/auth'
 import type { User } from '@/lib/auth'
 
 interface AuthContextValue {
@@ -97,8 +97,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
     } catch {
       // 서버 로그아웃 실패해도 클라이언트는 로그아웃 처리
     }
-    setUser(null)
-    navigate('/login')
+    const demoUser = await ensureDemoSession()
+    setUser(demoUser)
+    navigate('/onboarding')
   }
 
   /**

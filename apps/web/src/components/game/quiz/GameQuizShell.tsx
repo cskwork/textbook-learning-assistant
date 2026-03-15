@@ -65,7 +65,7 @@ export function GameQuizShell({
 
       {/* 문제 번호 */}
       {questionLabel && (
-        <p className="text-sm font-medium text-foreground/60">{questionLabel}</p>
+        <p className="text-sm font-medium text-[color:var(--fun-text-secondary)]">{questionLabel}</p>
       )}
 
       {/* 문제 본문 */}
@@ -76,7 +76,11 @@ export function GameQuizShell({
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -20 }}
           transition={{ duration: 0.25 }}
-          className="rounded-2xl border border-white/10 bg-white/5 p-5 md:p-6"
+          className="rounded-2xl border p-5 md:p-6 text-[color:var(--fun-text-contrast)] shadow-[0_16px_32px_rgba(4,6,16,0.2)]"
+          style={{
+            background: 'var(--fun-bg-card-contrast)',
+            borderColor: 'color-mix(in oklch, var(--fun-neon-cyan) 18%, var(--fun-glass-border))',
+          }}
         >
           <LatexPreview content={question.content} />
           {question.imageDataUrl && (
@@ -110,9 +114,7 @@ export function GameQuizShell({
               whileTap={{ scale: 0.97 }}
               onClick={handleShortAnswerSubmit}
               disabled={disabled || !selected.trim()}
-              className="w-full rounded-xl h-12 bg-cyan-600 text-white font-bold text-base
-                         disabled:opacity-40 disabled:cursor-not-allowed
-                         hover:bg-cyan-500 transition-colors"
+              className="h-12 w-full rounded-xl bg-cyan-600 text-base font-bold text-white transition-colors hover:bg-cyan-500 disabled:cursor-not-allowed disabled:opacity-40"
             >
               제출
             </motion.button>

@@ -15,6 +15,7 @@ import { WorkbookList } from '@/components/workbook/WorkbookList'
 import { useAuth } from '@/contexts/AuthContext'
 import { WrongNoteFilter } from '@/components/wrong-notes/WrongNoteFilter'
 import { WrongNoteList } from '@/components/wrong-notes/WrongNoteList'
+import { PageContainer } from '@/components/layout/PageContainer'
 
 type ActiveTab = 'workbooks' | 'wrong-notes'
 
@@ -50,7 +51,8 @@ export default function WorkbooksPage() {
   }
 
   return (
-    <FadeIn className="p-4 md:p-6 max-w-6xl mx-auto space-y-4">
+    <FadeIn>
+      <PageContainer variant="wide" align="left" className="space-y-4 py-4 md:space-y-5 md:py-6 lg:py-8">
       {/* 서브탭 네비게이션 */}
       <div className="flex gap-1 bg-secondary/50 p-1 rounded-xl">
         <button
@@ -131,6 +133,7 @@ export default function WorkbooksPage() {
           />
         </>
       )}
+      </PageContainer>
     </FadeIn>
   )
 }

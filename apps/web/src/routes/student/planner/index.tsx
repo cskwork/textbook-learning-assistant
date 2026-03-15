@@ -36,6 +36,7 @@ import DailyGoalProgress from '@/components/analytics/DailyGoalProgress'
 import { FadeIn } from '@/components/motion/FadeIn'
 import { AnimatedCard } from '@/components/motion/AnimatedCard'
 import { Button } from '@/components/ui/button'
+import { PageContainer } from '@/components/layout/PageContainer'
 
 /** 로컬 타임존 기준 오늘 날짜 YYYY-MM-DD */
 function toLocalKey(date: Date): string {
@@ -202,7 +203,12 @@ export default function PlannerPage() {
     : ''
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-4 space-y-4" style={funStyle}>
+    <PageContainer
+      variant="wide"
+      align="left"
+      className="space-y-4 py-4 md:space-y-5 md:py-6 lg:max-w-5xl lg:py-8 xl:max-w-6xl"
+      style={funStyle}
+    >
       {/* 헤더 */}
       <FadeIn delay={0}>
         <div className="flex items-center gap-2">
@@ -289,6 +295,6 @@ export default function PlannerPage() {
           <NotificationToggle userId={user.email} isFunMode={isFunMode} />
         </div>
       </FadeIn>
-    </div>
+    </PageContainer>
   )
 }

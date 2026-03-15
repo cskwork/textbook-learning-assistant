@@ -3,6 +3,8 @@
 
 const USERS_KEY = 'mock:users'
 const CURRENT_USER_KEY = 'mock:current_user'
+const DEMO_AUTH_BYPASS_ENABLED = true
+const DEMO_USER_EMAIL = 'demo@textbook.local'
 
 export interface User {
   id: number
@@ -24,6 +26,29 @@ function getUsers(): StoredUser[] {
   } catch {
     return []
   }
+}
+
+function createDemoUser(): User {
+  return {
+    id: 0,
+    email: DEMO_USER_EMAIL,
+    role: null,
+    isOnboarded: false,
+    name: '데모 사용자',
+  }
+}
+
+export async function ensureDemoSession(): Promise<User> {
+  const demoUser = createDemoUser()
+  const users = getUsers()
+  const nextUsers = users.some((user) => user.email === DEMO_USER_EMAIL)
+    ? users.map((user) => (user.email === DEMO_USER_EMAIL ? { ...user, ...demoUser, password: undefined } : user))
+    : [...users, demoUser]
+
+  localStorage.setItem(USERS_KEY, JSON.stringify(nextUsers))
+  localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(demoUser))
+
+  return demoUser
 }
 
 export async function register(email: string, password: string): Promise<User> {
@@ -59,7 +84,12 @@ export async function logout(): Promise<void> {
 
 export async function getMe(): Promise<User> {
   const raw = localStorage.getItem(CURRENT_USER_KEY)
-  if (!raw) throw { error: '로그인이 필요합니다', statusCode: 401 }
+  if (!raw) {
+    if (DEMO_AUTH_BYPASS_ENABLED) {
+      return ensureDemoSession()
+    }
+    throw { error: '로그인이 필요합니다', statusCode: 401 }
+  }
   return JSON.parse(raw) as User
 }
 
