@@ -1,6 +1,6 @@
 import { type ReactNode, createElement } from 'react';
 
-type NeonColor = 'cyan' | 'magenta' | 'gold' | 'green' | 'red';
+type NeonColor = 'magenta' | 'gold' | 'green' | 'coral';
 type GlowIntensity = 'low' | 'medium' | 'high';
 type TextElement = 'h1' | 'h2' | 'h3' | 'p' | 'span';
 
@@ -13,34 +13,31 @@ interface NeonTextProps {
 }
 
 const colorValues: Record<NeonColor, string> = {
-  cyan: 'var(--fun-neon-cyan)',
   magenta: 'var(--fun-neon-magenta)',
   gold: 'var(--fun-neon-gold)',
   green: 'var(--fun-neon-green)',
-  red: 'var(--fun-neon-red)',
+  coral: 'var(--fun-neon-coral)',
 };
 
 const rgbaMap: Record<NeonColor, string> = {
-  cyan: '0, 212, 255',
-  magenta: '255, 0, 255',
-  gold: '255, 215, 0',
-  green: '0, 255, 136',
-  red: '255, 51, 102',
+  magenta: '180, 80, 255',
+  gold: '220, 190, 50',
+  green: '80, 220, 130',
+  coral: '220, 100, 80',
 };
 
 function buildTextShadow(color: NeonColor, intensity: GlowIntensity): string {
   const rgb = rgbaMap[color];
   const layers: string[] = [];
 
-  // low: 1 layer
-  layers.push(`0 0 10px rgba(${rgb}, 0.5)`);
+  layers.push(`0 0 6px rgba(${rgb}, 0.3)`);
 
   if (intensity === 'medium' || intensity === 'high') {
-    layers.push(`0 0 20px rgba(${rgb}, 0.3)`);
+    layers.push(`0 0 12px rgba(${rgb}, 0.18)`);
   }
 
   if (intensity === 'high') {
-    layers.push(`0 0 40px rgba(${rgb}, 0.2)`);
+    layers.push(`0 0 24px rgba(${rgb}, 0.12)`);
   }
 
   return layers.join(', ');
@@ -48,9 +45,9 @@ function buildTextShadow(color: NeonColor, intensity: GlowIntensity): string {
 
 export function NeonText({
   children,
-  color = 'cyan',
+  color = 'green',
   as = 'span',
-  glow = 'medium',
+  glow = 'low',
   className = '',
 }: NeonTextProps) {
   return createElement(

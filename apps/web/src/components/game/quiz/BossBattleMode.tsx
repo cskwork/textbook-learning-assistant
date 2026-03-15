@@ -193,7 +193,7 @@ export default function BossBattleMode({ questions, studentId, onComplete, onBac
       {/* 뒤로 가기 */}
       <button
         onClick={onBack}
-        className="text-sm text-gray-500 hover:text-gray-300 transition-colors"
+        className="text-sm text-foreground/50 hover:text-foreground/80 transition-colors"
       >
         나가기
       </button>

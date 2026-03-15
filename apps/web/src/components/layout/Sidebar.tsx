@@ -34,8 +34,8 @@ export default function Sidebar({
         'hidden lg:flex',
         'fixed left-0 inset-y-0 z-50',
         'w-64 flex-col',
-        // 블러 강화 — 기출탭탭 스타일
-        'bg-white/90 dark:bg-card/70 backdrop-blur-2xl',
+        // 솔리드 배경 — Phase 3 리파인먼트
+        'bg-white dark:bg-card',
         'border-r border-border/50',
         className,
       )}
@@ -56,7 +56,10 @@ export default function Sidebar({
       </div>
 
       {/* ── 네비게이션 ── */}
-      <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
+      <nav className="flex-1 px-3 py-4 overflow-y-auto">
+        {/* 학습 섹션 */}
+        <p className="px-3 pb-2 text-[11px] font-semibold text-muted-foreground/60 uppercase tracking-wider">학습</p>
+        <div className="space-y-0.5">
         {items.map((item) => {
           const Icon = item.icon
           return (
@@ -69,7 +72,7 @@ export default function Sidebar({
                   'group flex items-center gap-3 px-3 py-3 rounded-xl',
                   'text-sm transition-all duration-200 ease-out',
                   isActive
-                    ? 'bg-primary/10 text-primary font-bold shadow-sm'
+                    ? 'bg-primary/10 text-primary font-bold shadow-sm border-l-3 border-primary'
                     : 'text-muted-foreground font-medium hover:bg-muted/50 hover:text-foreground',
                 )
               }
@@ -91,15 +94,12 @@ export default function Sidebar({
                     />
                   </div>
                   <span className="truncate">{item.label}</span>
-                  {/* 활성 도트 인디케이터 w-2 h-2 (기존 w-1.5 h-1.5) */}
-                  {isActive && (
-                    <div className="ml-auto w-2 h-2 rounded-full bg-primary" />
-                  )}
                 </>
               )}
             </NavLink>
           )
         })}
+        </div>
       </nav>
 
       {/* ── 하단 액션 ── */}

@@ -93,7 +93,7 @@ export function GameQuizHud({
               glow
             />
             <NeonText
-              color={combo >= 5 ? 'gold' : 'cyan'}
+              color={combo >= 5 ? 'gold' : 'green'}
               glow={combo >= 5 ? 'high' : 'medium'}
               className="text-sm font-black"
             >
@@ -113,7 +113,7 @@ export function GameQuizHud({
               glow={timerUrgent}
             />
             <NeonText
-              color={timerUrgent ? 'red' : 'cyan'}
+              color={timerUrgent ? 'coral' : 'green'}
               glow={timerUrgent ? 'high' : 'low'}
               className="text-sm font-bold tabular-nums"
             >

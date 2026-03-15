@@ -48,7 +48,7 @@ export function CharacterProfile() {
       <GlassCard className="p-5">
         <div className="flex items-center gap-4">
           {/* Avatar */}
-          <NeonBorder color="cyan">
+          <NeonBorder color="green">
             <div
               className="w-16 h-16 rounded-xl flex items-center justify-center"
               style={{ background: 'var(--fun-bg-secondary)' }}
@@ -58,7 +58,7 @@ export function CharacterProfile() {
           </NeonBorder>
 
           <div className="flex-1">
-            <NeonText as="h1" color="cyan" glow="medium" className="text-lg font-black">
+            <NeonText as="h1" color="green" glow="medium" className="text-lg font-black">
               {userName}
             </NeonText>
             <div className="flex items-baseline gap-2 mt-1">

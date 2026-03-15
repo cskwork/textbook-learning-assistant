@@ -28,10 +28,10 @@ export default function BottomNav({
     <nav
       className={cn(
         'fixed bottom-0 inset-x-0 z-50',
-        // 블러 강화 — BottomNav 기출탭탭 스타일
-        'bg-white/90 dark:bg-card/85 backdrop-blur-2xl',
-        // 더 미묘한 상단 구분선
-        'border-t border-border/30',
+        // 솔리드 배경 — Phase 3 리파인먼트
+        'bg-white dark:bg-card',
+        // 상단 구분선
+        'border-t border-border/50',
         'flex items-stretch',
         'h-16',
         'lg:hidden mb-safe',
@@ -51,7 +51,7 @@ export default function BottomNav({
                 'relative flex flex-col items-center justify-center flex-1 gap-0.5',
                 // 최소 터치 타겟 48px (LYOT-02)
                 'min-h-[48px]',
-                'text-[10px] transition-all duration-300 ease-out',
+                'text-[11px] transition-all duration-300 ease-out',
                 'min-w-0 px-1',
                 isActive
                   ? 'text-primary font-bold'
@@ -61,34 +61,24 @@ export default function BottomNav({
           >
             {({ isActive }) => (
               <>
-                {/* 상단 인디케이터 바 — 더 넓고 둥글게 */}
-                <span
-                  className={cn(
-                    'absolute top-0 left-1/2 -translate-x-1/2 h-[3px] rounded-b-full transition-all duration-300',
-                    isActive ? 'w-10 bg-primary' : 'w-0 bg-transparent',
-                  )}
-                />
-
-                {/* 아이콘 컨테이너 — rounded-xl + primary/12 배경 */}
+                {/* pill 인디케이터 — 활성 시 아이콘+라벨 감싸기 */}
                 <div className={cn(
-                  'w-9 h-7 rounded-xl flex items-center justify-center transition-all duration-300',
-                  isActive && 'bg-primary/12',
+                  'flex flex-col items-center gap-0.5 px-3 py-1 rounded-2xl transition-all duration-300',
+                  isActive && 'bg-primary/10',
                 )}>
                   <Icon
                     className={cn(
                       'shrink-0 transition-all duration-300',
-                      // 활성 시 w-5 h-5, 비활성 시 w-[19px] h-[19px]
-                      isActive ? 'w-5 h-5 text-primary' : 'w-[19px] h-[19px] text-muted-foreground/60',
+                      isActive ? 'w-6 h-6 text-primary' : 'w-5 h-5 text-muted-foreground/60',
                     )}
                   />
+                  <span className={cn(
+                    'truncate tracking-wide transition-all duration-300',
+                    isActive && 'text-primary',
+                  )}>
+                    {item.label}
+                  </span>
                 </div>
-
-                <span className={cn(
-                  'truncate tracking-wide transition-all duration-300',
-                  isActive && 'text-primary',
-                )}>
-                  {item.label}
-                </span>
               </>
             )}
           </NavLink>

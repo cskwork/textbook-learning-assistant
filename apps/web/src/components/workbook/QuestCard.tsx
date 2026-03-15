@@ -20,7 +20,7 @@ export function QuestCard({ workbook, onPlay }: QuestCardProps) {
   // 완료 여부: 간이 판정 -- 실제 진행률은 attemptCount 기반이지만
   // Workbook에는 completedAt 같은 필드가 없으므로 0 문제 = 완료 아님
   const isCompleted = false // 추후 실제 진행률 연동
-  const borderColor = isCompleted ? 'gold' : 'cyan'
+  const borderColor = isCompleted ? 'gold' : 'green'
 
   return (
     <NeonBorder color={borderColor}>

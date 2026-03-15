@@ -52,7 +52,7 @@ export function MonsterDetail({
           />
           <div>
             <NeonText
-              color={difficulty === 'hard' ? 'magenta' : 'cyan'}
+              color={difficulty === 'hard' ? 'magenta' : 'green'}
               glow="medium"
               as="h2"
               className="text-lg font-black"
@@ -72,11 +72,11 @@ export function MonsterDetail({
         >
           <div className="text-center">
             <p className="text-xs" style={{ color: 'var(--fun-text-muted)' }}>오답 횟수</p>
-            <NeonText color="red" glow="low" className="text-lg font-bold">{wrongCount}</NeonText>
+            <NeonText color="coral" glow="low" className="text-lg font-bold">{wrongCount}</NeonText>
           </div>
           <div className="text-center">
             <p className="text-xs" style={{ color: 'var(--fun-text-muted)' }}>정답률</p>
-            <NeonText color="cyan" glow="low" className="text-lg font-bold">
+            <NeonText color="green" glow="low" className="text-lg font-bold">
               {correctRate != null ? `${correctRate}%` : '-'}
             </NeonText>
           </div>

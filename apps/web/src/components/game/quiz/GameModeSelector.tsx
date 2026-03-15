@@ -143,7 +143,7 @@ export function GameModeSelector({
         className="text-center space-y-2"
       >
         <h2 className="text-2xl font-bold text-white">게임 모드 선택</h2>
-        <p className="text-sm text-gray-400">
+        <p className="text-sm text-foreground/60">
           {questionCount > 0 ? `${questionCount}문제 준비됨` : '문제를 선택하세요'}
         </p>
       </motion.div>
@@ -184,7 +184,7 @@ export function GameModeSelector({
                 {/* 텍스트 */}
                 <div className="space-y-1 min-w-0">
                   <h3 className="text-lg font-bold text-white">{card.name}</h3>
-                  <p className="text-sm text-gray-300">{card.description}</p>
+                  <p className="text-sm text-foreground/70">{card.description}</p>
                   {disabled && (
                     <p className="text-xs text-amber-300/90 mt-1">문제 세트 로딩 중...</p>
                   )}

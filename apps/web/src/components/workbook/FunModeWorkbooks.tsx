@@ -87,7 +87,7 @@ export function FunModeWorkbooks() {
       {filtered.length === 0 ? (
         <GlassCard className="p-8 text-center">
           <ScrollIcon size={40} color="var(--fun-text-muted)" className="mx-auto mb-3" />
-          <NeonText color="cyan" glow="low" className="text-sm font-bold">
+          <NeonText color="green" glow="low" className="text-sm font-bold">
             아직 퀘스트가 없습니다
           </NeonText>
           <p className="text-xs mt-1" style={{ color: 'var(--fun-text-muted)' }}>

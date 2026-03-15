@@ -72,7 +72,7 @@ export function HomeBannerSwiper({
             <Button
               asChild
               size="sm"
-              className="w-fit bg-white text-primary hover:bg-white/90 font-semibold rounded-xl shadow-md h-9 px-4"
+              className="w-fit bg-white dark:bg-foreground text-primary dark:text-background hover:bg-white/90 dark:hover:bg-foreground/90 font-semibold rounded-xl shadow-md h-9 px-4"
             >
               <Link to="/student/problems">
                 추천 문제 풀기
@@ -114,7 +114,7 @@ export function HomeBannerSwiper({
             <Button
               asChild
               size="sm"
-              className="w-fit bg-white text-rose-600 hover:bg-white/90 font-semibold rounded-xl shadow-md h-9 px-4"
+              className="w-fit bg-white dark:bg-foreground text-rose-600 dark:text-rose-500 hover:bg-white/90 dark:hover:bg-foreground/90 font-semibold rounded-xl shadow-md h-9 px-4"
             >
               <Link to="/student/wrong-notes">
                 오답노트 가기

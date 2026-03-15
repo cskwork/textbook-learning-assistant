@@ -56,9 +56,9 @@ export default function AppShell({ children, navItems, onLogout, profilePath }: 
       {isFocusMode && (
         <header className={cn(
           'fixed top-0 inset-x-0 z-50',
-          // BottomNav/Sidebar와 일관된 블러 패턴
-          'bg-white/90 dark:bg-card/85 backdrop-blur-2xl',
-          'border-b border-border/20',
+          // 솔리드 배경 — Phase 3 리파인먼트
+          'bg-white dark:bg-card',
+          'border-b border-border/40',
           'h-14 flex items-center px-4',
         )}>
           {/* 돌아가기 버튼: min-h-[44px] min-w-[44px] 터치 타겟 보장 (LYOT-02) */}
@@ -89,10 +89,10 @@ export default function AppShell({ children, navItems, onLogout, profilePath }: 
       {!isFocusMode && (
         <header className={cn(
           'fixed top-0 inset-x-0 z-40',
-          // 블러 강화 — BottomNav/Sidebar와 일관된 패턴
-          'bg-white/90 dark:bg-card/85 backdrop-blur-2xl',
-          // 더 미묘한 하단 구분선
-          'border-b border-border/20',
+          // 솔리드 배경 — Phase 3 리파인먼트
+          'bg-white dark:bg-card',
+          // 하단 구분선
+          'border-b border-border/40',
           'flex items-center justify-between',
           'h-14 px-4',
           'lg:hidden',

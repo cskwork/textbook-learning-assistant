@@ -65,7 +65,7 @@ export function GameQuizShell({
 
       {/* 문제 번호 */}
       {questionLabel && (
-        <p className="text-sm font-medium text-gray-400">{questionLabel}</p>
+        <p className="text-sm font-medium text-foreground/60">{questionLabel}</p>
       )}
 
       {/* 문제 본문 */}

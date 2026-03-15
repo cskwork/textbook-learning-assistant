@@ -53,7 +53,7 @@ export function FunModeHome() {
         className="min-h-screen p-4 md:p-6 lg:p-8 max-w-4xl mx-auto flex items-center justify-center text-center space-y-2"
         style={{ background: 'var(--fun-bg-primary)', color: 'var(--fun-text-primary)' }}
       >
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm" style={{ color: 'var(--fun-text-secondary)' }}>
           게이미피케이션 프로필을 준비 중입니다. 잠시만 기다려 주세요.
         </p>
       </div>
@@ -71,7 +71,7 @@ export function FunModeHome() {
       <div className="flex items-center gap-3">
         <SwordIcon size={28} color="var(--fun-neon-cyan)" glow />
         <div>
-          <NeonText as="h1" color="cyan" glow="medium" className="text-xl font-black">
+          <NeonText as="h1" color="green" glow="medium" className="text-xl font-black">
             {userName}님의 모험
           </NeonText>
           <p className="text-xs mt-0.5" style={{ color: 'var(--fun-text-secondary)' }}>

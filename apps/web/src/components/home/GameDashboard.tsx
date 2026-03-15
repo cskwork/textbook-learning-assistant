@@ -80,7 +80,7 @@ export function GameDashboard({
             </p>
             <div className="flex items-baseline gap-1 mt-0.5">
               <NeonText
-                color={dailyComplete ? 'gold' : 'cyan'}
+                color={dailyComplete ? 'gold' : 'green'}
                 glow="medium"
                 className="text-xl font-black"
               >

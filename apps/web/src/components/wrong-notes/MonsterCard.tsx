@@ -19,9 +19,9 @@ interface MonsterCardProps {
   onClick?: () => void
 }
 
-const neonColorMap: Record<Difficulty, 'cyan' | 'magenta' | 'gold'> = {
-  easy: 'cyan',
-  medium: 'cyan',
+const neonColorMap: Record<Difficulty, 'green' | 'magenta' | 'gold'> = {
+  easy: 'green',
+  medium: 'green',
   hard: 'magenta',
 }
 
@@ -49,7 +49,7 @@ export function MonsterCard({
           size={48}
         />
         <NeonText
-          color={defeated ? 'green' : (difficulty === 'hard' ? 'magenta' : 'cyan')}
+          color={defeated ? 'green' : (difficulty === 'hard' ? 'magenta' : 'green')}
           glow="low"
           className="text-xs font-bold truncate max-w-full"
         >

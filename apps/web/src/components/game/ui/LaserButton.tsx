@@ -2,7 +2,7 @@ import { type ReactNode } from 'react';
 import { motion } from 'framer-motion';
 
 type LaserVariant = 'primary' | 'danger' | 'gold';
-type LaserSize = 'sm' | 'md' | 'lg';
+type LaserSize = 'sm' | 'md' | 'lg' | 'kid';
 
 interface LaserButtonProps {
   children: ReactNode;
@@ -14,15 +14,16 @@ interface LaserButtonProps {
 }
 
 const variantColors: Record<LaserVariant, { neon: string; rgb: string }> = {
-  primary: { neon: 'var(--fun-neon-cyan)', rgb: '0, 212, 255' },
-  danger: { neon: 'var(--fun-neon-red)', rgb: '255, 51, 102' },
-  gold: { neon: 'var(--fun-neon-gold)', rgb: '255, 215, 0' },
+  primary: { neon: 'var(--fun-neon-green)', rgb: '80, 220, 130' },
+  danger: { neon: 'var(--fun-neon-coral)', rgb: '220, 100, 80' },
+  gold: { neon: 'var(--fun-neon-gold)', rgb: '220, 190, 50' },
 };
 
 const sizeClasses: Record<LaserSize, string> = {
   sm: 'px-3 py-1.5 text-sm',
   md: 'px-5 py-2.5 text-base',
   lg: 'px-7 py-3.5 text-lg',
+  kid: 'px-6 py-3 text-base font-semibold rounded-2xl',
 };
 
 export function LaserButton({
@@ -41,22 +42,22 @@ export function LaserButton({
       disabled={disabled}
       className={`
         relative overflow-hidden rounded-lg font-semibold
-        border border-[var(--fun-glass-border)]
-        text-[var(--fun-text-primary)]
+        border border-border
+        text-foreground
         transition-all duration-200
         ${sizeClasses[size]}
         ${disabled ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
         ${className}
       `}
       style={{
-        background: 'var(--fun-glass-bg)',
+        background: 'var(--card)',
       }}
       whileHover={
         disabled
           ? undefined
           : {
               borderColor: neon,
-              boxShadow: `0 0 10px rgba(${rgb}, 0.4), 0 0 20px rgba(${rgb}, 0.15)`,
+              boxShadow: `0 0 6px rgba(${rgb}, 0.24), 0 0 12px rgba(${rgb}, 0.09)`,
             }
       }
       whileTap={disabled ? undefined : { scale: 0.97 }}

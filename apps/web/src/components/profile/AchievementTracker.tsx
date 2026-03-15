@@ -63,7 +63,7 @@ export function AchievementTracker({ badges, profile, className = '' }: Achievem
               {ach.description}
             </p>
           </div>
-          <NeonText color="cyan" glow="low" className="text-xs font-bold shrink-0">
+          <NeonText color="green" glow="low" className="text-xs font-bold shrink-0">
             미달성
           </NeonText>
         </GlassCard>

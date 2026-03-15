@@ -104,7 +104,7 @@ export function FunModeAnalytics() {
       {/* 타이틀 */}
       <div className="flex items-center gap-3">
         <ShieldIcon size={28} color="var(--fun-neon-cyan)" glow />
-        <NeonText as="h1" color="cyan" glow="high" className="text-xl font-black">
+        <NeonText as="h1" color="green" glow="high" className="text-xl font-black">
           RPG 스탯 분석
         </NeonText>
       </div>
@@ -112,10 +112,10 @@ export function FunModeAnalytics() {
       {/* 능력치 요약 카드 3종 */}
       <div className="grid grid-cols-3 gap-3">
         {/* 정확도 */}
-        <NeonBorder color="cyan">
+        <NeonBorder color="green">
           <GlassCard className="p-4 text-center">
             <ShieldIcon size={24} color="var(--fun-neon-cyan)" glow className="mx-auto mb-2" />
-            <NeonText color="cyan" glow="high" className="text-2xl font-black">
+            <NeonText color="green" glow="high" className="text-2xl font-black">
               {overall.accuracy}%
             </NeonText>
             <p className="text-[10px] mt-1" style={{ color: 'var(--fun-text-muted)' }}>
@@ -175,7 +175,7 @@ export function FunModeAnalytics() {
       <GlassCard className="p-4">
         <div className="flex items-center gap-2 mb-3">
           <StarIcon size={18} color="var(--fun-neon-cyan)" glow />
-          <NeonText color="cyan" glow="low" className="text-sm font-bold">
+          <NeonText color="green" glow="low" className="text-sm font-bold">
             유형별 능력치
           </NeonText>
         </div>
@@ -281,7 +281,7 @@ export function FunModeAnalytics() {
           </div>
         ) : (
           <div className="h-32 flex items-center justify-center">
-            <NeonText color="cyan" glow="low" className="text-xs">
+            <NeonText color="green" glow="low" className="text-xs">
               아직 데이터가 없습니다
             </NeonText>
           </div>
@@ -317,7 +317,7 @@ export function FunModeAnalytics() {
                     }}
                   />
                 </div>
-                <NeonText color="cyan" glow="low" className="text-xs font-bold w-10 text-right">
+                <NeonText color="green" glow="low" className="text-xs font-bold w-10 text-right">
                   {ca.accuracy}%
                 </NeonText>
               </div>

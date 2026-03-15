@@ -191,7 +191,7 @@ export default function GameResult({
               <span className="text-xl font-bold text-white">
                 {correctCount}/{totalQuestions}
               </span>
-              <span className="text-sm text-gray-400">({accuracy}%)</span>
+              <span className="text-sm text-foreground/60">({accuracy}%)</span>
             </div>
           </ResultItem>
 
@@ -237,8 +237,8 @@ export default function GameResult({
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={onHome}
-          className="w-full rounded-xl h-10 text-gray-400 font-medium text-sm
-                     hover:text-gray-200 transition-colors"
+          className="w-full rounded-xl h-10 text-foreground/50 font-medium text-sm
+                     hover:text-foreground/80 transition-colors"
         >
           홈으로
         </motion.button>
@@ -258,7 +258,7 @@ function ResultItem({ label, children }: { label: string; children: React.ReactN
       }}
       className="flex items-center justify-between px-2"
     >
-      <span className="text-sm text-gray-400 font-medium">{label}</span>
+      <span className="text-sm text-foreground/50 font-medium">{label}</span>
       {children}
     </motion.div>
   )

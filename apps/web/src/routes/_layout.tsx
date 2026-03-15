@@ -14,12 +14,11 @@ import AppShell from '@/components/layout/AppShell'
 import { useAuth } from '@/contexts/AuthContext'
 import type { NavItem } from '@/components/layout/BottomNav'
 
-// 학생 메뉴 항목 — 13-04: 오답노트 탭 → 플래너 탭 교체
-// 오답노트는 홈 → 빠른 시작 → 오답 복습에서 접근 가능 (Phase 12 QuickActionButtons)
+// 학생 메뉴 항목 — 문제집+오답노트를 '학습자료' 탭으로 통합
 const studentNavItems: NavItem[] = [
   { path: '/student', label: '홈', icon: Home },
   { path: '/student/problems', label: '문제풀기', icon: BookOpenCheck },
-  { path: '/student/workbooks', label: '문제집', icon: BookMarked },
+  { path: '/student/workbooks', label: '학습자료', icon: BookMarked },
   { path: '/student/analytics', label: '분석', icon: BarChart2 },
   { path: '/student/planner', label: '플래너', icon: CalendarDays },
 ]

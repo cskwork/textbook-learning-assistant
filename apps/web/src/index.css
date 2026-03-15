@@ -77,38 +77,44 @@ body {
 }
 
 :root {
-  --radius: 0.85rem;
+  --radius: 0.75rem;
+  /* 애니메이션 토큰 */
+  --duration-fast: 120ms;
+  --duration-normal: 200ms;
+  --duration-slow: 350ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   /* 기출탭탭 스타일 — 파란/남색 계열 교육 앱 테마 (라이트모드) */
-  --background: oklch(0.985 0.003 250);   /* 아주 연한 블루틴트 배경 */
-  --foreground: oklch(0.13 0.025 250);    /* 진한 네이비 텍스트 */
-  --card: oklch(1 0 0);                   /* 순백 카드 */
-  --card-foreground: oklch(0.13 0.025 250);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.13 0.025 250);
+  --background: oklch(0.982 0.004 255);     /* 약간 더 틴트 */
+  --foreground: oklch(0.16 0.02 255);       /* 순흑 방지, 부드러운 네이비 */
+  --card: oklch(0.993 0.002 255);           /* 순백 제거 → 브랜드 틴트 */
+  --card-foreground: oklch(0.16 0.02 255);
+  --popover: oklch(0.993 0.002 255);
+  --popover-foreground: oklch(0.16 0.02 255);
 
   /* Primary: 기출탭탭 핵심 인디고블루 */
-  --primary: oklch(0.52 0.19 260);
-  --primary-foreground: oklch(0.99 0 0);
+  --primary: oklch(0.50 0.18 255);          /* 약간 따뜻한 블루 */
+  --primary-foreground: oklch(0.98 0.003 255); /* 틴트된 화이트 */
 
   /* Secondary: 연한 블루 배경 */
-  --secondary: oklch(0.94 0.015 250);
-  --secondary-foreground: oklch(0.28 0.04 250);
+  --secondary: oklch(0.95 0.012 255);
+  --secondary-foreground: oklch(0.28 0.04 255);
 
   /* Muted: 서브틀 배경 */
-  --muted: oklch(0.96 0.01 250);
-  --muted-foreground: oklch(0.52 0.03 250);
+  --muted: oklch(0.965 0.008 255);
+  --muted-foreground: oklch(0.52 0.03 255);
 
   /* Accent: 인터랙티브 배경 */
-  --accent: oklch(0.93 0.025 255);
-  --accent-foreground: oklch(0.38 0.12 260);
+  --accent: oklch(0.94 0.02 255);
+  --accent-foreground: oklch(0.38 0.12 255);
 
-  --destructive: oklch(0.55 0.22 25);
-  --border: oklch(0.91 0.012 250);
-  --input: oklch(0.91 0.012 250);
-  --ring: oklch(0.52 0.19 260);           /* primary와 일치 */
+  --destructive: oklch(0.55 0.20 25);       /* 채도 약간 낮춤 */
+  --border: oklch(0.92 0.01 255);
+  --input: oklch(0.92 0.01 255);
+  --ring: oklch(0.50 0.18 255);
 
   /* 차트: 파란-청록-보라-황-주황 계열 (교육 앱 차트) */
-  --chart-1: oklch(0.52 0.19 260);
+  --chart-1: oklch(0.50 0.18 255);
   --chart-2: oklch(0.62 0.14 195);
   --chart-3: oklch(0.55 0.18 290);
   --chart-4: oklch(0.78 0.17 85);
@@ -120,42 +126,48 @@ body {
   --info: oklch(0.65 0.15 230);
 
   /* Sidebar */
-  --sidebar: oklch(0.982 0.004 250);
-  --sidebar-foreground: oklch(0.13 0.025 250);
-  --sidebar-primary: oklch(0.52 0.19 260);
-  --sidebar-primary-foreground: oklch(0.99 0 0);
-  --sidebar-accent: oklch(0.93 0.025 255);
-  --sidebar-accent-foreground: oklch(0.38 0.12 260);
-  --sidebar-border: oklch(0.91 0.012 250);
-  --sidebar-ring: oklch(0.52 0.19 260);
+  --sidebar: oklch(0.982 0.004 255);
+  --sidebar-foreground: oklch(0.16 0.02 255);
+  --sidebar-primary: oklch(0.50 0.18 255);
+  --sidebar-primary-foreground: oklch(0.98 0.003 255);
+  --sidebar-accent: oklch(0.94 0.02 255);
+  --sidebar-accent-foreground: oklch(0.38 0.12 255);
+  --sidebar-border: oklch(0.92 0.01 255);
+  --sidebar-ring: oklch(0.50 0.18 255);
+
+  /* 보조 강조색 — 아동 친화적, 절제된 */
+  --color-coral: oklch(0.68 0.16 25);
+  --color-mint: oklch(0.78 0.10 165);
+  --color-amber: oklch(0.78 0.14 80);
+  --color-lavender: oklch(0.72 0.10 290);
 }
 
 .dark {
   /* 기출탭탭 스타일 — 파란/남색 계열 교육 앱 테마 (다크모드) */
-  --background: oklch(0.11 0.015 250);    /* 깊은 네이비 배경 */
-  --foreground: oklch(0.93 0.01 250);
-  --card: oklch(0.145 0.02 250);          /* 약간 밝은 카드 */
-  --card-foreground: oklch(0.93 0.01 250);
-  --popover: oklch(0.145 0.02 250);
-  --popover-foreground: oklch(0.93 0.01 250);
+  --background: oklch(0.11 0.015 255);
+  --foreground: oklch(0.93 0.01 255);
+  --card: oklch(0.145 0.02 255);
+  --card-foreground: oklch(0.93 0.01 255);
+  --popover: oklch(0.145 0.02 255);
+  --popover-foreground: oklch(0.93 0.01 255);
 
   /* Primary: 다크모드에서 밝게 조정 */
-  --primary: oklch(0.68 0.16 260);
-  --primary-foreground: oklch(0.13 0.025 250);
+  --primary: oklch(0.68 0.16 255);
+  --primary-foreground: oklch(0.16 0.02 255);
 
-  --secondary: oklch(0.19 0.025 250);
-  --secondary-foreground: oklch(0.93 0.01 250);
-  --muted: oklch(0.19 0.025 250);
-  --muted-foreground: oklch(0.62 0.025 250);
+  --secondary: oklch(0.19 0.025 255);
+  --secondary-foreground: oklch(0.93 0.01 255);
+  --muted: oklch(0.19 0.025 255);
+  --muted-foreground: oklch(0.62 0.025 255);
   --accent: oklch(0.23 0.035 255);
-  --accent-foreground: oklch(0.82 0.12 260);
-  --destructive: oklch(0.63 0.22 25);
-  --border: oklch(0.23 0.015 250);
-  --input: oklch(0.23 0.015 250);
-  --ring: oklch(0.68 0.16 260);
+  --accent-foreground: oklch(0.82 0.12 255);
+  --destructive: oklch(0.63 0.20 25);
+  --border: oklch(0.23 0.015 255);
+  --input: oklch(0.23 0.015 255);
+  --ring: oklch(0.68 0.16 255);
 
   /* 차트: 다크모드 대응 밝기 조정 */
-  --chart-1: oklch(0.68 0.16 260);
+  --chart-1: oklch(0.68 0.16 255);
   --chart-2: oklch(0.7 0.14 195);
   --chart-3: oklch(0.68 0.16 290);
   --chart-4: oklch(0.8 0.15 85);
@@ -167,20 +179,20 @@ body {
   --info: oklch(0.72 0.13 230);
 
   /* Sidebar */
-  --sidebar: oklch(0.145 0.02 250);
-  --sidebar-foreground: oklch(0.93 0.01 250);
-  --sidebar-primary: oklch(0.68 0.16 260);
-  --sidebar-primary-foreground: oklch(0.13 0.025 250);
+  --sidebar: oklch(0.145 0.02 255);
+  --sidebar-foreground: oklch(0.93 0.01 255);
+  --sidebar-primary: oklch(0.68 0.16 255);
+  --sidebar-primary-foreground: oklch(0.16 0.02 255);
   --sidebar-accent: oklch(0.23 0.035 255);
-  --sidebar-accent-foreground: oklch(0.82 0.12 260);
-  --sidebar-border: oklch(0.23 0.015 250);
-  --sidebar-ring: oklch(0.68 0.16 260);
+  --sidebar-accent-foreground: oklch(0.82 0.12 255);
+  --sidebar-border: oklch(0.23 0.015 255);
+  --sidebar-ring: oklch(0.68 0.16 255);
 }
 
 @layer base {
   *, ::before, ::after {
-    border-color: var(--border, oklch(0.91 0.012 250));
-    outline-color: color-mix(in oklab, var(--ring, oklch(0.52 0.19 260)) 50%, transparent);
+    border-color: var(--border, oklch(0.92 0.01 255));
+    outline-color: color-mix(in oklab, var(--ring, oklch(0.50 0.18 255)) 50%, transparent);
   }
   body {
     background-color: var(--background);
@@ -197,10 +209,10 @@ body {
     line-height: 1.25;
   }
 
-  h1 { font-size: 1.875rem; } /* text-3xl */
-  h2 { font-size: 1.5rem; }   /* text-2xl */
-  h3 { font-size: 1.25rem; }  /* text-xl */
-  h4 { font-size: 1.125rem; } /* text-lg */
+  h1 { font-size: clamp(1.875rem, 1.5rem + 1.8vw, 2.5rem); }
+  h2 { font-size: clamp(1.5rem, 1.25rem + 1.2vw, 2rem); }
+  h3 { font-size: clamp(1.25rem, 1.125rem + 0.6vw, 1.5rem); }
+  h4 { font-size: clamp(1.125rem, 1rem + 0.6vw, 1.3125rem); }
 
   /* 본문 단락 줄간격 */
   p {
@@ -217,66 +229,71 @@ body {
   /* 반전 모드 (v3.0) — 게임 테마 CSS 변수 오버라이드 */
   [data-fun-mode="true"] {
     /* 배경 — 다크 퍼플/인디고 계열 */
-    --background: oklch(0.12 0.04 280);
-    --foreground: oklch(0.98 0.01 280);
+    --background: oklch(0.13 0.035 275);
+    --foreground: oklch(0.95 0.008 275);
 
     /* 주 강조색 — 네온 그린 */
-    --primary: oklch(0.70 0.28 150);
+    --primary: oklch(0.72 0.25 150);
     --primary-foreground: oklch(0.10 0.02 150);
 
     /* 카드/패널 */
-    --card: oklch(0.16 0.04 280);
-    --card-foreground: oklch(0.95 0.01 280);
+    --card: oklch(0.17 0.03 275);
+    --card-foreground: oklch(0.95 0.01 275);
 
-    /* 보조색 — 일렉트릭 퍼플 */
-    --accent: oklch(0.60 0.25 300);
-    --accent-foreground: oklch(0.98 0.01 280);
+    /* 보조색 — 마젠타 보색 */
+    --accent: oklch(0.62 0.24 325);
+    --accent-foreground: oklch(0.98 0.01 275);
 
     /* 보더, 인풋 */
-    --border: oklch(0.25 0.05 280);
-    --input: oklch(0.20 0.04 280);
+    --border: oklch(0.26 0.04 275);
+    --input: oklch(0.20 0.04 275);
 
-    /* 뮤트 */
-    --muted: oklch(0.20 0.03 280);
-    --muted-foreground: oklch(0.65 0.02 280);
+    /* 뮤트 — 밝기 0.70으로 상향 (가독성 개선) */
+    --muted: oklch(0.20 0.03 275);
+    --muted-foreground: oklch(0.70 0.02 275);
+
+    /* 세컨더리 — 반전 모드 전용 */
+    --secondary: oklch(0.22 0.04 275);
+    --secondary-foreground: oklch(0.90 0.01 275);
+
+    /* 팝오버 — 반전 모드 전용 */
+    --popover: oklch(0.17 0.03 275);
+    --popover-foreground: oklch(0.95 0.01 275);
 
     /* 폰트 weight 강화 — 게임 UI 느낌 */
     --font-weight-normal: 500;
 
-    /* ─── Phase 20: 전체 화면 반전 디자인 토큰 ─── */
+    /* 네온 4색 (oklch 통일) */
+    --fun-neon-green: oklch(0.72 0.25 150);
+    --fun-neon-magenta: oklch(0.62 0.24 325);
+    --fun-neon-gold: oklch(0.82 0.18 85);
+    --fun-neon-coral: oklch(0.68 0.22 25);
+    --fun-neon-cyan: oklch(0.75 0.15 200);
+    --fun-neon-red: oklch(0.60 0.24 25);
 
-    /* 다크 배경 팔레트 */
-    --fun-bg-primary: #0a0a1a;
-    --fun-bg-secondary: #111128;
-    --fun-bg-tertiary: #1a1a2e;
-    --fun-bg-card: rgba(255, 255, 255, 0.05);
-    --fun-bg-card-hover: rgba(255, 255, 255, 0.08);
+    /* 시맨틱 텍스트 색상 — 가독성 보장 */
+    --fun-text-primary: oklch(0.95 0.008 275);
+    --fun-text-secondary: oklch(0.80 0.02 275);
+    --fun-text-muted: oklch(0.65 0.02 275);
 
-    /* 네온 악센트 */
-    --fun-neon-cyan: #00d4ff;
-    --fun-neon-magenta: #ff00ff;
-    --fun-neon-gold: #ffd700;
-    --fun-neon-green: #00ff88;
-    --fun-neon-red: #ff3366;
+    /* 시맨틱 배경 색상 */
+    --fun-bg-primary: oklch(0.13 0.035 275);
+    --fun-bg-secondary: oklch(0.17 0.03 275);
+    --fun-bg-card: oklch(0.20 0.03 275);
+    --fun-bg-tertiary: oklch(0.23 0.03 275);
 
-    /* 텍스트 (밝은 글자 — 가독성 최우선) */
-    --fun-text-primary: #f0f0ff;
-    --fun-text-secondary: #a0a0c0;
-    --fun-text-accent: var(--fun-neon-cyan);
-    --fun-text-muted: #606080;
+    /* 글래스 보더 */
+    --fun-glass-border: oklch(0.30 0.04 275);
 
-    /* 글래스모피즘 */
-    --fun-glass-bg: rgba(255, 255, 255, 0.05);
-    --fun-glass-border: rgba(255, 255, 255, 0.1);
-    --fun-glass-blur: 12px;
-
-    /* 네온 글로우 */
-    --fun-glow-cyan: 0 0 10px rgba(0, 212, 255, 0.5), 0 0 20px rgba(0, 212, 255, 0.2);
-    --fun-glow-magenta: 0 0 10px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.2);
-    --fun-glow-gold: 0 0 10px rgba(255, 215, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.2);
+    /* 글로우 (color-mix, 강도 낮춤) */
+    --fun-glow-primary: 0 0 8px color-mix(in oklch, var(--primary) 30%, transparent);
+    --fun-glow-accent: 0 0 8px color-mix(in oklch, var(--accent) 30%, transparent);
+    --fun-glow-gold: 0 0 8px color-mix(in oklch, var(--fun-neon-gold) 30%, transparent);
+    --fun-glow-cyan: 0 0 8px color-mix(in oklch, var(--fun-neon-cyan) 30%, transparent);
+    --fun-glow-magenta: 0 0 8px color-mix(in oklch, var(--fun-neon-magenta) 30%, transparent);
 
     /* 보더 그라데이션 */
-    --fun-border-gradient: linear-gradient(135deg, var(--fun-neon-cyan), var(--fun-neon-magenta));
+    --fun-border-gradient: linear-gradient(135deg, var(--fun-neon-green), var(--fun-neon-magenta));
 
     /* 전환 */
     --fun-transition-theme: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
@@ -307,10 +324,9 @@ body {
 }
 
 @keyframes pulse-ring {
-  /* 새 primary 인디고블루 토큰에 맞춤 */
-  0% { box-shadow: 0 0 0 0 oklch(0.52 0.19 260 / 0.4); }
-  70% { box-shadow: 0 0 0 8px oklch(0.52 0.19 260 / 0); }
-  100% { box-shadow: 0 0 0 0 oklch(0.52 0.19 260 / 0); }
+  0% { box-shadow: 0 0 0 0 oklch(0.50 0.18 255 / 0.4); }
+  70% { box-shadow: 0 0 0 8px oklch(0.50 0.18 255 / 0); }
+  100% { box-shadow: 0 0 0 0 oklch(0.50 0.18 255 / 0); }
 }
 
 @keyframes count-up {
@@ -340,10 +356,9 @@ body {
 
 /* Stat 카드 컬러 악센트 — 새 토큰 체계에 맞춰 조정 */
 .stat-accent-blue {
-  /* primary 인디고블루에 맞춤 */
-  --stat-color: oklch(0.52 0.19 260);
-  --stat-bg: oklch(0.52 0.19 260 / 0.08);
-  --stat-bg-strong: oklch(0.52 0.19 260 / 0.15);
+  --stat-color: oklch(0.50 0.18 255);
+  --stat-bg: oklch(0.50 0.18 255 / 0.08);
+  --stat-bg-strong: oklch(0.50 0.18 255 / 0.15);
 }
 
 .stat-accent-emerald {
@@ -374,7 +389,7 @@ body {
 
 /* 그라데이션 CTA 카드 — 기출탭탭 인디고/남색 계열 */
 .cta-gradient {
-  background: linear-gradient(135deg, oklch(0.48 0.2 260), oklch(0.52 0.22 275), oklch(0.45 0.2 295));
+  background: linear-gradient(135deg, oklch(0.46 0.18 255), oklch(0.50 0.20 270), oklch(0.44 0.18 290));
   background-size: 200% 200%;
   transition: background-position 0.5s ease;
 }
@@ -384,14 +399,14 @@ body {
 }
 
 /* 다크 모드 stat 악센트 보정 */
-.dark .stat-accent-blue { --stat-color: oklch(0.68 0.16 260); --stat-bg: oklch(0.68 0.16 260 / 0.12); --stat-bg-strong: oklch(0.68 0.16 260 / 0.2); }
+.dark .stat-accent-blue { --stat-color: oklch(0.68 0.16 255); --stat-bg: oklch(0.68 0.16 255 / 0.12); --stat-bg-strong: oklch(0.68 0.16 255 / 0.2); }
 .dark .stat-accent-emerald { --stat-color: oklch(0.7 0.17 155); --stat-bg: oklch(0.7 0.17 155 / 0.12); --stat-bg-strong: oklch(0.7 0.17 155 / 0.2); }
 .dark .stat-accent-amber { --stat-color: oklch(0.8 0.16 75); --stat-bg: oklch(0.8 0.16 75 / 0.12); --stat-bg-strong: oklch(0.8 0.16 75 / 0.2); }
 .dark .stat-accent-rose { --stat-color: oklch(0.7 0.18 15); --stat-bg: oklch(0.7 0.18 15 / 0.12); --stat-bg-strong: oklch(0.7 0.18 15 / 0.2); }
 .dark .stat-accent-violet { --stat-color: oklch(0.7 0.18 300); --stat-bg: oklch(0.7 0.18 300 / 0.12); --stat-bg-strong: oklch(0.7 0.18 300 / 0.2); }
 
 .dark .cta-gradient {
-  background: linear-gradient(135deg, oklch(0.38 0.18 260), oklch(0.42 0.2 275), oklch(0.35 0.18 295));
+  background: linear-gradient(135deg, oklch(0.38 0.18 255), oklch(0.42 0.2 270), oklch(0.35 0.18 290));
 }
 
 /* ─── Swiper 커스텀 (HOME-02) ─── */
@@ -454,13 +469,13 @@ body {
 
 /* 카드 그림자 레벨 (elevation 시스템) */
 .card-shadow-sm {
-  box-shadow: 0 1px 3px oklch(0 0 0 / 0.04), 0 1px 2px oklch(0 0 0 / 0.03);
+  box-shadow: 0 1px 3px oklch(0.30 0.02 255 / 0.06), 0 1px 2px oklch(0.30 0.02 255 / 0.04);
 }
 .card-shadow-md {
-  box-shadow: 0 4px 12px oklch(0 0 0 / 0.06), 0 2px 4px oklch(0 0 0 / 0.04);
+  box-shadow: 0 4px 12px oklch(0.30 0.02 255 / 0.08), 0 2px 4px oklch(0.30 0.02 255 / 0.04);
 }
 .card-shadow-lg {
-  box-shadow: 0 8px 24px oklch(0 0 0 / 0.08), 0 4px 8px oklch(0 0 0 / 0.05);
+  box-shadow: 0 8px 24px oklch(0.30 0.02 255 / 0.10), 0 4px 8px oklch(0.30 0.02 255 / 0.05);
 }
 
 .dark .card-shadow-sm {

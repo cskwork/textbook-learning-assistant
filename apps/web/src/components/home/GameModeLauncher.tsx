@@ -16,7 +16,7 @@ interface GameMode {
   label: string
   desc: string
   icon: typeof LightningIcon
-  neonColor: 'cyan' | 'magenta' | 'gold'
+  neonColor: 'green' | 'magenta' | 'gold'
   iconColor: string
 }
 
@@ -26,7 +26,7 @@ const modes: GameMode[] = [
     label: '타임어택',
     desc: '시간과의 싸움!',
     icon: LightningIcon,
-    neonColor: 'cyan',
+    neonColor: 'green',
     iconColor: 'var(--fun-neon-cyan)',
   },
   {
@@ -34,7 +34,7 @@ const modes: GameMode[] = [
     label: '서바이벌',
     desc: '3번 틀리면 끝!',
     icon: HeartIcon,
-    neonColor: 'cyan',
+    neonColor: 'green',
     iconColor: 'var(--fun-neon-red)',
   },
   {
@@ -71,7 +71,7 @@ export function GameModeLauncher() {
 
   return (
     <div className="space-y-3">
-      <NeonText as="h2" color="cyan" glow="low" className="text-sm font-bold tracking-wide">
+      <NeonText as="h2" color="green" glow="low" className="text-sm font-bold tracking-wide">
         게임 모드
       </NeonText>
 

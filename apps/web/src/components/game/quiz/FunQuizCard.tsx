@@ -51,7 +51,7 @@ export function FunQuizCard({
   className = '',
 }: FunQuizCardProps) {
   return (
-    <NeonBorder color="cyan">
+    <NeonBorder color="green">
       <GlassCard className={`p-5 ${className}`}>
         {/* 문제 내용 */}
         <div

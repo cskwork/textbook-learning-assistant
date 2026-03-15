@@ -107,7 +107,7 @@ export function MiniLeaderboard({ groupId, currentStudentId }: MiniLeaderboardPr
 
               {/* XP */}
               <NeonText
-                color={i === 0 ? 'gold' : 'cyan'}
+                color={i === 0 ? 'gold' : 'green'}
                 glow="low"
                 className="text-sm font-bold"
               >

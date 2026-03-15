@@ -102,7 +102,7 @@ export default function MiniGameMode({ studentId, onComplete, onBack }: MiniGame
     <div className="space-y-4">
       <div className="text-center">
         <h3 className="text-lg font-bold text-white">수식 조합</h3>
-        <p className="text-sm text-gray-400">떨어지는 숫자와 연산자를 조합하여 목표 값을 만드세요</p>
+        <p className="text-sm text-foreground/60">떨어지는 숫자와 연산자를 조합하여 목표 값을 만드세요</p>
       </div>
 
       <div className="flex justify-center">
@@ -117,7 +117,7 @@ export default function MiniGameMode({ studentId, onComplete, onBack }: MiniGame
 
       <button
         onClick={onBack}
-        className="text-sm text-gray-500 hover:text-gray-300 transition-colors"
+        className="text-sm text-foreground/50 hover:text-foreground/80 transition-colors"
       >
         나가기
       </button>

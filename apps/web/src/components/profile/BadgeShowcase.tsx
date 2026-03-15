@@ -13,7 +13,7 @@ interface BadgeShowcaseProps {
 }
 
 const CATEGORIES = [
-  { key: 'study', label: '학습', Icon: StarIcon, color: 'cyan' as const },
+  { key: 'study', label: '학습', Icon: StarIcon, color: 'green' as const },
   { key: 'streak', label: '연속', Icon: FlameIcon, color: 'gold' as const },
   { key: 'achievement', label: '성취', Icon: TrophyIcon, color: 'magenta' as const },
 ]
