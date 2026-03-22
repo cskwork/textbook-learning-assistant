@@ -42,8 +42,8 @@ Output: 3개 파일 수정
 </objective>
 
 <execution_context>
-@/Users/danny/.claude/get-shit-done/workflows/execute-plan.md
-@/Users/danny/.claude/get-shit-done/templates/summary.md
+@
+@
 </execution_context>
 
 <context>

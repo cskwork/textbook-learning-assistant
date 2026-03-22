@@ -96,9 +96,9 @@ metrics:
 
 ## Self-Check: PASSED
 
-- [x] `/Users/danny/Documents/PARA/Projects/ai-agents/textbook-learning-assistant/apps/web/src/components/analytics/MasteryMap.tsx` FOUND (102줄)
-- [x] `/Users/danny/Documents/PARA/Projects/ai-agents/textbook-learning-assistant/apps/web/src/components/analytics/LearningPathCard.tsx` FOUND (99줄)
-- [x] `/Users/danny/Documents/PARA/Projects/ai-agents/textbook-learning-assistant/apps/web/src/components/analytics/HistoryTimeline.tsx` FOUND (167줄)
+- [x] ` FOUND (102줄)
+- [x] ` FOUND (99줄)
+- [x] ` FOUND (167줄)
 - [x] `analytics.service.ts`에 getAllCategoryMastery + getWeeklyComparison 함수 존재 (grep 확인: 2건)
 - [x] 커밋 9ec580f 존재
 - [x] 커밋 03af8ca 존재

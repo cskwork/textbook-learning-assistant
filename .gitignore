@@ -28,6 +28,9 @@ pnpm-debug.log*
 *.swo
 .DS_Store
 
+# Claude Code 로컬 설정
+.claude/
+
 # TypeScript 빌드 정보
 *.tsbuildinfo
 

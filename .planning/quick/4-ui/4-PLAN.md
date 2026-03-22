@@ -33,8 +33,8 @@ Output: 학생 홈 페이지에 empty state 분기 UI 추가
 </objective>
 
 <execution_context>
-@/Users/danny/.claude/get-shit-done/workflows/execute-plan.md
-@/Users/danny/.claude/get-shit-done/templates/summary.md
+@
+@
 </execution_context>
 
 <context>

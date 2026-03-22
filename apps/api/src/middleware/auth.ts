@@ -26,9 +26,17 @@ interface RefreshTokenPayload {
   tokenType: 'refresh';
 }
 
-// JWT 시크릿 — 환경변수에서 로드
-const ACCESS_TOKEN_SECRET = process.env.JWT_ACCESS_SECRET ?? 'dev-access-secret';
-const REFRESH_TOKEN_SECRET = process.env.JWT_REFRESH_SECRET ?? 'dev-refresh-secret';
+// JWT 시크릿 — 환경변수 필수 (미설정 시 서버 시작 실패)
+function requireEnv(name: string): string {
+  const value = process.env[name];
+  if (!value) {
+    throw new Error(`필수 환경변수 ${name}이(가) 설정되지 않았습니다`);
+  }
+  return value;
+}
+
+const ACCESS_TOKEN_SECRET = requireEnv('JWT_ACCESS_SECRET');
+const REFRESH_TOKEN_SECRET = requireEnv('JWT_REFRESH_SECRET');
 
 // 토큰 만료 시간
 const ACCESS_TOKEN_EXPIRES_IN = '15m';

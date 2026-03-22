@@ -39,8 +39,8 @@ Output: 시드 데이터 자동 삽입 + 폼 UX 개선
 </objective>
 
 <execution_context>
-@/Users/danny/.claude/get-shit-done/workflows/execute-plan.md
-@/Users/danny/.claude/get-shit-done/templates/summary.md
+@
+@
 </execution_context>
 
 <context>
@@ -102,7 +102,7 @@ Output: 시드 데이터 자동 삽입 + 폼 UX 개선
 - 시드 문제의 수학적 정확성 보장: 정답과 해설이 문제에 대해 올바른 답이어야 함
   </action>
   <verify>
-1. `cd /Users/danny/Documents/PARA/Projects/ai-agents/textbook-learning-assistant && pnpm --filter web build` 빌드 성공
+1. `cd  && pnpm --filter web build` 빌드 성공
 2. 브라우저에서 IndexedDB를 삭제(DevTools > Application > IndexedDB > mathQuestionDB 삭제) 후 앱 새로고침 시 문제 목록에 25개 문제 표시 확인
 3. seed-data.ts TypeScript 컴파일 오류 없음
   </verify>
@@ -164,7 +164,7 @@ const [isOptionalOpen, setIsOptionalOpen] = useState(false)
 lucide-react에서 ChevronDown, ChevronUp import 추가.
   </action>
   <verify>
-1. `cd /Users/danny/Documents/PARA/Projects/ai-agents/textbook-learning-assistant && pnpm --filter web build` 빌드 성공
+1. `cd  && pnpm --filter web build` 빌드 성공
 2. /instructor/problems/new 페이지에서:
    - 필수 필드가 상단에 노출
    - "선택 입력" 토글 클릭 시 이미지/출처 영역 접기/펼치기 동작
@@ -204,7 +204,7 @@ lucide-react에서 ChevronDown, ChevronUp import 추가.
 - navigate import 추가 필요: `import { Link, Navigate, useNavigate } from 'react-router'`
   </action>
   <verify>
-1. `cd /Users/danny/Documents/PARA/Projects/ai-agents/textbook-learning-assistant && pnpm --filter web build` 빌드 성공
+1. `cd  && pnpm --filter web build` 빌드 성공
 2. 학생 홈에서 "랜덤 문제 풀기" 버튼 클릭 시 퀴즈 페이지로 이동
 3. 학생 홈에서 문제 수가 "등록된 25개의 문제를 풀고..." 형태로 표시
 4. 첫 진입(풀이 기록 0건) 시 AI 추천 영역에 안내 메시지 표시

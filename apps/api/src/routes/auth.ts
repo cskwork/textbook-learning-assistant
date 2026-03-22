@@ -97,16 +97,15 @@ authRouter.post('/login', loginLimiter, async (req, res) => {
     .limit(1);
 
   if (!user) {
-    // 구체적 에러 메시지 (사용자 결정)
-    res.status(401).json({ error: '가입되지 않은 이메일입니다' });
+    // 사용자 열거 방지 — 통일된 에러 메시지 반환
+    res.status(401).json({ error: '이메일 또는 비밀번호가 올바르지 않습니다' });
     return;
   }
 
   // 비밀번호 검증
   const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
   if (!isPasswordValid) {
-    // 구체적 에러 메시지 (사용자 결정)
-    res.status(401).json({ error: '비밀번호가 틀렸습니다' });
+    res.status(401).json({ error: '이메일 또는 비밀번호가 올바르지 않습니다' });
     return;
   }
 

@@ -103,8 +103,8 @@ metrics:
 
 ## Self-Check: PASSED
 
-- [x] `/Users/danny/Documents/PARA/Projects/ai-agents/textbook-learning-assistant/apps/web/src/components/analytics/DateRangeSelector.tsx` FOUND
-- [x] `/Users/danny/Documents/PARA/Projects/ai-agents/textbook-learning-assistant/apps/web/src/components/analytics/AccuracyBarChart.tsx` — linearGradient FOUND
-- [x] `/Users/danny/Documents/PARA/Projects/ai-agents/textbook-learning-assistant/apps/web/src/components/analytics/DailyTrendLineChart.tsx` — linearGradient FOUND
+- [x] ` FOUND
+- [x] ` — linearGradient FOUND
+- [x] ` — linearGradient FOUND
 - [x] 커밋 d9341b2 존재
 - [x] 커밋 daf9353 존재

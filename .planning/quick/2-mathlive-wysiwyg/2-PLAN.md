@@ -17,8 +17,8 @@ Output: MathLive 기반 수식 입력 패널이 통합된 LatexEditor 컴포넌�
 </objective>
 
 <execution_context>
-@/Users/danny/.claude/get-shit-done/workflows/execute-plan.md
-@/Users/danny/.claude/get-shit-done/templates/summary.md
+@
+@
 </execution_context>
 
 <context>

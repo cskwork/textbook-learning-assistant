@@ -32,8 +32,8 @@ Output: 두 파일의 래퍼 className 수정
 </objective>
 
 <execution_context>
-@/Users/danny/.claude/get-shit-done/workflows/execute-plan.md
-@/Users/danny/.claude/get-shit-done/templates/summary.md
+@
+@
 </execution_context>
 
 <context>
